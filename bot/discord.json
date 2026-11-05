@@ -1,26 +1,26 @@
 {
   "_hinweis": "Kanal- und Rollen-IDs des TacoV-Discords. Keine Geheimnisse; Token und Datenbank stehen nur in .env.",
-  "guildId": "",
+  "guildId": "1566253295150833794",
   "welcome": {
-    "channelId": "",
-    "messageId": "",
+    "channelId": "1568019528577712139",
+    "messageId": "1568037971347636395",
     "emoji": "✅"
   },
   "roles": {
-    "whitelist": "",
-    "einwohner": ""
+    "whitelist": "1566255323524767905",
+    "einwohner": "1568019470566555818"
   },
   "logChannels": {
-    "connect": "",
-    "character": "",
-    "money": "",
-    "items": "",
-    "faction": "",
-    "police": "",
-    "medic": "",
-    "justice": "",
-    "crime": "",
-    "admin": "",
-    "support": ""
+    "connect": "1568019680411783349",
+    "character": "1568038335581003920",
+    "money": "1568038366916911114",
+    "items": "1568038404938145812",
+    "faction": "1568038440191397988",
+    "police": "1568038478422474753",
+    "medic": "1568038512022921296",
+    "justice": "1568038554469138533",
+    "crime": "1568038590389288971",
+    "admin": "1568038627211083776",
+    "support": "1568038660383965204"
   }
 }
