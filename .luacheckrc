@@ -13,7 +13,7 @@ globals = {
   "SendNUIMessage", "RegisterNUICallback", "SetNuiFocus",
   "PlayerPedId", "GetEntityCoords", "GetPlayerServerId", "PlayerId",
   "NetworkGetNetworkIdFromEntity", "NetworkGetEntityFromNetworkId",
-  "MySQL", "TacoV",
+  "promise", "TacoV",
   "DropPlayer", "GetPlayerPed", "GetEntityHeading", "LoadResourceFile", "GetResourceState",
   "NetworkIsSessionStarted", "SetEntityVisible", "FreezeEntityPosition", "SetEntityInvincible",
   "RequestCollisionAtCoord", "SetEntityCoordsNoOffset", "SetEntityHeading", "HasCollisionLoadedAroundEntity",
