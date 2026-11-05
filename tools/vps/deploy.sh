@@ -6,11 +6,18 @@ SVC_USER="tacov2"
 
 cd "$BASE"
 sudo -u "$SVC_USER" git pull --ff-only
-sudo -u "$SVC_USER" bash -c "cd $BASE/bot && npm install --omit=dev --no-audit --no-fund >/dev/null"
-sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/db' && npm install --omit=dev --no-audit --no-fund >/dev/null"
+echo "== Bot-Abhängigkeiten"
+sudo -u "$SVC_USER" bash -c "cd $BASE/bot && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
+echo "== Datenbank-Treiber"
+sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/db' && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
+[ -d "$BASE/server/resources/[tacov]/db/node_modules/mysql2" ] || { echo "FEHLER: mysql2 wurde nicht installiert."; exit 1; }
+# Alte Fremd-Resource entfernen, falls noch vorhanden
+rm -rf "$BASE/server/resources/[external]"
+sed -i '/^ensure oxmysql/d' "$BASE/server/server.cfg"
 
 if [ -d "$BASE/ui" ] && [ -f "$BASE/ui/package.json" ]; then
-  sudo -u "$SVC_USER" bash -c "cd $BASE/ui && npm install --no-audit --no-fund >/dev/null && npm run build"
+  echo "== UI bauen"
+  sudo -u "$SVC_USER" bash -c "cd $BASE/ui && npm install --no-audit --no-fund 2>&1 | tail -1 && npm run build 2>&1 | tail -3"
 fi
 
 systemctl restart tacov2-bot

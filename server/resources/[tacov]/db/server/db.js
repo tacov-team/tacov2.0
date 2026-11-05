@@ -4,7 +4,16 @@
 // Convar:  set tacov_db "mysql://nutzer:passwort@127.0.0.1:3306/tacov2"
 // Exports: query, single, scalar, insert, update, transaction, ready  (alle: (sql, params, cb) bzw. (queries, cb))
 
-const mysql = require('mysql2/promise');
+// Treiber über den echten Resource-Pfad laden; FXServer löst node_modules sonst nicht zuverlässig auf
+const path = require('path');
+const resourcePath = GetResourcePath(GetCurrentResourceName());
+let mysql;
+try {
+  mysql = require(path.join(resourcePath, 'node_modules', 'mysql2', 'promise'));
+} catch (e) {
+  console.log(`^1[tacov_db]^7 Treiber mysql2 fehlt: ${e.message}`);
+  console.log(`^1[tacov_db]^7 Bitte ausführen: cd "${resourcePath}" && npm install`);
+}
 
 const NULL = '\u0000NULL'; // Lua kann kein nil in Listen übertragen; der Kern schickt diesen Platzhalter
 const TAG = '^3[tacov_db]^7';
@@ -20,7 +29,7 @@ if (!conf) {
   console.log(`^1[tacov_db]^7 Convar tacov_db fehlt oder ist ungültig (mysql://nutzer:passwort@host:port/datenbank)`);
 }
 
-const pool = conf && mysql.createPool({
+const pool = conf && mysql && mysql.createPool({
   ...conf,
   waitForConnections: true,
   connectionLimit: 10,
