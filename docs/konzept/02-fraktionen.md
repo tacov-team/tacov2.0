@@ -35,7 +35,7 @@ Bezahlt aus dem Staatshaushalt (Gehalt je Dienststunde nach Rang), Dienstpflicht
 
 Dienst beginnt und endet im Fraktionsgebäude (Stempeluhr); nur im Dienst gelten besondere Rechte und läuft Gehalt. Jede Fraktion hat Hauptgebäude mit Umkleide, Garage, Lager, Funkraum; Funk je Fraktion getrennt, LSPD und LSMD mit gemeinsamem Notrufkanal.
 
-Ohne eigene Fraktion zum Start: Abschleppen und Werkstatt als Jobs (DMV vergibt Lizenz), Ermittlungen beim LSPD, Nachrichten über Handy-App, Einreise durch das Team.
+Ohne eigene Fraktion zum Start: Reparatur in der NPC-Werkstatt, Abschleppen durch NPC-Dienst, Ermittlungen beim LSPD, Nachrichten über Handy-App, Einreise durch das Team.
 
 ## 3. Zusammenspiel der Staatsfraktionen
 
