@@ -18,6 +18,8 @@ Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit 
 
 Einmalig als root: `bash tools/vps/setup.sh` (Ubuntu 22.04/24.04, Debian 12). Legt Nutzer `tacov2`, `/opt/tacov2`, Datenbank `tacov2`, MariaDB + phpMyAdmin (Basic-Auth), Node 20, FXServer (Port 30121), oxmysql und die Dienste `tacov2-server` / `tacov2-bot` an – alles getrennt vom bestehenden `tacov`-Ordner auf dem VPS. Danach Lizenzschlüssel in `server/server.cfg` und Token in `bot/.env` eintragen.
 
+FXServer-Build wechseln: `bash /opt/tacov2/tools/vps/fx-update.sh` (Recommended), `… latest` oder `… <Ordnername>`.
+
 Updates: `bash /opt/tacov2/tools/vps/deploy.sh` – zieht `main`, baut UI und Bot, startet die Dienste neu. Konfigurationen mit Geheimnissen (`server.cfg`, `.env`) liegen nur auf dem VPS und nie im Repository.
 
 ## Branching
