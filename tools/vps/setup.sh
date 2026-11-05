@@ -20,7 +20,8 @@ if [ "$(id -u)" -ne 0 ]; then echo "Bitte als root ausführen."; exit 1; fi
 echo "== 1/8 Pakete"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq git curl xz-utils ufw ca-certificates gnupg mariadb-server
+apt-get install -y -qq git curl xz-utils ufw ca-certificates gnupg openssl mariadb-server
+systemctl enable --now mariadb >/dev/null
 
 echo "== 2/8 Nutzer und Ordner"
 id "$SVC_USER" >/dev/null 2>&1 || useradd -m -s /bin/bash "$SVC_USER"
@@ -35,7 +36,9 @@ else
 fi
 
 echo "== 4/8 Datenbank"
-DB_PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 24)"
+if [ -f "$BASE/.db_pass" ]; then DB_PASS="$(cat "$BASE/.db_pass")"; else
+DB_PASS="$(openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | cut -c1-24)"
+fi
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';"
 mysql -e "ALTER USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';"
@@ -49,7 +52,7 @@ echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selecti
 echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
 apt-get install -y -qq phpmyadmin apache2-utils
 touch /etc/phpmyadmin/.htpasswd
-PMA_PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)"
+PMA_PASS="$(openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | cut -c1-16)"
 htpasswd -b /etc/phpmyadmin/.htpasswd tacov2 "$PMA_PASS" >/dev/null
 cat > /etc/apache2/conf-available/phpmyadmin-auth.conf <<'EOF'
 <Directory /usr/share/phpmyadmin>
@@ -75,7 +78,7 @@ echo "== 7/8 FXServer und oxmysql"
 mkdir -p "$BASE/fx" "$BASE/server/resources/[external]"
 if [ ! -x "$BASE/fx/run.sh" ]; then
   echo "Neuesten Recommended-Build ermitteln ..."
-  BUILD="$(curl -fsSL "$FX_BASE_URL/" | grep -o 'href="[0-9]*-[a-f0-9]*/fx.tar.xz"' | head -1 | sed 's/href="//;s/\/fx.tar.xz"//')"
+  BUILD="$(curl -fsSL "$FX_BASE_URL/" | grep -o 'href="[0-9]*-[a-f0-9]*/fx.tar.xz"' | sed -n '1{s/href="//;s/\/fx.tar.xz"//;p}')"
   if [ -z "$BUILD" ]; then
     read -rp "Build konnte nicht ermittelt werden. Bitte Ordnernamen von $FX_BASE_URL/ eingeben: " BUILD
   fi
