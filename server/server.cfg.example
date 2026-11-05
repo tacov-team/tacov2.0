@@ -1,0 +1,29 @@
+# TacoV – Server-Konfiguration (Vorlage)
+# Nach server.cfg kopieren und ausfüllen. server.cfg wird nicht eingecheckt.
+
+endpoint_add_tcp "0.0.0.0:30120"
+endpoint_add_udp "0.0.0.0:30120"
+
+sv_hostname "TacoV | Deutsches Roleplay"
+sv_projectName "TacoV"
+sv_projectDesc "Deutscher Roleplay-Server auf FiveM"
+sv_maxclients 128
+sv_enforceGameBuild 3258
+set onesync on
+sv_scriptHookAllowed 0
+
+# Lizenz von keymaster.fivem.net
+sv_licenseKey "HIER_EINTRAGEN"
+
+# Datenbank (wird vom Kern gelesen)
+set tacov_db_host "127.0.0.1"
+set tacov_db_port "3306"
+set tacov_db_name "tacov"
+set tacov_db_user "tacov"
+set tacov_db_pass "HIER_EINTRAGEN"
+
+# Discord
+set tacov_discord_guild "HIER_EINTRAGEN"
+
+# Resources
+ensure [tacov]

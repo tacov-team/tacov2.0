@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Struktur prüfen
+        run: bash tools/ci/check_structure.sh
+
+      - name: Lua-Lint
+        uses: lunarmodules/luacheck@v1
+        with:
+          args: server/resources --no-color --codes
+
+      - name: Geheimnisse prüfen
+        run: bash tools/ci/check_secrets.sh

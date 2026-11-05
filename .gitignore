@@ -1,0 +1,21 @@
+# Geheimnisse und lokale Konfiguration
+server/server.cfg
+.env
+*.env
+
+# FiveM-Laufzeit
+server/cache/
+server/artifacts/
+server/logs/
+*.log
+
+# Node
+node_modules/
+ui/dist/
+bot/dist/
+
+# Betriebssystem und Editoren
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
