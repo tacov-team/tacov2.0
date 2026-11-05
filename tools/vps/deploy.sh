@@ -11,8 +11,11 @@ sudo -u "$SVC_USER" bash -c "cd $BASE/bot && npm install --omit=dev --no-audit -
 echo "== Datenbank-Treiber"
 sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/tacov_db' && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
 [ -d "$BASE/server/resources/[tacov]/tacov_db/node_modules/mysql2" ] || { echo "FEHLER: mysql2 wurde nicht installiert."; exit 1; }
-# Alte Fremd-Resource entfernen, falls noch vorhanden
+# Alte Fremd-Resource und Reste alter Ordnernamen entfernen (Resources heißen tacov_<name>)
 rm -rf "$BASE/server/resources/[external]"
+for old in db core state crime civ; do
+  [ -d "$BASE/server/resources/[tacov]/$old" ] && [ ! -f "$BASE/server/resources/[tacov]/$old/fxmanifest.lua" ] && rm -rf "$BASE/server/resources/[tacov]/$old"
+done
 sed -i '/^ensure oxmysql/d' "$BASE/server/server.cfg"
 
 if [ -d "$BASE/ui" ] && [ -f "$BASE/ui/package.json" ]; then
