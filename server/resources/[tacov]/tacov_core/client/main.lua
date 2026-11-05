@@ -15,6 +15,9 @@ local function spawnAt(pos)
   local ped = PlayerPedId()
   local x, y, z, h = pos.x, pos.y, pos.z, pos.w or pos.heading or 0.0
   RequestCollisionAtCoord(x, y, z)
+  NetworkResurrectLocalPlayer(x, y, z, h + 0.0, true, false)
+  ClearPedTasksImmediately(ped)
+  ped = PlayerPedId()
   SetEntityCoordsNoOffset(ped, x, y, z, false, false, false)
   SetEntityHeading(ped, h + 0.0)
   local t = GetGameTimer()
@@ -29,6 +32,9 @@ CreateThread(function()
     exports.spawnmanager:setAutoSpawn(false)
   end
   while not NetworkIsSessionStarted() do Wait(100) end
+  -- Ladebildschirm beenden („Awaiting scripts“); das macht sonst der Spawnmanager
+  ShutdownLoadingScreen()
+  ShutdownLoadingScreenNui()
   DoScreenFadeOut(0)
   setPedVisible(false)
   TriggerServerEvent('tacov:core:clientReady')

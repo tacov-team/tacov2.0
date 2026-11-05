@@ -20,7 +20,7 @@ globals = {
   "GetGameTimer", "DoScreenFadeOut", "DoScreenFadeIn", "IsControlPressed",
   "RegisterKeyMapping", "ExecuteCommand", "GetEntityHealth", "GetEntityMaxHealth", "GetPedArmour",
   "GetStreetNameAtCoord", "GetStreetNameFromHashKey", "GetLabelText", "GetNameOfZone", "SetEntityHealth",
-  "ClearPedTasks", "IsPedInAnyVehicle", "RequestAnimDict", "HasAnimDictLoaded", "TaskPlayAnim",
+  "ClearPedTasks", "ClearPedTasksImmediately", "NetworkResurrectLocalPlayer", "ShutdownLoadingScreen", "ShutdownLoadingScreenNui", "IsPedInAnyVehicle", "RequestAnimDict", "HasAnimDictLoaded", "TaskPlayAnim",
 }
 
 ignore = { "212/_.*" }
