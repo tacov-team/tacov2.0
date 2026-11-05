@@ -36,6 +36,7 @@ end)
 
 RegisterNetEvent('tacov:core:role', function(role)
   TacoV.Client.role = role
+  TacoV.UI.send('role', role)
 end)
 
 RegisterNetEvent('tacov:core:characters', function(data)
@@ -50,6 +51,7 @@ RegisterNetEvent('tacov:core:characterLoaded', function(c)
   DoScreenFadeOut(300)
   Wait(300)
   spawnAt(c.position)
+  TacoV.Hud.refresh()
   DoScreenFadeIn(800)
   TriggerEvent('tacov:client:characterLoaded', c)
 end)
@@ -58,6 +60,23 @@ RegisterNetEvent('tacov:core:bank', function(balance)
   TacoV.Client.bank = balance
   TacoV.UI.send('bank', balance)
 end)
+
+-- Hände hoch (H): Animation an/aus (Konzept 5)
+local handsUp = false
+function TacoV.Client.toggleHandsUp()
+  local ped = PlayerPedId()
+  if handsUp then
+    ClearPedTasks(ped)
+    handsUp = false
+    return
+  end
+  if IsPedInAnyVehicle(ped, false) then return end
+  RequestAnimDict('missminuteman_1ig_2')
+  local t = GetGameTimer()
+  while not HasAnimDictLoaded('missminuteman_1ig_2') and GetGameTimer() - t < 2000 do Wait(10) end
+  TaskPlayAnim(ped, 'missminuteman_1ig_2', 'handsup_base', 8.0, 8.0, -1, 49, 0, false, false, false)
+  handsUp = true
+end
 
 RegisterNetEvent('tacov:core:notify', function(kind, text)
   TacoV.UI.send('notify', { kind = kind, text = text })

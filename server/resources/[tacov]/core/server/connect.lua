@@ -86,5 +86,7 @@ RegisterNetEvent('tacov:core:clientReady', function()
     characters = TacoV.Characters.list(p.id),
     maxSlots = TacoV.Config.Server.charactersPerPlayer,
     secondSlotLevel = TacoV.Config.Server.secondCharacterLevel,
+    maxLevel = TacoV.Characters.maxLevel(p.id),
+    staffOnline = #TacoV.Players.staff(1),
   })
 end)

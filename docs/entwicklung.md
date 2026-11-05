@@ -7,7 +7,7 @@ Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit 
 1. `server/server.cfg.example` nach `server/server.cfg` kopieren und Lizenzschlüssel sowie Datenbankzugang eintragen (`server.cfg` ist in `.gitignore`).
 2. Datenbank anlegen: `tacov`, Nutzer mit Vollzugriff; Migrationen laufen beim ersten Start des Kerns.
    oxmysql (https://github.com/overextended/oxmysql, Release-Zip) nach `server/resources/[external]/oxmysql` entpacken; der Ordner ist nicht im Repository.
-3. UI: `cd ui && npm install && npm run build` – der Build landet in `server/resources/[tacov]/core/ui/`.
+3. UI: `cd ui && npm install && npm run build` – der Build landet in `server/resources/[tacov]/core/ui/` (eingecheckt; siehe `ui/README.md`).
 4. Server starten: `FXServer +exec server.cfg` im Ordner `server/`.
 5. Bot: `cd bot && cp .env.example .env` ausfüllen, `npm install && npm start` (siehe `bot/README.md`).
 

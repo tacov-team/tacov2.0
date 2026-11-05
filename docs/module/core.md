@@ -21,8 +21,12 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/commands.lua` | `/support`, `/ort setzen|liste`, `/rolle`, `/sperre`, `/kick` |
 | `server/main.lua` | Startfolge, Autosave, Speichern beim Stop |
 | `client/main.lua` | Anmeldung, Spawn nach Charakterwahl, Herzschlag (Position, Aktivität) |
-| `client/ui.lua` | NUI-Brücke (`TacoV.UI.open/close/send`) |
-| `ui/index.html` | Platzhalter-Charakterauswahl im V3-Stil; wird in Phase 3 durch die React-UI ersetzt |
+| `client/ui.lua` | NUI-Brücke (`TacoV.UI.open/close/send/openConsole`), Befehlszeile führt Befehle aus |
+| `client/hud.lua` | HUD-Daten: Leben/Weste/Straße vom Client, Bedürfnisse vom Server; Hungerschaden |
+| `client/keys.lua` | Tastenbelegung aus `config/core.lua` (T, F1, F2, F3, F6, F9, X, H) |
+| `config/commands.lua` | Befehlsliste für die Befehlszeile |
+| `server/needs.lua` | Hunger/Durst sinken je Minute, Promille baut ab; `needsAdd` für Essen/Trinken |
+| `ui/` | Build der React-UI (Quelle in `/ui`) |
 
 ## Exports für andere Resources
 `isReady`, `getPlayer(source)`, `getCharacter(source)`, `hasPermission(source, recht)`, `journalMove(...)`, `journalBalance(ownerType, ownerId)`, `accountPay/accountReceive/accountTax`.
@@ -44,5 +48,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Spieler, Charaktere (2 Plätze), Spielzeit, Autosave
 - [x] Konten über Journal, Startgeld
 - [x] Rechte, Grundbefehle
+- [x] React-UI: HUD, Hinweise, Befehlszeile, Charakterauswahl (Phase 3)
+- [x] Bedürfnisse Hunger/Durst, Hände hoch
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

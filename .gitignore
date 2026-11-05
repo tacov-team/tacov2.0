@@ -10,7 +10,7 @@ server/logs/
 *.log
 
 # Node
-node_modules/
+node_modules
 ui/dist/
 bot/dist/
 

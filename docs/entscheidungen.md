@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-06 | UI-Technik | React 19 + TypeScript mit esbuild; Build eingecheckt in `core/ui/`; eine NUI-Seite für alle Ansichten | Einfacher Build, Server nach `git pull` sofort spielbar |
 | 2026-11-05 | VPS | Neuer Server liegt unter `/opt/tacov2` mit Nutzer, Datenbank und Diensten `tacov2`, Port 30121 | Getrennt vom bestehenden `tacov`-Ordner auf dem VPS |
 | 2026-11-05 | Discord-Bot | Eigener Bot in Node.js (discord.js), teilt sich die Datenbank mit dem Spielserver; Whitelist per Reaktion, Log-Spiegel | Bester Discord-Support, läuft unabhängig vom Spielserver |
 | 2026-11-05 | Datenbankzugriff | oxmysql (MIT) als einzige Fremd-Resource; alle Module gehen über `TacoV.DB` | Stabil, frei, kein Framework-Zwang |

@@ -19,7 +19,7 @@ function TacoV.Characters.list(playerId)
 end
 
 --- Höchstes Level über alle Charaktere; schaltet den zweiten Platz frei.
-local function maxLevel(playerId)
+function TacoV.Characters.maxLevel(playerId)
   return TacoV.DB.scalar('SELECT COALESCE(MAX(level_cache), 0) FROM characters WHERE player_id = ? AND deleted_at IS NULL', { playerId }) or 0
 end
 
@@ -46,7 +46,7 @@ function TacoV.Characters.create(source, data)
   local chars = TacoV.Characters.list(p.id)
   local cfg = TacoV.Config.Server
   if #chars >= cfg.charactersPerPlayer then return false, 'slots' end
-  if #chars >= 1 and maxLevel(p.id) < cfg.secondCharacterLevel then return false, 'level' end
+  if #chars >= 1 and TacoV.Characters.maxLevel(p.id) < cfg.secondCharacterLevel then return false, 'level' end
 
   local first = TacoV.Util.cleanText(data.firstName, 32)
   local last = TacoV.Util.cleanText(data.lastName, 32)
@@ -91,6 +91,7 @@ function TacoV.Characters.select(source, characterId)
   TacoV.Log.write('character', ('Charakter geladen: %s %s'):format(c.first_name, c.last_name),
     { discordId = p.discordId, characterId = c.id })
   TriggerClientEvent('tacov:core:characterLoaded', source, TacoV.Characters.publicData(source))
+  TacoV.Needs.push(source)
   return true
 end
 
@@ -105,6 +106,7 @@ function TacoV.Characters.publicData(source)
   return {
     id = c.id, firstName = c.first_name, lastName = c.last_name,
     level = levelFromSeconds(c.playtime_seconds + (c.activeSeconds or 0)),
+    playtimeSeconds = c.playtime_seconds + (c.activeSeconds or 0),
     faction = c.faction, factionRank = c.faction_rank,
     immigrated = c.immigrated_at ~= nil,
     position = c.position, needs = c.needs, appearance = c.appearance,
@@ -162,7 +164,8 @@ RegisterNetEvent('tacov:core:requestCharacters', function()
     characters = TacoV.Characters.list(p.id),
     maxSlots = TacoV.Config.Server.charactersPerPlayer,
     secondSlotLevel = TacoV.Config.Server.secondCharacterLevel,
-    maxLevel = maxLevel(p.id),
+    maxLevel = TacoV.Characters.maxLevel(p.id),
+    staffOnline = #TacoV.Players.staff(1),
   })
 end)
 

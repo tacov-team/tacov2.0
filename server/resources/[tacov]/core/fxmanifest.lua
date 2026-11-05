@@ -13,6 +13,7 @@ shared_scripts {
   'config/core.lua',
   'config/economy.lua',
   'config/permissions.lua',
+  'config/commands.lua',
 }
 
 server_scripts {
@@ -25,6 +26,7 @@ server_scripts {
   'server/players.lua',
   'server/characters.lua',
   'server/accounts.lua',
+  'server/needs.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/main.lua',
@@ -33,11 +35,15 @@ server_scripts {
 client_scripts {
   'client/main.lua',
   'client/ui.lua',
+  'client/hud.lua',
+  'client/keys.lua',
 }
 
 ui_page 'ui/index.html'
 
 files {
   'ui/index.html',
+  'ui/app.js',
+  'ui/app.css',
   'ui/assets/*',
 }
