@@ -11,6 +11,7 @@ required=(
   "server/resources/[tacov]/state"
   "server/resources/[tacov]/crime"
   "server/resources/[tacov]/civ"
+  "server/resources/[tacov]/db"
   "ui"
   "bot"
 )

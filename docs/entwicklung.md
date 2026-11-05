@@ -6,17 +6,17 @@ Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit 
 
 1. `server/server.cfg.example` nach `server/server.cfg` kopieren und Lizenzschlüssel sowie Datenbankzugang eintragen (`server.cfg` ist in `.gitignore`).
 2. Datenbank anlegen: `tacov`, Nutzer mit Vollzugriff; Migrationen laufen beim ersten Start des Kerns.
-   oxmysql (https://github.com/overextended/oxmysql, Release-Zip) nach `server/resources/[external]/oxmysql` entpacken; der Ordner ist nicht im Repository.
+   Treiber der Datenbank-Resource: `cd server/resources/[tacov]/db && npm install`.
 3. UI: `cd ui && npm install && npm run build` – der Build landet in `server/resources/[tacov]/core/ui/` (eingecheckt; siehe `ui/README.md`).
 4. Server starten: `FXServer +exec server.cfg` im Ordner `server/`.
 5. Bot: `cd bot && cp .env.example .env` ausfüllen, `npm install && npm start` (siehe `bot/README.md`).
 
 ## Prüfungen vor dem Commit
-`bash tools/ci/check_structure.sh`, `bash tools/ci/check_secrets.sh`, `luacheck server/resources`, `cd bot && npm run check`.
+`bash tools/ci/check_structure.sh`, `bash tools/ci/check_secrets.sh`, `luacheck server/resources`, `cd bot && npm run check`, `cd server/resources/[tacov]/db && npm run check`.
 
 ## VPS
 
-Einmalig als root: `bash tools/vps/setup.sh` (Ubuntu 22.04/24.04, Debian 12). Legt Nutzer `tacov2`, `/opt/tacov2`, Datenbank `tacov2`, MariaDB + phpMyAdmin (Basic-Auth), Node 20, FXServer (Port 30121), oxmysql und die Dienste `tacov2-server` (FXServer in einer `screen`-Sitzung, Konsole: `sudo -u tacov2 screen -r tacov2`) / `tacov2-bot` an – alles getrennt vom bestehenden `tacov`-Ordner auf dem VPS. Danach Lizenzschlüssel in `server/server.cfg` und Token in `bot/.env` eintragen.
+Einmalig als root: `bash tools/vps/setup.sh` (Ubuntu 22.04/24.04, Debian 12). Legt Nutzer `tacov2`, `/opt/tacov2`, Datenbank `tacov2`, MariaDB + phpMyAdmin (Basic-Auth), Node 20, FXServer (Port 30121), den Treiber der Datenbank-Resource und die Dienste `tacov2-server` (FXServer in einer `screen`-Sitzung, Konsole: `sudo -u tacov2 screen -r tacov2`) / `tacov2-bot` an – alles getrennt vom bestehenden `tacov`-Ordner auf dem VPS. Danach Lizenzschlüssel in `server/server.cfg` und Token in `bot/.env` eintragen.
 
 FXServer-Build wechseln: `bash /opt/tacov2/tools/vps/fx-update.sh` (Recommended), `… latest` oder `… <Ordnername>`.
 

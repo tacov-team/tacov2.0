@@ -15,13 +15,12 @@ sv_scriptHookAllowed 0
 # Lizenz von keymaster.fivem.net
 sv_licenseKey "HIER_EINTRAGEN"
 
-# Datenbank: MariaDB über oxmysql, phpMyAdmin als Weboberfläche
-set mysql_connection_string "mysql://tacov:HIER_EINTRAGEN@127.0.0.1/tacov?charset=utf8mb4"
+# Datenbank: MariaDB über die eigene Resource tacov_db, phpMyAdmin als Weboberfläche
+set tacov_db "mysql://tacov:HIER_EINTRAGEN@127.0.0.1:3306/tacov"
 set tacov_log_console "true"
 
 # Discord
 set tacov_discord_guild "HIER_EINTRAGEN"
 
-# Resources (oxmysql liegt unter resources/[external], siehe docs/entwicklung.md)
-ensure oxmysql
+# Resources: Reihenfolge regeln die Abhängigkeiten in den Manifesten (db -> core -> Module)
 ensure [tacov]

@@ -1,0 +1,12 @@
+{
+  "name": "tacov-db",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TacoV Datenbank-Resource. Einziger Fremdcode: der mysql2-Treiber.",
+  "scripts": {
+    "check": "node --check server/db.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.3"
+  }
+}

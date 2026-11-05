@@ -9,7 +9,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/economy.lua` | Bank, Steuern, Tanken, Staatshaushalt, Schwarzgeld, Jobs, Gehälter |
 | `config/permissions.lua` | Rollen (player/supporter/admin/management) und Rechte |
 | `shared/util.lua` | Geld runden, Zahlenbereich, Text bereinigen, Convar |
-| `server/db.lua` | Hülle um oxmysql; andere Module nutzen nur `TacoV.DB` |
+| `server/db.lua` | Hülle um die eigene Resource `tacov_db`; andere Module nutzen nur `TacoV.DB` |
 | `server/migrations.lua` + `sql/NNN_*.sql` | Schema; läuft beim Start, merkt sich Version in `migrations` |
 | `server/log.lua` | `TacoV.Log.write(kategorie, text, {characterId, discordId, data})` → Tabelle `logs`, Bot spiegelt in Discord |
 | `server/journal.lua` | `TacoV.Journal.move(kind, from, to, amount, reason)` – die einzige Stelle für Geldbewegungen |
@@ -40,7 +40,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 `migrations`, `whitelist`, `players`, `bans`, `characters`, `accounts`, `journal`, `logs`, `name_blocklist`, `locations`
 
 ## Abhängigkeit
-`oxmysql` (MIT) unter `server/resources/[external]/oxmysql`; `ensure oxmysql` vor `ensure [tacov]`.
+`tacov_db` (eigene Resource, siehe `docs/module/db.md`); die Startreihenfolge regelt `dependency` im Manifest.
 
 ## Stand
 - [x] Schema, DB-Hülle, Migrationen

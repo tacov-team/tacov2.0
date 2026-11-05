@@ -1,13 +1,14 @@
 # TacoV
 
-Deutscher GTA-V-Roleplay-Server auf FiveM. Eigenes Framework, eigener Code, eigene Oberflächen – nichts übernommen.
+Deutscher GTA-V-Roleplay-Server auf FiveM. Eigenes Framework, eigener Code, eigene Oberflächen – nichts übernommen, keine Fremd-Resources. Aufbau des Frameworks: `docs/framework.md`.
 
 ## Aufbau
 
 | Ordner | Inhalt |
 | --- | --- |
 | `server/` | FiveM-Serverdaten: `server.cfg`, Resources unter `resources/[tacov]/` |
-| `server/resources/[tacov]/core/` | Kern: Spieler, Charaktere, Konten, Items, Rechte, Journal, Config-Lader |
+| `server/resources/[tacov]/db/` | Datenbank-Resource (eigener Pool, Exports mit Rückruf) |
+| `server/resources/[tacov]/core/` | Kern: Spieler, Charaktere, Konten, Journal, Rechte, Logs, Bedürfnisse, UI-Brücke, Config |
 | `server/resources/[tacov]/state/` | Staat: Fraktionen, Polizei, Medics, Justiz, Regierung, Werkstatt, Medien |
 | `server/resources/[tacov]/crime/` | Verbrechen: Verarbeitung, Drogen, Waffen, Schwarzgeld, Raub, Gangwar |
 | `server/resources/[tacov]/civ/` | Zivilleben: Handy, Jobs, Fahrzeuge, Bank, Immobilien, Firmen, Freizeit |
@@ -25,4 +26,4 @@ Deutscher GTA-V-Roleplay-Server auf FiveM. Eigenes Framework, eigener Code, eige
 
 ## Entwicklung
 
-Siehe `docs/entwicklung.md` (lokale Umgebung) und `docs/entscheidungen.md` (Entscheidungsprotokoll).
+Siehe `docs/framework.md` (Aufbau), `docs/entwicklung.md` (Umgebung, VPS) und `docs/entscheidungen.md` (Entscheidungsprotokoll).

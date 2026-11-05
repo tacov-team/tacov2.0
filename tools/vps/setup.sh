@@ -5,7 +5,7 @@
 #   bash setup.sh
 #
 # Legt an: Nutzer tacov2, /opt/tacov2 (Repo), MariaDB + phpMyAdmin, Node 20 + pm2, FXServer-Artefakte,
-# oxmysql, systemd-Dienste tacov2-server und tacov2-bot. Fragt nur, was es nicht selbst erzeugen kann.
+# Treiber der DB-Resource, systemd-Dienste tacov2-server und tacov2-bot. Fragt nur, was es nicht selbst erzeugen kann.
 set -euo pipefail
 
 REPO="https://github.com/tacov-team/tacov2.0.git"
@@ -73,22 +73,17 @@ if ! command -v node >/dev/null || [ "$(node -v | cut -c2-3)" -lt 20 ]; then
 fi
 npm install -g pm2 >/dev/null 2>&1 || true
 
-echo "== 7/8 FXServer und oxmysql"
-mkdir -p "$BASE/fx" "$BASE/server/resources/[external]"
+echo "== 7/8 FXServer und Datenbank-Treiber"
+mkdir -p "$BASE/fx"
 if [ ! -x "$BASE/fx/run.sh" ]; then
   bash "$BASE/tools/vps/fx-update.sh" recommended
 fi
-if [ ! -d "$BASE/server/resources/[external]/oxmysql" ]; then
-  curl -fsSL "https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip" -o /tmp/oxmysql.zip
-  apt-get install -y -qq unzip
-  unzip -q /tmp/oxmysql.zip -d "$BASE/server/resources/[external]/"
-  rm /tmp/oxmysql.zip
-fi
+sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/db' && npm install --omit=dev --no-audit --no-fund >/dev/null"
 chown -R "$SVC_USER:$SVC_USER" "$BASE"
 
 echo "== 8/8 Konfiguration und Dienste"
 if [ ! -f "$BASE/server/server.cfg" ]; then
-  sed -e "s#mysql://tacov:HIER_EINTRAGEN@127.0.0.1/tacov#mysql://${DB_USER}:${DB_PASS}@127.0.0.1/${DB_NAME}#" \
+  sed -e "s#mysql://tacov:HIER_EINTRAGEN@127.0.0.1:3306/tacov#mysql://${DB_USER}:${DB_PASS}@127.0.0.1:3306/${DB_NAME}#" \
       -e "s#0.0.0.0:30120#0.0.0.0:30121#" \
       "$BASE/server/server.cfg.example" > "$BASE/server/server.cfg"
   chown "$SVC_USER:$SVC_USER" "$BASE/server/server.cfg"; chmod 600 "$BASE/server/server.cfg"
