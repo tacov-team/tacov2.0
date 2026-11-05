@@ -67,4 +67,14 @@ Alle Items aus den Konzeptabschnitten 1–4, als Grundlage für Icons (Phase 1) 
 | Schutz | Weste | 2,0 | Werkbank (Kevlar), Ausrüstungsschrank | – | anlegen, unsichtbar |
 | Kleidung | Weste (Kleidungsstück) | 0,5 | Kleiderladen | 120 | optisch |
 | Firma | Zutaten Burger Shot (Fleisch, Brötchen, Salat) | 0,2 | Großhandel | elastisch | zubereiten |
+| Alltag | Rucksack | 0,5 | Kleiderladen | 60 | Tragelast 45 kg, kein Modell |
+| Alltag | Funkgerät | 0,4 | Läden | 250 | Funk-App freischalten |
+| Alltag | Energydrink | 0,3 | Läden | 6 | Fitness +2 % |
+| Alltag | Bier, Schnaps | 0,5 | Läden, Bars | 5 / 12 | Promille |
+| Freizeit | Angel | 1,5 | Angelladen | 300 | angeln |
+| Freizeit | Köder (10) | 0,2 | Angelladen | 20 | angeln |
+| Freizeit | Fisch | 0,5–2,0 | Angeln | Händler 10–60 | verkaufen |
+| Freizeit | Muschel | 0,2 | Muschelstrand | – | öffnen (15 % Perle) |
+| Freizeit | Perle | 0,05 | Muschel | Juwelier 250 | verkaufen |
+| Schmuck | Ring (Heirat) | 0,05 | Juwelier | 500 | tragen |
 | Haft | Gefängniskleidung | 0,0 | Gefängnis | – | – |

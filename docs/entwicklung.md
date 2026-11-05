@@ -2,7 +2,7 @@
 
 ## Lokale Umgebung
 
-Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11, Node 20, Git.
+Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit phpMyAdmin als Weboberfläche, Node 20, Git.
 
 1. `server/server.cfg.example` nach `server/server.cfg` kopieren und Lizenzschlüssel sowie Datenbankzugang eintragen (`server.cfg` ist in `.gitignore`).
 2. Datenbank anlegen: `tacov`, Nutzer mit Vollzugriff; Migrationen laufen beim ersten Start des Kerns.
