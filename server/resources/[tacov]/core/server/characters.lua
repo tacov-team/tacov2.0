@@ -12,7 +12,8 @@ end
 --- Charakterliste eines Spielers für die Auswahl.
 function TacoV.Characters.list(playerId)
   return TacoV.DB.query(
-    'SELECT id, slot, first_name, last_name, birth_date, playtime_seconds, level_cache, faction, immigrated_at FROM characters WHERE player_id = ? AND deleted_at IS NULL ORDER BY slot',
+    'SELECT id, slot, first_name, last_name, birth_date, playtime_seconds, level_cache, faction, immigrated_at ' ..
+    'FROM characters WHERE player_id = ? AND deleted_at IS NULL ORDER BY slot',
     { playerId }
   ) or {}
 end

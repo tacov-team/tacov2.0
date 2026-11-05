@@ -8,7 +8,7 @@ local function activeBan(discordId)
   )
 end
 
-AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
+AddEventHandler('playerConnecting', function(name, _setKickReason, deferrals)
   local src = source
   deferrals.defer()
   Wait(0)

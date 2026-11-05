@@ -1,5 +1,5 @@
 std = "lua54"
-max_line_length = 140
+max_line_length = 160
 codes = true
 
 -- FiveM-Globale
@@ -21,3 +21,6 @@ globals = {
 }
 
 ignore = { "212/_.*" }
+
+-- fxmanifest.lua nutzt die Manifest-Funktionen von FiveM als Globale
+files["**/fxmanifest.lua"] = { ignore = { "113" } }

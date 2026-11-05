@@ -45,7 +45,9 @@ RegisterCommand('ort', function(src, args)
     local label = TacoV.Util.cleanText(table.concat(args, ' ', 4), 64)
     local p = TacoV.Players.get(src)
     TacoV.DB.query(
-      'INSERT INTO locations (name, kind, x, y, z, heading, label, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE kind = VALUES(kind), x = VALUES(x), y = VALUES(y), z = VALUES(z), heading = VALUES(heading), label = VALUES(label), updated_by = VALUES(updated_by)',
+      'INSERT INTO locations (name, kind, x, y, z, heading, label, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ' ..
+      'ON DUPLICATE KEY UPDATE kind = VALUES(kind), x = VALUES(x), y = VALUES(y), z = VALUES(z), ' ..
+      'heading = VALUES(heading), label = VALUES(label), updated_by = VALUES(updated_by)',
       { name, kind, pos.x, pos.y, pos.z, heading, label, p and p.discordId }
     )
     TacoV.Log.write('admin', ('Ort gesetzt: %s (%s) @ %.1f %.1f %.1f'):format(name, kind, pos.x, pos.y, pos.z), { discordId = p and p.discordId })
