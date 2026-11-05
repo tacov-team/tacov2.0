@@ -1,0 +1,18 @@
+{
+  "name": "tacov-bot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TacoV Discord-Bot: Whitelist, Rollen, Log-Kanäle",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node --check src/index.js && node --check src/whitelist.js && node --check src/logs.js && node --check src/db.js && node --check src/config.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.11.3"
+  }
+}

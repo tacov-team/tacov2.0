@@ -19,3 +19,6 @@ bot/dist/
 Thumbs.db
 .vscode/
 .idea/
+
+# Fremd-Resources (oxmysql) liegen nur auf dem Server
+server/resources/[external]/

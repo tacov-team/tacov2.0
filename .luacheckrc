@@ -13,7 +13,11 @@ globals = {
   "SendNUIMessage", "RegisterNUICallback", "SetNuiFocus",
   "PlayerPedId", "GetEntityCoords", "GetPlayerServerId", "PlayerId",
   "NetworkGetNetworkIdFromEntity", "NetworkGetEntityFromNetworkId",
-  "MySQL",
+  "MySQL", "TacoV",
+  "DropPlayer", "GetPlayerPed", "GetEntityHeading", "LoadResourceFile", "GetResourceState",
+  "NetworkIsSessionStarted", "SetEntityVisible", "FreezeEntityPosition", "SetEntityInvincible",
+  "RequestCollisionAtCoord", "SetEntityCoordsNoOffset", "SetEntityHeading", "HasCollisionLoadedAroundEntity",
+  "GetGameTimer", "DoScreenFadeOut", "DoScreenFadeIn", "IsControlPressed",
 }
 
 ignore = { "212/_.*" }

@@ -4,6 +4,9 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-05 | Discord-Bot | Eigener Bot in Node.js (discord.js), teilt sich die Datenbank mit dem Spielserver; Whitelist per Reaktion, Log-Spiegel | Bester Discord-Support, läuft unabhängig vom Spielserver |
+| 2026-11-05 | Datenbankzugriff | oxmysql (MIT) als einzige Fremd-Resource; alle Module gehen über `TacoV.DB` | Stabil, frei, kein Framework-Zwang |
+| 2026-11-05 | Phase 1 | Design abgenommen (37 Boards im Canvas „TacoV Spiel-UI“, Befehlszeile oben links); Phase 2 Kern + Bot begonnen | Freigabe des Betreibers |
 | 2026-11-05 | Design | Die 27 Grundoberflächen des V3-Designs (Gelb-Orange) aus dem Canvas „TacoV Spiel-UI“ sind die Design-Basis; Anpassungen an Konzept V1 folgen | docs/design/README.md |
 | 2026-11-05 | Konzept 5 | Alltag und Handy abgenommen: Inventar F2 (30 kg, Rucksack 45 kg, kein Schnellzugriff), Hunger/Durst 3 h, Fitness statt Stress, Promille, 10 Handy-Apps, Funkgerät schaltet Funk-App frei (Fraktionsfrequenzen 1–10), Animationen F3, Hände hoch H, Befehlszeile T, keine Namen über dem Kopf, Kleiderläden an allen Grundspiel-Standorten, Angeln/Muschelstrand/Gym zum Start | docs/konzept/05-alltag-handy.md |
 | 2026-11-05 | Datenbank | MariaDB bleibt die Datenbank; phpMyAdmin wird als Weboberfläche dazu installiert (Webzugang) | phpMyAdmin ist eine Oberfläche für MariaDB/MySQL, kein Ersatz |

@@ -1,0 +1,98 @@
+-- Befehle der Befehlszeile (Taste T). Jeder Befehl prüft Rechte serverseitig.
+TacoV = TacoV or {}
+
+local function notify(src, kind, text)
+  TriggerClientEvent('tacov:core:notify', src, kind, text)
+end
+
+local function needRight(src, right)
+  if TacoV.Permissions.has(src, right) then return true end
+  notify(src, 'error', 'Dafür fehlt dir das Recht.')
+  return false
+end
+
+-- /support <Text>  – Ticket an das Team (Konzept 1: Support)
+RegisterCommand('support', function(src, args)
+  if src == 0 then return end
+  local text = TacoV.Util.cleanText(table.concat(args, ' '), 255)
+  if #text < 5 then notify(src, 'error', 'Bitte beschreibe dein Anliegen.') return end
+  local p = TacoV.Players.get(src)
+  TacoV.Log.write('support', text, { discordId = p and p.discordId, characterId = p and p.characterId, data = { source = src } })
+  notify(src, 'info', 'Dein Anliegen ist beim Team eingegangen.')
+  for _, staff in ipairs(TacoV.Players.staff(1)) do
+    notify(staff, 'info', ('Support #%d: %s'):format(src, text))
+  end
+end, false)
+
+-- /ort setzen <name> <art> [Beschriftung]  – Ort an die eigene Position legen (Konzept 5)
+-- /ort liste
+RegisterCommand('ort', function(src, args)
+  if src == 0 then return end
+  if not needRight(src, 'admin.locations') then return end
+  local sub = args[1]
+  if sub == 'liste' then
+    local rows = TacoV.DB.query('SELECT name, kind, label FROM locations ORDER BY kind, name') or {}
+    for _, r in ipairs(rows) do notify(src, 'info', ('%s [%s] %s'):format(r.name, r.kind, r.label)) end
+    if #rows == 0 then notify(src, 'info', 'Keine Orte gesetzt.') end
+    return
+  end
+  if sub == 'setzen' and args[2] and args[3] then
+    local ped = GetPlayerPed(src)
+    local pos = GetEntityCoords(ped)
+    local heading = GetEntityHeading(ped)
+    local name = TacoV.Util.cleanText(args[2], 48):lower()
+    local kind = TacoV.Util.cleanText(args[3], 24):lower()
+    local label = TacoV.Util.cleanText(table.concat(args, ' ', 4), 64)
+    local p = TacoV.Players.get(src)
+    TacoV.DB.query(
+      'INSERT INTO locations (name, kind, x, y, z, heading, label, updated_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE kind = VALUES(kind), x = VALUES(x), y = VALUES(y), z = VALUES(z), heading = VALUES(heading), label = VALUES(label), updated_by = VALUES(updated_by)',
+      { name, kind, pos.x, pos.y, pos.z, heading, label, p and p.discordId }
+    )
+    TacoV.Log.write('admin', ('Ort gesetzt: %s (%s) @ %.1f %.1f %.1f'):format(name, kind, pos.x, pos.y, pos.z), { discordId = p and p.discordId })
+    notify(src, 'success', ('Ort "%s" gesetzt.'):format(name))
+    TriggerEvent('tacov:core:locationChanged', name)
+    return
+  end
+  notify(src, 'info', 'Nutzung: /ort setzen <name> <art> [Beschriftung] | /ort liste')
+end, false)
+
+-- /rolle <Server-ID> <player|supporter|admin|management>
+RegisterCommand('rolle', function(src, args)
+  if src ~= 0 and not needRight(src, 'admin.roles') then return end
+  local target = tonumber(args[1])
+  local tp = target and TacoV.Players.get(target)
+  if not tp then if src ~= 0 then notify(src, 'error', 'Spieler nicht gefunden.') else print('Spieler nicht gefunden.') end return end
+  local ok, err = TacoV.Permissions.setRole(tp.id, args[2], src ~= 0 and src or nil)
+  if src ~= 0 then notify(src, ok and 'success' or 'error', ok and 'Rolle gesetzt.' or ('Fehler: ' .. tostring(err))) end
+end, true)
+
+-- /sperre <Server-ID> <Stunden|0> <Grund>
+RegisterCommand('sperre', function(src, args)
+  if src ~= 0 and not needRight(src, 'admin.ban') then return end
+  local target = tonumber(args[1])
+  local hours = tonumber(args[2])
+  local reason = TacoV.Util.cleanText(table.concat(args, ' ', 3), 255)
+  local tp = target and TacoV.Players.get(target)
+  if not tp or not hours or #reason < 3 then
+    if src ~= 0 then notify(src, 'info', 'Nutzung: /sperre <Server-ID> <Stunden|0=dauerhaft> <Grund>') end
+    return
+  end
+  local actor = src ~= 0 and TacoV.Players.get(src)
+  TacoV.DB.insert(
+    'INSERT INTO bans (discord_id, reason, issued_by, until_at) VALUES (?, ?, ?, ' .. (hours > 0 and 'DATE_ADD(NOW(), INTERVAL ? HOUR)' or 'NULL') .. ')',
+    hours > 0 and { tp.discordId, reason, actor and actor.discordId or 'console', hours } or { tp.discordId, reason, actor and actor.discordId or 'console' }
+  )
+  TacoV.Log.write('admin', ('Sperre: %s (%s) %s h, Grund: %s'):format(tp.discordId, target, hours, reason), { discordId = actor and actor.discordId })
+  DropPlayer(target, TacoV.Config.Whitelist.bannedMessage:format(reason))
+end, true)
+
+-- /kick <Server-ID> <Grund>
+RegisterCommand('kick', function(src, args)
+  if src ~= 0 and not needRight(src, 'admin.warn') then return end
+  local target = tonumber(args[1])
+  local reason = TacoV.Util.cleanText(table.concat(args, ' ', 2), 255)
+  if not target or not TacoV.Players.get(target) then return end
+  local actor = src ~= 0 and TacoV.Players.get(src)
+  TacoV.Log.write('admin', ('Kick: %s, Grund: %s'):format(target, reason), { discordId = actor and actor.discordId })
+  DropPlayer(target, 'Vom Team entfernt: ' .. reason)
+end, true)

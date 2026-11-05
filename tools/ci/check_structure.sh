@@ -29,7 +29,7 @@ while IFS= read -r -d '' manifest_dir; do
     echo "FEHLT: $manifest_dir/fxmanifest.lua"
     fail=1
   fi
-done < <(find "server/resources/[tacov]" -mindepth 2 -maxdepth 2 -type d -print0)
+done < <(find "server/resources/[tacov]" -mindepth 1 -maxdepth 1 -type d -print0)
 
 if [ "$fail" -ne 0 ]; then
   echo "Strukturprüfung fehlgeschlagen."
