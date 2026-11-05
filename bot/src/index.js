@@ -14,7 +14,7 @@ const client = new Client({
   partials: [Partials.Message, Partials.Reaction, Partials.Channel],
 });
 
-client.once('ready', async () => {
+client.once('clientReady', async () => {
   console.log(`[bot] angemeldet als ${client.user.tag}`);
   try {
     await pool.query('SELECT 1');
@@ -24,8 +24,12 @@ client.once('ready', async () => {
     process.exit(1);
   }
   // Willkommensnachricht in den Cache holen, damit Reaktionen darauf ankommen
-  const ch = await client.channels.fetch(config.welcome.channelId).catch(() => null);
-  if (ch) await ch.messages.fetch(config.welcome.messageId).catch(() => console.warn('[bot] Willkommensnachricht nicht gefunden'));
+  const ch = await client.channels.fetch(config.welcome.channelId).catch((e) => { console.warn('[bot] Willkommenskanal nicht erreichbar:', e.message); return null; });
+  if (ch) {
+    const msg = await ch.messages.fetch(config.welcome.messageId).catch((e) => { console.warn('[bot] Willkommensnachricht nicht gefunden:', e.message); return null; });
+    // Bot setzt die Reaktion selbst vor, damit Neue nur noch draufklicken müssen
+    if (msg) await msg.react(config.welcome.emoji).catch((e) => console.warn('[bot] Reaktion setzen:', e.message));
+  }
   await startLogMirror(client);
 });
 
