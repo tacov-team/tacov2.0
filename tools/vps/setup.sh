@@ -13,7 +13,7 @@ BASE="/opt/tacov2"      # getrennt vom bestehenden tacov-Ordner
 SVC_USER="tacov2"
 DB_NAME="tacov2"
 DB_USER="tacov2"
-FX_BASE_URL="https://runtime.fivem.net/artifacts/fivem/build_proxy/linux"
+FX_BASE_URL="https://runtime.fivem.net/artifacts/fivem/build_proot_linux/master"
 
 if [ "$(id -u)" -ne 0 ]; then echo "Bitte als root ausführen."; exit 1; fi
 
@@ -77,12 +77,18 @@ npm install -g pm2 >/dev/null 2>&1 || true
 echo "== 7/8 FXServer und oxmysql"
 mkdir -p "$BASE/fx" "$BASE/server/resources/[external]"
 if [ ! -x "$BASE/fx/run.sh" ]; then
-  echo "Neuesten Recommended-Build ermitteln ..."
-  BUILD="$(curl -fsSL "$FX_BASE_URL/" | grep -o 'href="[0-9]*-[a-f0-9]*/fx.tar.xz"' | sed -n '1{s/href="//;s/\/fx.tar.xz"//;p}')"
+  echo "Neuesten Build ermitteln ..."
+  LISTING="$(curl -fsSL "$FX_BASE_URL/" 2>/dev/null || true)"
+  BUILD="$(printf '%s' "$LISTING" | grep -o '[0-9]\+-[a-f0-9]\+/fx\.tar\.xz' | sed -n '1{s#/fx\.tar\.xz##;p}' || true)"
   if [ -z "$BUILD" ]; then
-    read -rp "Build konnte nicht ermittelt werden. Bitte Ordnernamen von $FX_BASE_URL/ eingeben: " BUILD
+    echo "Build konnte nicht automatisch ermittelt werden."
+    echo "Öffne $FX_BASE_URL/ im Browser und kopiere den Ordnernamen (z. B. 12345-abcdef...)."
+    read -rp "Ordnername: " BUILD
   fi
-  curl -fsSL "$FX_BASE_URL/$BUILD/fx.tar.xz" -o /tmp/fx.tar.xz
+  if ! curl -fsSL "$FX_BASE_URL/$BUILD/fx.tar.xz" -o /tmp/fx.tar.xz; then
+    echo "Download von $FX_BASE_URL/$BUILD/fx.tar.xz fehlgeschlagen. Skript erneut starten und Ordnernamen eingeben."
+    exit 1
+  fi
   tar -xf /tmp/fx.tar.xz -C "$BASE/fx"
   rm /tmp/fx.tar.xz
   echo "FXServer $BUILD installiert"
