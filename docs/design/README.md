@@ -23,10 +23,20 @@ Design-Canvas „TacoV Spiel-UI“ (Claude Design, im Projekt verlinkt). Grundla
 | Alltag | Bank, 24/7-Laden, Kleidungsladen, Jobs |
 | Fahrzeuge | Autohaus, Garage, Tankstelle, NPC-Werkstatt |
 
-## Anpassungen an Konzept V1 (offen)
+| Staat | Gefängnis (Haft und Terminal), Gericht (Kaution und Verfahren), Rathaus (Bürgerbüro und Lizenzamt), DMV (Führerscheine und Prüfung), MDT Dispatch |
+| Untergrund | Überfall-Leiste, Hehler, Schwarzmarkt-Händler, Labor (Camper, Station) |
+| Neu | Befehlszeile (T) |
 
-- Inventar: Anzahl in der Mitte, darunter Benutzen, Geben, Wegwerfen, Teilen (Konzept 5); kein Schnellzugriff
-- HUD: Ringe für Leben, Weste, Hunger, Durst, Fitness; Schwarzgeld unter dem Bargeld
-- Handy: zehn Apps aus Konzept 5; Funk-App nur mit Funkgerät
-- Fraktionsmenü: sechs Reiter (Mitglieder, Kasse, Lager, Fahrzeuge, Rechte, Protokoll)
-- Fehlende Tafeln: Befehlszeile (T), Hände hoch (H), Juwelier, Hehler, Camper-Labor, Gefängnis, Gericht, Rathaus, DMV
+## Anpassungen an Konzept V1 (05.11.2026)
+
+- HUD: fünf Ringe (Leben, Weste, Hunger, Durst, Fitness), Schwarzgeld unter dem Bargeld, Level-Balken einfarbig
+- Inventar: Auswahl in der Mitte mit Anzahl (−/+, 1, Hälfte, Alles) und Benutzen, Geben, Teilen, Wegwerfen; kein Schnellzugriff
+- Handy: zehn Apps (Kontakte, Nachrichten, Bank, Notruf, Fraktion, Fahrzeuge, Firma, Kamera, Feed, Einstellungen), Funk ausgegraut bis Funkgerät; Notruf nur LSPD und LSMD
+- Fraktionsmenü: Reiter Mitglieder, Kasse, Lager, Fahrzeuge, Rechte, Protokoll; Cap 20 für LSPD
+- Rathaus: Waffenschein 2.500 $ ab Level 9 mit LSPD-Prüfung; Flugschein statt Pilotenschein
+
+## Noch offen
+
+- Juwelier (Vitrinen, Safe) als eigene Tafel
+- Hände hoch (H) braucht keine Tafel, nur eine Animation
+- Alle Tafeln tragen noch Beispielwerte aus dem Referenzentwurf; die Konzeptwerte kommen beim Bau aus der Config
