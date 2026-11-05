@@ -4,6 +4,8 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-05 | Konzept 1 | Leitbild und Einstieg abgenommen: Startgeld 5.000 $, Sozialwohnung 14 Tage, Einreise nur mit Teammitglied, erneuter Versuch nach 24 h, keine Kontoalter-Prüfung, Level 3/8/15 | docs/konzept/01-leitbild-einstieg.md |
+| 2026-11-05 | Kriminelle Fraktionen zum Start | Eine Streetgang | 10 Slots tragen nicht mehr |
 | 2026-11-05 | Name | TacoV ist der endgültige Name | Entscheidung des Betreibers |
 | 2026-11-05 | Staatsfraktionen zum Start | LSPD, LSMD, DMV, Regierung, DOJ | Kleiner Kern, der mit 10 Slots bespielbar ist; weitere Fraktionen in Seasons |
 | 2026-11-05 | Slots zum Start | 10, Erhöhung in Stufen je nach Spielerzahl | Kleiner Start, kontrolliertes Wachstum |
