@@ -1,0 +1,26 @@
+{
+  "_hinweis": "Kanal- und Rollen-IDs des TacoV-Discords. Keine Geheimnisse; Token und Datenbank stehen nur in .env.",
+  "guildId": "",
+  "welcome": {
+    "channelId": "",
+    "messageId": "",
+    "emoji": "✅"
+  },
+  "roles": {
+    "whitelist": "",
+    "einwohner": ""
+  },
+  "logChannels": {
+    "connect": "",
+    "character": "",
+    "money": "",
+    "items": "",
+    "faction": "",
+    "police": "",
+    "medic": "",
+    "justice": "",
+    "crime": "",
+    "admin": "",
+    "support": ""
+  }
+}

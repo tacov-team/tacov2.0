@@ -1,4 +1,11 @@
 import 'dotenv/config';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+// Geheimnisse (.env) und Discord-IDs (discord.json, eingecheckt) sind getrennt.
+const here = dirname(fileURLToPath(import.meta.url));
+const ids = JSON.parse(readFileSync(join(here, '..', 'discord.json'), 'utf8'));
 
 function need(name) {
   const v = process.env[name];
@@ -9,32 +16,30 @@ function need(name) {
   return v;
 }
 
+function needId(path, value) {
+  if (!value) {
+    console.error(`[bot] ${path} fehlt in discord.json`);
+    process.exit(1);
+  }
+  return value;
+}
+
+const logChannels = {};
+for (const [cat, id] of Object.entries(ids.logChannels || {})) logChannels[cat] = id || null;
+
 export const config = {
   token: need('DISCORD_TOKEN'),
-  guildId: need('DISCORD_GUILD_ID'),
+  guildId: needId('guildId', ids.guildId),
   welcome: {
-    channelId: need('WELCOME_CHANNEL_ID'),
-    messageId: need('WELCOME_MESSAGE_ID'),
-    emoji: process.env.WELCOME_EMOJI || '✅',
+    channelId: needId('welcome.channelId', ids.welcome?.channelId),
+    messageId: needId('welcome.messageId', ids.welcome?.messageId),
+    emoji: ids.welcome?.emoji || '✅',
   },
   roles: {
-    whitelist: need('ROLE_WHITELIST_ID'),
-    einwohner: process.env.ROLE_EINWOHNER_ID || null,
+    whitelist: needId('roles.whitelist', ids.roles?.whitelist),
+    einwohner: ids.roles?.einwohner || null,
   },
-  // Kategorie -> Kanal-ID; Kategorien entsprechen server/log.lua
-  logChannels: {
-    connect: process.env.LOG_CONNECT || null,
-    character: process.env.LOG_CHARACTER || null,
-    money: process.env.LOG_MONEY || null,
-    items: process.env.LOG_ITEMS || null,
-    faction: process.env.LOG_FACTION || null,
-    police: process.env.LOG_POLICE || null,
-    medic: process.env.LOG_MEDIC || null,
-    justice: process.env.LOG_JUSTICE || null,
-    crime: process.env.LOG_CRIME || null,
-    admin: process.env.LOG_ADMIN || null,
-    support: process.env.LOG_SUPPORT || null,
-  },
+  logChannels,
   db: {
     host: process.env.DB_HOST || '127.0.0.1',
     port: Number(process.env.DB_PORT || 3306),

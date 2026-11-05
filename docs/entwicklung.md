@@ -14,9 +14,11 @@ Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit 
 ## Prüfungen vor dem Commit
 `bash tools/ci/check_structure.sh`, `bash tools/ci/check_secrets.sh`, `luacheck server/resources`, `cd bot && npm run check`.
 
-## Deploy auf den VPS
+## VPS
 
-Der VPS zieht `main` per `git pull` und startet den Server neu. Konfigurationen mit Geheimnissen (`server.cfg`, `.env`) liegen nur auf dem VPS und nie im Repository.
+Einmalig als root: `bash tools/vps/setup.sh` (Ubuntu 22.04/24.04, Debian 12). Legt Nutzer `tacov`, `/opt/tacov`, MariaDB + phpMyAdmin (Basic-Auth), Node 20, FXServer, oxmysql und die Dienste `tacov-server` / `tacov-bot` an. Danach Lizenzschlüssel in `server/server.cfg` und Token in `bot/.env` eintragen.
+
+Updates: `bash /opt/tacov/tools/vps/deploy.sh` – zieht `main`, baut UI und Bot, startet die Dienste neu. Konfigurationen mit Geheimnissen (`server.cfg`, `.env`) liegen nur auf dem VPS und nie im Repository.
 
 ## Branching
 

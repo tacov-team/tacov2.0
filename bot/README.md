@@ -10,10 +10,11 @@ Node.js 20+, discord.js. Teilt sich die Datenbank mit dem Spielserver.
 ## Einrichten
 ```bash
 cd bot
-cp .env.example .env     # ausfüllen, nie einchecken
+cp .env.example .env     # Token + Datenbank, nie einchecken
 npm install
 npm start
 ```
+Kanal- und Rollen-IDs stehen in `discord.json` (eingecheckt, keine Geheimnisse). IDs holen: Discord → Einstellungen → Erweitert → Entwicklermodus, dann Rechtsklick auf Kanal/Rolle/Nachricht → „ID kopieren“.
 Im Discord Developer Portal muss der *Server Members Intent* aktiv sein (für Rollen); *Message Content* wird nicht gebraucht. Der Bot braucht in der Gilde: Rollen verwalten, Nachrichten lesen/senden, Reaktionen verwalten. Die Rolle des Bots muss über der Rolle *Whitelist* stehen.
 
 ## Dauerbetrieb auf dem VPS
