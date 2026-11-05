@@ -2,7 +2,7 @@
   "_hinweis": "Kanal- und Rollen-IDs des TacoV-Discords. Keine Geheimnisse; Token und Datenbank stehen nur in .env.",
   "guildId": "1566253295150833794",
   "welcome": {
-    "channelId": "1568019528577712139",
+    "channelId": "1568019531803267182",
     "messageId": "1568037971347636395",
     "emoji": "✅"
   },
