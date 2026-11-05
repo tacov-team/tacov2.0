@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-05 | Design | Die 27 Grundoberflächen des V3-Designs (Gelb-Orange) aus dem Canvas „TacoV Spiel-UI“ sind die Design-Basis; Anpassungen an Konzept V1 folgen | docs/design/README.md |
 | 2026-11-05 | Konzept 5 | Alltag und Handy abgenommen: Inventar F2 (30 kg, Rucksack 45 kg, kein Schnellzugriff), Hunger/Durst 3 h, Fitness statt Stress, Promille, 10 Handy-Apps, Funkgerät schaltet Funk-App frei (Fraktionsfrequenzen 1–10), Animationen F3, Hände hoch H, Befehlszeile T, keine Namen über dem Kopf, Kleiderläden an allen Grundspiel-Standorten, Angeln/Muschelstrand/Gym zum Start | docs/konzept/05-alltag-handy.md |
 | 2026-11-05 | Datenbank | MariaDB bleibt die Datenbank; phpMyAdmin wird als Weboberfläche dazu installiert (Webzugang) | phpMyAdmin ist eine Oberfläche für MariaDB/MySQL, kein Ersatz |
 | 2026-11-05 | Konzept 4 | Verbrechen und Justiz abgenommen: 5 Drogenketten (Meth, Frösche im Camper), keine Seriennummern, Schrotflinte/Schlagstock/Taser nur Staat, Waffenbau 3 Langwaffen je Tag, eine unsichtbare Weste (farmbar), Raub: Ladenraub, ATM ab 2 Polizisten, Fleeca Paleto, Juwelier, Staatsbank ab 10 (Dev 2), Beute über zwei Hehler, Koma nach 15 min mit Verlust alles Getragenen, Permatod nur per Discord-Antrag, Ausbruch möglich; Fahrzeugdiebstahl und Einbruch auf der Ideenliste | docs/konzept/04-verbrechen-justiz.md |
