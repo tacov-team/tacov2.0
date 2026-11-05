@@ -17,6 +17,7 @@ const paths: Record<string, string> = {
   home: 'M3 11l9-7 9 7v9H3zM10 20v-6h4v6',
   mic: 'M5 11a7 7 0 0 0 14 0M12 18v3',
   radio: 'M10 7V2M10 12h4M10 16h4',
+  user: 'M4 21a8 8 0 0 1 16 0',
 };
 
 const extra: Record<string, ReactElement> = {
@@ -26,6 +27,7 @@ const extra: Record<string, ReactElement> = {
   info: <circle cx="12" cy="12" r="9" />,
   mic: <rect x="9" y="3" width="6" height="11" rx="3" />,
   radio: <rect x="7" y="7" width="10" height="15" rx="2" />,
+  user: <circle cx="12" cy="8" r="4" />,
 };
 
 export function Icon({ name, size = 22, stroke = 2.2 }: { name: string; size?: number; stroke?: number }) {

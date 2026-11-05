@@ -35,15 +35,9 @@ function MapCard({ h, date, time }: { h: HudData; date: string; time: string }) 
       <div className="hud-card" style={{ width: outer.width, height: outer.height }}>
         <div className="frame" />
         <div className="inner">{!m && <><div className="grid" /><span className="dot" /></>}</div>
-        <div className="shade" />
-        <span style={{ position: 'absolute', right: 14, top: 10 }}><Icon name="home" size={20} /></span>
-        <div className="who">
-          <strong>{h.name}</strong>
-          <span>Level {h.level}{h.status ? ` · ${h.status}` : ''}</span>
-        </div>
-        <div className="bar"><span style={{ width: `${Math.round(h.levelProgress * 100)}%` }} /></div>
       </div>
       <div className="hud-info">
+        <div className="row"><span><Icon name="user" /></span><span style={{ display: 'flex', flexDirection: 'column' }}><strong>{h.name}</strong><small style={{ color: 'var(--accent)', fontWeight: 800 }}>Level {h.level}{h.status ? ` · ${h.status}` : ''}</small></span></div>
         <div className="row"><span><Icon name="clock" /></span><strong>{date} | {time} Uhr</strong></div>
         <div className="row"><span><Icon name="pin" /></span><span style={{ display: 'flex', flexDirection: 'column' }}><strong>{h.street || '–'}</strong>{h.area && <small>{h.area}</small>}</span></div>
         <div className="row"><span><Icon name="briefcase" /></span><strong>{h.faction || 'Zivilist'}</strong></div>
