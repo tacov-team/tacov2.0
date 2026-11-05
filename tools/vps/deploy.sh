@@ -5,7 +5,9 @@ BASE="/opt/tacov2"
 SVC_USER="tacov2"
 
 cd "$BASE"
-sudo -u "$SVC_USER" git pull --ff-only
+# Der VPS hat nie eigene Änderungen; lokale Abweichungen (z. B. ein Build) werden verworfen
+sudo -u "$SVC_USER" git fetch origin main
+sudo -u "$SVC_USER" git reset --hard origin/main
 echo "== Bot-Abhängigkeiten"
 sudo -u "$SVC_USER" bash -c "cd $BASE/bot && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
 echo "== Datenbank-Treiber"
