@@ -7,7 +7,7 @@ endpoint_add_udp "0.0.0.0:30120"
 sv_hostname "TacoV | Deutsches Roleplay"
 sv_projectName "TacoV"
 sv_projectDesc "Deutscher Roleplay-Server auf FiveM"
-sv_maxclients 128
+sv_maxclients 10
 sv_enforceGameBuild 3258
 set onesync on
 sv_scriptHookAllowed 0
