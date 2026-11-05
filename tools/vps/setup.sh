@@ -100,39 +100,7 @@ if [ ! -f "$BASE/bot/.env" ]; then
 fi
 sudo -u "$SVC_USER" bash -c "cd $BASE/bot && npm install --omit=dev --no-audit --no-fund >/dev/null"
 
-cat > /etc/systemd/system/tacov2-server.service <<EOF
-[Unit]
-Description=TacoV FXServer
-After=network.target mariadb.service
-
-[Service]
-User=$SVC_USER
-WorkingDirectory=$BASE/server
-ExecStart=$BASE/fx/run.sh +exec server.cfg
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-cat > /etc/systemd/system/tacov2-bot.service <<EOF
-[Unit]
-Description=TacoV Discord-Bot
-After=network.target mariadb.service
-
-[Service]
-User=$SVC_USER
-WorkingDirectory=$BASE/bot
-ExecStart=/usr/bin/node src/index.js
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable tacov2-server tacov2-bot >/dev/null
+bash "$BASE/tools/vps/install-services.sh"
 
 ufw allow OpenSSH >/dev/null
 ufw allow 30121/tcp >/dev/null
@@ -146,7 +114,7 @@ Fertig. Jetzt noch von Hand:
   1. $BASE/server/server.cfg  -> sv_licenseKey (keymaster.fivem.net) eintragen
   2. $BASE/bot/.env           -> Discord-Token und IDs eintragen
   3. systemctl start tacov2-server tacov2-bot
-     Logs: journalctl -u tacov2-server -f   /   journalctl -u tacov2-bot -f
+     Konsole: sudo -u tacov2 screen -r tacov2 (verlassen: Strg+A, D)   /   Bot-Logs: journalctl -u tacov2-bot -f
 
 phpMyAdmin: http://<server-ip>/phpmyadmin  (Web-Login tacov2, Passwort in $BASE/.pma_pass; DB-Login ${DB_USER}, Passwort in $BASE/.db_pass)
 Updates einspielen: bash $BASE/tools/vps/deploy.sh

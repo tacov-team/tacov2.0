@@ -1,0 +1,5 @@
+fx_version 'cerulean'
+game 'gta5'
+lua54 'yes'
+name 'tacov_crime'
+description 'Platzhalter, wird in späteren Phasen gefüllt'

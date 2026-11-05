@@ -1,21 +1,21 @@
 # TacoV – Server-Konfiguration (Vorlage)
 # Nach server.cfg kopieren und ausfüllen. server.cfg wird nicht eingecheckt.
+# Achtung: kein Semikolon in Kommentaren, FXServer liest alles danach als Befehl.
 
 endpoint_add_tcp "0.0.0.0:30120"
 endpoint_add_udp "0.0.0.0:30120"
 
 sv_hostname "TacoV | Deutsches Roleplay"
-sv_projectName "TacoV"
-sv_projectDesc "Deutscher Roleplay-Server auf FiveM"
+sets sv_projectName "TacoV"
+sets sv_projectDesc "Deutscher Roleplay-Server auf FiveM"
 sv_maxclients 10
 sv_enforceGameBuild 3258
-set onesync on
 sv_scriptHookAllowed 0
 
 # Lizenz von keymaster.fivem.net
 sv_licenseKey "HIER_EINTRAGEN"
 
-# Datenbank (MariaDB, über oxmysql; phpMyAdmin als Weboberfläche)
+# Datenbank: MariaDB über oxmysql, phpMyAdmin als Weboberfläche
 set mysql_connection_string "mysql://tacov:HIER_EINTRAGEN@127.0.0.1/tacov?charset=utf8mb4"
 set tacov_log_console "true"
 
