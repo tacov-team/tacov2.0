@@ -78,7 +78,7 @@ mkdir -p "$BASE/fx"
 if [ ! -x "$BASE/fx/run.sh" ]; then
   bash "$BASE/tools/vps/fx-update.sh" recommended
 fi
-sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/db' && npm install --omit=dev --no-audit --no-fund >/dev/null"
+sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/tacov_db' && npm install --omit=dev --no-audit --no-fund >/dev/null"
 chown -R "$SVC_USER:$SVC_USER" "$BASE"
 
 echo "== 8/8 Konfiguration und Dienste"

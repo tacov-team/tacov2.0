@@ -54,7 +54,7 @@ Startreihenfolge regeln die `dependency`-Einträge der Manifeste: `tacov_db` →
 ## Konventionen für ein neues Modul
 
 ```
-server/resources/[tacov]/<name>/
+server/resources/[tacov]/tacov_<name>/      (Ordnername = Resource-Name in FiveM)
   fxmanifest.lua        name 'tacov_<name>', dependency 'tacov_core'
   config/<name>.lua     shared_script, alle Spielwerte
   server/*.lua          Logik; Events tacov:<name>:<aktion>

@@ -5,12 +5,12 @@ React 19 + TypeScript, gebaut mit esbuild (kein Vite nötig). Stil nach `docs/de
 ```bash
 cd ui
 npm install
-npm run build      # -> server/resources/[tacov]/core/ui/ (app.js, app.css, index.html, assets/)
+npm run build      # -> server/resources/[tacov]/tacov_core/ui/ (app.js, app.css, index.html, assets/)
 npm run watch      # Entwicklung
 ```
 Der Build ist eingecheckt, damit der VPS nach `git pull` sofort spielbar ist; `tools/vps/deploy.sh` baut trotzdem neu.
 
-Vorschau ohne Spiel: `server/resources/[tacov]/core/ui/index.html` im Browser öffnen – zeigt Beispielwerte; Taste **T** öffnet die Befehlszeile, **C** die Charakterauswahl.
+Vorschau ohne Spiel: `server/resources/[tacov]/tacov_core/ui/index.html` im Browser öffnen – zeigt Beispielwerte; Taste **T** öffnet die Befehlszeile, **C** die Charakterauswahl.
 
 ## Aufbau
 | Datei | Inhalt |

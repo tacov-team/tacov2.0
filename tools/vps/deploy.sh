@@ -9,8 +9,8 @@ sudo -u "$SVC_USER" git pull --ff-only
 echo "== Bot-Abhängigkeiten"
 sudo -u "$SVC_USER" bash -c "cd $BASE/bot && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
 echo "== Datenbank-Treiber"
-sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/db' && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
-[ -d "$BASE/server/resources/[tacov]/db/node_modules/mysql2" ] || { echo "FEHLER: mysql2 wurde nicht installiert."; exit 1; }
+sudo -u "$SVC_USER" bash -c "cd '$BASE/server/resources/[tacov]/tacov_db' && npm install --omit=dev --no-audit --no-fund 2>&1 | tail -2"
+[ -d "$BASE/server/resources/[tacov]/tacov_db/node_modules/mysql2" ] || { echo "FEHLER: mysql2 wurde nicht installiert."; exit 1; }
 # Alte Fremd-Resource entfernen, falls noch vorhanden
 rm -rf "$BASE/server/resources/[external]"
 sed -i '/^ensure oxmysql/d' "$BASE/server/server.cfg"

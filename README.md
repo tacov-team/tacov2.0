@@ -7,11 +7,11 @@ Deutscher GTA-V-Roleplay-Server auf FiveM. Eigenes Framework, eigener Code, eige
 | Ordner | Inhalt |
 | --- | --- |
 | `server/` | FiveM-Serverdaten: `server.cfg`, Resources unter `resources/[tacov]/` |
-| `server/resources/[tacov]/db/` | Datenbank-Resource (eigener Pool, Exports mit Rückruf) |
-| `server/resources/[tacov]/core/` | Kern: Spieler, Charaktere, Konten, Journal, Rechte, Logs, Bedürfnisse, UI-Brücke, Config |
-| `server/resources/[tacov]/state/` | Staat: Fraktionen, Polizei, Medics, Justiz, Regierung, Werkstatt, Medien |
-| `server/resources/[tacov]/crime/` | Verbrechen: Verarbeitung, Drogen, Waffen, Schwarzgeld, Raub, Gangwar |
-| `server/resources/[tacov]/civ/` | Zivilleben: Handy, Jobs, Fahrzeuge, Bank, Immobilien, Firmen, Freizeit |
+| `server/resources/[tacov]/tacov_db/` | Datenbank-Resource (eigener Pool, Exports mit Rückruf) |
+| `server/resources/[tacov]/tacov_core/` | Kern: Spieler, Charaktere, Konten, Journal, Rechte, Logs, Bedürfnisse, UI-Brücke, Config |
+| `server/resources/[tacov]/tacov_state/` | Staat: Fraktionen, Polizei, Medics, Justiz, Regierung, Werkstatt, Medien |
+| `server/resources/[tacov]/tacov_crime/` | Verbrechen: Verarbeitung, Drogen, Waffen, Schwarzgeld, Raub, Gangwar |
+| `server/resources/[tacov]/tacov_civ/` | Zivilleben: Handy, Jobs, Fahrzeuge, Bank, Immobilien, Firmen, Freizeit |
 | `ui/` | React-Oberfläche (HUD, Menüs, Handy, Tablet, MDT) |
 | `bot/` | Discord-Bot (Whitelist, Rollen, Logs, Tickets) |
 | `docs/` | Konzept, Entscheidungsprotokoll, Modul-Doku |

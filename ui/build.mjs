@@ -1,11 +1,11 @@
-// Baut die NUI mit esbuild nach ../server/resources/[tacov]/core/ui/
+// Baut die NUI mit esbuild nach ../server/resources/[tacov]/tacov_core/ui/
 import * as esbuild from 'esbuild';
 import { mkdirSync, copyFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const out = join(here, '..', 'server', 'resources', '[tacov]', 'core', 'ui');
+const out = join(here, '..', 'server', 'resources', '[tacov]', 'tacov_core', 'ui');
 const watch = process.argv.includes('--watch');
 
 mkdirSync(join(out, 'assets'), { recursive: true });

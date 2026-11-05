@@ -25,4 +25,4 @@ jobs:
       - name: JavaScript prüfen
         run: |
           (cd bot && npm run check)
-          (cd "server/resources/[tacov]/db" && npm run check)
+          (cd "server/resources/[tacov]/tacov_db" && npm run check)

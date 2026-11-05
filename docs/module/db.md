@@ -22,4 +22,4 @@ Eigene Resource in JavaScript (läuft in der Node-Laufzeit des FXServers). Hält
 Nie direkt: der Kern kapselt alles in `TacoV.DB.query/single/scalar/insert/update/transaction` (synchron per Promise). Andere Resources bekommen Datenbankzugriff nur über den Kern.
 
 ## Einrichten
-`cd server/resources/[tacov]/db && npm install` (macht `tools/vps/setup.sh` und `deploy.sh` automatisch).
+`cd server/resources/[tacov]/tacov_db && npm install` (macht `tools/vps/setup.sh` und `deploy.sh` automatisch).
