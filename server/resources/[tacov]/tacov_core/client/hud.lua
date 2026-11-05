@@ -33,6 +33,52 @@ function TacoV.Hud.refresh()
   })
 end
 
+--- Bildschirmbereich der GTA-Minimap in Bruchteilen (0–1), aus Auflösung, Seitenverhältnis und Safezone.
+local function minimapRect()
+  local safe = GetSafeZoneSize()
+  local aspect = GetAspectRatio(false)
+  local resX, resY = GetActiveScreenResolution()
+  local w = (resX / (4 * aspect)) / resX
+  local h = (resY / 5.674) / resY
+  local margin = (1.0 - safe) * 0.5 -- Safezone-Rand je Seite
+  local x = margin + 0.0025
+  local bottom = 1.0 - margin - 0.0025
+  return { x = x, y = bottom - h, w = w, h = h }
+end
+
+-- Minimap-Position an die UI melden (Auflösung/Safezone können sich ändern)
+CreateThread(function()
+  local last = ''
+  while true do
+    Wait(2000)
+    if TacoV.Client.character then
+      local r = minimapRect()
+      local key = ('%.4f|%.4f|%.4f|%.4f'):format(r.x, r.y, r.w, r.h)
+      if key ~= last then
+        last = key
+        TacoV.UI.send('hud', { minimap = r })
+      end
+    end
+  end
+end)
+
+-- Vanilla-Anzeigen ausblenden, die das HUD ersetzt: Geld, Gebiet, Straße, Fahrzeugname/-klasse
+CreateThread(function()
+  while true do
+    Wait(0)
+    if TacoV.Client.character then
+      HideHudComponentThisFrame(3)  -- Bargeld
+      HideHudComponentThisFrame(4)  -- MP-Bargeld
+      HideHudComponentThisFrame(6)  -- Fahrzeugname
+      HideHudComponentThisFrame(7)  -- Gebietsname
+      HideHudComponentThisFrame(8)  -- Fahrzeugklasse
+      HideHudComponentThisFrame(9)  -- Straßenname
+    else
+      Wait(500)
+    end
+  end
+end)
+
 RegisterNetEvent('tacov:core:needs', function(n)
   TacoV.Hud.needs = n
   TacoV.UI.send('hud', { hunger = n.hunger, thirst = n.thirst, fitness = n.fitness })

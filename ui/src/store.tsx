@@ -10,6 +10,7 @@ export type HudData = {
   street: string; area: string; weight: number; maxWeight: number;
   name: string; level: number; levelProgress: number; status: string; faction: string;
   visible: boolean;
+  minimap?: { x: number; y: number; w: number; h: number }; // Bruchteile des Bildschirms, von Lua
 };
 
 export type CharacterRow = {

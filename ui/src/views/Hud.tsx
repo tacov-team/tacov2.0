@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useStore } from '../store';
+import { useStore, type HudData } from '../store';
 import { Ring } from '../components/Ring';
 import { Icon } from '../components/Icon';
 
@@ -9,6 +9,48 @@ function useClock() {
   const [now, setNow] = useState(new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t); }, []);
   return now;
+}
+
+function useViewport() {
+  const [v, setV] = useState({ w: window.innerWidth, h: window.innerHeight });
+  useEffect(() => {
+    const on = () => setV({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('resize', on);
+    return () => window.removeEventListener('resize', on);
+  }, []);
+  return v;
+}
+
+// Rahmen um die echte GTA-Minimap (Lua meldet deren Bereich); ohne Spiel ein Platzhalter unten links
+function MapCard({ h, date, time }: { h: HudData; date: string; time: string }) {
+  const vp = useViewport();
+  const FRAME = 4;
+  const m = h.minimap;
+  const rect = m
+    ? { left: m.x * vp.w, top: m.y * vp.h, width: m.w * vp.w, height: m.h * vp.h }
+    : { left: 36 + FRAME, top: vp.h - 36 - 184 + FRAME, width: 300 - 2 * FRAME, height: 184 - 2 * FRAME };
+  const outer = { left: rect.left - FRAME, top: rect.top - FRAME, width: rect.width + 2 * FRAME, height: rect.height + 2 * FRAME };
+  return (
+    <div className="hud-bottom" style={{ left: outer.left, top: outer.top, bottom: 'auto' }}>
+      <div className="hud-card" style={{ width: outer.width, height: outer.height }}>
+        <div className="frame" />
+        <div className="inner">{!m && <><div className="grid" /><span className="dot" /></>}</div>
+        <div className="shade" />
+        <span style={{ position: 'absolute', right: 14, top: 10 }}><Icon name="home" size={20} /></span>
+        <div className="who">
+          <strong>{h.name}</strong>
+          <span>Level {h.level}{h.status ? ` · ${h.status}` : ''}</span>
+        </div>
+        <div className="bar"><span style={{ width: `${Math.round(h.levelProgress * 100)}%` }} /></div>
+      </div>
+      <div className="hud-info">
+        <div className="row"><span><Icon name="clock" /></span><strong>{date} | {time} Uhr</strong></div>
+        <div className="row"><span><Icon name="pin" /></span><span style={{ display: 'flex', flexDirection: 'column' }}><strong>{h.street || '–'}</strong>{h.area && <small>{h.area}</small>}</span></div>
+        <div className="row"><span><Icon name="briefcase" /></span><strong>{h.faction || 'Zivilist'}</strong></div>
+        <div className="row"><span><Icon name="fitness" /></span><strong className="num">{h.weight.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} / {h.maxWeight} kg</strong></div>
+      </div>
+    </div>
+  );
 }
 
 export function Hud() {
@@ -52,24 +94,7 @@ export function Hud() {
         <Ring label="Fitness" value={h.fitness} icon="fitness" />
       </div>
 
-      <div className="hud-bottom">
-        <div className="hud-card">
-          <div className="frame" />
-          <div className="inner"><div className="grid" /><span className="dot" /></div>
-          <span style={{ position: 'absolute', right: 14, top: 10 }}><Icon name="home" size={20} /></span>
-          <div className="who">
-            <strong>{h.name}</strong>
-            <span>Level {h.level}{h.status ? ` · ${h.status}` : ''}</span>
-          </div>
-          <div className="bar"><span style={{ width: `${Math.round(h.levelProgress * 100)}%` }} /></div>
-        </div>
-        <div className="hud-info">
-          <div className="row"><span><Icon name="clock" /></span><strong>{date} | {time} Uhr</strong></div>
-          <div className="row"><span><Icon name="pin" /></span><span style={{ display: 'flex', flexDirection: 'column' }}><strong>{h.street || '–'}</strong>{h.area && <small>{h.area}</small>}</span></div>
-          <div className="row"><span><Icon name="briefcase" /></span><strong>{h.faction || 'Zivilist'}</strong></div>
-          <div className="row"><span><Icon name="fitness" /></span><strong className="num">{h.weight.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} / {h.maxWeight} kg</strong></div>
-        </div>
-      </div>
+      <MapCard h={h} date={date} time={time} />
     </>
   );
 }
