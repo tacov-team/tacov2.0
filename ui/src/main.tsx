@@ -42,6 +42,13 @@ if (!inGame) {
       { at: '2026-11-05 18:40:00', amount: -80, reason: 'Einkauf', who: 'Tankstelle Grove' },
       { at: '2026-11-05 12:00:00', amount: 5000, reason: 'Startgeld', who: '—' },
     ] } });
+    if (e.key === 's') post('open', { view: 'shop', data: { shop: 'supermarket', type: '24/7', name: '24/7 Strawberry', cash: 4820, bank: 61300, taxPercent: 5, weight: 4.6, maxWeight: 30, items: [
+      { item: 'water', label: 'Wasser', category: 'drink', price: 3, weight: 0.5 }, { item: 'sandwich', label: 'Sandwich', category: 'food', price: 8, weight: 0.3 },
+      { item: 'burger', label: 'Burger', category: 'food', price: 15, weight: 0.3 }, { item: 'energy_drink', label: 'Energydrink', category: 'drink', price: 6, weight: 0.3 },
+      { item: 'beer', label: 'Bier', category: 'drink', price: 5, weight: 0.5 }, { item: 'spirits', label: 'Schnaps', category: 'drink', price: 12, weight: 0.5 },
+      { item: 'cigarettes', label: 'Zigaretten', category: 'daily', price: 10, weight: 0.1 }, { item: 'radio', label: 'Funkgerät', category: 'daily', price: 250, weight: 0.4 },
+      { item: 'weapon_knife', label: 'Messer', category: 'weapon', price: 80, weight: 0.5 },
+    ] } });
     if (e.key === 'c') post('open', { view: 'characters', data: { maxSlots: 2, secondSlotLevel: 15, maxLevel: 12, staffOnline: 3, characters: [
       { id: 1, slot: 1, first_name: 'Jonas', last_name: 'Brenner', birth_date: '1990-01-01', playtime_seconds: 43000, level_cache: 12, faction: 'lspd', immigrated_at: '2026-11-01' },
     ] } });

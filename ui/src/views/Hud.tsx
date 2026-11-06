@@ -51,7 +51,7 @@ export function Hud() {
   const { state } = useStore();
   const h = state.hud;
   const now = useClock();
-  if (!h.visible || state.view?.name === 'inventory' || state.view?.name === 'characters' || state.view?.name === 'bank') return null;
+  if (!h.visible || state.view?.name === 'inventory' || state.view?.name === 'characters' || state.view?.name === 'bank' || state.view?.name === 'shop') return null;
   const time = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   const date = now.toLocaleDateString('de-DE');
 

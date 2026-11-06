@@ -16,6 +16,7 @@ shared_scripts {
   'config/commands.lua',
   'config/items.lua',
   'config/locations.lua',
+  'config/shops.lua',
 }
 
 server_scripts {
@@ -31,6 +32,7 @@ server_scripts {
   'server/inventory.lua',
   'server/locations.lua',
   'server/bank.lua',
+  'server/shops.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/main.lua',
@@ -45,6 +47,7 @@ client_scripts {
   'client/inventory.lua',
   'client/interact.lua',
   'client/bank.lua',
+  'client/shops.lua',
   'client/keys.lua',
 }
 

@@ -14,6 +14,10 @@ local function makeBlips()
   clearBlips()
   for _, l in ipairs(TacoV.Client.locations) do
     local def = TacoV.Config.Blips[l.kind]
+    if l.kind == 'shop' and TacoV.Config.Shops[l.shop] then
+      def = TacoV.Config.Shops[l.shop].blip
+      def.label = TacoV.Config.Shops[l.shop].label
+    end
     if def then
       local b = AddBlipForCoord(l.x, l.y, l.z)
       SetBlipSprite(b, def.sprite)

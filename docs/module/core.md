@@ -31,6 +31,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `client/inventory.lua` | F2, Zielspieler für „Geben“, Ablagen, Ess-/Trinkanimation |
 | `config/locations.lua` / `server/locations.lua` / `client/locations.lua` | Orte (Banken …) aus Config, Überschreibung aus Tabelle `locations`, Blips, Nähe-Abfragen |
 | `server/bank.lua` / `client/bank.lua` | Bank (Schalter) und Geldautomat: Einzahlen, Abheben (Automat max. 5.000 $), Überweisen (Name/Kontonummer, 50.000 $/Tag, 1 % ab 10.000 $), Kontoauszug |
+| `config/shops.lua` / `server/shops.lua` / `client/shops.lua` | NPC-Läden (24/7, LTD, Rob's, Baumarkt): Sortiment und Preise, Kauf bar oder Karte, 5 % Umsatzsteuer an den Staat |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
@@ -59,5 +60,6 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Bedürfnisse Hunger/Durst, Hände hoch
 - [x] Inventar (F2) mit Ablagen, Geben, Benutzen; Interaktionsrad (X); Startitems Ausweis + Stadtplan
 - [x] Bank und Geldautomat, Orte mit Blips
+- [x] Läden 24/7, LTD, Rob's, Baumarkt (22 Orte)
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

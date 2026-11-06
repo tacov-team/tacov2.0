@@ -9,14 +9,14 @@ function TacoV.Locations.all()
   local byName = {}
   local order = {}
   for _, l in ipairs(TacoV.Config.Locations) do
-    byName[l.name] = { name = l.name, kind = l.kind, label = l.label, x = l.x, y = l.y, z = l.z, heading = l.heading or 0.0 }
+    byName[l.name] = { name = l.name, kind = l.kind, shop = l.shop, label = l.label, x = l.x, y = l.y, z = l.z, heading = l.heading or 0.0 }
     order[#order + 1] = l.name
   end
   local rows = TacoV.DB.query('SELECT name, kind, label, x, y, z, heading FROM locations') or {}
   for _, r in ipairs(rows) do
     if not byName[r.name] then order[#order + 1] = r.name end
     local base = byName[r.name] or {}
-    byName[r.name] = { name = r.name, kind = r.kind, label = (r.label ~= '' and r.label) or base.label or r.name,
+    byName[r.name] = { name = r.name, kind = r.kind, shop = base.shop, label = (r.label ~= '' and r.label) or base.label or r.name,
       x = r.x, y = r.y, z = r.z, heading = r.heading or 0.0 }
   end
   merged = {}

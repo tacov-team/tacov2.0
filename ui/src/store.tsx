@@ -4,6 +4,7 @@ import { useNuiEvent } from './nui';
 import type { InventoryData } from './views/Inventory';
 import type { WheelData } from './views/Wheel';
 import type { BankData } from './views/Bank';
+import type { ShopData } from './views/Shop';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 
@@ -29,7 +30,8 @@ type View = null
   | { name: 'console'; data: { commands: CommandInfo[]; history: string[] } }
   | { name: 'inventory'; data: InventoryData }
   | { name: 'wheel'; data: WheelData }
-  | { name: 'bank'; data: BankData };
+  | { name: 'bank'; data: BankData }
+  | { name: 'shop'; data: ShopData };
 
 export type Hint = { key: string; text: string };
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null };

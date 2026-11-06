@@ -13,6 +13,29 @@ TacoV.Config.Locations = {
   { name = 'bank_harmony',  kind = 'bank', label = 'Fleeca Route 68',        x = 1175.07,  y = 2706.64,  z = 38.09, heading = 180.0 },
   { name = 'bank_paleto',   kind = 'bank', label = 'Blaine County Savings',  x = -112.20,  y = 6469.30,  z = 31.63, heading = 134.0 },
   { name = 'bank_pacific',  kind = 'bank', label = 'Pacific Standard',       x = 241.46,   y = 226.36,   z = 106.29, heading = 160.0 },
+  -- Läden: 24/7, LTD, Rob's Liquor (Typ supermarket) und Baumarkt (Typ hardware); Sortiment in config/shops.lua
+  { name = 'shop_247_strawberry', kind = 'shop', shop = 'supermarket', label = "24/7 Strawberry", x = 24.47, y = -1346.62, z = 29.5 },
+  { name = 'shop_247_chumash', kind = 'shop', shop = 'supermarket', label = "24/7 Chumash", x = -3039.54, y = 584.38, z = 7.91 },
+  { name = 'shop_247_banham', kind = 'shop', shop = 'supermarket', label = "24/7 Banham Canyon", x = -3242.97, y = 1000.01, z = 12.83 },
+  { name = 'shop_247_paleto', kind = 'shop', shop = 'supermarket', label = "24/7 Paleto Bay", x = 1728.07, y = 6415.63, z = 35.04 },
+  { name = 'shop_247_sandy', kind = 'shop', shop = 'supermarket', label = "24/7 Sandy Shores", x = 1959.82, y = 3740.48, z = 32.34 },
+  { name = 'shop_247_harmony', kind = 'shop', shop = 'supermarket', label = "24/7 Harmony", x = 549.13, y = 2670.85, z = 42.16 },
+  { name = 'shop_247_grapeseed', kind = 'shop', shop = 'supermarket', label = "24/7 Grapeseed", x = 2677.47, y = 3279.76, z = 55.24 },
+  { name = 'shop_247_tataviam', kind = 'shop', shop = 'supermarket', label = "24/7 Tataviam", x = 2556.66, y = 380.84, z = 108.62 },
+  { name = 'shop_247_vinewood', kind = 'shop', shop = 'supermarket', label = "24/7 Vinewood Hills", x = 372.66, y = 326.98, z = 103.57 },
+  { name = 'shop_ltd_davis', kind = 'shop', shop = 'supermarket', label = "LTD Davis", x = -47.02, y = -1758.23, z = 29.42 },
+  { name = 'shop_ltd_seoul', kind = 'shop', shop = 'supermarket', label = "LTD Little Seoul", x = -706.06, y = -913.97, z = 19.22 },
+  { name = 'shop_ltd_richman', kind = 'shop', shop = 'supermarket', label = "LTD Richman", x = -1820.02, y = 794.03, z = 138.09 },
+  { name = 'shop_ltd_mirror', kind = 'shop', shop = 'supermarket', label = "LTD Mirror Park", x = 1164.71, y = -322.94, z = 69.21 },
+  { name = 'shop_ltd_grapeseed', kind = 'shop', shop = 'supermarket', label = "LTD Grapeseed", x = 1697.87, y = 4922.96, z = 42.06 },
+  { name = 'shop_robs_vespucci', kind = 'shop', shop = 'supermarket', label = "Rob's Liquor Vespucci", x = -1221.58, y = -908.15, z = 12.33 },
+  { name = 'shop_robs_morningwood', kind = 'shop', shop = 'supermarket', label = "Rob's Liquor Morningwood", x = -1486.59, y = -377.68, z = 40.16 },
+  { name = 'shop_robs_chumash', kind = 'shop', shop = 'supermarket', label = "Rob's Liquor Chumash", x = -2966.39, y = 391.42, z = 15.04 },
+  { name = 'shop_robs_route68', kind = 'shop', shop = 'supermarket', label = "Rob's Liquor Route 68", x = 1165.17, y = 2710.88, z = 38.16 },
+  { name = 'shop_robs_elburro', kind = 'shop', shop = 'supermarket', label = "Rob's Liquor El Burro", x = 1134.2, y = -982.91, z = 46.42 },
+  { name = 'shop_hw_davis', kind = 'shop', shop = 'hardware', label = 'Baumarkt Davis', x = 45.68, y = -1749.04, z = 29.61 },
+  { name = 'shop_hw_grapeseed', kind = 'shop', shop = 'hardware', label = 'Baumarkt Grapeseed', x = 2747.71, y = 3472.85, z = 55.67 },
+  { name = 'shop_hw_paleto', kind = 'shop', shop = 'hardware', label = 'Baumarkt Paleto', x = -421.83, y = 6136.13, z = 31.88 },
 }
 
 -- Geldautomaten werden nicht einzeln gelistet: der Client erkennt die Grundspiel-Modelle in Reichweite.
@@ -21,4 +44,5 @@ TacoV.Config.AtmModels = { 'prop_atm_01', 'prop_atm_02', 'prop_atm_03', 'prop_fl
 -- Blips je Art: sprite, Farbe, Größe (FiveM-Blip-IDs)
 TacoV.Config.Blips = {
   bank = { sprite = 108, color = 2, scale = 0.8, label = 'Bank' },
+  -- shop: Blip je Ladentyp aus config/shops.lua
 }
