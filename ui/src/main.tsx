@@ -35,6 +35,12 @@ if (!inGame) {
       { id: 'give', label: 'Geben', icon: 'gift', order: 20 }, { id: 'show_id', label: 'Ausweis', icon: 'id', order: 30 },
       { id: 'handsup', label: 'Hände hoch', icon: 'hands', order: 90 },
     ] } });
+    if (e.key === 'b') post('open', { view: 'bank', data: { kind: 'bank', title: 'Fleeca Bank', account: 'LS-004277', balance: 61300, cash: 4820, transferLeft: 50000, atmMax: 5000, feePercent: 1, feeFrom: 10000, statement: [
+      { at: '2026-11-06 21:00:00', amount: 13400, reason: 'Lohn', who: 'Payday' },
+      { at: '2026-11-06 20:12:00', amount: -22000, reason: 'Überweisung', note: 'Blista', who: 'Mara Kowalski' },
+      { at: '2026-11-05 18:40:00', amount: -80, reason: 'Einkauf', who: 'Tankstelle Grove' },
+      { at: '2026-11-05 12:00:00', amount: 5000, reason: 'Startgeld', who: '—' },
+    ] } });
     if (e.key === 'c') post('open', { view: 'characters', data: { maxSlots: 2, secondSlotLevel: 15, maxLevel: 12, staffOnline: 3, characters: [
       { id: 1, slot: 1, first_name: 'Jonas', last_name: 'Brenner', birth_date: '1990-01-01', playtime_seconds: 43000, level_cache: 12, faction: 'lspd', immigrated_at: '2026-11-01' },
     ] } });

@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useMemo, useReducer, type React
 import { useNuiEvent } from './nui';
 import type { InventoryData } from './views/Inventory';
 import type { WheelData } from './views/Wheel';
+import type { BankData } from './views/Bank';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 
@@ -27,9 +28,10 @@ type View = null
   | { name: 'characters'; data: CharactersData }
   | { name: 'console'; data: { commands: CommandInfo[]; history: string[] } }
   | { name: 'inventory'; data: InventoryData }
-  | { name: 'wheel'; data: WheelData };
+  | { name: 'wheel'; data: WheelData }
+  | { name: 'bank'; data: BankData };
 
-type State = { view: View; hud: HudData; toasts: Toast[]; role: string };
+type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: string | null };
 
 type Action =
   | { type: 'open'; view: View }
@@ -37,7 +39,8 @@ type Action =
   | { type: 'hud'; data: Partial<HudData> }
   | { type: 'toast'; toast: Toast }
   | { type: 'toastRemove'; id: number }
-  | { type: 'role'; role: string };
+  | { type: 'role'; role: string }
+  | { type: 'hint'; hint: string | null };
 
 const initialHud: HudData = {
   health: 100, armor: 0, hunger: 100, thirst: 100, fitness: 0,
@@ -53,6 +56,7 @@ function reducer(state: State, a: Action): State {
     case 'toast': return { ...state, toasts: [...state.toasts.slice(-5), a.toast] };
     case 'toastRemove': return { ...state, toasts: state.toasts.filter((t) => t.id !== a.id) };
     case 'role': return { ...state, role: a.role };
+    case 'hint': return { ...state, hint: a.hint };
   }
 }
 
@@ -61,7 +65,7 @@ const Ctx = createContext<{ state: State; dispatch: (a: Action) => void } | null
 let toastId = 0;
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player' });
+  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null });
 
   useNuiEvent<{ view: string; data: unknown }>('open', useCallback((d) => {
     dispatch({ type: 'open', view: { name: d.view, data: d.data } as View });
@@ -70,6 +74,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useNuiEvent<Partial<HudData>>('hud', useCallback((d) => dispatch({ type: 'hud', data: d }), []));
   useNuiEvent<number>('bank', useCallback((bank) => dispatch({ type: 'hud', data: { bank } }), []));
   useNuiEvent<string>('role', useCallback((role) => dispatch({ type: 'role', role }), []));
+  useNuiEvent<string | null>('hint', useCallback((hint) => dispatch({ type: 'hint', hint: hint || null }), []));
   useNuiEvent<{ kind: Toast['kind']; text: string; title?: string }>('notify', useCallback((d) => {
     const id = ++toastId;
     const titles = { success: 'Erledigt', info: 'Hinweis', warn: 'Achtung', error: 'Fehler' };

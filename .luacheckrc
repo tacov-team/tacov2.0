@@ -20,6 +20,8 @@ globals = {
   "GetGameTimer", "DoScreenFadeOut", "DoScreenFadeIn", "IsControlPressed",
   "RegisterKeyMapping", "ExecuteCommand", "GetEntityHealth", "GetEntityMaxHealth", "GetPedArmour",
   "GetStreetNameAtCoord", "GetStreetNameFromHashKey", "GetLabelText", "GetNameOfZone", "SetEntityHealth",
+  "GetClosestObjectOfType", "DoesBlipExist", "RemoveBlip", "AddBlipForCoord", "SetBlipSprite", "SetBlipColour",
+  "SetBlipScale", "SetBlipAsShortRange", "BeginTextCommandSetBlipName", "AddTextComponentString", "EndTextCommandSetBlipName",
   "GetHashKey", "CreateObjectNoOffset", "DoesEntityExist", "DeleteEntity", "GetActivePlayers", "GetPlayerPed",
   "GetVehiclePedIsIn", "GetClosestVehicle", "GetDisplayNameFromVehicleModel", "GetEntityModel", "GetVehicleNumberPlateText",
   "GetSafeZoneSize", "GetAspectRatio", "GetActiveScreenResolution", "HideHudComponentThisFrame",

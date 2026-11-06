@@ -7,6 +7,7 @@ import { Console } from './views/Console';
 import { Characters } from './views/Characters';
 import { Inventory } from './views/Inventory';
 import { Wheel } from './views/Wheel';
+import { Bank } from './views/Bank';
 import { inGame, nui } from './nui';
 
 function Views() {
@@ -23,6 +24,7 @@ function Views() {
       if (e.key === 'Escape' && v && v.name !== 'console') {
         if (v.name === 'inventory') { nui('action', { view: 'inventory', action: 'close' }); return; }
         if (v.name === 'wheel') { nui('action', { view: 'wheel', action: 'close' }); return; }
+        if (v.name === 'bank') { nui('action', { view: 'bank', action: 'close' }); return; }
         dispatch({ type: 'close' }); nui('close');
       }
     };
@@ -39,6 +41,8 @@ function Views() {
       {v?.name === 'console' && <Console commands={v.data.commands} history={v.data.history} />}
       {v?.name === 'inventory' && <Inventory data={v.data} />}
       {v?.name === 'wheel' && <Wheel data={v.data} />}
+      {v?.name === 'bank' && <Bank data={v.data} />}
+      {!v && state.hint && <div className="hint"><kbd className="kbd">X</kbd>{state.hint}</div>}
     </>
   );
 }
