@@ -8,6 +8,7 @@ local function listMigrations()
   -- FiveM bietet kein Verzeichnislisting; die Liste wird hier gepflegt.
   return {
     { version = 1, file = 'sql/001_init.sql' },
+    { version = 2, file = 'sql/002_inventory.sql' },
   }
 end
 

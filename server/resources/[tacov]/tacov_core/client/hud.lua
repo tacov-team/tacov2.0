@@ -26,9 +26,9 @@ function TacoV.Hud.refresh()
     name = c.firstName .. ' ' .. c.lastName,
     level = c.level, levelProgress = (play % perLevel) / perLevel, status = statusFor(c.level),
     faction = factionLabel(c),
-    bank = TacoV.Client.bank, cash = 0, black = 0,
+    bank = TacoV.Client.bank, cash = TacoV.Inventory.money.cash, black = TacoV.Inventory.money.black,
     serverId = GetPlayerServerId(PlayerId()),
-    weight = 0, maxWeight = TacoV.Config.Inventory.baseWeight,
+    weight = TacoV.Inventory.money.weight, maxWeight = TacoV.Inventory.money.maxWeight,
     hunger = TacoV.Hud.needs.hunger, thirst = TacoV.Hud.needs.thirst, fitness = TacoV.Hud.needs.fitness,
   })
 end

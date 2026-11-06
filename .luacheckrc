@@ -20,6 +20,8 @@ globals = {
   "GetGameTimer", "DoScreenFadeOut", "DoScreenFadeIn", "IsControlPressed",
   "RegisterKeyMapping", "ExecuteCommand", "GetEntityHealth", "GetEntityMaxHealth", "GetPedArmour",
   "GetStreetNameAtCoord", "GetStreetNameFromHashKey", "GetLabelText", "GetNameOfZone", "SetEntityHealth",
+  "GetHashKey", "CreateObjectNoOffset", "DoesEntityExist", "DeleteEntity", "GetActivePlayers", "GetPlayerPed",
+  "GetVehiclePedIsIn", "GetClosestVehicle", "GetDisplayNameFromVehicleModel", "GetEntityModel", "GetVehicleNumberPlateText",
   "GetSafeZoneSize", "GetAspectRatio", "GetActiveScreenResolution", "HideHudComponentThisFrame",
   "ClearPedTasks", "ClearPedTasksImmediately", "NetworkResurrectLocalPlayer", "ShutdownLoadingScreen", "ShutdownLoadingScreenNui", "IsPedInAnyVehicle", "RequestAnimDict", "HasAnimDictLoaded", "TaskPlayAnim",
 }

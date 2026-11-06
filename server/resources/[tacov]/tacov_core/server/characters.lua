@@ -69,6 +69,12 @@ function TacoV.Characters.create(source, data)
   -- Girokonto mit Startgeld, über das Journal (Konzept 1: Startgeld aufs Konto)
   TacoV.Journal.account('character', id)
   TacoV.Journal.move('bank', nil, { type = 'character', id = id }, TacoV.Config.Onboarding.startCash, 'startgeld')
+  -- Startausrüstung (config/items.lua): Ausweis trägt Name und Geburtsdatum
+  local inv = TacoV.Inventory.load('character', id)
+  for _, s in ipairs(TacoV.Config.StartItems) do
+    local meta = s.item == 'id_card' and { name = first .. ' ' .. last, birth = data.birthDate } or nil
+    TacoV.Inventory.add(inv, s.item, s.amount, meta)
+  end
   TacoV.Log.write('character', ('Charakter angelegt: %s %s (#%d)'):format(first, last, id),
     { discordId = p.discordId, characterId = id })
   return true, id
@@ -90,6 +96,7 @@ function TacoV.Characters.select(source, characterId)
   p.characterId = c.id
   TacoV.Log.write('character', ('Charakter geladen: %s %s'):format(c.first_name, c.last_name),
     { discordId = p.discordId, characterId = c.id })
+  TriggerEvent('tacov:core:characterSelected', source, c.id)
   TriggerClientEvent('tacov:core:characterLoaded', source, TacoV.Characters.publicData(source))
   TacoV.Needs.push(source)
   return true
@@ -137,6 +144,8 @@ end
 
 function TacoV.Characters.unload(source)
   TacoV.Characters.save(source)
+  local c = loaded[source]
+  if c then TriggerEvent('tacov:core:characterUnloaded', source, c.id) end
   loaded[source] = nil
   local p = TacoV.Players.get(source)
   if p then p.characterId = nil end

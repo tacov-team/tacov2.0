@@ -1,6 +1,8 @@
 // Zentraler Zustand der Oberfläche. Der Lua-Client schickt Nachrichten (open/close/hud/...), die hier landen.
 import { createContext, useCallback, useContext, useMemo, useReducer, type ReactNode } from 'react';
 import { useNuiEvent } from './nui';
+import type { InventoryData } from './views/Inventory';
+import type { WheelData } from './views/Wheel';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 
@@ -21,7 +23,11 @@ export type CharactersData = { characters: CharacterRow[]; maxSlots: number; sec
 
 export type CommandInfo = { name: string; usage: string; help: string; staff?: boolean };
 
-type View = null | { name: 'characters'; data: CharactersData } | { name: 'console'; data: { commands: CommandInfo[]; history: string[] } };
+type View = null
+  | { name: 'characters'; data: CharactersData }
+  | { name: 'console'; data: { commands: CommandInfo[]; history: string[] } }
+  | { name: 'inventory'; data: InventoryData }
+  | { name: 'wheel'; data: WheelData };
 
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string };
 

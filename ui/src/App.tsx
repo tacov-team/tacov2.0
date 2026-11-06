@@ -5,6 +5,8 @@ import { Hud } from './views/Hud';
 import { Toasts } from './views/Toasts';
 import { Console } from './views/Console';
 import { Characters } from './views/Characters';
+import { Inventory } from './views/Inventory';
+import { Wheel } from './views/Wheel';
 import { inGame, nui } from './nui';
 
 function Views() {
@@ -18,7 +20,11 @@ function Views() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && v && v.name !== 'console') { dispatch({ type: 'close' }); nui('close'); }
+      if (e.key === 'Escape' && v && v.name !== 'console') {
+        if (v.name === 'inventory') { nui('action', { view: 'inventory', action: 'close' }); return; }
+        if (v.name === 'wheel') { nui('action', { view: 'wheel', action: 'close' }); return; }
+        dispatch({ type: 'close' }); nui('close');
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -31,6 +37,8 @@ function Views() {
       <Toasts />
       {v?.name === 'characters' && <Characters key={v.data.characters.map((c) => c.id).join(',')} data={v.data} />}
       {v?.name === 'console' && <Console commands={v.data.commands} history={v.data.history} />}
+      {v?.name === 'inventory' && <Inventory data={v.data} />}
+      {v?.name === 'wheel' && <Wheel data={v.data} />}
     </>
   );
 }

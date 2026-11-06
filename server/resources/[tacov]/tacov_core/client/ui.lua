@@ -60,6 +60,14 @@ RegisterNUICallback('command', function(data, cb)
   cb({})
 end)
 
+-- Allgemeine Aktion einer Ansicht: { view, action, data } -> Event tacov:ui:<view>:<action> (Module hören darauf)
+RegisterNUICallback('action', function(data, cb)
+  if type(data) == 'table' and type(data.view) == 'string' and type(data.action) == 'string' then
+    TriggerEvent('tacov:ui:' .. data.view .. ':' .. data.action, data.data or {})
+  end
+  cb({})
+end)
+
 RegisterNUICallback('selectCharacter', function(data, cb)
   TriggerServerEvent('tacov:core:selectCharacter', tonumber(data.id))
   cb({})

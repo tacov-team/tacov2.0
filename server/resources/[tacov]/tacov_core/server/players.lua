@@ -49,7 +49,7 @@ end
 function TacoV.Players.unload(source)
   local p = online[source]
   if not p then return end
-  if p.characterId then TacoV.Characters.save(source) end
+  if p.characterId then TacoV.Characters.unload(source) end
   TacoV.DB.update('UPDATE players SET last_seen_at = NOW() WHERE id = ?', { p.id })
   online[source] = nil
 end
@@ -62,6 +62,19 @@ function TacoV.Players.staff(minLevel)
     if r and r.level >= (minLevel or 1) then list[#list + 1] = src end
   end
   return list
+end
+
+--- Nächster anderer Spieler mit geladenem Charakter innerhalb maxDist (Meter), oder nil.
+function TacoV.Players.nearest(source, maxDist)
+  local pos = GetEntityCoords(GetPlayerPed(source))
+  local best, bestD = nil, maxDist or 3.0
+  for src, p in pairs(online) do
+    if src ~= source and p.characterId then
+      local d = #(pos - GetEntityCoords(GetPlayerPed(src)))
+      if d < bestD then best, bestD = src, d end
+    end
+  end
+  return best
 end
 
 AddEventHandler('playerDropped', function(reason)

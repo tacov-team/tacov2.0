@@ -26,18 +26,22 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `client/keys.lua` | Tastenbelegung aus `config/core.lua` (T, F1, F2, F3, F6, F9, X, H) |
 | `config/commands.lua` | Befehlsliste für die Befehlszeile |
 | `server/needs.lua` | Hunger/Durst sinken je Minute, Promille baut ab; `needsAdd` für Essen/Trinken |
+| `config/items.lua` | Alle Items (Gewicht, Stapel, Kategorie, Wirkung), Startausrüstung |
+| `server/inventory.lua` | Inventar: Raster mit Gewicht als Grenze, Stapeln, Verschieben, Geben, Ablagen am Boden (15 min), Benutzen, Bargeld/Schwarzgeld als Items mit Journal |
+| `client/inventory.lua` | F2, Zielspieler für „Geben“, Ablagen, Ess-/Trinkanimation |
+| `client/interact.lua` | Interaktionsrad (X halten): Registrierung `TacoV.Interact.register`, Kontext Spieler/Fahrzeug/Ablage |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
 
 ## Exports für andere Resources
-`isReady`, `getPlayer(source)`, `getCharacter(source)`, `hasPermission(source, recht)`, `journalMove(...)`, `journalBalance(ownerType, ownerId)`, `accountPay/accountReceive/accountTax`.
+`isReady`, `getPlayer(source)`, `getCharacter(source)`, `hasPermission(source, recht)`, `journalMove(...)`, `journalBalance(ownerType, ownerId)`, `accountPay/accountReceive/accountTax`, `needsAdd`, `inventoryAdd/inventoryRemove/inventoryCount(source, item, …)`, `cashAdd/cashRemove(source, amount, reason, 'cash'|'black')`; Client: `interactRegister(entry)`.
 
 ## Events
 - Server → Client: `tacov:core:characters`, `tacov:core:characterLoaded`, `tacov:core:bank`, `tacov:core:notify`, `tacov:core:role`
 - Client → Server: `tacov:core:clientReady`, `tacov:core:selectCharacter`, `tacov:core:createCharacter`, `tacov:core:heartbeat`
 - Serverintern: `tacov:core:ready`, `tacov:core:locationChanged`
 
-## Tabellen (Migration 001)
-`migrations`, `whitelist`, `players`, `bans`, `characters`, `accounts`, `journal`, `logs`, `name_blocklist`, `locations`
+## Tabellen
+001: `migrations`, `whitelist`, `players`, `bans`, `characters`, `accounts`, `journal`, `logs`, `name_blocklist`, `locations` · 002: `inventory_items`
 
 ## Abhängigkeit
 `tacov_db` (eigene Resource, siehe `docs/module/db.md`); die Startreihenfolge regelt `dependency` im Manifest.
@@ -50,5 +54,6 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Rechte, Grundbefehle
 - [x] React-UI: HUD, Hinweise, Befehlszeile, Charakterauswahl (Phase 3)
 - [x] Bedürfnisse Hunger/Durst, Hände hoch
+- [x] Inventar (F2) mit Ablagen, Geben, Benutzen; Interaktionsrad (X); Startitems Ausweis + Stadtplan
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

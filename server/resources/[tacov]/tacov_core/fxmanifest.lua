@@ -14,6 +14,7 @@ shared_scripts {
   'config/economy.lua',
   'config/permissions.lua',
   'config/commands.lua',
+  'config/items.lua',
 }
 
 server_scripts {
@@ -26,6 +27,7 @@ server_scripts {
   'server/characters.lua',
   'server/accounts.lua',
   'server/needs.lua',
+  'server/inventory.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/main.lua',
@@ -35,6 +37,8 @@ client_scripts {
   'client/main.lua',
   'client/ui.lua',
   'client/hud.lua',
+  'client/inventory.lua',
+  'client/interact.lua',
   'client/keys.lua',
 }
 

@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-06 | Inventar | Startitems Ausweis und Stadtplan bei der Anlage (kein Handy); Raster ohne Platzlimit, Gewicht ist die einzige Grenze; Bargeld hat kein Gewicht (Schwarzgeld 0,1 kg je 1.000 $ bleibt) | Entscheidung des Betreibers |
 | 2026-11-06 | Resource-Namen | Ordner heißen `tacov_<name>` (FiveM nimmt den Ordnernamen als Resource-Namen) | Dependency und Exports brauchen den echten Namen |
 | 2026-11-06 | Framework | Komplett eigenes Framework ohne Fremd-Resources: oxmysql ersetzt durch eigene Resource `tacov_db` (nur der mysql2-Treiber ist Fremdcode); Aufbau in `docs/framework.md` | Entscheidung des Betreibers |
 | 2026-11-06 | UI-Technik | React 19 + TypeScript mit esbuild; Build eingecheckt in `core/ui/`; eine NUI-Seite für alle Ansichten | Einfacher Build, Server nach `git pull` sofort spielbar |

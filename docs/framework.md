@@ -42,12 +42,15 @@ Startreihenfolge regeln die `dependency`-Einträge der Manifeste: `tacov_db` →
 | Rechte | `TacoV.Permissions.has(src, right)` | `hasPermission` |
 | Logs | `TacoV.Log.write(category, text, {characterId, discordId, data})` | – |
 | Bedürfnisse | `TacoV.Needs.add(src, key, delta)` | `needsAdd` |
+| Inventar | `TacoV.Inventory.ofSource(src)`, `.add/.remove/.count/.has(inv, item, amount)`, `.addCash/.removeCash(src, amount, reason, kind)` | `inventoryAdd`, `inventoryRemove`, `inventoryCount`, `cashAdd`, `cashRemove` |
+| Item-Ereignis | `AddEventHandler('tacov:item:<name>', function(src, slot, meta))` für Items mit `use = 'event'` | – |
 | Bereit | `TacoV.isReady()` + Event `tacov:core:ready` | `isReady` |
 
 ### Client
 | Bereich | Funktionen |
 | --- | --- |
-| UI | `TacoV.UI.open(view, data, cursor)`, `.close()`, `.send(action, data)`, `.current()` |
+| UI | `TacoV.UI.open(view, data, cursor)`, `.close()`, `.send(action, data)`, `.current()`; UI-Aktionen kommen als Event `tacov:ui:<view>:<action>` |
+| Interaktion | `TacoV.Interact.register({ id, label, icon, order, when(ctx), run(ctx) })` – ctx: player, vehicle, drop |
 | Spieler | `TacoV.Client.character`, `.role`, `.bank`; Event `tacov:client:characterLoaded` |
 | Hinweis | Server: `TriggerClientEvent('tacov:core:notify', src, kind, text)` – kind: success, info, warn, error |
 
