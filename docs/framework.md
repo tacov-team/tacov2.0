@@ -50,7 +50,8 @@ Startreihenfolge regeln die `dependency`-Einträge der Manifeste: `tacov_db` →
 | Bereich | Funktionen |
 | --- | --- |
 | UI | `TacoV.UI.open(view, data, cursor)`, `.close()`, `.send(action, data)`, `.current()`; UI-Aktionen kommen als Event `tacov:ui:<view>:<action>` |
-| Interaktion | `TacoV.Interact.register({ id, label, icon, order, when(ctx), run(ctx) })` – ctx: player, vehicle, drop |
+| X-Rad | `TacoV.Interact.register({ id, label, icon, order, when(ctx), run(ctx) })` – nur Spieler und Fahrzeuge (ctx.player, ctx.vehicle) |
+| E-Aufforderung | `TacoV.Prompt.register({ id, label, order, when() -> bool/ctx, run(ctx) })` – Orte und Objekte (Bank, Automat, Ablage, Läden, Türen) |
 | Spieler | `TacoV.Client.character`, `.role`, `.bank`; Event `tacov:client:characterLoaded` |
 | Hinweis | Server: `TriggerClientEvent('tacov:core:notify', src, kind, text)` – kind: success, info, warn, error |
 

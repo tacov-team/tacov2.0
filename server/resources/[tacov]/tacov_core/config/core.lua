@@ -54,7 +54,8 @@ TacoV.Config.Inventory = {
 
 TacoV.Config.Keys = {
   phone = 'F1', inventory = 'F2', animations = 'F3', faction = 'F6',
-  admin = 'F9', interact = 'X', handsUp = 'H', console = 'T',
+  admin = 'F9', interact = 'X',
+  use = 'E', handsUp = 'H', console = 'T',
 }
 
 TacoV.Config.Voice = { whisper = 3.0, normal = 10.0, shout = 25.0 }

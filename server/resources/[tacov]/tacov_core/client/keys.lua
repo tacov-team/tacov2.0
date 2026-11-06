@@ -26,6 +26,7 @@ bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() soon(
 bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() soon('Das Animationsmenü') end)
 bind('tacov_faction',   'TacoV: Fraktionsmenü',   K.faction,    function() soon('Das Fraktionsmenü') end)
 bind('tacov_interact',  'TacoV: Interaktion',     K.interact,   function() TacoV.Interact.open() end, function() TacoV.Interact.release() end)
+bind('tacov_use',       'TacoV: Benutzen (E)',    K.use,        function() TacoV.Prompt.use() end)
 bind('tacov_handsup',   'TacoV: Hände hoch',      K.handsUp,    function() TacoV.Client.toggleHandsUp() end)
 
 -- Team-Menü nur anzeigen, wenn der Spieler Teammitglied ist (prüft der Server beim Öffnen erneut)

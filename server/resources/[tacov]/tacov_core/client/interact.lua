@@ -1,5 +1,6 @@
--- Interaktionsrad (X halten): Einträge melden sich mit TacoV.Interact.register an; Module erweitern es.
--- Der Kontext (nächster Spieler, Fahrzeug, Ablage) wird beim Öffnen einmal bestimmt.
+-- Interaktionsrad (X halten): nur für Spieler und Fahrzeuge in Reichweite. Einträge melden sich mit
+-- TacoV.Interact.register an; alles andere (Orte, Objekte) läuft über E-Aufforderungen (client/prompt.lua).
+-- Der Kontext (nächster Spieler, Fahrzeug) wird beim Öffnen einmal bestimmt.
 TacoV = TacoV or {}
 TacoV.Interact = { entries = {} }
 
@@ -34,7 +35,6 @@ local function context()
     ctx.vehicleName = GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(veh)))
     ctx.plate = GetVehicleNumberPlateText(veh)
   end
-  ctx.drop = TacoV.Inventory.nearestDrop(2.5)
   return ctx
 end
 
@@ -43,6 +43,10 @@ local current = nil
 function TacoV.Interact.open()
   if TacoV.UI.current() then return end
   local ctx = context()
+  if not ctx.player and not ctx.vehicle then
+    TacoV.UI.send('notify', { kind = 'info', text = 'Kein Spieler und kein Fahrzeug in der Nähe.' })
+    return
+  end
   local list = {}
   for _, e in pairs(TacoV.Interact.entries) do
     if not e.when or e.when(ctx) then
@@ -52,9 +56,7 @@ function TacoV.Interact.open()
   table.sort(list, function(a, b) return a.order < b.order end)
   local center
   if ctx.player then center = { kind = 'Spieler', title = 'Gegenüber', sub = 'ID ' .. ctx.player }
-  elseif ctx.vehicle then center = { kind = 'Fahrzeug', title = ctx.vehicleName, sub = ctx.plate }
-  elseif ctx.drop then center = { kind = 'Boden', title = 'Ablage', sub = 'vor dir' }
-  else center = { kind = 'Umgebung', title = 'Nichts in der Nähe', sub = '' } end
+  else center = { kind = 'Fahrzeug', title = ctx.vehicleName, sub = ctx.plate } end
   current = ctx
   TacoV.UI.open('wheel', { entries = list, center = center })
 end
@@ -78,16 +80,7 @@ AddEventHandler('tacov:ui:wheel:close', function()
   current = nil
 end)
 
--- Grundeinträge des Kerns
-TacoV.Interact.register({
-  id = 'inventory', label = 'Inventar', icon = 'bag', order = 10,
-  run = function() TacoV.Inventory.open() end,
-})
-TacoV.Interact.register({
-  id = 'pickup', label = 'Aufheben', icon = 'bag', order = 5,
-  when = function(ctx) return ctx.drop ~= nil end,
-  run = function() TacoV.Inventory.open() end,
-})
+-- Grundeinträge des Kerns (Spieler); Fahrzeug-Einträge kommen mit dem Fahrzeugmodul
 TacoV.Interact.register({
   id = 'give', label = 'Geben', icon = 'gift', order = 20,
   when = function(ctx) return ctx.player ~= nil end,
@@ -97,8 +90,4 @@ TacoV.Interact.register({
   id = 'show_id', label = 'Ausweis', icon = 'id', order = 30,
   when = function(ctx) return ctx.player ~= nil end,
   run = function() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end,
-})
-TacoV.Interact.register({
-  id = 'handsup', label = 'Hände hoch', icon = 'hands', order = 90,
-  run = function() TacoV.Client.toggleHandsUp() end,
 })

@@ -53,30 +53,13 @@ AddEventHandler('tacov:ui:bank:close', function()
   TacoV.Bank.close()
 end)
 
-TacoV.Interact.register({
-  id = 'bank', label = 'Bank', icon = 'cash', order = 1,
+TacoV.Prompt.register({
+  id = 'bank', label = 'Bank', order = 10,
   when = function() return TacoV.Bank.nearestBranch(4.0) ~= nil end,
   run = function() TacoV.Bank.open('bank') end,
 })
-TacoV.Interact.register({
-  id = 'atm', label = 'Automat', icon = 'cash', order = 1,
+TacoV.Prompt.register({
+  id = 'atm', label = 'Geldautomat', order = 10,
   when = function() return TacoV.Bank.nearestAtm(1.5) ~= nil end,
   run = function() TacoV.Bank.open('atm') end,
 })
-
--- Hinweis unten in der Mitte, wenn man an Schalter oder Automat steht
-CreateThread(function()
-  local shown = nil
-  while true do
-    Wait(500)
-    local hint = nil
-    if TacoV.Client.character and not TacoV.UI.current() then
-      if TacoV.Bank.nearestBranch(4.0) then hint = 'Bank · X halten'
-      elseif TacoV.Bank.nearestAtm(1.5) then hint = 'Geldautomat · X halten' end
-    end
-    if hint ~= shown then
-      shown = hint
-      TacoV.UI.send('hint', hint)
-    end
-  end
-end)

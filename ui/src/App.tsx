@@ -42,7 +42,7 @@ function Views() {
       {v?.name === 'inventory' && <Inventory data={v.data} />}
       {v?.name === 'wheel' && <Wheel data={v.data} />}
       {v?.name === 'bank' && <Bank data={v.data} />}
-      {!v && state.hint && <div className="hint"><kbd className="kbd">X</kbd>{state.hint}</div>}
+      {!v && state.hint && <div className="hint"><kbd className="kbd">{state.hint.key}</kbd>{state.hint.text}</div>}
     </>
   );
 }

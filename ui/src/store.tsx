@@ -31,7 +31,8 @@ type View = null
   | { name: 'wheel'; data: WheelData }
   | { name: 'bank'; data: BankData };
 
-type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: string | null };
+export type Hint = { key: string; text: string };
+type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null };
 
 type Action =
   | { type: 'open'; view: View }
@@ -40,7 +41,7 @@ type Action =
   | { type: 'toast'; toast: Toast }
   | { type: 'toastRemove'; id: number }
   | { type: 'role'; role: string }
-  | { type: 'hint'; hint: string | null };
+  | { type: 'hint'; hint: Hint | null };
 
 const initialHud: HudData = {
   health: 100, armor: 0, hunger: 100, thirst: 100, fitness: 0,
@@ -74,7 +75,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useNuiEvent<Partial<HudData>>('hud', useCallback((d) => dispatch({ type: 'hud', data: d }), []));
   useNuiEvent<number>('bank', useCallback((bank) => dispatch({ type: 'hud', data: { bank } }), []));
   useNuiEvent<string>('role', useCallback((role) => dispatch({ type: 'role', role }), []));
-  useNuiEvent<string | null>('hint', useCallback((hint) => dispatch({ type: 'hint', hint: hint || null }), []));
+  useNuiEvent<Hint | null>('hint', useCallback((hint) => dispatch({ type: 'hint', hint: hint && hint.text ? hint : null }), []));
   useNuiEvent<{ kind: Toast['kind']; text: string; title?: string }>('notify', useCallback((d) => {
     const id = ++toastId;
     const titles = { success: 'Erledigt', info: 'Hinweis', warn: 'Achtung', error: 'Fehler' };

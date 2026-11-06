@@ -31,7 +31,8 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `client/inventory.lua` | F2, Zielspieler für „Geben“, Ablagen, Ess-/Trinkanimation |
 | `config/locations.lua` / `server/locations.lua` / `client/locations.lua` | Orte (Banken …) aus Config, Überschreibung aus Tabelle `locations`, Blips, Nähe-Abfragen |
 | `server/bank.lua` / `client/bank.lua` | Bank (Schalter) und Geldautomat: Einzahlen, Abheben (Automat max. 5.000 $), Überweisen (Name/Kontonummer, 50.000 $/Tag, 1 % ab 10.000 $), Kontoauszug |
-| `client/interact.lua` | Interaktionsrad (X halten): Registrierung `TacoV.Interact.register`, Kontext Spieler/Fahrzeug/Ablage |
+| `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
+| `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
 
 ## Exports für andere Resources

@@ -41,6 +41,7 @@ client_scripts {
   'client/ui.lua',
   'client/hud.lua',
   'client/locations.lua',
+  'client/prompt.lua',
   'client/inventory.lua',
   'client/interact.lua',
   'client/bank.lua',

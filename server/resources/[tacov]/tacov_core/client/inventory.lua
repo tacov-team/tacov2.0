@@ -75,3 +75,9 @@ end)
 AddEventHandler('tacov:ui:inventory:close', function()
   TacoV.Inventory.close()
 end)
+
+TacoV.Prompt.register({
+  id = 'pickup', label = 'Ablage durchsuchen', order = 20,
+  when = function() return TacoV.Inventory.nearestDrop(2.0) ~= nil end,
+  run = function() TacoV.Inventory.open() end,
+})
