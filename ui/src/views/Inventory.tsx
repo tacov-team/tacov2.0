@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState, type DragEvent } from 'react';
 import { nui } from '../nui';
 import { Icon } from '../components/Icon';
+import { ItemIcon } from '../components/ItemIcon';
 import { money } from './Hud';
 
 export type InvItem = { slot: number; item: string; amount: number; meta?: Record<string, unknown>; label: string; category: string; weight: number; usable: boolean; money: boolean };
@@ -11,10 +12,6 @@ export type InventoryData = { self: InvView; other: InvView | null; target?: num
 const COLS = 5;
 const MIN_CELLS = 30;
 
-const catIcon: Record<string, string> = {
-  money: 'cash', document: 'doc', daily: 'bag', tool: 'tool', material: 'box', drug: 'leaf', weapon: 'gun', ammo: 'ammo',
-  armor: 'shield', food: 'food', drink: 'drop', leisure: 'fish', jewelry: 'ring', loot: 'box',
-};
 
 const kg = (n: number) => `${n.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kg`;
 
@@ -44,7 +41,7 @@ function Grid({ view, side, sel, onSelect, onDrop }: {
             onDragOver={onDragOver} onDrop={(e) => onDropCell(e, slot)} onClick={() => onSelect({ side, slot })}>
             <span className="amt">{it.money ? money(it.amount) : it.amount}</span>
             <span className="wt">{it.money ? '' : kg(it.weight * it.amount)}</span>
-            <span className="ico" style={{ color: it.item === 'black_cash' ? 'var(--black-money)' : undefined }}><Icon name={catIcon[it.category] ?? 'box'} size={34} stroke={1.8} /></span>
+            <span className="ico"><ItemIcon item={it.item} category={it.category} size={40} /></span>
             <span className="lbl">{it.label}</span>
           </div>
         );
@@ -116,7 +113,7 @@ export function Inventory({ data }: { data: InventoryData }) {
 
       <div className="inv-select">
         <span className="eyebrow">Auswahl</span>
-        <div className="inv-orb">{selected ? <Icon name={catIcon[selected.category] ?? 'box'} size={40} stroke={1.8} /> : <Icon name="bag" size={40} stroke={1.8} />}</div>
+        <div className="inv-orb">{selected ? <ItemIcon item={selected.item} category={selected.category} size={52} /> : <Icon name="bag" size={40} stroke={1.8} />}</div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, minHeight: 48 }}>
           <strong className="inv-title">{selected?.label ?? 'Nichts gewählt'}</strong>
           <span style={{ fontSize: 12, color: 'var(--muted)', textAlign: 'center' }}>{selected ? desc : 'Klicke ein Item an oder ziehe es'}</span>

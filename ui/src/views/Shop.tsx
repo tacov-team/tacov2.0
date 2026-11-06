@@ -2,13 +2,13 @@
 import { useMemo, useState } from 'react';
 import { nui } from '../nui';
 import { Icon } from '../components/Icon';
+import { ItemIcon } from '../components/ItemIcon';
 import { money } from './Hud';
 
 export type ShopItem = { item: string; label: string; category: string; price: number; weight: number };
 export type ShopData = { shop: string; type: string; name: string; cash: number; bank: number; taxPercent: number; weight: number; maxWeight: number; items: ShopItem[] };
 
 const catLabel: Record<string, string> = { food: 'Essen', drink: 'Trinken', daily: 'Alltag', tool: 'Werkzeug', weapon: 'Waffen', document: 'Dokumente' };
-const catIcon: Record<string, string> = { food: 'food', drink: 'drop', daily: 'bag', tool: 'tool', weapon: 'gun', document: 'doc' };
 
 export function Shop({ data }: { data: ShopData }) {
   const [cat, setCat] = useState<string>('all');
@@ -49,7 +49,7 @@ export function Shop({ data }: { data: ShopData }) {
           <div className="shop-grid">
             {shown.map((i) => (
               <div key={i.item} className={'shop-item' + (cart[i.item] ? ' in' : '')} onClick={() => add(i.item, 1)}>
-                <span className="ico"><Icon name={catIcon[i.category] ?? 'box'} size={30} stroke={1.8} /></span>
+                <span className="ico"><ItemIcon item={i.item} category={i.category} size={40} /></span>
                 <strong>{i.label}</strong>
                 <span className="num">{money(i.price)}</span>
                 {cart[i.item] ? <span className="badge num">{cart[i.item]}</span> : null}

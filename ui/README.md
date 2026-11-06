@@ -12,6 +12,9 @@ Der Build ist eingecheckt, damit der VPS nach `git pull` sofort spielbar ist; `t
 
 Vorschau ohne Spiel: `server/resources/[tacov]/tacov_core/ui/index.html` im Browser öffnen – zeigt Beispielwerte; Taste **T** öffnet die Befehlszeile, **C** die Charakterauswahl.
 
+## Item-Icons
+`ui/public/items/<item>.svg` werden von `python3 ui/tools/make-item-icons.py` erzeugt (Linien-Icons im UI-Stil). Ein eigenes Bild ersetzt das Icon ohne Codeänderung: `ui/public/items/<item>.png` (128×128, transparent) ablegen, `npm run build`. Fehlt beides, zeigt die UI das Kategorie-Symbol. Welche Datei je Item aktiv ist, trägt der Build in die App ein (zusätzlich `assets/items/index.json`).
+
 ## Aufbau
 | Datei | Inhalt |
 | --- | --- |

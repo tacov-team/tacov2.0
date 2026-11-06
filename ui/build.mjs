@@ -1,6 +1,6 @@
 // Baut die NUI mit esbuild nach ../server/resources/[tacov]/tacov_core/ui/
 import * as esbuild from 'esbuild';
-import { mkdirSync, copyFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, copyFileSync, readdirSync, writeFileSync, statSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,8 +8,26 @@ const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, '..', 'server', 'resources', '[tacov]', 'tacov_core', 'ui');
 const watch = process.argv.includes('--watch');
 
-mkdirSync(join(out, 'assets'), { recursive: true });
-for (const f of readdirSync(join(here, 'public'))) copyFileSync(join(here, 'public', f), join(out, 'assets', f));
+mkdirSync(join(out, 'assets', 'items'), { recursive: true });
+for (const f of readdirSync(join(here, 'public'))) {
+  const src = join(here, 'public', f);
+  if (statSync(src).isFile()) copyFileSync(src, join(out, 'assets', f));
+}
+
+// Item-Icons: PNG hat Vorrang vor SVG; items/index.json sagt der UI, welche Datei es je Item gibt
+const itemDir = join(here, 'public', 'items');
+const index = {};
+if (existsSync(itemDir)) {
+  for (const f of readdirSync(itemDir)) {
+    const m = /^([a-z0-9_]+)\.(png|svg)$/.exec(f);
+    if (!m) continue;
+    const [, name, ext] = m;
+    if (index[name] === 'png') continue; // PNG bleibt
+    index[name] = ext;
+    copyFileSync(join(itemDir, f), join(out, 'assets', 'items', f));
+  }
+}
+writeFileSync(join(out, 'assets', 'items', 'index.json'), JSON.stringify(index));
 
 writeFileSync(join(out, 'index.html'), `<!doctype html>
 <html lang="de">
@@ -34,7 +52,7 @@ const options = {
   format: 'iife',
   outfile: join(out, 'app.js'),
   loader: { '.png': 'file', '.svg': 'file' },
-  define: { 'process.env.NODE_ENV': watch ? '"development"' : '"production"' },
+  define: { 'process.env.NODE_ENV': watch ? '"development"' : '"production"', __ITEM_ICONS__: JSON.stringify(index) },
   logLevel: 'info',
 };
 

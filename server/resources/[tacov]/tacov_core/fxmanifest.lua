@@ -58,4 +58,5 @@ files {
   'ui/app.js',
   'ui/app.css',
   'ui/assets/*',
+  'ui/assets/items/*',
 }
