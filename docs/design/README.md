@@ -1,5 +1,19 @@
 # Design
 
+## Stand V4 (07.11.2026) – gilt für alles Neue
+
+Vorbild sind die GLRP-Referenzbilder des Betreibers; Tafeln `V4 · …` im Canvas (Reihe ganz unten). Umgesetzt in `ui/src/theme.css`.
+
+- Grund: Panels `rgba(14,12,10,0.86)` mit Kopfzeile (Icon-Kachel, Titel, Info-Zeile, Schraffur-Streifen); Interaktions-UIs (X-Rad, Listenmenü) nutzen `panel soft` mit 0,74 – also leicht durchsichtig wie auf den Bildern
+- Akzent: `#FFB800` → `#FF9A1F` (Logo-Gelb/Orange), Textakzent `#FFD54A`; Schwarzgeld Lila `#C9A0FF`
+- Schrift: **Barlow** (400–900, Tacho kursiv 900), Akzent-Schriftzug **Kaushan Script**; Dateien liegen nicht im Repo, siehe `ui/README.md` (Fallback: Segoe UI/Inter)
+- HUD: Logo + Geld oben rechts zentriert untereinander (Bargeld, Konto, Schwarzgeld), darunter Hunger/Durst als Kacheln, rechts die Funkliste (wer gerade funkt); Infozeilen (ID, Fitness, Fraktion + Rang, Datum/Uhrzeit) rechts neben der Vanilla-Minimap; keine Karte in der UI
+- HUD Fahrzeug: Tacho unten rechts (km/h, Balkenreihe, Tank in Litern, Motor, Schloss); Tankstellenkarte erscheint darüber
+- Bedienung: Listenmenüs nur per Tastatur (↑ ↓ wählen, Enter bestätigen, ⌫ zurück, Esc schließen), Zivilistenaktionen als Unterpunkt des F6-Aktionsmenüs, Werkstatt-Untermenüs Upgrades → Bremsen usw.; Orte/Objekte per E-Ring, X-Rad nur Spieler und Fahrzeuge
+- Handy und Laptop: Tafeln V4 · Handy / V4 · Garage (Laptop) als Vorlage, Umsetzung mit dem jeweiligen Modul
+
+## Stand V3 (05.11.2026) – Archiv
+
 Design-Canvas „TacoV Spiel-UI“ (Claude Design, im Projekt verlinkt). Grundlage sind die 27 Grundoberflächen des V3-Designs (Gelb-Orange), die am 05.11.2026 als Basis übernommen wurden.
 
 ## Stil (aus der Grundlagen-Tafel)

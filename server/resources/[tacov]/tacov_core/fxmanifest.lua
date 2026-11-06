@@ -41,6 +41,7 @@ server_scripts {
 client_scripts {
   'client/main.lua',
   'client/ui.lua',
+  'client/menu.lua',
   'client/hud.lua',
   'client/locations.lua',
   'client/prompt.lua',
@@ -59,4 +60,5 @@ files {
   'ui/app.css',
   'ui/assets/*',
   'ui/assets/items/*',
+  'ui/assets/fonts/*',
 }

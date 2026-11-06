@@ -10,12 +10,25 @@ if (!inGame) {
   const post = (action: string, data?: unknown) => window.postMessage({ action, data }, '*');
   setTimeout(() => {
     post('hud', { visible: true, health: 86, armor: 0, hunger: 64, thirst: 75, fitness: 48, cash: 2340, black: 850, bank: 14820, serverId: 47,
-      street: 'Vespucci Boulevard', area: 'Little Seoul', weight: 24.6, maxWeight: 30, name: 'Diego Alvarez', level: 7, levelProgress: 0.62, status: 'Probezeit', faction: 'LSPD · Officer · Rang 4' });
+      street: 'Vespucci Boulevard', area: 'Little Seoul', weight: 24.6, maxWeight: 30, name: 'Diego Alvarez', level: 7, levelProgress: 0.62, status: 'Probezeit', faction: 'LSPD', factionRank: 'Officer · Rang 4',
+      radio: [{ id: 47, name: 'Diego Alvarez', talking: true }, { id: 12, name: 'Mara Kowalski' }, { id: 3, name: 'Tom Reyes' }], radioFrequency: '411.3', radioOn: true });
     post('notify', { kind: 'success', title: 'Auftrag abgeschlossen', text: '+2.000 $ und 20 XP aufs Konto' });
     post('notify', { kind: 'warn', title: 'Tank fast leer', text: 'Nächste Tankstelle: Grove Street' });
     post('hint', { key: 'E', text: 'Geldautomat' });
   }, 300);
   window.addEventListener('keydown', (e) => {
+    if (e.key === 'v') post('hud', { vehicle: { speed: 87, fuel: 38, tank: 65, engine: true, locked: false }, station: { name: 'Tankstelle Grove', sub: 'Benzin · 2,10 $/l', price: 2.1 } });
+    if (e.key === 'V') post('hud', { vehicle: null, station: null });
+    if (e.key === 'm') post('open', { view: 'menu', data: { id: 'f6', title: 'Aktionsmenü', info: 'Bürger · Taste F6', icon: 'list', depth: 0, note: 'Mit ↑ ↓ wählen, Enter bestätigen', items: [
+      { id: 'civil', label: 'Zivilistenaktionen', icon: 'user', sub: 'Hände hoch, Ausweis, Tasche' },
+      { id: 'vehicle', label: 'Fahrzeug', icon: 'car', sub: 'Motor, Türen, Kofferraum' },
+      { id: 'phone', label: 'Handy', icon: 'phone', dim: true, badge: 'bald' },
+      { id: 'faction', label: 'Fraktion', icon: 'shield', section: 'Dienst' },
+      { id: 'duty', label: 'Dienst beginnen', icon: 'check' },
+    ] } });
+    if (e.key === 'M') post('open', { view: 'menu', data: { id: 'brakes', title: 'Bremsen', info: 'Upgrades · Bremsen', icon: 'wrench', depth: 2, items: [
+      { id: 'b0', label: 'Serie', price: '0 $', sub: 'eingebaut' }, { id: 'b1', label: 'Straße', price: '1.200 $' }, { id: 'b2', label: 'Sport', price: '2.800 $' }, { id: 'b3', label: 'Rennen', price: '5.900 $', dim: true, badge: 'gesperrt' },
+    ] } });
     if (e.key === 't' || e.key === 'T') post('open', { view: 'console', data: { history: ['support Hilfe bitte'], commands: [
       { name: 'support', usage: 'support <Text>', help: 'Ticket an das Team' },
       { name: 'ort', usage: 'ort setzen <Name> <Art>', help: 'Ort an deine Position setzen', staff: true },

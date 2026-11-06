@@ -22,8 +22,9 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/main.lua` | Startfolge, Autosave, Speichern beim Stop |
 | `client/main.lua` | Anmeldung, Spawn nach Charakterwahl, Herzschlag (Position, Aktivität) |
 | `client/ui.lua` | NUI-Brücke (`TacoV.UI.open/close/send/openConsole`), Befehlszeile führt Befehle aus |
-| `client/hud.lua` | HUD-Daten: Leben/Weste/Straße vom Client, Bedürfnisse vom Server; Hungerschaden |
-| `client/keys.lua` | Tastenbelegung aus `config/core.lua` (T, F1, F2, F3, F6, F9, X, H) |
+| `client/hud.lua` | HUD-Daten: Leben/Weste/Straße vom Client, Bedürfnisse vom Server, Minimap-Lage, Fahrzeugwerte (km/h, Tank, Motor, Schloss; `TacoV.Hud.tankCapacity` ersetzt das Fahrzeugmodul); Hungerschaden |
+| `client/menu.lua` | Listenmenüs mit Untermenü-Stapel: `TacoV.Menu.open(def, onSelect)`, `update`, `back`, `close` |
+| `client/keys.lua` | Tastenbelegung aus `config/core.lua` (T, F1, F2, F3, F6, F9, X, H); F6 öffnet das Aktionsmenü mit Zivilistenaktionen |
 | `config/commands.lua` | Befehlsliste für die Befehlszeile |
 | `server/needs.lua` | Hunger/Durst sinken je Minute, Promille baut ab; `needsAdd` für Essen/Trinken |
 | `config/items.lua` | Alle Items (Gewicht, Stapel, Kategorie, Wirkung), Startausrüstung |
@@ -61,5 +62,6 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Inventar (F2) mit Ablagen, Geben, Benutzen; Interaktionsrad (X); Startitems Ausweis + Stadtplan
 - [x] Bank und Geldautomat, Orte mit Blips
 - [x] Läden 24/7, LTD, Rob's, Baumarkt (22 Orte)
+- [x] Design V4 in allen Oberflächen, Listenmenü (F6 Aktionsmenü), Fahrzeug-HUD-Daten
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

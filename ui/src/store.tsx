@@ -5,6 +5,7 @@ import type { InventoryData } from './views/Inventory';
 import type { WheelData } from './views/Wheel';
 import type { BankData } from './views/Bank';
 import type { ShopData } from './views/Shop';
+import type { MenuData } from './views/Menu';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 
@@ -14,7 +15,12 @@ export type HudData = {
   street: string; area: string; weight: number; maxWeight: number;
   name: string; level: number; levelProgress: number; status: string; faction: string;
   visible: boolean;
+  factionRank?: string;
   minimap?: { x: number; y: number; w: number; h: number }; // Bruchteile des Bildschirms, von Lua
+  radio?: { id: number; name: string; talking?: boolean }[]; // wer gerade im Funk ist
+  radioFrequency?: string; radioOn?: boolean;
+  vehicle?: { speed: number; fuel: number; tank: number; engine: boolean; locked: boolean } | null; // nur im Fahrzeug
+  station?: { name: string; sub?: string; price?: number } | null; // Tankstellenkarte über dem Tacho
 };
 
 export type CharacterRow = {
@@ -31,7 +37,8 @@ type View = null
   | { name: 'inventory'; data: InventoryData }
   | { name: 'wheel'; data: WheelData }
   | { name: 'bank'; data: BankData }
-  | { name: 'shop'; data: ShopData };
+  | { name: 'shop'; data: ShopData }
+  | { name: 'menu'; data: MenuData };
 
 export type Hint = { key: string; text: string };
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null };

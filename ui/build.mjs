@@ -29,6 +29,13 @@ if (existsSync(itemDir)) {
 }
 writeFileSync(join(out, 'assets', 'items', 'index.json'), JSON.stringify(index));
 
+// Schriften: public/fonts/*.ttf|woff2 → assets/fonts/ (Barlow, Kaushan Script; siehe README)
+const fontDir = join(here, 'public', 'fonts');
+mkdirSync(join(out, 'assets', 'fonts'), { recursive: true });
+if (existsSync(fontDir)) {
+  for (const f of readdirSync(fontDir)) if (/\.(ttf|otf|woff2?)$/i.test(f)) copyFileSync(join(fontDir, f), join(out, 'assets', 'fonts', f));
+}
+
 writeFileSync(join(out, 'index.html'), `<!doctype html>
 <html lang="de">
 <head>
@@ -52,6 +59,7 @@ const options = {
   format: 'iife',
   outfile: join(out, 'app.js'),
   loader: { '.png': 'file', '.svg': 'file' },
+  external: ['*.ttf', '*.otf', '*.woff', '*.woff2'], // Schrift-URLs bleiben relativ zu index.html stehen
   define: { 'process.env.NODE_ENV': watch ? '"development"' : '"production"', __ITEM_ICONS__: JSON.stringify(index) },
   logLevel: 'info',
 };

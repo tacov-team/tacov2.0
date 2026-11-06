@@ -31,6 +31,27 @@ const paths: Record<string, string> = {
   gift: 'M3 11h18v3H3zM5 14v7h14v-7M12 11v10M12 11c-3 0-5-1-5-3s3-3 5 0c2-3 5-3 5 0s-2 3-5 3',
   id: 'M3 6h18v12H3zM7 10a2 2 0 1 0 0 4a2 2 0 1 0 0-4M13 10h5M13 14h5',
   hands: 'M8 21V9M8 9a2 2 0 1 1 4 0v3a2 2 0 1 1 4 0v1M16 21V13M12 12v9',
+  // V4-Ergänzungen
+  fuel: 'M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M5 21h10M7 7h6v4H7zM15 10h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V9l-3-3',
+  engine: 'M4 10h3V8h4V6h4v2h3v9h-3v2H7v-2H4zM2 12v4M22 11v6',
+  lock: 'M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3M12 15v2',
+  card: 'M3 6h18v12H3zM3 10h18M7 15h4',
+  list: 'M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01',
+  key: 'M14 4a5 5 0 1 0 0 10a5 5 0 1 0 0-10zM10 13l-7 7M6 17l2 2M3 20l2 2',
+  door: 'M5 3h14v18H5zM15 12h.01M9 21V3',
+  trunk: 'M3 10l3-5h12l3 5v9H3zM3 10h18M7 19v2M17 19v2M9 14h6',
+  speed: 'M4 16a8 8 0 1 1 16 0M12 16l4-6M12 16h.01',
+  group: 'M9 7a3 3 0 1 0 0 6a3 3 0 1 0 0-6zM3 21a6 6 0 0 1 12 0M16 4a3 3 0 0 1 0 6M21 21a6 6 0 0 0-4-5.6',
+  search: 'M10 4a6 6 0 1 0 0 12a6 6 0 1 0 0-12zM20 20l-5.5-5.5',
+  play: 'M7 4l13 8-13 8z',
+  back: 'M15 5l-7 7 7 7',
+  next: 'M9 5l7 7-7 7',
+  book: 'M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z',
+  phone: 'M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM11 18h2',
+  car: 'M5 11l2-5h10l2 5M3 11h18v6H3zM6 17v2M18 17v2M7 14h.01M17 14h.01',
+  star: 'M12 3l2.7 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17.3 6.4 20.3l1.2-6.3L3 9.6l6.3-.8z',
+  wrench: 'M14 4a5 5 0 0 0 6 6L9 21a2 2 0 0 1-3-3L17 7a5 5 0 0 0-3-3z',
+  settings: 'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1',
 };
 
 const extra: Record<string, ReactElement> = {

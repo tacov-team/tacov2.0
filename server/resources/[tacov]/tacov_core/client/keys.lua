@@ -24,10 +24,37 @@ bind('tacov_inventory', 'TacoV: Inventar',        K.inventory,  function()
 end)
 bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() soon('Das Handy') end)
 bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() soon('Das Animationsmenü') end)
-bind('tacov_faction',   'TacoV: Fraktionsmenü',   K.faction,    function() soon('Das Fraktionsmenü') end)
+bind('tacov_faction',   'TacoV: Aktionsmenü',     K.faction,    function() TacoV.Client.openActionMenu() end)
 bind('tacov_interact',  'TacoV: Interaktion',     K.interact,   function() TacoV.Interact.open() end, function() TacoV.Interact.release() end)
 bind('tacov_use',       'TacoV: Benutzen (E)',    K.use,        function() TacoV.Prompt.use() end)
 bind('tacov_handsup',   'TacoV: Hände hoch',      K.handsUp,    function() TacoV.Client.toggleHandsUp() end)
+
+--- Aktionsmenü (F6): Zivilistenaktionen als Unterpunkt, Fraktion/Fahrzeug folgen mit ihren Modulen.
+function TacoV.Client.openActionMenu()
+  if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
+  TacoV.Menu.open({
+    id = 'actions', title = 'Aktionsmenü', info = 'Taste ' .. K.faction, icon = 'list',
+    note = 'Mit ↑ ↓ wählen, Enter bestätigen, Esc schließen',
+    items = {
+      { id = 'civil', label = 'Zivilistenaktionen', icon = 'user', sub = 'Hände hoch, Ausweis' },
+      { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Türen, Kofferraum', dim = true, badge = 'bald' },
+      { id = 'faction', label = 'Fraktion', icon = 'shield', dim = true, badge = 'bald', section = 'Dienst' },
+    },
+  }, function(id)
+    if id == 'civil' then
+      TacoV.Menu.open({
+        id = 'civil', title = 'Zivilistenaktionen', info = 'Aktionsmenü · Bürger', icon = 'user',
+        items = {
+          { id = 'handsup', label = 'Hände hoch', icon = 'hands', sub = 'Taste ' .. K.handsUp },
+          { id = 'show_id', label = 'Ausweis vorzeigen', icon = 'id', sub = 'Zeigt deinen Ausweis den Spielern in der Nähe' },
+        },
+      }, function(sub)
+        if sub == 'handsup' then TacoV.Menu.close() TacoV.Client.toggleHandsUp() end
+        if sub == 'show_id' then TacoV.Menu.close() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end
+      end)
+    end
+  end)
+end
 
 -- Team-Menü nur anzeigen, wenn der Spieler Teammitglied ist (prüft der Server beim Öffnen erneut)
 bind('tacov_admin', 'TacoV: Team-Menü', K.admin, function()

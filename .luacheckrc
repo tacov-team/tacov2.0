@@ -26,6 +26,7 @@ globals = {
   "GetVehiclePedIsIn", "GetClosestVehicle", "GetDisplayNameFromVehicleModel", "GetEntityModel", "GetVehicleNumberPlateText",
   "GetSafeZoneSize", "GetAspectRatio", "GetActiveScreenResolution", "HideHudComponentThisFrame",
   "ClearPedTasks", "ClearPedTasksImmediately", "NetworkResurrectLocalPlayer", "ShutdownLoadingScreen", "ShutdownLoadingScreenNui", "IsPedInAnyVehicle", "RequestAnimDict", "HasAnimDictLoaded", "TaskPlayAnim",
+  "GetEntitySpeed", "GetVehicleFuelLevel", "GetIsVehicleEngineRunning", "GetVehicleDoorLockStatus",
 }
 
 ignore = { "212/_.*" }

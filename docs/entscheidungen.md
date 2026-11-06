@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Design V4 | Alle Oberflächen im Spiel auf das V4-Design umgestellt (Vorbild: GLRP-Referenzen, Akzent Gelb-Orange aus dem Logo, Schrift Barlow + Kaushan Script): Panels mit Kopfzeile, Listenmenüs per Tastatur (↑ ↓ Enter ⌫ Esc), E-Ring für Orte/Objekte, X-Rad nur Spieler/Fahrzeuge; Interaktions-UIs (X-Rad, Menü) leicht transparent, Vollbild-UIs (Inventar, Bank, Laden) deckend; HUD ohne Karten-Rahmen, Infozeilen rechts neben der Vanilla-Minimap, Funkliste statt Spielerliste, Fitness unten statt rechts, Tankstellenkarte über dem Tacho | Entscheidung des Betreibers nach Abnahme der V4-Tafeln |
 | 2026-11-06 | Bedienung | X-Rad nur für Interaktionen mit Spielern und Fahrzeugen; alles andere (Orte, Objekte) per E-Aufforderung | Entscheidung des Betreibers |
 | 2026-11-06 | Inventar | Startitems Ausweis und Stadtplan bei der Anlage (kein Handy); Raster ohne Platzlimit, Gewicht ist die einzige Grenze; Bargeld hat kein Gewicht (Schwarzgeld 0,1 kg je 1.000 $ bleibt) | Entscheidung des Betreibers |
 | 2026-11-06 | Resource-Namen | Ordner heißen `tacov_<name>` (FiveM nimmt den Ordnernamen als Resource-Namen) | Dependency und Exports brauchen den echten Namen |

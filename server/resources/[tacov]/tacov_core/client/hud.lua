@@ -11,8 +11,13 @@ local function statusFor(level)
 end
 
 local function factionLabel(c)
-  if not c.faction then return 'Zivilist' end
-  return ('%s · Rang %d'):format(c.faction:upper(), c.factionRank or 0)
+  if not c.faction then return 'Zivilist', '' end
+  return c.faction:upper(), ('Rang %d'):format(c.factionRank or 0)
+end
+
+--- Tankgröße in Litern; das Fahrzeugmodul ersetzt diese Funktion später je Klasse.
+function TacoV.Hud.tankCapacity(_vehicle)
+  return 65
 end
 
 --- Schickt die vollständigen HUD-Daten des Charakters (nach dem Laden und bei Änderungen).
@@ -21,11 +26,12 @@ function TacoV.Hud.refresh()
   if not c then return end
   local play = c.playtimeSeconds or 0
   local perLevel = TacoV.Config.Level.hoursPerLevel * 3600
+  local faction, rank = factionLabel(c)
   TacoV.UI.send('hud', {
     visible = true,
     name = c.firstName .. ' ' .. c.lastName,
     level = c.level, levelProgress = (play % perLevel) / perLevel, status = statusFor(c.level),
-    faction = factionLabel(c),
+    faction = faction, factionRank = rank,
     bank = TacoV.Client.bank, cash = TacoV.Inventory.money.cash, black = TacoV.Inventory.money.black,
     serverId = GetPlayerServerId(PlayerId()),
     weight = TacoV.Inventory.money.weight, maxWeight = TacoV.Inventory.money.maxWeight,
@@ -109,6 +115,30 @@ CreateThread(function()
         end
       end
       TacoV.UI.send('hud', data)
+    end
+  end
+end)
+
+-- Fahrzeug: Tacho, Tank, Motor, Schloss – 5x je Sekunde solange man im Fahrzeug sitzt
+CreateThread(function()
+  local wasIn = false
+  while true do
+    Wait(200)
+    local ped = PlayerPedId()
+    local veh = TacoV.Client.character and GetVehiclePedIsIn(ped, false) or 0
+    if veh ~= 0 then
+      wasIn = true
+      local tank = TacoV.Hud.tankCapacity(veh)
+      TacoV.UI.send('hud', { vehicle = {
+        speed = math.floor(GetEntitySpeed(veh) * 3.6 + 0.5),
+        fuel = math.floor(GetVehicleFuelLevel(veh) / 100 * tank + 0.5),
+        tank = tank,
+        engine = GetIsVehicleEngineRunning(veh),
+        locked = GetVehicleDoorLockStatus(veh) >= 2,
+      } })
+    elseif wasIn then
+      wasIn = false
+      TacoV.UI.send('hud', { vehicle = false })
     end
   end
 end)
