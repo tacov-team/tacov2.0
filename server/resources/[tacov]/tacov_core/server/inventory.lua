@@ -295,16 +295,36 @@ local function dropView(d)
   return TacoV.Inventory.view(d.inv, { title = 'Boden', subtitle = ('Ablage verfällt in %d Minuten'):format(minutes), dropId = d.id })
 end
 
+--- Gegenüber-Inventar der offenen Ansicht: Ablage am Boden oder ein Behälter (Kofferraum, Lager ...).
+--- Gibt Inventar und Ansicht zurück, oder nil. Behälter prüfen über o.check(source), ob der Zugriff noch gilt.
+local function otherOf(source)
+  local o = open[source]
+  if not o then return nil end
+  if o.drop then
+    local d = drops[o.drop]
+    if not d then open[source] = nil return nil end
+    if #(GetEntityCoords(GetPlayerPed(source)) - d.pos) > 3.0 then return nil end
+    return d.inv, dropView(d), d
+  end
+  if o.container then
+    if o.check and not o.check(source) then open[source] = nil return nil end
+    return o.container, TacoV.Inventory.view(o.container, { title = o.title, subtitle = o.subtitle })
+  end
+  return nil
+end
+
+--- Öffnet das eigene Inventar zusammen mit einem Behälter (z. B. Kofferraum). opts = { title, subtitle, check }
+function TacoV.Inventory.openContainer(source, container, opts)
+  opts = opts or {}
+  open[source] = { container = container, title = opts.title or 'Behälter', subtitle = opts.subtitle, check = opts.check }
+  TacoV.Inventory.send(source)
+end
+
 function TacoV.Inventory.send(source)
   local c = TacoV.Characters.get(source)
   local inv = TacoV.Inventory.ofSource(source)
   if not c or not inv then return end
-  local o = open[source]
-  local other = nil
-  if o and o.drop then
-    local d = drops[o.drop]
-    if d then other = dropView(d) else open[source] = nil end
-  end
+  local _, other = otherOf(source)
   TriggerClientEvent('tacov:inventory:data', source, {
     self = TacoV.Inventory.view(inv, {
       title = 'Taschen', name = c.first_name .. ' ' .. c.last_name,
@@ -328,6 +348,10 @@ function TacoV.Inventory.changed(inv)
   elseif inv.ownerType == 'drop' then
     for src, o in pairs(open) do
       if o.drop == inv.ownerId then TacoV.Inventory.send(src) end
+    end
+  else
+    for src, o in pairs(open) do
+      if o.container == inv then TacoV.Inventory.send(src) end
     end
   end
 end
@@ -489,28 +513,33 @@ RegisterNetEvent('tacov:inventory:action', function(data)
     TacoV.Inventory.send(src)
 
   elseif data.action == 'take' and slot and amount then
-    local o = open[src]
-    local d = o and o.drop and drops[o.drop]
-    if not d or #(GetEntityCoords(GetPlayerPed(src)) - d.pos) > 3.0 then return fail('missing') end
-    local pack = TacoV.Inventory.takeSlot(d.inv, slot, amount)
+    local oinv, _, d = otherOf(src)
+    if not oinv then return fail('missing') end
+    local pack = TacoV.Inventory.takeSlot(oinv, slot, amount)
     if not pack then return fail('amount') end
     local ok, err = TacoV.Inventory.add(inv, pack.item, pack.amount, pack.meta)
-    if not ok then TacoV.Inventory.add(d.inv, pack.item, pack.amount, pack.meta); return fail(err) end
+    if not ok then TacoV.Inventory.add(oinv, pack.item, pack.amount, pack.meta); return fail(err) end
     if Items[pack.item].money then
       local kind = pack.item == 'black_cash' and 'black' or 'cash'
-      TacoV.Journal.move(kind, { type = 'drop', id = d.id }, { type = 'character', id = c.id }, pack.amount, 'aufgehoben', { actor = c.id })
+      TacoV.Journal.move(kind, { type = oinv.ownerType, id = oinv.ownerId }, { type = 'character', id = c.id }, pack.amount, 'aufgehoben', { actor = c.id })
     end
     TacoV.Log.write('items', ('Aufgehoben: %dx %s'):format(pack.amount, Items[pack.item].label), { characterId = c.id })
-    if next(d.inv.items) == nil then removeDrop(d.id) else TacoV.Inventory.send(src) end
+    if d and next(d.inv.items) == nil then removeDrop(d.id) else TacoV.Inventory.send(src) end
 
   elseif data.action == 'move' and slot and tonumber(data.to) then
-    local o = open[src]
-    local d = o and o.drop and drops[o.drop]
-    local fromInv = data.from == 'other' and (d and d.inv) or inv
-    local toInv = data.dest == 'other' and (d and d.inv) or inv
+    local oinv, _, d = otherOf(src)
+    local fromInv = data.from == 'other' and oinv or inv
+    local toInv = data.dest == 'other' and oinv or inv
     if not fromInv or not toInv then return fail('missing') end
+    local moving = fromInv.items[slot]
+    local movingItem, movingAmount = moving and moving.item, moving and math.floor(tonumber(amount) or moving.amount)
     local ok, err = TacoV.Inventory.move(fromInv, slot, toInv, tonumber(data.to), amount)
-    if not ok then fail(err) end
+    if not ok then return fail(err) end
+    if fromInv ~= toInv and movingItem and Items[movingItem].money then
+      local kind = movingItem == 'black_cash' and 'black' or 'cash'
+      TacoV.Journal.move(kind, { type = fromInv.ownerType, id = fromInv.ownerId }, { type = toInv.ownerType, id = toInv.ownerId },
+        movingAmount, 'umgelagert', { actor = c.id })
+    end
     if d and next(d.inv.items) == nil then removeDrop(d.id) end
   end
 end)

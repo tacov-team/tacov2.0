@@ -37,10 +37,11 @@ function TacoV.Client.openActionMenu()
     note = 'Mit ↑ ↓ wählen, Enter bestätigen, Esc schließen',
     items = {
       { id = 'civil', label = 'Zivilistenaktionen', icon = 'user', sub = 'Hände hoch, Ausweis' },
-      { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Türen, Kofferraum', dim = true, badge = 'bald' },
+      { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Schloss, Kofferraum' },
       { id = 'faction', label = 'Fraktion', icon = 'shield', dim = true, badge = 'bald', section = 'Dienst' },
     },
   }, function(id)
+    if id == 'vehicle' then TacoV.Menu.close() TacoV.Vehicles.openMenu() return end
     if id == 'civil' then
       TacoV.Menu.open({
         id = 'civil', title = 'Zivilistenaktionen', info = 'Aktionsmenü · Bürger', icon = 'user',

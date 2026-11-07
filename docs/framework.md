@@ -57,6 +57,8 @@ Startreihenfolge regeln die `dependency`-Einträge der Manifeste: `tacov_db` →
 
 ## Konventionen für ein neues Modul
 
+> Stand 07.11.2026: Inventar, Bank, Läden und Fahrzeuge liegen als Dateien im Kern (`config/<name>.lua`, `server/<name>.lua`, `client/<name>.lua`, `sql/NNN_<name>.sql`). Eigene Resources je Modul kommen erst, wenn eine Bridge existiert, die über die Export-Grenze warten kann (FiveM-Exports dürfen nicht yielden; DB und Journal warten aber). Die Namensregeln unten gelten unverändert.
+
 ```
 server/resources/[tacov]/tacov_<name>/      (Ordnername = Resource-Name in FiveM)
   fxmanifest.lua        name 'tacov_<name>', dependency 'tacov_core'

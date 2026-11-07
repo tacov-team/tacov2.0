@@ -15,8 +15,9 @@ local function factionLabel(c)
   return c.faction:upper(), ('Rang %d'):format(c.factionRank or 0)
 end
 
---- Tankgröße in Litern; das Fahrzeugmodul ersetzt diese Funktion später je Klasse.
-function TacoV.Hud.tankCapacity(_vehicle)
+--- Tankgröße in Litern (aus der Fahrzeugklasse, sonst 65).
+function TacoV.Hud.tankCapacity(vehicle)
+  if TacoV.Vehicles and TacoV.Vehicles.tankOf then return TacoV.Vehicles.tankOf(vehicle) end
   return 65
 end
 
@@ -129,16 +130,17 @@ CreateThread(function()
     if veh ~= 0 then
       wasIn = true
       local tank = TacoV.Hud.tankCapacity(veh)
+      local liters = TacoV.Vehicles and TacoV.Vehicles.fuelOf and TacoV.Vehicles.fuelOf(veh) or (GetVehicleFuelLevel(veh) / 100 * tank)
       TacoV.UI.send('hud', { vehicle = {
         speed = math.floor(GetEntitySpeed(veh) * 3.6 + 0.5),
-        fuel = math.floor(GetVehicleFuelLevel(veh) / 100 * tank + 0.5),
+        fuel = math.floor(liters + 0.5),
         tank = tank,
         engine = GetIsVehicleEngineRunning(veh),
         locked = GetVehicleDoorLockStatus(veh) >= 2,
-      } })
+      }, station = TacoV.Vehicles and TacoV.Vehicles.hudStation and TacoV.Vehicles.hudStation() or false })
     elseif wasIn then
       wasIn = false
-      TacoV.UI.send('hud', { vehicle = false })
+      TacoV.UI.send('hud', { vehicle = false, station = false })
     end
   end
 end)

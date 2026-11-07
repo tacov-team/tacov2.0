@@ -27,9 +27,16 @@ globals = {
   "GetSafeZoneSize", "GetAspectRatio", "GetActiveScreenResolution", "HideHudComponentThisFrame",
   "ClearPedTasks", "ClearPedTasksImmediately", "NetworkResurrectLocalPlayer", "ShutdownLoadingScreen", "ShutdownLoadingScreenNui", "IsPedInAnyVehicle", "RequestAnimDict", "HasAnimDictLoaded", "TaskPlayAnim",
   "GetEntitySpeed", "GetVehicleFuelLevel", "GetIsVehicleEngineRunning", "GetVehicleDoorLockStatus",
+  "GetAllVehicles", "RequestModel", "HasModelLoaded", "IsModelInCdimage", "CreateVehicle", "SetVehicleNumberPlateText",
+  "SetEntityAsMissionEntity", "SetVehicleOnGroundProperly", "SetVehicleEngineHealth", "SetVehicleBodyHealth",
+  "GetVehicleEngineHealth", "GetVehicleBodyHealth", "SetVehicleColours", "GetVehicleColours", "SetVehicleExtraColours",
+  "GetVehicleExtraColours", "SetVehicleFuelLevel", "GetVehicleCurrentRpm", "SetVehicleEngineOn", "GetPedInVehicleSeat",
+  "SetVehicleDoorsLocked", "NetworkRequestControlOfEntity", "NetworkHasControlOfEntity", "Entity", "SetModelAsNoLongerNeeded",
+  "SetVehicleLights",
 }
 
 ignore = { "212/_.*" }
 
 -- fxmanifest.lua nutzt die Manifest-Funktionen von FiveM als Globale
 files["**/fxmanifest.lua"] = { ignore = { "113" } }
+files["**/vehicles.lua"] = { max_line_length = 200 }

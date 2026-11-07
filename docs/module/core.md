@@ -33,6 +33,10 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/locations.lua` / `server/locations.lua` / `client/locations.lua` | Orte (Banken …) aus Config, Überschreibung aus Tabelle `locations`, Blips, Nähe-Abfragen |
 | `server/bank.lua` / `client/bank.lua` | Bank (Schalter) und Geldautomat: Einzahlen, Abheben (Automat max. 5.000 $), Überweisen (Name/Kontonummer, 50.000 $/Tag, 1 % ab 10.000 $), Kontoauszug |
 | `config/shops.lua` / `server/shops.lua` / `client/shops.lua` | NPC-Läden (24/7, LTD, Rob's, Baumarkt): Sortiment und Preise, Kauf bar oder Karte, 5 % Umsatzsteuer an den Staat |
+| `config/vehicles.lua` | Fahrzeugklassen (Level, Führerschein, Kofferraum, Tank), Kaufliste (52 Modelle), Garagen (16 PKW + 5 LKW), Verwahrhof, Kaufhäuser, 27 Tankstellen, Gebühren |
+| `sql/003_vehicles.sql` | Tabellen `vehicles` (Halter, Zustand garage/out/impound, Tank, km, Zustand) und `vehicle_keys` |
+| `server/vehicles.lua` | Besitz und Schlüssel, Garage (ein-/ausparken, 50 $/Tag ab 24 h), Verwahrhof (24 h unterwegs → verwahrt, 500 $; nach Neustart gratis wenn kürzlich gefahren), Kaufhaus (Preis + Zulassung 150 $, Level je Klasse), Tanken (Preis aus `economy.lua`, 5 % USt), Kofferraum als Inventar-Behälter |
+| `client/vehicles.lua` | Spawn auf Serveranweisung, Tank (Statebag `fuel` in Litern, Verbrauch nach Drehzahl, leer = Motor aus), Kilometer, Herzschlag 60 s, X-Rad (Auf-/Abschließen, Motor, Kofferraum, Schlüssel geben), E-Aufforderungen (Garage, Einparken, Kaufhaus, Tanken), Menüs, Tankstellenkarte im HUD |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
@@ -63,5 +67,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Bank und Geldautomat, Orte mit Blips
 - [x] Läden 24/7, LTD, Rob's, Baumarkt (22 Orte)
 - [x] Design V4 in allen Oberflächen, Listenmenü (F6 Aktionsmenü), Fahrzeug-HUD-Daten
+- [x] Fahrzeuge Teil 1: Kauf, Garagen, Verwahrhof, Schlüssel, Schloss, Tanken, Kofferraum, Verbrauch
+- [ ] Fahrzeuge Teil 2: Fahrschule/DMV (Führerscheine, Zulassung, Halterwechsel), NPC-Werkstatt (Reparatur, Upgrades), Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)
