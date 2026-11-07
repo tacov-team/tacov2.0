@@ -87,8 +87,7 @@ TacoV.Config.Vehicles = {
     truck    = { label = 'LKW-Kaufhaus', classes = { 'van', 'truck' } },
   },
 
-  registrationFee = 150,     -- Zulassung (bis das DMV steht, beim Kauf fällig; Konzept 3)
-  requireLicense = false,    -- Führerscheine kommen mit der Fahrschule (Block Fahrzeuge Teil 2)
+  requireLicense = true,     -- Kauf nur mit passendem Führerschein (Fahrschule beim DMV, Punkt 4.10)
   publicGarageDaily = 50,    -- öffentliche Garage: 50 $ je angefangenen Tag ab 24 h Standzeit
   publicGarageMaxDays = 7,   -- Deckel für die Garagengebühr
   impoundAfterHours = 24,    -- nicht geparkte Fahrzeuge werden nach 24 h verwahrt

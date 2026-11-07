@@ -82,8 +82,8 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 4.6 | Kofferraum und Handschuhfach | ✅ | außen Kofferraum (offen = für alle), innen Handschuhfach 5 kg |
 | 4.7 | Tanken und Verbrauch, Tankstellenkarte | ✅ | |
 | 4.8 | Fahrzeugmenü (F6 → Fahrzeug, X-Rad) | ✅ | Motor startet nicht automatisch |
-| 4.9 | DMV: Zulassung, Halterwechsel | ⬜ | |
-| 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | ⬜ | |
+| 4.9 | DMV: Zulassung, Halterwechsel | 🔧 | DMV Vespucci; TMP-Kennzeichen bis Zulassung |
+| 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | 🔧 | B 500 / A 350 / C 800 $, Wiederholung 100 $; Kauf nur mit Führerschein |
 | 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | ⬜ | |
 | 4.12 | Blitzer | ⬜ | |
 | 4.13 | Kfz-Steuer | ⬜ | |
