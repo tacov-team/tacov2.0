@@ -55,6 +55,9 @@ Startreihenfolge regeln die `dependency`-Einträge der Manifeste: `tacov_db` →
 | Spieler | `TacoV.Client.character`, `.role`, `.bank`; Event `tacov:client:characterLoaded` |
 | Hinweis | Server: `TriggerClientEvent('tacov:core:notify', src, kind, text)` – kind: success, info, warn, error |
 
+## Ausnahme Voice
+SaltyChat (TeamSpeak 3) ist die einzige Fremd-Resource neben dem mysql2-Treiber (Punkt 0.14). Funk, Handy, Sprechweiten und HUD werden im Kern auf SaltyChat aufgesetzt; SaltyChat selbst wird nicht verändert.
+
 ## Konventionen für ein neues Modul
 
 > Stand 07.11.2026: Inventar, Bank, Läden und Fahrzeuge liegen als Dateien im Kern (`config/<name>.lua`, `server/<name>.lua`, `client/<name>.lua`, `sql/NNN_<name>.sql`). Eigene Resources je Modul kommen erst, wenn eine Bridge existiert, die über die Export-Grenze warten kann (FiveM-Exports dürfen nicht yielden; DB und Journal warten aber). Die Namensregeln unten gelten unverändert.

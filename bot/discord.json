@@ -35,5 +35,7 @@
     "guide": "1568019433367011420",
     "gamedesigner": "1568019434390691950"
   },
-  "_teamRoles": "Discord-Rollen-IDs des Teams; leer = wird nicht gespiegelt. Höchste Rolle gewinnt."
+  "_teamRoles": "Discord-Rollen-IDs des Teams; leer = wird nicht gespiegelt. Höchste Rolle gewinnt.",
+  "statusChannelId": "1568019535544455202",
+  "_statusChannelId": "Kanal „Server Status“: Embed mit den öffentlichen Infos (Punkt 1.7)"
 }
