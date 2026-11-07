@@ -77,7 +77,7 @@ RegisterNetEvent('tacov:workshop:apply', function(data)
   local v, err = vehicleFor(src, data.netId)
   if not v then return err and fail(src, err) end
   local method = data.method == 'cash' and 'cash' or 'card'
-  local price, label, action = 0, '', nil
+  local price, label, action
   if data.kind == 'repair' then
     local body = tonumber(data.body) or 1000
     local engine = tonumber(data.engine) or 1000

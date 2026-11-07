@@ -53,7 +53,8 @@ RegisterNetEvent('tacov:workshop:data', function(d)
   TacoV.Menu.open({
     id = 'ws', title = 'Werkstatt', icon = 'wrench', info = ('%s · %s · Bargeld %s · Konto %s'):format(d.label, d.plate, fmt(d.cash), fmt(d.bank)),
     items = {
-      { id = 'repair', label = 'Reparatur', icon = 'tool', price = d.repair > 0 and fmt(d.repair) or nil, sub = d.repair > 0 and ('Schaden %d %%'):format(d.damagePercent) or 'kein Schaden', dim = d.repair <= 0 },
+      { id = 'repair', label = 'Reparatur', icon = 'tool', price = d.repair > 0 and fmt(d.repair) or nil,
+        sub = d.repair > 0 and ('Schaden %d %%'):format(d.damagePercent) or 'kein Schaden', dim = d.repair <= 0 },
       { id = 'upgrades', label = 'Upgrades', icon = 'engine', sub = 'Motor, Bremsen, Getriebe, Fahrwerk, Turbo', section = 'Tuning' },
       { id = 'paint', label = 'Lackierung', icon = 'star', price = fmt(d.paint), section = 'Zubehör' },
       { id = 'tint', label = 'Fensterfarbe', icon = 'door', price = fmt(d.tint) },
