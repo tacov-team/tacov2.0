@@ -17,6 +17,11 @@ Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit 
 ## Prüfungen vor dem Commit
 `bash tools/ci/check_structure.sh`, `bash tools/ci/check_secrets.sh`, `luacheck server/resources`, `cd bot && npm run check`, `cd server/resources/[tacov]/tacov_db && npm run check`.
 
+## Betrieb (Punkt 0.13)
+- Live: `/opt/tacov2`, Branch `main`, Port 30121. Test: `/opt/tacov2-test`, Branch `develop`, DB `tacov2_test`, Port 30122 (Punkt 1.8).
+- Neustart alle 6 Stunden (00/06/12/18 Uhr) mit Ansagen 15/5/1 Minuten vorher (Punkt 1.9).
+- Backups täglich 05:30 Uhr und vor jedem Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ (Punkt 1.7).
+
 ## VPS
 
 Einmalig als root: `bash tools/vps/setup.sh` (Ubuntu 22.04/24.04, Debian 12). Legt Nutzer `tacov2`, `/opt/tacov2`, Datenbank `tacov2`, MariaDB + phpMyAdmin (Basic-Auth), Node 20, FXServer (Port 30121), den Treiber der Datenbank-Resource und die Dienste `tacov2-server` (FXServer in einer `screen`-Sitzung, Konsole: `sudo -u tacov2 screen -r tacov2`) / `tacov2-bot` an – alles getrennt vom bestehenden `tacov`-Ordner auf dem VPS. Danach Lizenzschlüssel in `server/server.cfg` und Token in `bot/.env` eintragen.

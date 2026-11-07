@@ -20,7 +20,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 0.10 | Items- und Orte-Tabellen | ✅ | `docs/konzept/items.md`, `orte.md` |
 | 0.11 | Team-Rollen und Rechte | ✅ | 10 Discord-Rollen, Rechte je Stufe, Aduty (bestätigt 07.11.; Rollen-IDs in `bot/discord.json` eingetragen) |
 | 0.12 | Anti-Cheat-Ansatz | ✅ | eigener Abgleich im Kern (Punkt 5.16), kommerziell erst ab > 32 Slots (bestätigt 07.11.) |
-| 0.13 | Hoster, Testserver, Neustart-Fenster | ⬜ | |
+| 0.13 | Hoster, Testserver, Neustart-Fenster | ✅ | Testserver auf dem VPS (develop), Neustart alle 6 h, Backup täglich, Status-Embed in Discord (bestätigt 07.11.) |
 | 0.14 | Voice (TeamSpeak-Plugin, Lizenz) | ⬜ | |
 | 0.15 | Design-Richtung (V4: Gelb-Orange, Barlow, Listenmenüs) | 🔧 | `docs/design/README.md` |
 | 0.16 | Spielstil: Softcore/Midcore, Bodyshot | ✅ | Konzept 1.2; Bodyshot im Kern umgesetzt (07.11.) |
@@ -35,7 +35,9 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 1.4 | Discord-Bot: Whitelist per Reaktion | 🔧 | `bot/` |
 | 1.5 | Discord-Bot: Log-Spiegel (11 Kanäle) | 🔧 | |
 | 1.6 | Geheimnisse und Zugänge (server.cfg, .env, CI-Prüfung) | 🔧 | |
-| 1.7 | Backups und Monitoring | ⬜ | täglich, 14 Tage; Erreichbarkeit |
+| 1.7 | Backups und Monitoring | ⬜ | DB-Backup täglich 05:30 + vor Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ |
+| 1.8 | Testserver-Instanz (`/opt/tacov2-test`, Branch develop, Port 30122) | ⬜ | |
+| 1.9 | Neustart alle 6 h mit Ansagen 15/5/1 min | ⬜ | |
 
 ## Phase 2 · Kern (eigenes Framework)
 
