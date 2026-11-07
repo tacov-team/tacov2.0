@@ -66,4 +66,4 @@ TacoV.Config.Keys = {
   use = 'E', handsUp = 'H', console = 'T',
 }
 
-TacoV.Config.Voice = { whisper = 3.0, normal = 10.0, shout = 25.0 }
+TacoV.Config.Voice = { whisper = 3.0, normal = 10.0, shout = 25.0, order = { 'whisper', 'normal', 'shout' }, key = 'Z' } -- Umschalten per Taste (Punkt 3.2)

@@ -45,6 +45,7 @@ client_scripts {
   'client/main.lua',
   'client/ui.lua',
   'client/menu.lua',
+  'client/voice.lua',
   'client/hud.lua',
   'client/locations.lua',
   'client/prompt.lua',

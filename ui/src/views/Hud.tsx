@@ -81,6 +81,7 @@ export function Hud() {
           {h.black > 0 && <><span className="num" style={{ color: 'var(--black-money)' }}>{money(h.black)}</span><span className="coin black">S</span></>}
         </div>
         <div className="hud-stats">
+          <div className={'stat voice ' + (h.voice ?? 'normal')} title="Sprechweite"><span className="c"><Icon name="mic" size={15} /></span><span className="num">{h.voiceMeters ?? 10} m</span></div>
           <Stat icon="food" value={h.hunger} />
           <Stat icon="drop" value={h.thirst} />
           {h.radioOn && <div className="stat"><span className="c" title="Funk an"><Icon name="radio" size={16} /></span></div>}
