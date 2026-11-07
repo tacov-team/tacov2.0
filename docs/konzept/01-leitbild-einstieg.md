@@ -49,7 +49,7 @@ Jeder neue Charakter landet am Flughafen und durchläuft eine Einreise, die Role
 
 ### Ablauf
 
-1. Ladebildschirm, Charakterauswahl (2 Plätze, zweiter ab Level 15), Charaktereditor: Aussehen, Vor- und Nachname (Sperrliste, keine Doppelnamen), Geburtsdatum (mindestens 18), Herkunft.
+1. Ladebildschirm, Charakterauswahl (ein Charakter je Spieler; Änderung 07.11.2026), Charaktereditor: Aussehen, Vor- und Nachname (Sperrliste, keine Doppelnamen), Geburtsdatum (mindestens 18), Herkunft.
 2. Ankunftshalle; der Charakter hat nur Kleidung und Reisepass.
 3. Einreisegespräch am Schalter mit einem Teammitglied mit der Rolle `Einreise` (Person, Grund der Einreise, Verhalten in zwei kurzen Situationen). Nur mit Teammitglied; ist niemand online, wartet der Charakter in der Ankunftshalle, das Handy zeigt die nächsten Einreisezeiten aus dem Discord.
 4. Bestanden: Ausweis, 5.000 $ auf dem Konto, Handy, Schlüssel für eine Sozialwohnung (14 Tage kostenlos), Busticket, Stadtplan. Nicht bestanden: Grund, Rückflug, neuer Versuch nach 24 Stunden.
@@ -61,14 +61,14 @@ Aufgabenliste im Handy mit zehn Schritten (Wohnung betreten, Führerschein beim 
 
 ## 5. Level, Noobschutz, Probezeit
 
-Eine Stunde aktive Spielzeit = ein Levelpunkt; AFK zählt nicht.
+Eine Stunde aktive Spielzeit = ein Levelpunkt; ab 20 Minuten ohne Bewegung oder Eingabe zählt die Zeit nicht (Änderung 07.11.2026).
 
 | Level | Stunden | Bedeutung |
 | --- | --- | --- |
 | 1–3 | 0–3 | Noobschutz: kein Raub, keine Entführung, keine Geiselnahme; keine Waffen, keine Drogenverarbeitung, kein Beitritt zu kriminellen Fraktionen. Sichtbar im HUD und am Ausweis. |
 | 4–8 | 3–8 | Probezeit: alle Systeme offen; Verstöße führen schneller zu Sperren; Fraktionsbeitritt nur als Hangaround. |
 | 9–14 | 8–15 | Vollwertig: Fraktionen, Waffenschein, Firmengründung. |
-| 15+ | 15+ | Zweiter Charakterplatz, Leader-Positionen, Leasing, große Immobilien. |
+| 15+ | 15+ | Leader-Positionen, Leasing, große Immobilien. |
 
 Der Noobschutz endet vorzeitig, sobald der Spieler selbst eine Straftat begeht; der Kern hebt ihn auf und vermerkt es im Journal.
 

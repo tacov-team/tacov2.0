@@ -61,7 +61,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 ## Stand
 - [x] Schema, DB-Hülle, Migrationen
 - [x] Whitelist-Prüfung beim Verbinden
-- [x] Spieler, Charaktere (2 Plätze), Spielzeit, Autosave
+- [x] Spieler, Charaktere (1 Platz), Spielzeit, Autosave
 - [x] Konten über Journal, Startgeld
 - [x] Rechte, Grundbefehle
 - [x] React-UI: HUD, Hinweise, Befehlszeile, Charakterauswahl (Phase 3)

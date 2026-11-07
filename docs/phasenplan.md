@@ -10,7 +10,7 @@ Die Phasen sind in `docs/punkte.md` in einzelne Punkte (ein Punkt = ein System) 
 | --- | --- | --- |
 | 0 | Konzept und Entscheidungen | ✅ fertig, alle 16 Punkte bestätigt (07.11.) |
 | 1 | Infrastruktur: Repo, CI, VPS, Datenbank, Discord-Bot, Whitelist, Backups, Status-Embeds, Testserver, Neustarts, TeamSpeak | ✅ fertig, alle 10 Punkte bestätigt (07.11.) |
-| 2 | Kern: eigenes Framework (`tacov_db`, `tacov_core`) | ✅ fertig |
+| 2 | Kern: eigenes Framework (`tacov_db`, `tacov_core`) | ✅ fertig, 11 Punkte bestätigt (07.11.; 1 Charakter, AFK 20 min) |
 | 3 | Alltag I: Oberfläche V4, HUD, Inventar, Bedürfnisse, Bank, Läden, Orte | ✅ fertig |
 | 4 | Fahrzeuge | 🔶 Teil 1 fertig, Teil 2 offen |
 | 5 | Entwickler- und Admin-Werkzeuge: Creator-Systeme (Türen, Aufzüge, Orte, Peds, Objekte, Zonen), Team-Menü | ⬜ |
@@ -47,7 +47,7 @@ GitHub-Repo `tacov-team/tacov2.0`, CI (luacheck, Struktur- und Geheimnis-Prüfun
 
 ## Phase 2 – Kern ✅
 
-`tacov_db` (eigener Datenbank-Treiber im FXServer-Node), `tacov_core`: Spieler über Discord-ID, 2 Charakterplätze, Journal als einziger Geldweg, Konten, Rechte/Rollen, Logs, Migrationen, Befehlszeile, Orte mit `/ort setzen`, Spielzeit/Level, Autosave.
+`tacov_db` (eigener Datenbank-Treiber im FXServer-Node), `tacov_core`: Spieler über Discord-ID, ein Charakter je Spieler, Journal als einziger Geldweg, Konten, Rechte/Rollen, Logs, Migrationen, Befehlszeile, Orte mit `/ort setzen`, Spielzeit/Level, Autosave.
 
 ## Phase 3 – Alltag I ✅
 

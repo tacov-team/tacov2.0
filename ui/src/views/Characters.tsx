@@ -44,7 +44,7 @@ export function Characters({ data }: { data: CharactersData; key?: string }) {
             <div className="body" style={{ alignItems: 'center', justifyContent: 'center', gap: 10 }} onClick={() => { if (!locked) setCreating(true); }}>
               <span className="badge" style={{ width: 64, height: 64, borderRadius: '50%' }}><Icon name="plus" size={26} stroke={2.6} /></span>
               <b style={{ fontSize: 16 }}>{locked ? 'Gesperrt' : 'Neuer Charakter'}</b>
-              <span className="sub">{data.characters.length >= 1 ? `Zweiter Charakter ab Level ${data.secondSlotLevel}` : 'Dein erster Charakter'}</span>
+              <span className="sub">{data.characters.length >= 1 ? `Weiterer Charakter ab Level ${data.secondSlotLevel}` : 'Dein Charakter'}</span>
             </div>
           </Panel>
         )}

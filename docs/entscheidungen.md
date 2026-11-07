@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Phase 2 Kern | Punkte 2.1–2.11 bestätigt mit zwei Änderungen: nur ein Charakter je Spieler (2.3); Spielzeit stoppt erst nach 20 Minuten Inaktivität statt 10 (2.9) | Entscheidung des Betreibers |
 | 2026-11-07 | Phase 1 komplett | Punkte 1.7–1.10 abgenommen: Backups + Status-Embeds (Server, TeamSpeak), Testserver auf develop (Port 30122), Neustarts alle 6 h, TeamSpeak 3 + SaltyChat laufen | Betreiber: „hat geklappt“ |
 | 2026-11-07 | Punkte 1.1–1.6 | Repo/CI, VPS, FXServer-Betrieb, Bot-Whitelist, Log-Spiegel, Geheimnisse beim Neudurchgang bestätigt | Betreiber: „passt“ |
 | 2026-11-07 | Punkt 0.15 Design | Design V5 „Nachtviolett“ (Violett-Akzent, kühles Glas, Schwarzgeld Mint) ersetzt die Gelb-Orange-Farbwelt; Aufbau und Bedienung von V4 bleiben. Neue Oberflächen werden erst gebaut, wenn das System dran ist | Entscheidung des Betreibers; Phase 0 damit komplett |

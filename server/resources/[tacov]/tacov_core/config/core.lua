@@ -6,8 +6,8 @@ TacoV.Config.Server = {
   name = 'TacoV',
   slots = 10,                      -- Konzept 1: Start mit 10 Slots
   autosaveSeconds = 300,           -- Konzept 1: Autosave alle 5 Minuten
-  charactersPerPlayer = 2,         -- Konzept 1: 2 Plätze
-  secondCharacterLevel = 15,       -- Konzept 1: zweiter Platz ab Level 15
+  charactersPerPlayer = 1,         -- Punkt 2.3 (07.11.): ein Charakter je Spieler
+  secondCharacterLevel = 15,       -- nur relevant, falls charactersPerPlayer > 1
 }
 
 -- Betrieb (Punkt 0.13): Neustart alle 6 Stunden mit Ansagen; Status-Zeile für das Discord-Embed
@@ -38,7 +38,7 @@ TacoV.Config.Level = {
   hoursPerLevel = 1,               -- Konzept 1: 1 Stunde aktive Spielzeit = 1 Levelpunkt
   noobProtectionUntil = 3,
   probationUntil = 8,
-  afkMinutes = 10,                 -- ab wann AFK nicht mehr als Spielzeit zählt
+  afkMinutes = 20,                 -- Punkt 2.9 (07.11.): ab 20 Minuten ohne Bewegung zählt die Zeit nicht
 }
 
 TacoV.Config.Needs = {

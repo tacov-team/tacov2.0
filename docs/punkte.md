@@ -44,17 +44,17 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 2.1 | Datenbank-Resource `tacov_db` und `TacoV.DB` | 🔧 | mysql2 im FXServer-Node, Migrationen |
-| 2.2 | Spieler und Verbindung (Discord-ID, Whitelist-Prüfung, Sperren) | 🔧 | |
-| 2.3 | Charaktere (2 Plätze, Anlage, Auswahl, Autosave) | 🔧 | |
-| 2.4 | Journal als einziger Geldweg, Konten | 🔧 | |
-| 2.5 | Rechte und Rollen | 🔧 | |
-| 2.6 | Logs (Kategorien, Spiegel in Discord) | 🔧 | |
-| 2.7 | Befehlszeile (T) und Befehle | 🔧 | |
-| 2.8 | Orte (Config + `/ort setzen`, Blips) | 🔧 | |
-| 2.9 | Spielzeit, Level, Probezeit | 🔧 | |
-| 2.10 | Tastenbelegung und Interaktion (E-Aufforderung, X-Rad, Listenmenü) | 🔧 | |
-| 2.11 | Schadensmodell Bodyshot | 🔧 | `client/main.lua` |
+| 2.1 | Datenbank-Resource `tacov_db` und `TacoV.DB` | ✅ | mysql2 im FXServer-Node, Migrationen |
+| 2.2 | Spieler und Verbindung (Discord-ID, Whitelist-Prüfung, Sperren) | ✅ | |
+| 2.3 | Charaktere (1 Platz, Anlage, Auswahl, Autosave) | ✅ | |
+| 2.4 | Journal als einziger Geldweg, Konten | ✅ | |
+| 2.5 | Rechte und Rollen | ✅ | |
+| 2.6 | Logs (Kategorien, Spiegel in Discord) | ✅ | |
+| 2.7 | Befehlszeile (T) und Befehle | ✅ | |
+| 2.8 | Orte (Config + `/ort setzen`, Blips) | ✅ | |
+| 2.9 | Spielzeit, Level, Probezeit | ✅ | |
+| 2.10 | Tastenbelegung und Interaktion (E-Aufforderung, X-Rad, Listenmenü) | ✅ | |
+| 2.11 | Schadensmodell Bodyshot | ✅ | `client/main.lua` |
 
 ## Phase 3 · Alltag I
 
