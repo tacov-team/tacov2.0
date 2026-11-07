@@ -128,9 +128,22 @@ if [ ! -f "$EXT/saltychat/fxmanifest.lua" ]; then
   fi
   [ -n "$url" ] || { echo "Kein SaltyChat-Release gefunden – bitte Zip von github.com/saltminede/saltychat-fivem/releases nach $EXT entpacken."; exit 1; }
   curl -fsSL "$url" -o "$tmp/salty.zip"
-  unzip -q "$tmp/salty.zip" -d "$tmp/x"
-  src=$(find "$tmp/x" -type f -name fxmanifest.lua -path '*saltychat/*' | head -1)
-  [ -n "$src" ] || { echo "Zip enthält keine saltychat-Resource."; exit 1; }
+  # Das Release-Zip stammt von Windows (Backslash-Pfade); Python entpackt es mit normalisierten Pfaden
+  python3 - "$tmp/salty.zip" "$tmp/x" <<'PY'
+import sys, zipfile, os
+zip_path, out = sys.argv[1], sys.argv[2]
+with zipfile.ZipFile(zip_path) as z:
+    for info in z.infolist():
+        name = info.filename.replace('\\', '/')
+        if name.endswith('/') or not name: continue
+        target = os.path.normpath(os.path.join(out, name))
+        if not target.startswith(os.path.abspath(out)): continue
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with z.open(info) as f, open(target, 'wb') as o: o.write(f.read())
+PY
+  src=$(find "$tmp/x" -type f -name fxmanifest.lua -path '*saltychat/*' -print -quit)
+  [ -n "$src" ] || src=$(find "$tmp/x" -type f -name fxmanifest.lua -print -quit)
+  [ -n "$src" ] || { echo "Zip enthält keine saltychat-Resource."; ls -R "$tmp/x" | head -30; exit 1; }
   cp -r "$(dirname "$src")" "$EXT/saltychat"
   rm -rf "$tmp"
 fi
