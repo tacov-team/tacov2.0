@@ -89,19 +89,38 @@ RegisterNetEvent('tacov:vehicles:spawn', function(d)
   SetVehicleDoorsLocked(veh, 1)
   SetVehicleEngineHealth(veh, (d.engineHealth or 1000.0) + 0.0)
   SetVehicleBodyHealth(veh, (d.bodyHealth or 1000.0) + 0.0)
-  if type(d.props) == 'table' then
-    if d.props.colors then SetVehicleColours(veh, d.props.colors[1], d.props.colors[2]) end
-    if d.props.extraColors then SetVehicleExtraColours(veh, d.props.extraColors[1], d.props.extraColors[2]) end
-  end
+  TacoV.Vehicles.applyProps(veh, d.props)
   Entity(veh).state:set('fuel', d.fuel or d.tank, true)
   SetVehicleFuelLevel(veh, (d.fuel or d.tank) / (d.tank or 65) * 100)
   TriggerServerEvent('tacov:vehicles:spawned', d.id, NetworkGetNetworkIdFromEntity(veh))
 end)
 
-local function propsOf(veh)
+-- Ausstattung (Farben, Tuning) lesen/setzen – wird beim Einparken gespeichert und beim Ausparken gesetzt
+local MODS = { engine = 11, brakes = 12, transmission = 13, suspension = 15, wheels = 23 }
+function TacoV.Vehicles.propsOf(veh)
   local c1, c2 = GetVehicleColours(veh)
   local e1, e2 = GetVehicleExtraColours(veh)
-  return { colors = { c1, c2 }, extraColors = { e1, e2 } }
+  local mods = {}
+  for k, t in pairs(MODS) do mods[k] = GetVehicleMod(veh, t) end
+  mods.turbo = IsToggleModOn(veh, 18)
+  mods.wheelType = GetVehicleWheelType(veh)
+  mods.tint = GetVehicleWindowTint(veh)
+  return { colors = { c1, c2 }, extraColors = { e1, e2 }, mods = mods }
+end
+local propsOf = TacoV.Vehicles.propsOf
+
+function TacoV.Vehicles.applyProps(veh, props)
+  if type(props) ~= 'table' then return end
+  SetVehicleModKit(veh, 0)
+  if props.colors then SetVehicleColours(veh, props.colors[1], props.colors[2]) end
+  if props.extraColors then SetVehicleExtraColours(veh, props.extraColors[1], props.extraColors[2]) end
+  local m = props.mods
+  if type(m) == 'table' then
+    if m.wheelType then SetVehicleWheelType(veh, m.wheelType) end
+    for k, t in pairs(MODS) do if m[k] ~= nil then SetVehicleMod(veh, t, m[k], false) end end
+    if m.turbo ~= nil then ToggleVehicleMod(veh, 18, m.turbo == true) end
+    if m.tint then SetVehicleWindowTint(veh, m.tint) end
+  end
 end
 
 -- ---------------------------------------------------------------- Tank, Kilometer, Herzschlag
@@ -118,6 +137,10 @@ CreateThread(function()
     local veh = GetVehiclePedIsIn(ped, false)
     if veh ~= lastVeh then
       if veh ~= 0 and GetPedInVehicleSeat(veh, -1) == ped then
+        -- Unbekannter Zustand (fremdes/NPC-Fahrzeug): so lassen, wie es gerade läuft – ein laufender Motor bleibt an
+        if Entity(veh).state.engine == nil and NetworkHasControlOfEntity(veh) then
+          Entity(veh).state:set('engine', GetIsVehicleEngineRunning(veh), true)
+        end
         local on = Entity(veh).state.engine == true
         SetVehicleEngineOn(veh, on, true, true)
       elseif veh == 0 and lastVeh ~= 0 and DoesEntityExist(lastVeh) then

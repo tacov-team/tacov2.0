@@ -42,6 +42,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/vehicles.lua` | Besitz und Schlüssel, Garage (ein-/ausparken, 50 $/Tag ab 24 h), Verwahrhof (24 h unterwegs → verwahrt, 500 $; nach Neustart gratis wenn kürzlich gefahren), Kaufhaus (Preis + Zulassung 150 $, Level je Klasse), Tanken (Preis aus `economy.lua`, 5 % USt), Kofferraum (außen; offen = für alle, sonst Schlüssel) und Handschuhfach (innen, 5 kg) als Inventar-Behälter |
 | `client/vehicles.lua` | Spawn auf Serveranweisung, Tank (Statebag `fuel` in Litern, Verbrauch nach Drehzahl, leer = Motor aus), Kilometer, Herzschlag 60 s, X-Rad (Auf-/Abschließen, Motor, Kofferraum, Schlüssel geben), E-Aufforderungen (Garage, Einparken, Kaufhaus, Tanken), Garage-Ansicht (Karten mit Suche/Filter), Kaufhaus-Menüs mit Vorschau und Kamera, Tankstellenkarte im HUD |
 | `config/dmv.lua`, `sql/006_dmv.sql`, `server/dmv.lua`, `client/dmv.lua` | DMV Vespucci (NPC-Schalter bis zur Fraktion): Führerscheine A/B/C (`licenses`, Punkte, Entzug ab 8), Zulassung 150 $ (TMP → LS-Kennzeichen), Halterwechsel 100 $ mit Bestätigung des Käufers, Fahrschule (Theorie 8 Fragen/7 richtig als Menü, Praxisfahrt mit Kontrollpunkten, Tempolimit, Unfall, Zeit) |
+| `config/workshop.lua`, `server/workshop.lua`, `client/workshop.lua` | NPC-Werkstatt (5 Orte): Reparatur (bis 10 % Kaufpreis nach Schaden, min. 150 $), Upgrades Motor/Bremsen/Getriebe/Fahrwerk in Stufen Straße/Sport/Rennen (5/10/20 %), Turbo 10 %, Lack 500 $, Fensterfarbe 300 $, Felgen 800 $; Ausstattung wird am Fahrzeug gespeichert (`props`) |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
@@ -74,6 +75,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Design V4 in allen Oberflächen, Listenmenü (F6 Aktionsmenü), Fahrzeug-HUD-Daten
 - [x] Fahrzeuge Teil 1: Kauf, Garagen, Verwahrhof, Schlüssel, Schloss, Tanken, Kofferraum, Verbrauch
 - [x] Fahrzeuge Teil 2a: DMV (Zulassung, Halterwechsel) und Fahrschule (Führerscheine A/B/C)
-- [ ] Fahrzeuge Teil 2b: NPC-Werkstatt (Reparatur, Upgrades), Blitzer, Kfz-Steuer
+- [x] Fahrzeuge Teil 2b: NPC-Werkstatt (Reparatur, Upgrades, Zubehör)
+- [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

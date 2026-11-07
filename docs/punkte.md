@@ -84,7 +84,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 4.8 | Fahrzeugmenü (F6 → Fahrzeug, X-Rad) | ✅ | Motor startet nicht automatisch |
 | 4.9 | DMV: Zulassung, Halterwechsel | 🔧 | DMV Vespucci; TMP-Kennzeichen bis Zulassung |
 | 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | 🔧 | B 500 / A 350 / C 800 $, Wiederholung 100 $; Kauf nur mit Führerschein |
-| 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | ⬜ | |
+| 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | 🔧 | 5 Werkstätten; Upgrades 5/10/20 % vom Kaufpreis; Lack 500, Fenster 300, Felgen 800 $ |
 | 4.12 | Blitzer | ⬜ | |
 | 4.13 | Kfz-Steuer | ⬜ | |
 | 4.14 | Boote und Flugzeuge | ⏸ | Entscheidung später |
