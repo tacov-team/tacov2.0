@@ -29,7 +29,7 @@ Die Phasen sind in `docs/punkte.md` in einzelne Punkte (ein Punkt = ein System) 
 
 **Arbeitsweise je Phase (gilt immer):**
 1. Oberflächen zuerst als Tafel im Canvas „TacoV Spiel-UI“ (V4-Stil) – Betreiber nimmt ab oder korrigiert.
-2. Umsetzung in Blöcken: Config aus dem Konzept → Datenbank → Server-Logik → Client → UI → Doku.
+2. Umsetzung in Blöcken: Config aus dem Konzept → Datenbank → Server-Logik → Client → UI (immer im GLRP-Stil nach `docs/design/README.md`, Panel-Baustein, rem-Maßstab) → Doku.
 3. Betreiber testet auf dem VPS (`deploy.sh`), meldet Fehler; ich behebe, bevor der nächste Block kommt.
 4. Phase ist fertig, wenn die Abnahme-Punkte durchgespielt sind und `docs/module/*.md` den Stand beschreibt.
 

@@ -50,7 +50,7 @@ export function Wheel({ data }: { data: WheelData }) {
     const d = `M${p(R, a0)} A${R} ${R} 0 0 1 ${p(R, a1)} L${p(INNER, a1)} A${INNER} ${INNER} 0 0 0 ${p(INNER, a0)} Z`;
     const on = hover === e.id;
     const close = e.id === '__close';
-    return <path key={e.id} d={d} fill={on ? (close ? 'rgba(248,113,113,0.9)' : 'rgba(139,92,246,0.92)') : 'rgba(14,12,22,0.9)'} stroke="rgba(255,255,255,0.12)" onMouseEnter={() => setHover(e.id)} onClick={() => pick(e.id)} />;
+    return <path key={e.id} d={d} fill={on ? (close ? 'rgba(248,113,113,0.85)' : 'rgba(139,92,246,0.85)') : 'rgba(14,12,22,0.7)'} stroke="rgba(255,255,255,0.12)" onMouseEnter={() => setHover(e.id)} onClick={() => pick(e.id)} />;
   });
   const label = hover && hover !== '__close' ? entries.find((e) => e.id === hover)?.label : hover === '__close' ? 'Schließen' : data.center.title;
 

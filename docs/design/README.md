@@ -1,16 +1,24 @@
 # Design
 
-## Stand V6 „Klar“ (07.11.2026) – Neuaufbau der Oberflächen, gilt für alles Neue
+## Stand V6 im GLRP-Stil (07.11.2026) – verbindlich für alle weiteren Oberflächen
 
 Betreiber: „UIs waren komplett komisch, bau es neu.“ Alle Ansichten neu geschrieben (`ui/src/theme.css`, `views/*`), Daten-Schnittstelle zu Lua unverändert.
 
 - **Maßstab:** alle Größen in `rem`, 1 rem = 1/67,5 der Bildschirmhöhe (16 px bei 1080p) → auf 768p, 1080p, 1440p, 4K identische Proportionen (geprüft 1366×768 und 1920×1080)
-- **Flächen:** fast deckendes dunkles Panel (`rgba(14,12,22,0.96)`), 1-px-Rand, Kopfzeile (Icon, Titel, Untertitel, Schließen), Fußzeile für Aktionen; wenig Zierde, hoher Kontrast
+- **Flächen (GLRP-Stil):** dunkles, leicht durchscheinendes Glas mit Weichzeichner – Vollbild `rgba(14,12,22,0.82)`, Interaktions-UIs `0.70`, HUD-Kacheln `0.55`; Kopfzeile mit violettem Farbverlauf und Schraffur rechts, Icon-Kachel im Verlauf, Titel groß, Info-Zeile mit „i“; Fußzeile für Aktionen; Knöpfe in Großbuchstaben, Primär im Verlauf mit Leuchten
+- **HUD zurückhaltend:** Kacheln und Kreise dunkel-transparent mit violettem Rand und Icon, kein voller Farbfüllstand; Text mit Schatten
 - **Akzent:** Violett `#8B5CF6` (Knöpfe, aktive Elemente, Icon-Kacheln), Text `#F5F3FF`; Schwarzgeld Mint; Status-Farben Grün/Gelb/Rot/Blau; Item-Icons in Lavendel/Violett
 - **HUD (GLRP-Vorbild, wie in V4 abgenommen):** Logo + Geld (Bargeld, Konto, Schwarzgeld) oben rechts, Hunger/Durst-Kacheln darunter, Funkliste rechts; Infozeilen (ID, Fitness, Fraktion + Rang, Datum/Uhrzeit, Admin-Dienst) rechts neben der Spiel-Minimap; Tacho unten rechts (km/h kursiv, Balkenreihe, Tank, Motor, Schloss) mit Tankstellenkarte darüber
 - **Inventar:** zwei gleich große Panels (Taschen | Boden/Behälter), 6 Spalten, Aktionsleiste unten (Auswahl, Menge, Benutzen/Geben/Teilen/Wegwerfen)
 - **Bank, Laden, Garage:** ein zentriertes Panel mit klaren Spalten; Listenmenü links; X-Rad mittig; Hinweise oben links; E-Aufforderung unten mittig
 - Regel bleibt: neue Oberflächen erst mit ihrem System.
+
+### So wird der Stil automatisch eingehalten (für jede neue Ansicht)
+1. Jede Ansicht ist ein `<Panel icon title sub onClose foot>` aus `ui/src/components/Panel.tsx` – nie eigene Kopfzeilen bauen.
+2. Nur Tokens aus `theme.css` (`--accent*`, `--bg*`, `--line*`, `--ok/--warn/--danger`), nie Farben hart in Komponenten; Größen nur in `rem`.
+3. Bausteine wiederverwenden: `.btn` (primary/danger/sm), `.tabs`, `.tag`, `.input`, `.list .row`, `.card`, `.meter`, `.kbd`.
+4. Vollbild-Ansichten (Inventar, Bank, Laden, Garage …) zentriert über `.center`; Interaktions-UIs (Menü, Rad, Hinweise) mit `--bg-soft`.
+5. Vor der Abnahme: Screenshot in 1920×1080 und 1366×768 über das Vorschau-Skript – beide müssen gleich aussehen.
 
 
 ## Stand V5 „Nachtviolett“ (07.11.2026) – gilt für alles Neue
