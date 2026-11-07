@@ -131,7 +131,7 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 .hud-info small { display: block; font-size: 0.75rem; font-weight: 600; color: var(--muted); }
 .hud-info .aduty .b { border-color: rgba(255, 80, 80, 0.6); color: #ff6b6b; }
 .hud-info .aduty small { color: #ff8a8a; }
-.hud-radio { position: absolute; right: 2.5rem; top: 27.5rem; display: flex; flex-direction: column; gap: 0.375rem; align-items: flex-end; font-size: 0.875rem; font-weight: 700; }
+.hud-radio { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.375rem; align-items: flex-end; font-size: 0.875rem; font-weight: 700; }
 .hud-radio .title { letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.6875rem; color: var(--muted); }
 .hud-radio .id { color: var(--dim); }
 .hud-radio i { display: inline-block; width: 0.625rem; height: 0.625rem; border-radius: 0.125rem; background: var(--dim); margin-left: 0.375rem; }

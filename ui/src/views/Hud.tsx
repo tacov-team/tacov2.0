@@ -86,14 +86,13 @@ export function Hud() {
           <Stat icon="drop" value={h.thirst} />
           {h.radioOn && <div className="stat"><span className="c" title="Funk an"><Icon name="radio" size={16} /></span></div>}
         </div>
+        {h.radio && h.radio.length > 0 && (
+          <div className="hud-radio">
+            <span className="title">Funk · Frequenz {h.radioFrequency ?? '–'}</span>
+            {h.radio.map((r) => <span key={r.id}><span className="id num">[{r.id}]</span> {r.name}<i className={r.talking ? 'on' : ''} /></span>)}
+          </div>
+        )}
       </div>
-
-      {h.radio && h.radio.length > 0 && (
-        <div className="hud-radio shadow">
-          <span className="title">Funk · Frequenz {h.radioFrequency ?? '–'}</span>
-          {h.radio.map((r) => <span key={r.id}><span className="id num">[{r.id}]</span> {r.name}<i className={r.talking ? 'on' : ''} /></span>)}
-        </div>
-      )}
 
       <div className="hud-info shadow" style={{ left: infoLeft, bottom: infoBottom }}>
         <div><span className="b"><Icon name="user" size={16} /></span><span className="num">{h.serverId}</span></div>
