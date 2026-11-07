@@ -51,13 +51,27 @@ ufw allow 9987/udp >/dev/null; ufw allow 30033/tcp >/dev/null
 sleep 6
 
 echo "== 2/4 ServerQuery: Zugang und Kanäle"
-# Beim ersten Start stehen serveradmin-Passwort und Admin-Token im Log; wir merken sie uns in $TS_DIR/.query (nur root)
+# Läuft der Server?
+for _ in 1 2 3 4 5 6; do systemctl is-active --quiet teamspeak3 && break; sleep 2; done
+if ! systemctl is-active --quiet teamspeak3; then
+  echo "TeamSpeak-Dienst läuft nicht. Letzte Meldungen:"; journalctl -u teamspeak3 -n 30 --no-pager -o cat; exit 1
+fi
+# Beim ersten Start stehen serveradmin-Passwort und Admin-Token im Log (Datei und journald); wir merken sie uns in $TS_DIR/.query
 if [ ! -f "$TS_DIR/.query" ]; then
-  log=$(ls -t "$TS_DIR"/logs/ts3server_*_1.log 2>/dev/null | tail -1 || true)
-  all=$(cat "$TS_DIR"/logs/ts3server_*.log 2>/dev/null || true)
-  qpass=$(echo "$all" | grep -o 'password= "[^"]*"' | head -1 | sed 's/password= "//;s/"//')
-  token=$(echo "$all" | grep -o 'token=[A-Za-z0-9+/=]*' | head -1 | sed 's/token=//')
-  [ -n "$qpass" ] || { echo "ServerQuery-Passwort nicht im Log gefunden ($log). Bitte Log prüfen."; exit 1; }
+  qpass=""; token=""
+  for _ in $(seq 1 15); do
+    all=$( { cat "$TS_DIR"/logs/*.log 2>/dev/null; journalctl -u teamspeak3 --no-pager -o cat 2>/dev/null; } || true)
+    qpass=$(printf '%s' "$all" | grep -o 'password= *"[^"]*"' | head -1 | sed 's/password= *"//;s/"$//' || true)
+    token=$(printf '%s' "$all" | grep -o 'token=[A-Za-z0-9+/=]*' | head -1 | sed 's/token=//' || true)
+    [ -n "$qpass" ] && break
+    sleep 2
+  done
+  if [ -z "$qpass" ]; then
+    echo "ServerQuery-Passwort nicht gefunden. Entweder lief der Server schon einmal (dann steht es im ersten Log unter $TS_DIR/logs)"
+    echo "oder der Start ist fehlgeschlagen. Letzte Meldungen:"; journalctl -u teamspeak3 -n 30 --no-pager -o cat
+    echo "Manuell: printf 'QUERY_PASS=<Passwort>\\nADMIN_TOKEN=<Token>\\n' > $TS_DIR/.query && chmod 600 $TS_DIR/.query, dann Skript erneut starten."
+    exit 1
+  fi
   install -m 600 /dev/null "$TS_DIR/.query"
   printf 'QUERY_PASS=%s\nADMIN_TOKEN=%s\n' "$qpass" "$token" > "$TS_DIR/.query"
 fi
