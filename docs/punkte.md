@@ -35,9 +35,9 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 1.4 | Discord-Bot: Whitelist per Reaktion | ✅ | `bot/` |
 | 1.5 | Discord-Bot: Log-Spiegel (11 Kanäle) | ✅ | |
 | 1.6 | Geheimnisse und Zugänge (server.cfg, .env, CI-Prüfung) | ✅ | |
-| 1.7 | Backups und Monitoring | 🔧 | DB-Backup täglich 05:30 + vor Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ |
-| 1.8 | Testserver-Instanz (`/opt/tacov2-test`, Branch develop, Port 30122) | 🔧 | `setup-test.sh`, `deploy-test.sh`; zweiter Keymaster-Schlüssel nötig |
-| 1.9 | Neustart alle 6 h mit Ansagen 15/5/1 min | 🔧 | `server/status.lua`, `/neustart <Minuten>` |
+| 1.7 | Backups und Monitoring | ✅ | DB-Backup täglich 05:30 + vor Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ |
+| 1.8 | Testserver-Instanz (`/opt/tacov2-test`, Branch develop, Port 30122) | ✅ | `setup-test.sh`, `deploy-test.sh`; zweiter Keymaster-Schlüssel nötig |
+| 1.9 | Neustart alle 6 h mit Ansagen 15/5/1 min | ✅ | `server/status.lua`, `/neustart <Minuten>` |
 | 1.10 | TeamSpeak-3-Server auf dem VPS (Non-Profit-Lizenz beantragen), SaltyChat-Resource einbinden | ✅ | läuft (07.11.); TeamSpeak-Embed im Status-Kanal; offen beim Betreiber: Lizenz + SaltyChat-Freischaltung |
 
 ## Phase 2 · Kern (eigenes Framework)
