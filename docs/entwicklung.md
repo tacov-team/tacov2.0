@@ -30,7 +30,14 @@ FXServer-Build wechseln: `bash /opt/tacov2/tools/vps/fx-update.sh` (Recommended)
 
 Updates: `bash /opt/tacov2/tools/vps/deploy.sh` – zieht `main`, baut UI und Bot, startet die Dienste neu. Konfigurationen mit Geheimnissen (`server.cfg`, `.env`) liegen nur auf dem VPS und nie im Repository.
 
+## Testserver (Punkt 1.8)
+Einrichten: `bash /opt/tacov2/tools/vps/setup-test.sh` (einmalig, danach zweiten Schlüssel von keymaster.fivem.net in `/opt/tacov2-test/server/server.cfg`). Einspielen: `bash /opt/tacov2-test/tools/vps/deploy-test.sh` (Branch `develop`). Verbinden: `connect <ip>:30122`. Eigene Datenbank `tacov2_test` (Whitelist wird beim Einrichten vom Live-Server kopiert), kein Bot.
+
+## Voice (Punkt 1.10)
+Einrichten: `bash /opt/tacov2/tools/vps/setup-teamspeak.sh` – installiert TeamSpeak 3 (`/opt/teamspeak`, Dienst `teamspeak3`), legt Kanäle an und die SaltyChat-Resource unter `server/resources/[external]/saltychat` mit passender `config.json`. Danach: Non-Profit-Lizenz (`licensekey.dat`), Server-Kennung bei SaltyChat freischalten, Spieler brauchen TeamSpeak 3 + SaltyChat-Plugin. Zugangsdaten liegen nur in `/opt/teamspeak/.query`, `.ingame_pass`.
+
 ## Branching
+- `develop`: Stand des Testservers; neue Punkte landen zuerst hier. `main`: Live-Server, nur nach Abnahme auf dem Testserver (Fast-Forward-Merge).
 
 - `main`: immer spielbar
 - `modul/<name>`: ein Branch je Modul
