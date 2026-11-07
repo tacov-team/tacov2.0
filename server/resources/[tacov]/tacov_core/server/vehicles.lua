@@ -89,10 +89,10 @@ function TacoV.Vehicles.tempPlate()
 end
 
 --- Kennzeichen eines laufenden Fahrzeugs umhängen (Zulassung) und Schlüssel-Caches anpassen
-function TacoV.Vehicles.replate(oldPlate, newPlate)
-  if live[oldPlate] then live[newPlate] = live[oldPlate]; live[oldPlate] = nil end
+function TacoV.Vehicles.replate(oldPlate, plate)
+  if live[oldPlate] then live[plate] = live[oldPlate]; live[oldPlate] = nil end
   for charId, map in pairs(keys) do
-    if map[oldPlate] then map[newPlate] = map[oldPlate]; map[oldPlate] = nil end
+    if map[oldPlate] then map[plate] = map[oldPlate]; map[oldPlate] = nil end
     for src, p in pairs(TacoV.Players.all()) do
       if p.characterId == charId then pushKeys(src) end
     end

@@ -2,7 +2,6 @@
 TacoV = TacoV or {}
 TacoV.DMV = {}
 
-local Cfg = TacoV.Config.DMV
 local function fmt(n)
   local s = tostring(math.floor(n + 0.5))
   local out = s:reverse():gsub('(%d%d%d)', '%1.'):reverse()

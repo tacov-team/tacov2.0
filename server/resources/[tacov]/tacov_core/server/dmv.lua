@@ -4,7 +4,6 @@ TacoV = TacoV or {}
 TacoV.DMV = {}
 
 local Cfg = TacoV.Config.DMV
-local VCfg = TacoV.Config.Vehicles
 local STATE = { type = 'state', id = 0 }
 
 local function fail(src, text) TriggerClientEvent('tacov:core:notify', src, 'error', text) end
