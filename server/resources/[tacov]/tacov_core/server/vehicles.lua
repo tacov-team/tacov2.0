@@ -378,7 +378,7 @@ end)
 
 -- ---------------------------------------------------------------- Kaufhaus
 
-local function catalog(dealerKey, level)
+local function catalog(dealerKey)
   local dealer = Cfg.dealers[dealerKey]
   local classes = {}
   for _, cls in ipairs(dealer.classes) do
@@ -406,7 +406,7 @@ RegisterNetEvent('tacov:vehicles:dealer:open', function()
     name = loc.name, label = loc.label, dealer = loc.dealer, title = Cfg.dealers[loc.dealer].label,
     level = levelOf(src), fee = Cfg.registrationFee,
     cash = inv and TacoV.Inventory.cash(inv) or 0, bank = TacoV.Journal.balance('character', c.id),
-    classes = catalog(loc.dealer, levelOf(src)),
+    classes = catalog(loc.dealer),
   })
 end)
 
