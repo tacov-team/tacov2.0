@@ -74,20 +74,17 @@ export function Hud() {
   return (
     <div className="hud">
       <div className="hud-top shadow">
-        <div className="row-flex" style={{ gap: '0.875rem' }}>
-          <span style={{ color: h.radioOn ? 'var(--accent)' : 'var(--muted)' }}><Icon name="radio" size={18} /></span>
-          <div className="hud-logo"><img src="assets/logo.png" alt="TacoV" /><span className="ts">ROLEPLAY</span></div>
-        </div>
+        <div className="hud-logo"><img src="assets/logo.png" alt="TacoV" /><span className="ts">ROLEPLAY</span></div>
         <div className="hud-money">
           <span className="num">{money(h.cash)}</span><span className="coin"><Icon name="cash" size={14} /></span>
           <span className="num">{money(h.bank)}</span><span className="coin"><Icon name="card" size={14} /></span>
           {h.black > 0 && <><span className="num" style={{ color: 'var(--black-money)' }}>{money(h.black)}</span><span className="coin black">S</span></>}
         </div>
-      </div>
-
-      <div className="hud-stats">
-        <Stat icon="food" value={h.hunger} />
-        <Stat icon="drop" value={h.thirst} />
+        <div className="hud-stats">
+          <Stat icon="food" value={h.hunger} />
+          <Stat icon="drop" value={h.thirst} />
+          {h.radioOn && <div className="stat"><span className="c" title="Funk an"><Icon name="radio" size={16} /></span></div>}
+        </div>
       </div>
 
       {h.radio && h.radio.length > 0 && (

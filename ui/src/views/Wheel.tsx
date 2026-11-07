@@ -6,9 +6,9 @@ import { Icon } from '../components/Icon';
 export type WheelEntry = { id: string; label: string; icon: string; order: number };
 export type WheelData = { entries: WheelEntry[]; center: { kind: string; title: string; sub: string; icon?: string }; key?: string };
 
-const SIZE = 420;
-const INNER = 92;
-const RING_R = 160;
+const SIZE = 520;
+const INNER = 110;
+const RING_R = 190;
 
 export function Wheel({ data }: { data: WheelData }) {
   const [hover, setHover] = useState<string | null>(null);
@@ -50,7 +50,7 @@ export function Wheel({ data }: { data: WheelData }) {
     const d = `M${p(R, a0)} A${R} ${R} 0 0 1 ${p(R, a1)} L${p(INNER, a1)} A${INNER} ${INNER} 0 0 0 ${p(INNER, a0)} Z`;
     const on = hover === e.id;
     const close = e.id === '__close';
-    return <path key={e.id} d={d} fill={on ? (close ? 'rgba(248,113,113,0.85)' : 'rgba(139,92,246,0.85)') : 'rgba(14,12,22,0.7)'} stroke="rgba(255,255,255,0.12)" onMouseEnter={() => setHover(e.id)} onClick={() => pick(e.id)} />;
+    return <path key={e.id} d={d} fill={on ? (close ? 'rgba(248,113,113,0.85)' : 'rgba(139,92,246,0.85)') : 'rgba(14,12,22,0.72)'} stroke="rgba(255,255,255,0.14)" strokeWidth={2} onMouseEnter={() => setHover(e.id)} onClick={() => pick(e.id)} />;
   });
   const label = hover && hover !== '__close' ? entries.find((e) => e.id === hover)?.label : hover === '__close' ? 'Schließen' : data.center.title;
 
@@ -60,8 +60,8 @@ export function Wheel({ data }: { data: WheelData }) {
         <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`}>{segs}</svg>
         {entries.map((e, i) => {
           const a = (-90 + (i * 360) / n) * (Math.PI / 180);
-          const x = SIZE / 2 + Math.cos(a) * RING_R - 14, y = SIZE / 2 + Math.sin(a) * RING_R - 14;
-          return <span key={e.id} className={'wicon' + (hover === e.id ? ' on' : '')} style={{ left: `${x / 16}rem`, top: `${y / 16}rem` }}><Icon name={e.icon} size={22} /></span>;
+          const x = SIZE / 2 + Math.cos(a) * RING_R, y = SIZE / 2 + Math.sin(a) * RING_R - 20;
+          return <span key={e.id} className={'wicon' + (hover === e.id ? ' on' : '')} style={{ left: `${x / 16}rem`, top: `${y / 16}rem` }}><Icon name={e.icon} size={24} /><span>{e.label}</span></span>;
         })}
         <div className="wheel-center" style={{ width: `${(INNER * 2 - 12) / 16}rem`, height: `${(INNER * 2 - 12) / 16}rem` }}>
           <Icon name={data.center.icon ?? 'user'} size={18} />
