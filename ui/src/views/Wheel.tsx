@@ -54,7 +54,7 @@ export function Wheel({ data }: { data: WheelData }) {
     const p = (r: number, a: number) => `${SIZE / 2 + Math.cos(a) * r} ${SIZE / 2 + Math.sin(a) * r}`;
     const d = `M${p(R, a0)} A${R} ${R} 0 0 1 ${p(R, a1)} L${p(INNER, a1)} A${INNER} ${INNER} 0 0 0 ${p(INNER, a0)} Z`;
     const on = hover === e.id;
-    return <path key={e.id} d={d} fill={on ? 'rgba(255,184,0,0.92)' : 'rgba(255,255,255,0.04)'} stroke="rgba(255,255,255,0.1)" onMouseEnter={() => setHover(e.id)} onClick={() => { if (e.id === '__close') nui('action', { view: 'wheel', action: 'close', data: {} }); else nui('action', { view: 'wheel', action: 'pick', data: { id: e.id } }); }} />;
+    return <path key={e.id} d={d} fill={on ? 'rgba(139,92,246,0.92)' : 'rgba(255,255,255,0.04)'} stroke="rgba(255,255,255,0.1)" onMouseEnter={() => setHover(e.id)} onClick={() => { if (e.id === '__close') nui('action', { view: 'wheel', action: 'close', data: {} }); else nui('action', { view: 'wheel', action: 'pick', data: { id: e.id } }); }} />;
   });
 
   return (

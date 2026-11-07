@@ -30,7 +30,7 @@ export function Characters({ data }: { data: CharactersData; key?: string }) {
         {data.characters.map((c) => {
           const active = c.id === selected;
           return (
-            <Panel key={c.id} className={'ccard' + (active ? ' on' : '')} style={active ? { borderColor: 'var(--accent-2)', boxShadow: '0 0 0 1px rgba(255,154,31,0.4), 0 30px 60px rgba(0,0,0,0.55)' } : undefined}>
+            <Panel key={c.id} className={'ccard' + (active ? ' on' : '')} style={active ? { borderColor: 'var(--accent-2)', boxShadow: '0 0 0 1px rgba(139,92,246,0.45), 0 30px 60px rgba(0,0,0,0.55)' } : undefined}>
               <PanelHead icon="user" brand={`Level ${c.level_cache}`} title={`${c.first_name} ${c.last_name}`} info={sub(c)} />
               <div className="body" onClick={() => setSelected(c.id)}>
                 <div className="figure"><Icon name="user" size={64} stroke={1.4} /></div>

@@ -85,7 +85,7 @@ export function Hud() {
           <span className="num">{money(h.bank)}</span><span className="badge coin"><Icon name="card" size={14} /></span>
           {h.black > 0 && <>
             <span className="num" style={{ color: 'var(--black-money)' }}>{money(h.black)}</span>
-            <span className="coin" style={{ background: 'linear-gradient(135deg,#C9A0FF,#7A3FE0)', color: '#1A0A33', fontSize: 12, fontWeight: 900 }}>S</span>
+            <span className="coin" style={{ background: 'linear-gradient(135deg,#99F6E4,#0D9488)', color: '#042F2E', fontSize: 12, fontWeight: 900 }}>S</span>
           </>}
         </div>
       </div>
