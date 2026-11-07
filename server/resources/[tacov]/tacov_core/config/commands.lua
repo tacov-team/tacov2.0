@@ -7,6 +7,7 @@ TacoV.Config.Commands = {
   { name = 'befehle', usage = 'befehle',                                help = 'Alle Befehle anzeigen' },
   { name = 'ort',     usage = 'ort setzen <Name> <Art> [Beschriftung]', help = 'Ort an deine Position setzen', right = 'admin.locations' },
   { name = 'ort',     usage = 'ort liste',                              help = 'Alle Orte anzeigen', right = 'admin.locations' },
+  { name = 'neustart', usage = 'neustart <Minuten>',                        help = 'Neustart mit Ansage (Manager)', right = 'admin.config' },
   { name = 'aduty',   usage = 'aduty',                                       help = 'Admin-Dienst an/aus (Team)', right = 'aduty' },
   { name = 'geld',    usage = 'geld <ID> <Betrag> [bank|bar]',                help = 'Geld geben (Test, Team)', right = 'admin.give' },
   { name = 'rolle',   usage = 'rolle <ID> <Rolle>',                     help = 'Teamrolle setzen', right = 'admin.roles' },

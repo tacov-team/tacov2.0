@@ -29,15 +29,15 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 1.1 | Repo, Branching, CI (luacheck, Struktur, Geheimnisse) | 🔧 | `tacov-team/tacov2.0`, `.github/workflows` |
-| 1.2 | VPS-Einrichtung (`/opt/tacov2`, Nutzer, MariaDB, phpMyAdmin) | 🔧 | `tools/vps/setup.sh` |
-| 1.3 | FXServer-Betrieb (screen, Dienste, Artefakt-Update, Deploy) | 🔧 | `deploy.sh`, `fx-update.sh` |
-| 1.4 | Discord-Bot: Whitelist per Reaktion | 🔧 | `bot/` |
-| 1.5 | Discord-Bot: Log-Spiegel (11 Kanäle) | 🔧 | |
-| 1.6 | Geheimnisse und Zugänge (server.cfg, .env, CI-Prüfung) | 🔧 | |
-| 1.7 | Backups und Monitoring | ⬜ | DB-Backup täglich 05:30 + vor Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ |
+| 1.1 | Repo, Branching, CI (luacheck, Struktur, Geheimnisse) | ✅ | `tacov-team/tacov2.0`, `.github/workflows` |
+| 1.2 | VPS-Einrichtung (`/opt/tacov2`, Nutzer, MariaDB, phpMyAdmin) | ✅ | `tools/vps/setup.sh` |
+| 1.3 | FXServer-Betrieb (screen, Dienste, Artefakt-Update, Deploy) | ✅ | `deploy.sh`, `fx-update.sh` |
+| 1.4 | Discord-Bot: Whitelist per Reaktion | ✅ | `bot/` |
+| 1.5 | Discord-Bot: Log-Spiegel (11 Kanäle) | ✅ | |
+| 1.6 | Geheimnisse und Zugänge (server.cfg, .env, CI-Prüfung) | ✅ | |
+| 1.7 | Backups und Monitoring | 🔧 | DB-Backup täglich 05:30 + vor Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ |
 | 1.8 | Testserver-Instanz (`/opt/tacov2-test`, Branch develop, Port 30122) | ⬜ | |
-| 1.9 | Neustart alle 6 h mit Ansagen 15/5/1 min | ⬜ | |
+| 1.9 | Neustart alle 6 h mit Ansagen 15/5/1 min | 🔧 | `server/status.lua`, `/neustart <Minuten>` |
 | 1.10 | TeamSpeak-3-Server auf dem VPS (Non-Profit-Lizenz beantragen), SaltyChat-Resource einbinden | ⬜ | Betreiber: Lizenzantrag bei TeamSpeak |
 
 ## Phase 2 · Kern (eigenes Framework)

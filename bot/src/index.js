@@ -3,6 +3,7 @@ import { config } from './config.js';
 import { handleReaction, handleReactionRemoved, handleMemberUpdate } from './whitelist.js';
 import { startLogMirror } from './logs.js';
 import { syncMember, syncAllTeamRoles } from './teamroles.js';
+import { startStatus } from './status.js';
 import { pool } from './db.js';
 
 const client = new Client({
@@ -33,6 +34,7 @@ client.once('clientReady', async () => {
   }
   await syncAllTeamRoles(client).catch((e) => console.error('[bot] Team-Rollen', e.message));
   await startLogMirror(client);
+  await startStatus(client).catch((e) => console.error('[bot] Status', e.message));
 });
 
 client.on('messageReactionAdd', (reaction, user) => handleReaction(reaction, user, client).catch((e) => console.error('[bot] Reaktion', e)));

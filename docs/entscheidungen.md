@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Punkte 1.1–1.6 | Repo/CI, VPS, FXServer-Betrieb, Bot-Whitelist, Log-Spiegel, Geheimnisse beim Neudurchgang bestätigt | Betreiber: „passt“ |
 | 2026-11-07 | Punkt 0.15 Design | Design V5 „Nachtviolett“ (Violett-Akzent, kühles Glas, Schwarzgeld Mint) ersetzt die Gelb-Orange-Farbwelt; Aufbau und Bedienung von V4 bleiben. Neue Oberflächen werden erst gebaut, wenn das System dran ist | Entscheidung des Betreibers; Phase 0 damit komplett |
 | 2026-11-07 | Punkt 0.14 Voice | SaltyChat (TeamSpeak 3) als einzige Fremd-Resource im Voice-Bereich; TeamSpeak-Server mit Non-Profit-Lizenz auf dem VPS (Punkt 1.10); Funk, Handy, Sprechweiten und HUD-Anzeige werden selbst auf SaltyChat aufgesetzt (Phase 6/7) | Entscheidung des Betreibers |
 | 2026-11-07 | Punkt 0.13 Betrieb | Live `/opt/tacov2` (main, Port 30121), Testserver `/opt/tacov2-test` (develop, DB `tacov2_test`, Port 30122) auf demselben VPS; Neustart alle 6 Stunden (00/06/12/18 Uhr) mit Ansagen 15/5/1 min; DB-Backup täglich 05:30 + vor jedem Deploy, 14 Tage; Monitoring als Embed im Discord-Kanal „Server Status“ mit allen öffentlichen Infos (online/offline, Spieler/Slots, nächster Neustart, Laufzeit, Version); Slot-Stufe neu entscheiden, wenn an 3 von 7 Tagen voll | Entscheidung des Betreibers |

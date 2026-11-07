@@ -13,11 +13,13 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/migrations.lua` + `sql/NNN_*.sql` | Schema; läuft beim Start, merkt sich Version in `migrations` |
 | `server/log.lua` | `TacoV.Log.write(kategorie, text, {characterId, discordId, data})` → Tabelle `logs`, Bot spiegelt in Discord |
 | `server/journal.lua` | `TacoV.Journal.move(kind, from, to, amount, reason)` – die einzige Stelle für Geldbewegungen |
+| `server/status.lua` | Status-Zeile alle 30 s (`server_status`), Neustart-Planer alle 6 h mit Ansagen 15/5/1 min (Spiel + `announcements`), Autosave und `quit`; `/neustart <Minuten>` (Manager) |
 | `server/permissions.lua` | `TacoV.Permissions.has(source, recht)` |
 | `server/players.lua` | Spielerkonto je Discord-ID, Online-Liste, Teamliste |
 | `server/characters.lua` | Liste, Anlage (Namensregeln, Blockliste, 2. Platz ab Level 15), Laden, Speichern, Spielzeit ohne AFK |
 | `server/accounts.lua` | `pay`, `receive`, `tax` für andere Module |
 | `server/connect.lua` | `playerConnecting`: Discord-ID Pflicht → Sperre → Whitelist → Slots → Doppelverbindung |
+| `server/status.lua` | Status-Zeile alle 30 s (`server_status`), Neustart-Planer alle 6 h mit Ansagen 15/5/1 min (Spiel + `announcements`), Autosave und `quit`; `/neustart <Minuten>` (Manager) |
 | `server/permissions.lua` | Rechteprüfung gegen `config/permissions.lua`; Admin-Dienst (Aduty) je Spieler, Rolle wird beim Dienstbeginn frisch aus der DB gelesen |
 | `server/commands.lua` | `/support`, `/aduty`, `/ort setzen|liste`, `/geld` (Team), `/rolle`, `/sperre`, `/kick`; einmaliger Startbonus über Convar `tacov_grant_next` |
 | `server/main.lua` | Startfolge, Autosave, Speichern beim Stop |

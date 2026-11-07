@@ -21,7 +21,7 @@ ExecStart=/usr/bin/screen -DmS tacov2 $BASE/fx/run.sh +exec server.cfg
 ExecStop=/usr/bin/screen -S tacov2 -X stuff "quit\\n"
 TimeoutStopSec=20
 KillMode=control-group
-Restart=on-failure
+Restart=always
 RestartSec=5
 
 [Install]

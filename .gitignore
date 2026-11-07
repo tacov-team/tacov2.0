@@ -3,6 +3,9 @@ server/server.cfg
 .env
 *.env
 
+# Vom Deploy geschrieben
+server/resources/[tacov]/tacov_core/version.json
+
 # FiveM-Laufzeit
 server/cache/
 server/artifacts/

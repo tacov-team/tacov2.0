@@ -17,3 +17,6 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 
 ## Team-Rollen (Punkt 0.11)
 `src/teamroles.js` spiegelt die Discord-Team-Rollen nach `players.role`: beim Start alle Mitglieder, danach bei jeder Rollenänderung (`guildMemberUpdate`) und beim Verlassen. Höchste Rolle gewinnt; ohne Team-Rolle wird der Spieler wieder `player`. Die Rollen-IDs stehen in `discord.json` unter `teamRoles` (leer = nicht gespiegelt). Im Spiel gelten die Rechte nur im Admin-Dienst (F9 / `/aduty`).
+
+## Status-Embed und Ansagen (Punkte 1.7, 1.9)
+`src/status.js` postet einmal ein Embed in den Kanal „Server Status“ (`statusChannelId` in `discord.json`) und bearbeitet es alle 30 s: online/offline (Zeile `server_status` älter als 90 s = offline), Spieler/Slots, nächster Neustart, Laufzeit, Version (aus `version.json`, vom Deploy geschrieben). Die Nachrichten-ID steht in `bot_state`. Ansagen aus `announcements` (Neustart-Warnungen, `/neustart`) werden in denselben Kanal gepostet.

@@ -20,7 +20,7 @@ Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit 
 ## Betrieb (Punkt 0.13)
 - Live: `/opt/tacov2`, Branch `main`, Port 30121. Test: `/opt/tacov2-test`, Branch `develop`, DB `tacov2_test`, Port 30122 (Punkt 1.8).
 - Neustart alle 6 Stunden (00/06/12/18 Uhr) mit Ansagen 15/5/1 Minuten vorher (Punkt 1.9).
-- Backups täglich 05:30 Uhr und vor jedem Deploy, 14 Tage; Status-Embed im Discord-Kanal „Server Status“ (Punkt 1.7).
+- Backups: `tools/vps/backup.sh` (mysqldump nach `/opt/tacov2/backups`, 14 Tage), per Cron 05:30 Uhr und am Anfang von `deploy.sh`; Wiederherstellen: `zcat backups/<datei>.sql.gz | mysql -u tacov2 -p tacov2`. Status-Embed im Discord-Kanal „Server Status“ (Punkt 1.7).
 
 ## VPS
 

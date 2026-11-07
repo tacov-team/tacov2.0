@@ -37,6 +37,7 @@ server_scripts {
   'server/vehicles.lua',
   'server/connect.lua',
   'server/commands.lua',
+  'server/status.lua',
   'server/main.lua',
 }
 

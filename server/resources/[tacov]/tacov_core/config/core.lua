@@ -10,6 +10,14 @@ TacoV.Config.Server = {
   secondCharacterLevel = 15,       -- Konzept 1: zweiter Platz ab Level 15
 }
 
+-- Betrieb (Punkt 0.13): Neustart alle 6 Stunden mit Ansagen; Status-Zeile für das Discord-Embed
+TacoV.Config.Restart = {
+  hours = { 0, 6, 12, 18 },        -- Serverzeit (Europe/Berlin auf dem VPS)
+  warnMinutes = { 15, 5, 1 },      -- Ansagen im Spiel und in Discord
+  kickMessage = 'TacoV startet neu – in zwei Minuten geht es weiter.',
+}
+TacoV.Config.Status = { intervalSeconds = 30 }
+
 TacoV.Config.Whitelist = {
   enabled = true,
   minAccountAgeDays = 0,           -- Konzept 1: keine Kontoalter-Prüfung
