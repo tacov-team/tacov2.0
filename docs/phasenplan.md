@@ -13,16 +13,19 @@ Die Phasen sind in `docs/punkte.md` in einzelne Punkte (ein Punkt = ein System) 
 | 2 | Kern: eigenes Framework (`tacov_db`, `tacov_core`) | ✅ fertig |
 | 3 | Alltag I: Oberfläche V4, HUD, Inventar, Bedürfnisse, Bank, Läden, Orte | ✅ fertig |
 | 4 | Fahrzeuge | 🔶 Teil 1 fertig, Teil 2 offen |
-| 5 | Charakter und Einstieg: Aussehen, Kleidung, Einreise, Animationen, Voice | ⬜ |
-| 6 | Handy und Funk | ⬜ |
-| 7 | Jobs, Lohn, Steuern, Staatshaushalt | ⬜ |
-| 8 | Fraktionen: Modul, Dienst, LSPD/LSMD/DMV/Regierung/DOJ, Gang | ⬜ |
-| 9 | Immobilien und Firmen | ⬜ |
-| 10 | Verbrechen und Justiz | ⬜ |
-| 11 | Team-Werkzeuge und Betrieb | ⬜ |
-| 12 | Beta und Start | ⬜ |
+| 5 | Entwickler- und Admin-Werkzeuge: Creator-Systeme (Türen, Aufzüge, Orte, Peds, Objekte, Zonen), Team-Menü | ⬜ |
+| 6 | Charakter und Einstieg: Aussehen, Kleidung, Einreise, Animationen, Voice | ⬜ |
+| 7 | Handy und Funk | ⬜ |
+| 8 | Jobs, Lohn, Steuern, Staatshaushalt | ⬜ |
+| 9 | Fraktionen: Modul, Dienst, LSPD/LSMD/DMV/Regierung/DOJ, Gang | ⬜ |
+| 10 | Immobilien und Firmen | ⬜ |
+| 11 | Verbrechen und Justiz | ⬜ |
+| 12 | Team-Werkzeuge und Betrieb (Vervollständigung) | ⬜ |
+| 13 | Beta und Start | ⬜ |
 
-**Reihenfolge, kurz begründet:** Erst alles, was ein Zivilist am ersten Abend braucht (Phasen 3–7: laufen, essen, Geld, Auto, Aussehen, Handy, Job). Dann die Fraktionen (8), weil Polizei und Medic ohne Alltag nichts zu tun hätten. Immobilien und Firmen (9) brauchen Einkommen aus 7. Verbrechen (10) braucht Polizei und Justiz aus 8. Team-Werkzeuge (11) wachsen über alle Phasen mit, werden aber vor der Beta vollständig gemacht.
+**Reihenfolge, kurz begründet:** Erst alles, was ein Zivilist am ersten Abend braucht (Phasen 3–4 und 6–8: laufen, essen, Geld, Auto, Aussehen, Handy, Job). Dazwischen die Creator- und Admin-Werkzeuge (5), weil Türen, Aufzüge, Orte und Peds für alle folgenden Systeme gebraucht werden und das Team damit Inhalte ohne Code setzt. Dann die Fraktionen (9), weil Polizei und Medic ohne Alltag nichts zu tun hätten. Immobilien und Firmen (10) brauchen Einkommen aus 8. Verbrechen (11) braucht Polizei und Justiz aus 9. Betriebswerkzeuge (12) wachsen über alle Phasen mit und werden vor der Beta vollständig gemacht.
+
+**Spielstil (Konzept 1.2):** Softcore/Midcore mit Bodyshot-Schadensmodell – jedes System wird daran gemessen: Konsequenzen spürbar, aber nicht existenzbedrohend; keine Kopfschuss-Sofortkills.
 
 **Arbeitsweise je Phase (gilt immer):**
 1. Oberflächen zuerst als Tafel im Canvas „TacoV Spiel-UI“ (V4-Stil) – Betreiber nimmt ab oder korrigiert.
@@ -69,7 +72,21 @@ Tabellen: `vehicles`, `vehicle_keys` (vorhanden), neu `licenses`, `speedcam_fine
 
 Abnahme: Kaufen → Zulassung → Fahrschule → tanken → Werkstatt → einparken → Verwahrhof auslösen; ein zweiter Spieler bekommt einen Schlüssel und fährt.
 
-## Phase 5 – Charakter und Einstieg ⬜
+## Phase 5 – Entwickler- und Admin-Werkzeuge ⬜
+
+Creator-Systeme, mit denen das Team Inhalte ohne Code setzt, plus Admin-Grundgerüst. Alles speichert in der Datenbank, hat Rechte je Rolle und wird geloggt.
+
+- Admin-Grundgerüst: Admin-Modus, Unsichtbar, Noclip, Teleport; Team-Menü (F9) mit Spielerliste, Akte, Geben, Heilen, Kicken, Sperren
+- Orte-Creator (ersetzt `/ort setzen`), Door Creator (Türen/Tore mit Zugang je Fraktion/Rang/Schlüssel), Elevator Creator (Etagen), Teleport-Creator (Interiors), Ped-Creator (Ansprechpartner), Objekt-Placer, Zonen-Creator (Gebiete, Sicherheitszonen)
+- Fahrzeug-Spawner/-Editor, Item- und Geld-Werkzeuge mit Vier-Augen-Prinzip, Welt-Steuerung (Wetter, Zeit, Ansagen), Config im Spiel
+- Entwickler-Werkzeuge: Koordinaten kopieren, Entity-Info, Debug-Zonen, Hot-Reload der Config
+- Spieler-Akte und Tickets im Spiel; Anti-Cheat-Grundlage
+
+Tafeln: Team-Menü, Creator-Leiste (V4 neu). Tabellen: `doors`, `elevators`, `portals`, `peds`, `props`, `zones`, `tickets`, `admin_log`. Entscheidungen: Team-Rollen (0.11), welche Rolle welche Creator bedienen darf.
+
+Abnahme: Ein Teammitglied setzt im Spiel eine Tür mit LSPD-Zugang, einen Aufzug mit drei Etagen und einen Ansprechpartner – ohne Neustart; ein Spieler ohne Rechte kommt nicht durch die Tür.
+
+## Phase 6 – Charakter und Einstieg ⬜
 
 - Charaktereditor bei der Anlage (Gesicht, Eltern-Mix, Haare, Farben), Speicherung in `appearance` – Konzept 5.4
 - Kleiderläden (15 Orte), Friseur (7), Tattoo (6), Chirurg im Krankenhaus; 10 Outfits je Charakter; Maske verbirgt den Ausweis
@@ -82,7 +99,7 @@ Tafeln: Charaktereditor, Kleidungsladen, Ladebildschirm, Animationen (alle als V
 
 Abnahme: Neuer Spieler erstellt Charakter mit Aussehen, reist mit Teammitglied ein, kauft Kleidung, speichert ein Outfit, spricht in drei Reichweiten.
 
-## Phase 6 – Handy und Funk ⬜
+## Phase 7 – Handy und Funk ⬜
 
 - Handy als Item (F1 nur mit Handy), Nummer je Charakter – Konzept 5.3
 - Apps in dieser Reihenfolge: Kontakte, Nachrichten (SMS, Standort, Gruppen bis 8), Bank, Fahrzeuge (Standort, Garage, Tank, Schlüssel teilen), Einstellungen; danach Notruf, Fraktion, Firma, Kamera, Feed mit den jeweiligen Phasen
@@ -94,7 +111,7 @@ Tafel: „V4 · Handy“ (vorhanden, nach Abnahme der Realismus-Korrektur). Tabe
 
 Abnahme: Zwei Spieler tauschen Nummern, schreiben, telefonieren, funken auf einer Frequenz; Funkliste im HUD zeigt, wer spricht.
 
-## Phase 7 – Jobs, Lohn, Steuern, Staatshaushalt ⬜
+## Phase 8 – Jobs, Lohn, Steuern, Staatshaushalt ⬜
 
 - Sechs Jobs: Müllabfuhr, Lieferfahrer, Busfahrer, Taxi, Holzfäller, Bergbau – Konzept 3.2 (Lohn, Stundenlimit, Führerschein-Voraussetzung aus Phase 4)
 - Jobcenter, Job-Ansprechpartner an den Orten, Firmenfahrzeuge vom Hof
@@ -107,7 +124,7 @@ Tafeln: Jobs (V3 vorhanden, V4 neu). Tabellen: `jobs_sessions`, `payday_log`. En
 
 Abnahme: Ein Spieler verdient in einer Stunde mit zwei Jobs; Steuern landen im Staatshaushalt; Simulation läuft grün.
 
-## Phase 8 – Fraktionen ⬜
+## Phase 9 – Fraktionen ⬜
 
 - Fraktionsmodul: Mitglieder, Ränge, Rechte je Rang, Kasse, Lager, Fahrzeuge (Fraktionsfahrzeuge), Protokoll; Fraktionsmenü F6 vollständig – Konzept 2.1
 - Dienst an/aus mit Dienstkleidung aus dem Fraktions-Katalog, Caps (LSPD 20, DMV 10, DOJ 15, Gang 15), Austrittssperre 5 Tage
@@ -121,7 +138,7 @@ Tafeln: Fraktionsmenü, MDT, Dispatch, Rathaus, Gericht (V3 vorhanden, V4 neu). 
 
 Abnahme: LSPD-Spieler geht in Dienst, nimmt Notruf an, kontrolliert ein Fahrzeug über das MDT; LSMD versorgt einen Verletzten; Gang hält ein Gebiet.
 
-## Phase 9 – Immobilien und Firmen ⬜
+## Phase 10 – Immobilien und Firmen ⬜
 
 - Immobilien: Sozialwohnung (14 Tage gratis), Wohnung, Haus, Villa, Lager; Kauf oder Miete, Schlüssel bis 5, Lager und Garage je Typ, Weiterverkauf über Standesamt 5 %, Mietrückstand 2/4 Wochen – Konzept 3.5
 - Möbelhaus Hawick (Einrichtung Grundumfang)
@@ -131,7 +148,7 @@ Tafeln: Immobilien/Makler, Firma (neu). Tabellen: `properties`, `property_keys`,
 
 Abnahme: Spieler mietet Wohnung, lagert Items, gibt Schlüssel; Burger Shot verkauft an einen Kunden.
 
-## Phase 10 – Verbrechen und Justiz ⬜
+## Phase 11 – Verbrechen und Justiz ⬜
 
 - Drogen: Anbau/Herstellung (Labor Camper/Station), Verkauf an NPC und Spieler, Wirkung – Konzept 4.1
 - Waffen: Waffenschein, legaler Kauf, Schwarzmarkt, Munition als Item, Hehler – Konzept 4.2
@@ -144,7 +161,7 @@ Tafeln: Gefängnis, Hehler, Schwarzmarkt, Labor, Überfall-Leiste (V3 vorhanden,
 
 Abnahme: Kompletter Bogen Raub → Verfolgung → Verhaftung → Gericht → Haft → Entlassung mit zwei Teams durchgespielt.
 
-## Phase 11 – Team-Werkzeuge und Betrieb ⬜
+## Phase 12 – Team-Werkzeuge und Betrieb ⬜
 
 - Team-Menü (F9): Spielerliste, Teleport, Unsichtbar, Items/Geld geben mit Log, Sperren, Tickets, Fahrzeuge spawnen – Rechte je Rolle
 - Support-Tickets im Spiel und Discord, Spieler-Akte (Logs je Charakter)
@@ -156,7 +173,7 @@ Tafeln: Team-Menü (V3 vorhanden, V4 neu). Entscheidungen: Team-Rollen final (Ph
 
 Abnahme: Team bearbeitet ein Ticket, sperrt und entsperrt einen Test-Account, Backup wird eingespielt.
 
-## Phase 12 – Beta und Start ⬜
+## Phase 13 – Beta und Start ⬜
 
 - Geschlossene Beta mit 10 Slots (Whitelist), zwei Wochen; Testprotokolle je Modul in `docs/module/*.md`
 - Balancing nach Daten: Kaufzeiten, Löhne, Preise – Anpassungen nur über Config

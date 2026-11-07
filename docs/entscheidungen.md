@@ -4,6 +4,9 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Spielstil | TacoV ist ein Softcore/Midcore-Server mit Bodyshot-Schadensmodell (keine Kopfschuss-Sofortkills) | Entscheidung des Betreibers |
+| 2026-11-07 | Vorgehen | Entwicklung Punkt für Punkt nach `docs/punkte.md`, von vorn; eigene Phase für Entwickler- und Admin-Werkzeuge (Creator-Systeme) direkt nach den Fahrzeugen | Entscheidung des Betreibers |
+| 2026-11-07 | Punkt 0.1 | Name TacoV, 10 Slots (Stufen 32/64/128), Deutsch, Los Santos Gegenwart, 18+ bestätigt | Betreiber: „wir starten sofort“ |
 | 2026-11-07 | Fahrzeuge | Erste Kaufliste mit 52 Grundspiel-Modellen in den Klassen D/C/B/A/S/Motorrad/Transporter/LKW mit Preisen aus Konzept 3; Garagen sind alle öffentlichen Parkplätze der Karte (16 PKW, 5 LKW) plus Verwahrhof Mission Row; Kofferraum je Klasse: Einstieg 20 kg, Alltag 40, Gehoben 60, Sport/Super 25, Motorrad 10, Transporter 120, LKW 300 | Entscheidung des Betreibers |
 | 2026-11-07 | Fahrzeuge · Übergang | Bis DMV und Fahrschule stehen: Zulassung (150 $) beim Kauf fällig, keine Führerschein-Prüfung (`requireLicense = false`); nach einem Server-Neustart stehen unterwegs gewesene Fahrzeuge im Verwahrhof, Auslösung kostenlos wenn in den letzten 24 h gefahren | Spielbar ohne offene Module, nichts geht verloren |
 | 2026-11-07 | Modulschnitt | Module bleiben Dateien im Kern (`tacov_core`) statt eigener Resources: FiveM-Exports dürfen nicht warten (DB, Journal), eine Modul-Resource bräuchte doppelte Hüllen | Weniger Fehlerquellen; der Ordnerschnitt in `docs/framework.md` gilt erst, wenn eine Bridge ohne Warten existiert |

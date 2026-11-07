@@ -33,7 +33,7 @@ globals = {
   "GetVehicleExtraColours", "SetVehicleFuelLevel", "GetVehicleCurrentRpm", "SetVehicleEngineOn", "GetPedInVehicleSeat",
   "SetVehicleDoorsLocked", "NetworkRequestControlOfEntity", "NetworkHasControlOfEntity", "Entity", "SetModelAsNoLongerNeeded",
   "SetVehicleLights", "IsDisabledControlPressed", "SetEntityCollision", "SetNuiFocusKeepInput", "DisableAllControlActions", "EnableControlAction",
-  "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
+  "SetPedSuffersCriticalHits", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
 }
 
 ignore = { "212/_.*" }

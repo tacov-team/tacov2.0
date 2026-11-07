@@ -88,6 +88,20 @@ RegisterNetEvent('tacov:core:notify', function(kind, text)
   TacoV.UI.send('notify', { kind = kind, text = text })
 end)
 
+-- Schadensmodell „Bodyshot“ (Konzept 1): keine Kopfschuss-Sofortkills; der Kopf zählt wie der Körper.
+-- Wird je Sekunde neu gesetzt, weil das Spiel den Wert bei einem neuen Ped (Tod, Modellwechsel) zurücksetzt.
+CreateThread(function()
+  local lastPed = 0
+  while true do
+    Wait(1000)
+    local ped = PlayerPedId()
+    if ped ~= lastPed then
+      lastPed = ped
+      SetPedSuffersCriticalHits(ped, false)
+    end
+  end
+end)
+
 -- Herzschlag: alle 10 s Position und ob der Spieler aktiv war (Konzept 1: AFK zählt nicht)
 CreateThread(function()
   local lastPos

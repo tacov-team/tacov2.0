@@ -26,6 +26,8 @@ Grundsätze für jedes System:
 | Staatsfraktionen zum Start | LSPD, LSMD, DMV, Regierung (Gouverneur, Verwaltung, Standesamt), DOJ (Gericht, Staatsanwaltschaft, Anwälte) |
 | Später möglich | FIB, Army, Werkstatt, Abschleppdienst, Medien, Guides |
 | Kriminelle Fraktionen | Per Konzeptbewerbung; zum Start eine Streetgang (Abschnitt 2) |
+| Spielstil | **Softcore/Midcore**: spürbare, aber nicht existenzbedrohende Konsequenzen – Permatod nur freiwillig, Koma mit Erinnerungsverlust statt Charakterverlust, Haft mit Beschäftigung, Neulingsschutz; Regeln so weit wie möglich im Code statt im Regelwerk |
+| Schadensmodell | **Bodyshot**: keine Kopfschuss-Sofortkills, Kopftreffer zählen wie Körpertreffer (`SetPedSuffersCriticalHits` aus); Waffenschaden wird über die Config ausbalanciert |
 
 Solange nur fünf Staatsfraktionen existieren: Abschleppen und Reparatur als Jobs mit Firmenoption, Einreise durch das Team, Ermittlungsarbeit beim LSPD.
 

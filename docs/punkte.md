@@ -8,7 +8,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 0.1 | Servername, Slots, Sprache, Setting | 🔧 | Name TacoV, 10 Slots, Deutsch, Los Santos Gegenwart |
+| 0.1 | Servername, Slots, Sprache, Setting | ✅ | Name TacoV, 10 Slots, Deutsch, Los Santos Gegenwart (bestätigt 07.11.) |
 | 0.2 | Leitbild und Grundsätze | 🔧 | Sechs Grundsätze (Konzept 1.1) |
 | 0.3 | Weg zum Server (Discord, Whitelist) | 🔧 | Reaktion = Whitelist, Discord-ID als Anker |
 | 0.4 | Einreise, Neulingspfad, Level/Probezeit | 🔧 | Einreise mit Teammitglied, Startgeld 5.000 $, Level 3/8/15 |
@@ -23,6 +23,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 0.13 | Hoster, Testserver, Neustart-Fenster | ⬜ | |
 | 0.14 | Voice (TeamSpeak-Plugin, Lizenz) | ⬜ | |
 | 0.15 | Design-Richtung (V4: Gelb-Orange, Barlow, Listenmenüs) | 🔧 | `docs/design/README.md` |
+| 0.16 | Spielstil: Softcore/Midcore, Bodyshot | ✅ | Konzept 1.2; Bodyshot im Kern umgesetzt (07.11.) |
 
 ## Phase 1 · Infrastruktur
 
@@ -50,6 +51,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 2.8 | Orte (Config + `/ort setzen`, Blips) | 🔧 | |
 | 2.9 | Spielzeit, Level, Probezeit | 🔧 | |
 | 2.10 | Tastenbelegung und Interaktion (E-Aufforderung, X-Rad, Listenmenü) | 🔧 | |
+| 2.11 | Schadensmodell Bodyshot | 🔧 | `client/main.lua` |
 
 ## Phase 3 · Alltag I
 
@@ -84,100 +86,123 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 4.13 | Kfz-Steuer | ⬜ | |
 | 4.14 | Boote und Flugzeuge | ⏸ | Entscheidung später |
 
-## Phase 5 · Charakter und Einstieg
+## Phase 5 · Entwickler- und Admin-Werkzeuge (Creator-Systeme)
+
+Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setzen und den Server zu verwalten. Jedes Creator-System speichert in der Datenbank, hat Rechte je Rolle und wird im Log protokolliert.
+
+| Nr. | Punkt | Status | Inhalt / Abnahme |
+| --- | --- | --- | --- |
+| 5.1 | Admin-Grundgerüst: Rechte, Admin-Modus, Unsichtbar, Noclip, Teleport (Spieler/Koordinaten/Wegpunkt) | ⬜ | |
+| 5.2 | Team-Menü (F9): Spielerliste mit Akte, Items/Geld/Fahrzeug geben, Heilen, Kicken, Sperren, Warnen | ⬜ | jede Aktion mit Log |
+| 5.3 | Orte-Creator: Orte, Blips, E-Punkte im Spiel setzen und verschieben (ersetzt `/ort setzen`) | ⬜ | Vorschau am Zeiger |
+| 5.4 | Door Creator: Türen und Tore erfassen, Zugang je Fraktion/Rang/Schlüssel, Zustand (offen/zu) | ⬜ | |
+| 5.5 | Elevator Creator: Aufzüge mit Etagen, Zugang, Teleport mit Blende | ⬜ | |
+| 5.6 | Teleport-/Portal-Creator: Ein-/Ausgänge für Interiors (z. B. Polizeiwache, Wohnungen) | ⬜ | |
+| 5.7 | Ped-/NPC-Creator: Ansprechpartner mit Modell, Animation, Aufgabe (Shop, Job, Kaufhaus) | ⬜ | |
+| 5.8 | Objekt-Placer: Requisiten setzen, drehen, speichern (Schranken, Container, Möbel-Grundlage) | ⬜ | |
+| 5.9 | Zonen-Creator: Bereiche (Polygon/Kreis) für Gebiete, Sicherheitszonen, Jobs | ⬜ | |
+| 5.10 | Fahrzeug-Spawner und Fahrzeug-Editor für das Team (Modell, Kennzeichen, Tuning) | ⬜ | |
+| 5.11 | Item- und Geld-Werkzeuge mit Vier-Augen-Prinzip (Erstattung) | ⬜ | |
+| 5.12 | Welt-Steuerung: Wetter, Uhrzeit, Ansagen, Neustart-Ankündigung | ⬜ | |
+| 5.13 | Config im Spiel: Werte lesen und ändern (Management), Änderung geloggt | ⬜ | |
+| 5.14 | Entwickler-Werkzeuge: Koordinaten anzeigen/kopieren, Entity-Info, Debug-Zonen, Hot-Reload der Config | ⬜ | |
+| 5.15 | Spieler-Akte und Tickets (`/support`) mit Bearbeitung im Spiel und Discord | ⬜ | |
+| 5.16 | Anti-Cheat-Grundlage: Abgleich Geld/Items/Geschwindigkeit/Entities, Meldungen ans Team | ⬜ | |
+
+## Phase 6 · Charakter und Einstieg
 
 | Nr. | Punkt | Status |
 | --- | --- | --- |
-| 5.1 | Charaktereditor (Gesicht, Haare, Farben) | ⬜ |
-| 5.2 | Kleiderläden und Outfits | ⬜ |
-| 5.3 | Friseur, Tattoo, Chirurg | ⬜ |
-| 5.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ |
-| 5.5 | Neulingspfad und Sozialwohnung (Grundlage) | ⬜ |
-| 5.6 | Animationsmenü (F3) | ⬜ |
-| 5.7 | Voice und Sprechweiten | ⬜ |
-| 5.8 | Verletzungen und Erste Hilfe | ⬜ |
-| 5.9 | Fitness und Promille | ⬜ |
+| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | ⬜ |
+| 6.2 | Kleiderläden und Outfits | ⬜ |
+| 6.3 | Friseur, Tattoo, Chirurg | ⬜ |
+| 6.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ |
+| 6.5 | Neulingspfad und Sozialwohnung (Grundlage) | ⬜ |
+| 6.6 | Animationsmenü (F3) | ⬜ |
+| 6.7 | Voice und Sprechweiten | ⬜ |
+| 6.8 | Verletzungen und Erste Hilfe | ⬜ |
+| 6.9 | Fitness und Promille | ⬜ |
 
-## Phase 6 · Handy und Funk
-
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 6.1 | Handy-Item, Nummer, Grundgerüst der Oberfläche | ⬜ |
-| 6.2 | Kontakte und Anrufe | ⬜ |
-| 6.3 | Nachrichten (SMS, Standort, Gruppen) | ⬜ |
-| 6.4 | Bank-App | ⬜ |
-| 6.5 | Fahrzeuge-App | ⬜ |
-| 6.6 | Einstellungen | ⬜ |
-| 6.7 | Funkgerät und Funk-App, Funkliste im HUD | ⬜ |
-| 6.8 | Notruf, Fraktion, Firma, Kamera, Feed | ⬜ (mit den jeweiligen Phasen) |
-
-## Phase 7 · Jobs, Lohn, Steuern
+## Phase 7 · Handy und Funk
 
 | Nr. | Punkt | Status |
 | --- | --- | --- |
-| 7.1 | Jobcenter und Job-Grundgerüst (Anmelden, Firmenfahrzeug, Lohn) | ⬜ |
-| 7.2 | Müllabfuhr | ⬜ |
-| 7.3 | Lieferfahrer | ⬜ |
-| 7.4 | Busfahrer | ⬜ |
-| 7.5 | Taxi | ⬜ |
-| 7.6 | Holzfäller | ⬜ |
-| 7.7 | Bergbau | ⬜ |
-| 7.8 | Payday, Einkommensteuer, Staatshaushalt | ⬜ |
-| 7.9 | Kaufzeiten-Simulation in der CI | ⬜ |
+| 7.1 | Handy-Item, Nummer, Grundgerüst der Oberfläche | ⬜ |
+| 7.2 | Kontakte und Anrufe | ⬜ |
+| 7.3 | Nachrichten (SMS, Standort, Gruppen) | ⬜ |
+| 7.4 | Bank-App | ⬜ |
+| 7.5 | Fahrzeuge-App | ⬜ |
+| 7.6 | Einstellungen | ⬜ |
+| 7.7 | Funkgerät und Funk-App, Funkliste im HUD | ⬜ |
+| 7.8 | Notruf, Fraktion, Firma, Kamera, Feed | ⬜ (mit den jeweiligen Phasen) |
 
-## Phase 8 · Fraktionen
-
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 8.1 | Fraktionsmodul (Mitglieder, Ränge, Rechte, Kasse, Lager, Protokoll) | ⬜ |
-| 8.2 | Dienst, Dienstkleidung, Fraktionsfahrzeuge | ⬜ |
-| 8.3 | Fraktionsmenü (F6) vollständig | ⬜ |
-| 8.4 | LSPD: MDT | ⬜ |
-| 8.5 | LSPD: Dispatch und Notrufe | ⬜ |
-| 8.6 | LSPD: Kontrolle, Beschlagnahme, Verhaftung | ⬜ |
-| 8.7 | LSMD: Verletzungssystem, Krankenhaus, Rechnungen | ⬜ |
-| 8.8 | DMV im Fraktionsbetrieb | ⬜ |
-| 8.9 | Regierung: Rathaus, Bürgerbüro, Lizenzamt | ⬜ |
-| 8.10 | DOJ: Gericht, Kaution, Verfahren | ⬜ |
-| 8.11 | Streetgang: Ganghaus, Gebiete, Gangwar | ⬜ |
-
-## Phase 9 · Immobilien und Firmen
+## Phase 8 · Jobs, Lohn, Steuern
 
 | Nr. | Punkt | Status |
 | --- | --- | --- |
-| 9.1 | Immobilien: Typen, Kauf/Miete, Schlüssel, Lager | ⬜ |
-| 9.2 | Sozialwohnung und Mietrückstand | ⬜ |
-| 9.3 | Garagen an Immobilien | ⬜ |
-| 9.4 | Möbelhaus | ⬜ |
-| 9.5 | Firma Burger Shot | ⬜ |
+| 8.1 | Jobcenter und Job-Grundgerüst (Anmelden, Firmenfahrzeug, Lohn) | ⬜ |
+| 8.2 | Müllabfuhr | ⬜ |
+| 8.3 | Lieferfahrer | ⬜ |
+| 8.4 | Busfahrer | ⬜ |
+| 8.5 | Taxi | ⬜ |
+| 8.6 | Holzfäller | ⬜ |
+| 8.7 | Bergbau | ⬜ |
+| 8.8 | Payday, Einkommensteuer, Staatshaushalt | ⬜ |
+| 8.9 | Kaufzeiten-Simulation in der CI | ⬜ |
 
-## Phase 10 · Verbrechen und Justiz
-
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 10.1 | Drogen: Anbau, Herstellung, Verkauf, Wirkung | ⬜ |
-| 10.2 | Waffen: Waffenschein, Kauf, Schwarzmarkt, Munition | ⬜ |
-| 10.3 | Hehler und Schwarzgeldwäsche | ⬜ |
-| 10.4 | Raub: Läden, Juwelier, Bank, Spieler | ⬜ |
-| 10.5 | Strafkatalog, Geldstrafen, Punkte | ⬜ |
-| 10.6 | Haft und Gefängnis | ⬜ |
-| 10.7 | Koma, Tod, Permatod | ⬜ |
-
-## Phase 11 · Team-Werkzeuge und Betrieb
+## Phase 9 · Fraktionen
 
 | Nr. | Punkt | Status |
 | --- | --- | --- |
-| 11.1 | Team-Menü (F9) | ⬜ |
-| 11.2 | Tickets und Spieler-Akte | ⬜ |
-| 11.3 | Anti-Cheat | ⬜ |
-| 11.4 | Backups, Monitoring, Neustarts, Testserver | ⬜ |
-| 11.5 | Wochenberichte (Geldmenge, Aktivität) | ⬜ |
+| 9.1 | Fraktionsmodul (Mitglieder, Ränge, Rechte, Kasse, Lager, Protokoll) | ⬜ |
+| 9.2 | Dienst, Dienstkleidung, Fraktionsfahrzeuge | ⬜ |
+| 9.3 | Fraktionsmenü (F6) vollständig | ⬜ |
+| 9.4 | LSPD: MDT | ⬜ |
+| 9.5 | LSPD: Dispatch und Notrufe | ⬜ |
+| 9.6 | LSPD: Kontrolle, Beschlagnahme, Verhaftung | ⬜ |
+| 9.7 | LSMD: Verletzungssystem, Krankenhaus, Rechnungen | ⬜ |
+| 9.8 | DMV im Fraktionsbetrieb | ⬜ |
+| 9.9 | Regierung: Rathaus, Bürgerbüro, Lizenzamt | ⬜ |
+| 9.10 | DOJ: Gericht, Kaution, Verfahren | ⬜ |
+| 9.11 | Streetgang: Ganghaus, Gebiete, Gangwar | ⬜ |
 
-## Phase 12 · Beta und Start
+## Phase 10 · Immobilien und Firmen
 
 | Nr. | Punkt | Status |
 | --- | --- | --- |
-| 12.1 | Geschlossene Beta (10 Slots, 2 Wochen) | ⬜ |
-| 12.2 | Balancing über Config | ⬜ |
-| 12.3 | Regelwerk und Einstiegstexte | ⬜ |
-| 12.4 | Start | ⬜ |
+| 10.1 | Immobilien: Typen, Kauf/Miete, Schlüssel, Lager | ⬜ |
+| 10.2 | Sozialwohnung und Mietrückstand | ⬜ |
+| 10.3 | Garagen an Immobilien | ⬜ |
+| 10.4 | Möbelhaus | ⬜ |
+| 10.5 | Firma Burger Shot | ⬜ |
+
+## Phase 11 · Verbrechen und Justiz
+
+| Nr. | Punkt | Status |
+| --- | --- | --- |
+| 11.1 | Drogen: Anbau, Herstellung, Verkauf, Wirkung | ⬜ |
+| 11.2 | Waffen: Waffenschein, Kauf, Schwarzmarkt, Munition | ⬜ |
+| 11.3 | Hehler und Schwarzgeldwäsche | ⬜ |
+| 11.4 | Raub: Läden, Juwelier, Bank, Spieler | ⬜ |
+| 11.5 | Strafkatalog, Geldstrafen, Punkte | ⬜ |
+| 11.6 | Haft und Gefängnis | ⬜ |
+| 11.7 | Koma, Tod, Permatod | ⬜ |
+
+## Phase 12 · Team-Werkzeuge und Betrieb
+
+| Nr. | Punkt | Status |
+| --- | --- | --- |
+| 12.1 | Team-Menü (F9) vollständig (Erweiterungen aus Phase 5) | ⬜ |
+| 12.2 | Tickets und Spieler-Akte vollständig | ⬜ |
+| 12.3 | Anti-Cheat vollständig | ⬜ |
+| 12.4 | Backups, Monitoring, Neustarts, Testserver | ⬜ |
+| 12.5 | Wochenberichte (Geldmenge, Aktivität) | ⬜ |
+
+## Phase 13 · Beta und Start
+
+| Nr. | Punkt | Status |
+| --- | --- | --- |
+| 13.1 | Geschlossene Beta (10 Slots, 2 Wochen) | ⬜ |
+| 13.2 | Balancing über Config | ⬜ |
+| 13.3 | Regelwerk und Einstiegstexte | ⬜ |
+| 13.4 | Start | ⬜ |
