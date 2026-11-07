@@ -93,45 +93,46 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 .center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
 .dialog-back { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); }
 
-/* ---------- HUD ---------- */
+/* ---------- HUD (Aufbau nach GLRP-Vorbild, Punkt 3.2) ---------- */
 .hud { position: absolute; inset: 0; pointer-events: none; }
-.hud-money { position: absolute; top: 1.25rem; right: 1.5rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; text-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.85); }
-.hud-money .line { display: flex; align-items: center; gap: 0.5rem; font-size: 1.125rem; font-weight: 700; }
-.hud-money .line .ic { width: 1.5rem; height: 1.5rem; border-radius: 0.4rem; background: rgba(14, 12, 22, 0.75); border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--accent); }
-.hud-money .line.black { color: var(--black-money); }
-.hud-money .line.black .ic { color: var(--black-money); }
-.hud-money .line.bank { font-size: 0.9375rem; color: var(--muted); }
-.hud-money .meta { margin-top: 0.25rem; display: flex; gap: 0.5rem; font-size: 0.6875rem; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
-.hud-aduty { position: absolute; top: 1rem; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.75rem; border-radius: 0.5rem; background: rgba(220, 38, 38, 0.85); color: #fff; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
-.hud-status { position: absolute; display: flex; gap: 0.4rem; }
-.hud-status .st { display: flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.5rem 0.3rem 0.35rem; border-radius: 0.5rem; background: rgba(14, 12, 22, 0.8); border: 1px solid var(--line); min-width: 5.25rem; }
-.hud-status .st .ic { width: 1.375rem; height: 1.375rem; display: grid; place-items: center; color: var(--text); }
-.hud-status .st .bar { flex: 1; height: 0.3rem; border-radius: 0.2rem; background: rgba(255, 255, 255, 0.14); overflow: hidden; }
-.hud-status .st .bar i { display: block; height: 100%; border-radius: inherit; }
-.hud-status .st.health .bar i { background: #34D399; }
-.hud-status .st.armor .bar i { background: #60A5FA; }
-.hud-status .st.hunger .bar i { background: #FBBF24; }
-.hud-status .st.thirst .bar i { background: #38BDF8; }
-.hud-status .st.low .bar i { background: var(--danger); }
-.hud-radio { position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; font-size: 0.75rem; text-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.85); }
-.hud-radio .title { font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
-.hud-radio .who { display: flex; align-items: center; gap: 0.35rem; font-weight: 600; }
-.hud-radio .who i { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--dim); }
-.hud-radio .who i.on { background: var(--ok); box-shadow: 0 0 0.5rem var(--ok); }
-.hud-veh { position: absolute; right: 1.5rem; bottom: 1.5rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
-.hud-veh .speedo { display: flex; align-items: baseline; gap: 0.4rem; text-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.85); }
-.hud-veh .speedo b { font-size: 3rem; font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
-.hud-veh .speedo span { font-size: 0.875rem; font-weight: 600; color: var(--muted); }
-.hud-veh .bar { width: 12rem; height: 0.375rem; border-radius: 0.2rem; background: rgba(255, 255, 255, 0.14); overflow: hidden; }
-.hud-veh .bar i { display: block; height: 100%; background: var(--accent-2); }
-.hud-veh .meta { display: flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.6rem; border-radius: 0.5rem; background: rgba(14, 12, 22, 0.8); border: 1px solid var(--line); }
-.hud-veh .meta .st { display: flex; align-items: center; gap: 0.3rem; }
-.hud-veh .meta .fuel { width: 4rem; height: 0.3rem; border-radius: 0.2rem; background: rgba(255, 255, 255, 0.14); overflow: hidden; }
-.hud-veh .meta .fuel i { display: block; height: 100%; background: var(--warn); }
-.hud-veh .meta .led { width: 0.5rem; height: 0.5rem; border-radius: 50%; }
-.hud-station { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.75rem; border-radius: 0.6rem; background: var(--bg); border: 1px solid var(--line-2); font-size: 0.8125rem; }
-.hud-station .ic { width: 1.75rem; height: 1.75rem; border-radius: 0.4rem; background: var(--accent-2); color: #fff; display: grid; place-items: center; }
-.hud-station b.price { margin-left: 0.5rem; font-size: 1rem; }
+.hud .shadow { text-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.85); }
+.hud-top { position: absolute; right: 2.5rem; top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.hud-logo { display: flex; flex-direction: column; align-items: center; }
+.hud-logo img { width: 9.5rem; display: block; filter: drop-shadow(0 0.25rem 0.75rem rgba(0, 0, 0, 0.6)); }
+.hud-logo .ts { font-size: 0.75rem; font-weight: 900; letter-spacing: 0.26em; }
+.hud-money { display: grid; grid-template-columns: auto 1.625rem; gap: 0.375rem 0.625rem; align-items: center; justify-items: end; margin-top: 0.25rem; }
+.hud-money span.num { font-size: 1.375rem; font-weight: 900; }
+.hud-money .coin { width: 1.625rem; height: 1.625rem; border-radius: 50%; display: inline-grid; place-items: center; background: var(--accent-2); color: #fff; }
+.hud-money .coin.black { background: linear-gradient(135deg, #99F6E4, #0D9488); color: #042F2E; font-size: 0.75rem; font-weight: 900; }
+.hud-stats { position: absolute; right: 3rem; top: 15.5rem; display: flex; flex-direction: column; gap: 1.125rem; }
+.stat { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; font-size: 0.875rem; font-weight: 800; }
+.stat .c { width: 2.375rem; height: 2.375rem; border-radius: 50%; background: var(--accent-2); color: #fff; display: grid; place-items: center; box-shadow: 0 0.375rem 1rem rgba(var(--accent-rgb), 0.35); position: relative; overflow: hidden; }
+.stat .c i { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); }
+.stat .c svg { position: relative; }
+.hud-info { position: absolute; display: flex; flex-direction: column; gap: 0.625rem; }
+.hud-info div { display: flex; align-items: center; gap: 0.75rem; font-size: 1rem; font-weight: 700; }
+.hud-info .b { width: 1.875rem; height: 1.875rem; border-radius: 50%; background: var(--accent-2); color: #fff; display: inline-grid; place-items: center; flex: none; }
+.hud-info small { display: block; font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+.hud-info .aduty .b { background: linear-gradient(135deg, #ff3b3b, #b80000); }
+.hud-info .aduty small { color: #ff8a8a; }
+.hud-radio { position: absolute; right: 2.5rem; top: 27.5rem; display: flex; flex-direction: column; gap: 0.375rem; align-items: flex-end; font-size: 0.875rem; font-weight: 700; }
+.hud-radio .title { letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.6875rem; color: var(--muted); }
+.hud-radio .id { color: var(--dim); }
+.hud-radio i { display: inline-block; width: 0.625rem; height: 0.625rem; border-radius: 0.125rem; background: var(--dim); margin-left: 0.375rem; }
+.hud-radio i.on { background: var(--ok); box-shadow: 0 0 0.5rem var(--ok); }
+.hud-veh { position: absolute; right: 2.5rem; bottom: 2.25rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.375rem; }
+.hud-veh .speed { display: flex; align-items: baseline; gap: 0.625rem; }
+.hud-veh .speed b { font-size: 4.5rem; font-weight: 900; font-style: italic; line-height: 1; }
+.hud-veh .speed span { font-size: 1.375rem; font-weight: 700; color: var(--muted); }
+.hud-veh .ticks { display: flex; gap: 0.25rem; transform: skewX(-20deg); }
+.hud-veh .ticks i { width: 0.625rem; height: 1.75rem; background: rgba(255, 255, 255, 0.18); }
+.hud-veh .ticks i.on { background: var(--accent); }
+.hud-veh .meta { display: flex; align-items: center; gap: 0.875rem; font-size: 1rem; font-weight: 800; font-style: italic; }
+.hud-veh .meta .meter { width: 5rem; height: 0.5rem; }
+.hud-veh .meta .dot { display: inline-flex; align-items: center; gap: 0.25rem; }
+.hud-veh .meta .dot i { width: 0.5rem; height: 0.5rem; border-radius: 50%; }
+.hud-station { width: 22.5rem; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.875rem; margin-bottom: 1rem; border-radius: var(--radius); background: var(--bg); border: 1px solid var(--line-2); box-shadow: var(--shadow); font-style: normal; }
+.hud-station .ic { width: 1.875rem; height: 1.875rem; border-radius: 0.5rem; background: var(--accent-2); color: #fff; display: grid; place-items: center; }
 
 /* Hinweise */
 .toasts { position: absolute; top: 1.25rem; left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; width: 20rem; pointer-events: none; }

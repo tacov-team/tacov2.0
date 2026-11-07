@@ -1,4 +1,5 @@
-// HUD: Geld oben rechts, Status-Leiste über der Minimap, Funkliste rechts, Tacho unten rechts, Admin-Dienst oben mittig.
+// HUD nach GLRP-Vorbild (Punkt 3.2, abgenommen): Logo und Geld oben rechts, Hunger/Durst-Kacheln darunter, Funkliste rechts,
+// Infozeilen rechts neben der Spiel-Minimap, Tacho unten rechts mit Tankstellenkarte. Größen in rem (V6-Maßstab).
 import { useEffect, useState } from 'react';
 import { useStore, type HudData } from '../store';
 import { Icon } from '../components/Icon';
@@ -10,7 +11,6 @@ function useClock() {
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t); }, []);
   return now;
 }
-
 function useViewport() {
   const [v, setV] = useState({ w: window.innerWidth, h: window.innerHeight });
   useEffect(() => {
@@ -21,35 +21,37 @@ function useViewport() {
   return v;
 }
 
-function Stat({ kind, icon, value }: { kind: string; icon: string; value: number }) {
+function Stat({ icon, value }: { icon: string; value: number }) {
   const v = Math.max(0, Math.min(100, Math.round(value)));
   return (
-    <div className={'st ' + kind + (v <= 20 ? ' low' : '')} title={`${v} %`}>
-      <span className="ic"><Icon name={icon} size={15} /></span>
-      <span className="bar"><i style={{ width: `${v}%` }} /></span>
+    <div className="stat shadow">
+      <span className="c"><i style={{ height: `${100 - v}%` }} /><Icon name={icon} size={18} /></span>
+      <span className="num">{v} %</span>
     </div>
   );
 }
 
 function Vehicle({ h }: { h: HudData }) {
   const v = h.vehicle!;
-  const pct = Math.max(0, Math.min(100, (v.fuel / Math.max(1, v.tank)) * 100));
+  const ticks = 14;
+  const on = Math.round(Math.min(1, v.speed / 240) * ticks);
   return (
-    <div className="hud-veh">
+    <div className="hud-veh shadow">
       {h.station && (
         <div className="hud-station">
-          <span className="ic"><Icon name="fuel" size={15} /></span>
-          <div className="col" style={{ gap: 0 }}><b>{h.station.name}</b><span className="muted" style={{ fontSize: '0.6875rem' }}>{h.station.sub}</span></div>
-          {h.station.price != null && <b className="price num">{h.station.price.toLocaleString('de-DE', { minimumFractionDigits: 2 })} $/L</b>}
+          <span className="ic"><Icon name="fuel" size={16} /></span>
+          <div className="col" style={{ gap: 0 }}><b style={{ fontSize: '0.9375rem' }}>{h.station.name}</b><span className="muted" style={{ fontSize: '0.75rem' }}>{h.station.sub}</span></div>
+          {h.station.price != null && <b className="num right" style={{ fontSize: '1.25rem', fontWeight: 900 }}>{h.station.price.toLocaleString('de-DE', { minimumFractionDigits: 2 })} <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>$/L</span></b>}
         </div>
       )}
-      <div className="speedo"><b className="num">{Math.round(v.speed)}</b><span>km/h</span></div>
-      <div className="bar"><i style={{ width: `${Math.min(100, (v.speed / 240) * 100)}%` }} /></div>
-      <div className="meta">
-        <span className="st"><Icon name="fuel" size={14} /><span className="fuel"><i style={{ width: `${pct}%` }} /></span><span className="num">{Math.round(v.fuel)} L</span></span>
-        <span className="st"><Icon name="engine" size={14} /><i className="led" style={{ background: v.engine ? 'var(--ok)' : 'var(--danger)' }} /></span>
-        <span className="st"><Icon name="lock" size={14} /><i className="led" style={{ background: v.locked ? 'var(--danger)' : 'var(--ok)' }} /></span>
-      </div>
+      <span className="speed"><b className="num">{Math.round(v.speed)}</b><span>km/h</span></span>
+      <span className="ticks">{Array.from({ length: ticks }, (_, i) => <i key={i} className={i < on ? 'on' : ''} />)}</span>
+      <span className="meta">
+        <Icon name="fuel" size={18} /> <span className="num">{Math.round(v.fuel)} L</span>
+        <span className="meter"><i style={{ width: `${Math.max(0, Math.min(100, (v.fuel / Math.max(1, v.tank)) * 100))}%` }} /></span>
+        <span className="dot"><Icon name="engine" size={18} /><i style={{ background: v.engine ? 'var(--ok)' : 'var(--danger)' }} /></span>
+        <span className="dot"><Icon name="lock" size={18} /><i style={{ background: v.locked ? 'var(--danger)' : 'var(--ok)' }} /></span>
+      </span>
     </div>
   );
 }
@@ -61,41 +63,47 @@ export function Hud() {
   const vp = useViewport();
   const fullView = state.view && ['inventory', 'characters', 'bank', 'shop', 'garage'].includes(state.view.name);
   if (!h.visible || fullView) return null;
-
-  // Status-Leiste direkt über der Minimap des Spiels (Lage kommt vom Client), sonst unten links
-  const m = h.minimap;
-  const statusStyle = m
-    ? { left: m.x * vp.w, bottom: vp.h - m.y * vp.h + 8 }
-    : { left: '1.5rem', bottom: '15%' };
   const time = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-  const date = now.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const date = now.toLocaleDateString('de-DE');
+  // Infozeilen rechts neben der Minimap des Spiels (Lage meldet Lua), sonst unten links
+  const m = h.minimap;
+  const rem = vp.h / 67.5;
+  const infoLeft = m ? m.x * vp.w + m.w * vp.w + 1.875 * rem : 20.5 * rem;
+  const infoBottom = m ? vp.h - (m.y * vp.h + m.h * vp.h) + 0.25 * rem : 2.5 * rem;
 
   return (
     <div className="hud">
-      {h.aduty && <div className="hud-aduty"><Icon name="shield" size={14} /> Admin-Dienst · {h.aduty}</div>}
-
-      <div className="hud-money">
-        <div className="line"><span className="num">{money(h.cash)}</span><span className="ic"><Icon name="cash" size={14} /></span></div>
-        <div className="line bank"><span className="num">{money(h.bank)}</span><span className="ic"><Icon name="card" size={14} /></span></div>
-        {h.black > 0 && <div className="line black"><span className="num">{money(h.black)}</span><span className="ic"><Icon name="briefcase" size={14} /></span></div>}
-        <div className="meta">
-          <span className="num">ID {h.serverId}</span><span>·</span><span>{h.faction || 'Zivilist'}{h.factionRank ? ` · ${h.factionRank}` : ''}</span><span>·</span><span className="num">{date} {time}</span>
+      <div className="hud-top shadow">
+        <div className="row-flex" style={{ gap: '0.875rem' }}>
+          <span style={{ color: h.radioOn ? 'var(--accent)' : 'var(--muted)' }}><Icon name="radio" size={18} /></span>
+          <div className="hud-logo"><img src="assets/logo.png" alt="TacoV" /><span className="ts">ROLEPLAY</span></div>
+        </div>
+        <div className="hud-money">
+          <span className="num">{money(h.cash)}</span><span className="coin"><Icon name="cash" size={14} /></span>
+          <span className="num">{money(h.bank)}</span><span className="coin"><Icon name="card" size={14} /></span>
+          {h.black > 0 && <><span className="num" style={{ color: 'var(--black-money)' }}>{money(h.black)}</span><span className="coin black">S</span></>}
         </div>
       </div>
 
-      <div className="hud-status" style={statusStyle}>
-        <Stat kind="health" icon="heart" value={h.health} />
-        <Stat kind="armor" icon="shield" value={h.armor} />
-        <Stat kind="hunger" icon="food" value={h.hunger} />
-        <Stat kind="thirst" icon="drop" value={h.thirst} />
+      <div className="hud-stats">
+        <Stat icon="food" value={h.hunger} />
+        <Stat icon="drop" value={h.thirst} />
       </div>
 
-      {h.radioOn && h.radio && h.radio.length > 0 && (
-        <div className="hud-radio">
-          <span className="title">Funk · {h.radioFrequency ?? '–'}</span>
-          {h.radio.map((r) => <span key={r.id} className="who"><span className="num muted">[{r.id}]</span> {r.name}<i className={r.talking ? 'on' : ''} /></span>)}
+      {h.radio && h.radio.length > 0 && (
+        <div className="hud-radio shadow">
+          <span className="title">Funk · Frequenz {h.radioFrequency ?? '–'}</span>
+          {h.radio.map((r) => <span key={r.id}><span className="id num">[{r.id}]</span> {r.name}<i className={r.talking ? 'on' : ''} /></span>)}
         </div>
       )}
+
+      <div className="hud-info shadow" style={{ left: infoLeft, bottom: infoBottom }}>
+        <div><span className="b"><Icon name="user" size={16} /></span><span className="num">{h.serverId}</span></div>
+        <div><span className="b"><Icon name="fitness" size={16} /></span><span className="num">{h.fitness.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %</span></div>
+        <div><span className="b"><Icon name="briefcase" size={16} /></span><span>{h.faction || 'Zivilist'}{h.factionRank && <small>{h.factionRank}</small>}</span></div>
+        <div><span className="b"><Icon name="clock" size={16} /></span><span className="num">{date}<small>{time} Uhr</small></span></div>
+        {h.aduty && <div className="aduty"><span className="b"><Icon name="shield" size={16} /></span><span>Admin-Dienst<small>{h.aduty}</small></span></div>}
+      </div>
 
       {h.vehicle && <Vehicle h={h} />}
     </div>

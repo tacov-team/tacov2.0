@@ -7,7 +7,7 @@ Betreiber: „UIs waren komplett komisch, bau es neu.“ Alle Ansichten neu gesc
 - **Maßstab:** alle Größen in `rem`, 1 rem = 1/67,5 der Bildschirmhöhe (16 px bei 1080p) → auf 768p, 1080p, 1440p, 4K identische Proportionen (geprüft 1366×768 und 1920×1080)
 - **Flächen:** fast deckendes dunkles Panel (`rgba(14,12,22,0.96)`), 1-px-Rand, Kopfzeile (Icon, Titel, Untertitel, Schließen), Fußzeile für Aktionen; wenig Zierde, hoher Kontrast
 - **Akzent:** Violett `#8B5CF6` (Knöpfe, aktive Elemente, Icon-Kacheln), Text `#F5F3FF`; Schwarzgeld Mint; Status-Farben Grün/Gelb/Rot/Blau; Item-Icons in Lavendel/Violett
-- **HUD:** Geld (Bargeld, Konto, Schwarzgeld) oben rechts mit ID/Fraktion/Datum darunter; Leben/Weste/Hunger/Durst als vier kompakte Balken direkt über der Minimap; Funkliste rechts; Tacho unten rechts (km/h, Balken, Tank, Motor, Schloss) mit Tankstellenkarte; Admin-Dienst als rotes Band oben mittig
+- **HUD (GLRP-Vorbild, wie in V4 abgenommen):** Logo + Geld (Bargeld, Konto, Schwarzgeld) oben rechts, Hunger/Durst-Kacheln darunter, Funkliste rechts; Infozeilen (ID, Fitness, Fraktion + Rang, Datum/Uhrzeit, Admin-Dienst) rechts neben der Spiel-Minimap; Tacho unten rechts (km/h kursiv, Balkenreihe, Tank, Motor, Schloss) mit Tankstellenkarte darüber
 - **Inventar:** zwei gleich große Panels (Taschen | Boden/Behälter), 6 Spalten, Aktionsleiste unten (Auswahl, Menge, Benutzen/Geben/Teilen/Wegwerfen)
 - **Bank, Laden, Garage:** ein zentriertes Panel mit klaren Spalten; Listenmenü links; X-Rad mittig; Hinweise oben links; E-Aufforderung unten mittig
 - Regel bleibt: neue Oberflächen erst mit ihrem System.
