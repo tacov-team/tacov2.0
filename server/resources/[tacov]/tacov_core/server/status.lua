@@ -62,7 +62,8 @@ AddEventHandler('tacov:core:ready', function()
       for _, m in ipairs(TacoV.Config.Restart.warnMinutes) do
         if left <= m * 60 and not warned[m] then
           warned[m] = true
-          TacoV.Status.announce('restart', ('Neustart in %d %s – bitte Fahrzeuge einparken und Geschäfte abschließen.'):format(m, m == 1 and 'Minute' or 'Minuten'))
+          local unit = m == 1 and 'Minute' or 'Minuten'
+          TacoV.Status.announce('restart', ('Neustart in %d %s – bitte Fahrzeuge einparken und Geschäfte abschließen.'):format(m, unit))
         end
       end
       if left <= 0 then
