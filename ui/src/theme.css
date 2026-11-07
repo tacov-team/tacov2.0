@@ -265,3 +265,20 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 .garage .veh.dim { opacity: 0.5; }
 .garage .veh .plate { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); }
 .garage .veh .stats { display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--muted); }
+
+/* Kaufhaus: Panel links, Showroom-Vorschau rechts sichtbar */
+.dealer { position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); }
+.dealer .panel { width: 52rem; height: 38rem; }
+.dealer .panel .body { flex: 1; min-height: 0; }
+.dealer .cols { display: flex; gap: 1rem; flex: 1; min-height: 0; }
+.dealer .catalog { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.dealer .grid { flex: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; align-content: start; padding-right: 0.2rem; }
+.dealer .veh { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; cursor: pointer; }
+.dealer .veh:hover { background: var(--bg-3); }
+.dealer .veh .price { font-weight: 800; color: var(--accent); }
+.dealer .detail { width: 17rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.dealer .hero { height: 6rem; border-radius: 0.75rem; background: radial-gradient(circle at 50% 90%, rgba(var(--accent-rgb), 0.3), transparent 65%); display: grid; place-items: center; color: var(--accent); }
+.dealer .specs { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8125rem; }
+.dealer .specs span { display: flex; align-items: center; gap: 0.4rem; }
+.dealer .total { margin-top: auto; padding: 0.75rem; border-radius: 0.75rem; background: var(--accent-grad); color: #fff; box-shadow: var(--accent-glow); display: flex; flex-direction: column; gap: 0.15rem; }
+.dealer .total .lbl { font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }

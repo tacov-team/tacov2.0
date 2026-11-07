@@ -4,13 +4,13 @@ TacoV = TacoV or {}
 TacoV.Config = TacoV.Config or {}
 
 TacoV.Config.Vehicles = {
-  -- Klassen: Level-Voraussetzung, nötiger Führerschein, Kofferraum (kg), Tank (Liter), Kaufhaus
+  -- Klassen: nötiger Führerschein, Kofferraum (kg), Tank (Liter), Kaufhaus. Kein Level für Fahrzeuge (Punkt 4.1, 07.11.)
   classes = {
     D     = { label = 'Einstieg',     level = 0,  license = 'B', trunk = 20,  tank = 45,  dealer = 'autohaus', order = 1 },
     C     = { label = 'Alltag',       level = 0,  license = 'B', trunk = 40,  tank = 55,  dealer = 'autohaus', order = 2 },
-    B     = { label = 'Gehoben',      level = 6,  license = 'B', trunk = 60,  tank = 65,  dealer = 'autohaus', order = 3 },
-    A     = { label = 'Sport',        level = 10, license = 'B', trunk = 25,  tank = 70,  dealer = 'autohaus', order = 4 },
-    S     = { label = 'Super',        level = 15, license = 'B', trunk = 25,  tank = 80,  dealer = 'autohaus', order = 5 },
+    B     = { label = 'Gehoben',      level = 0,  license = 'B', trunk = 60,  tank = 65,  dealer = 'autohaus', order = 3 },
+    A     = { label = 'Sport',        level = 0, license = 'B', trunk = 25,  tank = 70,  dealer = 'autohaus', order = 4 },
+    S     = { label = 'Super',        level = 0, license = 'B', trunk = 25,  tank = 80,  dealer = 'autohaus', order = 5 },
     moto  = { label = 'Motorrad',     level = 0,  license = 'A', trunk = 10,  tank = 15,  dealer = 'autohaus', order = 6 },
     van   = { label = 'Transporter',  level = 0,  license = 'C', trunk = 120, tank = 80,  dealer = 'truck',    order = 7 },
     truck = { label = 'LKW',          level = 0,  license = 'C', trunk = 300, tank = 300, dealer = 'truck',    order = 8 },
@@ -105,6 +105,7 @@ TacoV.Config.Vehicles = {
   },
 
   spawnClearRadius = 3.0, -- Ausfahrt muss frei sein
+  gloveboxWeight = 5,     -- Handschuhfach (kg), nur von innen (Punkt 4.8)
 }
 
 -- Orte des Fahrzeugmoduls: Garagen (category car/rig/air/sea), Tankstellen, Kaufhäuser, Verwahrhof.

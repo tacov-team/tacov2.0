@@ -35,6 +35,8 @@ Reparatur und Abschleppen sind keine Jobs: NPC-Werkstatt für Reparatur, Werkzeu
 
 ## 4. Fahrzeuge
 
+Änderung 07.11.2026 (Punkt 4.1): keine Level-Voraussetzung für Fahrzeugklassen – jeder darf alles kaufen, was er bezahlen kann; Führerschein bleibt (Fahrschule).
+
 NPC-Kaufhäuser: Autohaus (PKW, Motorräder), LKW-Kaufhaus am Hafen, Bootshaus an der Marina, Flugzeughändler am Flugplatz. Zulassung beim DMV.
 
 | Klasse | Beispiele | Preis | Voraussetzung | Kaufhaus |

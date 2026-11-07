@@ -108,6 +108,28 @@ end
 
 local kmSinceSeen = 0.0
 
+-- Punkt 4.8: Der Motor startet nicht automatisch beim Einsteigen. Zustand liegt im Statebag `engine`; beim Einsteigen
+-- wird er wiederhergestellt (aus bleibt aus), beim Aussteigen läuft ein laufender Motor weiter.
+local lastVeh = 0
+CreateThread(function()
+  while true do
+    Wait(100)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    if veh ~= lastVeh then
+      if veh ~= 0 and GetPedInVehicleSeat(veh, -1) == ped then
+        local on = Entity(veh).state.engine == true
+        SetVehicleEngineOn(veh, on, true, true)
+      elseif veh == 0 and lastVeh ~= 0 and DoesEntityExist(lastVeh) then
+        if Entity(lastVeh).state.engine == true then SetVehicleEngineOn(lastVeh, true, true, true) end
+      end
+      lastVeh = veh
+    elseif veh ~= 0 and GetPedInVehicleSeat(veh, -1) == ped and Entity(veh).state.engine ~= true and GetIsVehicleEngineRunning(veh) then
+      SetVehicleEngineOn(veh, false, true, true) -- Spiel wollte automatisch starten
+    end
+  end
+end)
+
 CreateThread(function()
   local lastTick, lastSent = GetGameTimer(), 0
   while true do
@@ -183,12 +205,35 @@ function TacoV.Vehicles.openTrunk(veh)
   TriggerServerEvent('tacov:vehicles:trunk', NetworkGetNetworkIdFromEntity(veh))
 end
 
+function TacoV.Vehicles.openGlovebox()
+  local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+  if veh == 0 then return end
+  TriggerServerEvent('tacov:vehicles:glovebox', NetworkGetNetworkIdFromEntity(veh))
+end
+
+-- Kofferraumklappe auf, solange das Inventar offen ist
+RegisterNetEvent('tacov:vehicles:trunkDoor', function(netId)
+  local veh = NetworkGetEntityFromNetworkId(netId)
+  if veh == 0 or not DoesEntityExist(veh) then return end
+  SetVehicleDoorOpen(veh, 5, false, false)
+  CreateThread(function()
+    Wait(500)
+    while TacoV.UI.current() == 'inventory' and DoesEntityExist(veh) do Wait(250) end
+    if DoesEntityExist(veh) then SetVehicleDoorShut(veh, 5, false) end
+  end)
+end)
+
+local function trunkAllowed(veh)
+  return TacoV.Vehicles.hasKey(veh) or GetVehicleDoorLockStatus(veh) < 2
+end
+
 function TacoV.Vehicles.toggleEngine()
   local ped = PlayerPedId()
   local veh = GetVehiclePedIsIn(ped, false)
   if veh == 0 or GetPedInVehicleSeat(veh, -1) ~= ped then return end
-  local on = GetIsVehicleEngineRunning(veh)
+  local on = Entity(veh).state.engine == true
   if not on and TacoV.Vehicles.fuelOf(veh) <= 0.05 then return notify('error', 'Der Tank ist leer.') end
+  if NetworkHasControlOfEntity(veh) then Entity(veh).state:set('engine', not on, true) end
   SetVehicleEngineOn(veh, not on, false, true)
   notify('info', on and 'Motor aus.' or 'Motor an.')
 end
@@ -205,8 +250,13 @@ TacoV.Interact.register({
 })
 TacoV.Interact.register({
   id = 'veh_trunk', label = 'Kofferraum', icon = 'trunk', order = 45,
-  when = function(ctx) return ctx.vehicle and TacoV.Vehicles.hasKey(ctx.vehicle) end,
+  when = function(ctx) return ctx.vehicle and not IsPedInAnyVehicle(ctx.ped, false) and trunkAllowed(ctx.vehicle) end,
   run = function(ctx) TacoV.Vehicles.openTrunk(ctx.vehicle) end,
+})
+TacoV.Interact.register({
+  id = 'veh_glove', label = 'Handschuhfach', icon = 'box', order = 45,
+  when = function(ctx) return ctx.vehicle and GetVehiclePedIsIn(ctx.ped, false) == ctx.vehicle end,
+  run = function() TacoV.Vehicles.openGlovebox() end,
 })
 TacoV.Interact.register({
   id = 'veh_engine', label = 'Motor an/aus', icon = 'engine', order = 42,
@@ -230,9 +280,10 @@ function TacoV.Vehicles.openMenu()
   local locked = GetVehicleDoorLockStatus(veh) >= 2
   local def = TacoV.Vehicles.defOf(veh)
   local items = {
-    { id = 'engine', label = GetIsVehicleEngineRunning(veh) and 'Motor aus' or 'Motor an', icon = 'engine', dim = not driver, sub = driver and nil or 'nur als Fahrer' },
+    { id = 'engine', label = (Entity(veh).state.engine == true) and 'Motor aus' or 'Motor an', icon = 'engine', dim = not driver, sub = driver and nil or 'nur als Fahrer' },
     { id = 'lock', label = locked and 'Aufschließen' or 'Abschließen', icon = locked and 'key' or 'lock', dim = not key, sub = key and nil or 'kein Schlüssel' },
-    { id = 'trunk', label = 'Kofferraum', icon = 'trunk', dim = not key, sub = key and nil or 'kein Schlüssel' },
+    inside and { id = 'glove', label = 'Handschuhfach', icon = 'box' }
+      or { id = 'trunk', label = 'Kofferraum', icon = 'trunk', dim = not trunkAllowed(veh), sub = trunkAllowed(veh) and nil or 'abgeschlossen' },
   }
   TacoV.Menu.open({
     id = 'vehicle', title = 'Fahrzeug', icon = 'car',
@@ -242,7 +293,8 @@ function TacoV.Vehicles.openMenu()
     TacoV.Menu.close()
     if id == 'engine' then TacoV.Vehicles.toggleEngine()
     elseif id == 'lock' then TacoV.Vehicles.toggleLock(veh)
-    elseif id == 'trunk' then TacoV.Vehicles.openTrunk(veh) end
+    elseif id == 'trunk' then TacoV.Vehicles.openTrunk(veh)
+    elseif id == 'glove' then TacoV.Vehicles.openGlovebox() end
   end)
 end
 
@@ -365,52 +417,34 @@ local function showPreview(model, spot)
   end)
 end
 
+local dealerSpot = nil
 RegisterNetEvent('tacov:vehicles:dealer:data', function(d)
   local loc = TacoV.Client.nearestLocation('dealer', 10.0)
-  local spot = loc and loc.preview
-  local classItems = {}
-  for _, cls in ipairs(d.classes) do
-    classItems[#classItems + 1] = {
-      id = cls.id, label = cls.label, icon = cls.id == 'moto' and 'speed' or 'car',
-      sub = ('%d Modelle · ab Level %d · Führerschein %s · Kofferraum %d kg'):format(#cls.vehicles, cls.level, cls.license, cls.trunk),
-      dim = cls.locked, badge = cls.locked and ('Level ' .. cls.level) or nil,
-    }
-  end
-  local function openVehicle(cls, v)
-    showPreview(v.model, spot)
-    TacoV.Menu.open({
-      id = 'dealer_buy', title = v.label, icon = 'cash', onClose = clearPreview,
-      info = ('%s · %s · Zulassung %s inklusive'):format(cls.label, fmt(v.price), fmt(d.fee)),
-      note = ('Bargeld %s · Konto %s'):format(fmt(d.cash), fmt(d.bank)),
-      items = {
-        { id = 'card', label = 'Kaufen – mit Karte', icon = 'card', price = fmt(v.price + d.fee), dim = d.bank < v.price + d.fee },
-        { id = 'cash', label = 'Kaufen – bar', icon = 'cash', price = fmt(v.price + d.fee), dim = d.cash < v.price + d.fee },
-      },
-    }, function(method)
-      TriggerServerEvent('tacov:vehicles:dealer:buy', d.name, v.model, method)
-    end)
-  end
-  local function openClass(cls)
-    local items = {}
-    for _, v in ipairs(cls.vehicles) do
-      items[#items + 1] = { id = v.model, label = v.label, price = fmt(v.price), icon = cls.id == 'moto' and 'speed' or 'car',
-        sub = ('Tank %d L · Kofferraum %d kg'):format(cls.tank, cls.trunk) }
-    end
-    TacoV.Menu.open({ id = 'dealer_class', title = cls.label, icon = 'car', info = d.label, items = items }, function(model)
-      for _, v in ipairs(cls.vehicles) do if v.model == model then openVehicle(cls, v) end end
-    end)
-  end
-  TacoV.Menu.open({
-    id = 'dealer', title = d.title, icon = 'car', info = d.label .. ' · Level ' .. d.level,
-    note = 'Klasse wählen; der Preis enthält die Zulassung. Das Fahrzeug steht danach an der Ausfahrt.',
-    items = classItems,
-  }, function(id)
-    for _, cls in ipairs(d.classes) do if cls.id == id then openClass(cls) end end
-  end)
+  dealerSpot = loc and loc.preview
+  if TacoV.UI.current() and TacoV.UI.current() ~= 'dealer' then return end
+  TacoV.UI.open('dealer', d)
+  -- erstes Modell gleich vorführen
+  local first = d.classes[1] and d.classes[1].vehicles[1]
+  if first then showPreview(first.model, dealerSpot) end
+end)
+
+AddEventHandler('tacov:ui:dealer:preview', function(data)
+  if data and data.model then showPreview(tostring(data.model), dealerSpot) end
+end)
+
+AddEventHandler('tacov:ui:dealer:buy', function(data)
+  local loc = TacoV.Client.nearestLocation('dealer', 10.0)
+  if loc and data and data.model then TriggerServerEvent('tacov:vehicles:dealer:buy', loc.name, tostring(data.model), data.method) end
+end)
+
+AddEventHandler('tacov:ui:dealer:close', function()
+  clearPreview()
+  if TacoV.UI.current() == 'dealer' then TacoV.UI.close() end
 end)
 
 RegisterNetEvent('tacov:vehicles:dealer:close', function()
-  if TacoV.Menu.isOpen() then TacoV.Menu.close() end
+  clearPreview()
+  if TacoV.UI.current() == 'dealer' then TacoV.UI.close() end
 end)
 
 -- ---------------------------------------------------------------- Tanken

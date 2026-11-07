@@ -334,19 +334,44 @@ RegisterNetEvent('tacov:vehicles:trunk', function(netId)
   local ent, plate = entityOf(netId)
   if not ent then return end
   if #(GetEntityCoords(GetPlayerPed(src)) - GetEntityCoords(ent)) > 6.0 then return fail(src, 'Du bist zu weit weg.') end
+  if GetVehiclePedIsIn(GetPlayerPed(src), false) == ent then return fail(src, 'Von innen erreichst du nur das Handschuhfach.') end
   local row = vehicleByPlate(plate)
   if not row then return fail(src, 'Der Kofferraum fremder Fahrzeuge geht nicht auf.') end
-  if not (row.owner_type == 'character' and row.owner_id == c.id) and not TacoV.Vehicles.hasKey(c.id, plate) then
-    return fail(src, 'Dafür hast du keinen Schlüssel.')
+  -- Punkt 4.8: offenes Fahrzeug → Kofferraum für jeden von außen; abgeschlossen → nur mit Schlüssel
+  local locked = GetVehicleDoorLockStatus(ent) >= 2
+  if locked and not (row.owner_type == 'character' and row.owner_id == c.id) and not TacoV.Vehicles.hasKey(c.id, plate) then
+    return fail(src, 'Das Fahrzeug ist abgeschlossen.')
   end
   local cls = classDef(row.class)
   local inv = TacoV.Inventory.load('vehicle', row.id, cls.trunk)
   local def = byModel[row.model]
+  TriggerClientEvent('tacov:vehicles:trunkDoor', src, tonumber(netId), true)
   TacoV.Inventory.openContainer(src, inv, {
     title = 'Kofferraum', subtitle = ('%s · %s · %d kg'):format(def and def.label or row.model, row.plate, cls.trunk),
     check = function(s)
       local e = entityOf(netId)
       return e ~= nil and #(GetEntityCoords(GetPlayerPed(s)) - GetEntityCoords(e)) <= 8.0
+    end,
+  })
+end)
+
+-- Handschuhfach: nur von innen, kleiner Behälter (Punkt 4.8)
+RegisterNetEvent('tacov:vehicles:glovebox', function(netId)
+  local src = source
+  local c = TacoV.Characters.get(src)
+  if not c then return end
+  local ent, plate = entityOf(netId)
+  if not ent then return end
+  if GetVehiclePedIsIn(GetPlayerPed(src), false) ~= ent then return fail(src, 'Dafür musst du im Fahrzeug sitzen.') end
+  local row = vehicleByPlate(plate)
+  if not row then return fail(src, 'Dieses Fahrzeug hat kein nutzbares Handschuhfach.') end
+  local inv = TacoV.Inventory.load('glovebox', row.id, Cfg.gloveboxWeight)
+  local def = byModel[row.model]
+  TacoV.Inventory.openContainer(src, inv, {
+    title = 'Handschuhfach', subtitle = ('%s · %s · %d kg'):format(def and def.label or row.model, row.plate, Cfg.gloveboxWeight),
+    check = function(s)
+      local e = entityOf(netId)
+      return e ~= nil and GetVehiclePedIsIn(GetPlayerPed(s), false) == e
     end,
   })
 end)
@@ -364,7 +389,7 @@ local function catalog(dealerKey, level)
     end
     classes[#classes + 1] = {
       id = cls, label = d.label, level = d.level, license = d.license, trunk = d.trunk, tank = d.tank,
-      locked = level < d.level, vehicles = list,
+      locked = false, vehicles = list,
     }
   end
   return classes

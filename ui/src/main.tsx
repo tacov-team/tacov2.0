@@ -31,6 +31,12 @@ if (!inGame) {
     ] } });
     if (e.key === 'a') post('hud', { aduty: 'Projektleitung' });
     if (e.key === 'A') post('hud', { aduty: false });
+    if (e.key === 'd') post('open', { view: 'dealer', data: { name: 'dealer_autohaus', label: 'Premium Deluxe Motorsport', dealer: 'autohaus', title: 'Autohaus', level: 7, fee: 150, cash: 4820, bank: 61300, classes: [
+      { id: 'D', label: 'Einstieg', level: 0, license: 'B', trunk: 20, tank: 45, locked: false, vehicles: [{ model: 'asea', label: 'Asea', price: 4500 }, { model: 'emperor', label: 'Emperor', price: 4000 }, { model: 'blista', label: 'Blista', price: 7800 }, { model: 'panto', label: 'Panto', price: 6500 }] },
+      { id: 'C', label: 'Alltag', level: 0, license: 'B', trunk: 40, tank: 55, locked: false, vehicles: [{ model: 'issi2', label: 'Issi', price: 9500 }, { model: 'premier', label: 'Premier', price: 12500 }] },
+      { id: 'A', label: 'Sport', level: 0, license: 'B', trunk: 25, tank: 70, locked: false, vehicles: [{ model: 'comet2', label: 'Comet', price: 85000 }, { model: 'jester', label: 'Jester', price: 140000 }] },
+      { id: 'moto', label: 'Motorrad', level: 0, license: 'A', trunk: 10, tank: 15, locked: false, vehicles: [{ model: 'bati', label: 'Bati 801', price: 28000 }] },
+    ] } });
     if (e.key === 'g') post('open', { view: 'garage', data: { name: 'garage_legion', label: 'Parkhaus Legion Square', kind: 'garage', items: [
       { id: 1, label: 'Sultan', plate: 'LS 48213', classLabel: 'Gehoben', moto: false, fuel: 38, tank: 65, km: 1234, own: true, fee: 0, state: 'here' },
       { id: 2, label: 'Blista', plate: 'LS 00917', classLabel: 'Einstieg', moto: false, fuel: 12, tank: 45, km: 80, own: true, fee: 100, state: 'here' },

@@ -35,6 +35,7 @@ Die UI nutzt die Systemschrift (Segoe UI unter Windows, sonst Inter/Roboto) – 
 | `src/views/Inventory.tsx` | Inventar (F2): Taschen · Auswahl · Boden/Gegenüber |
 | `src/views/Bank.tsx`, `Shop.tsx` | Bank/Geldautomat, Läden |
 | `src/views/Garage.tsx` | Garage/Verwahrhof: Suche, Filter, Fahrzeugkarten (Taste **G** in der Vorschau) |
+| `src/views/Dealer.tsx` | Kaufhaus: Klassen-Reiter, Fahrzeugkarten, Details, Bar/Karte; Panel links, Vorschau im Spiel rechts (Taste **D**) |
 
 ## Nachrichten Lua → UI
 `open {view, data}`, `close`, `hud {…}` (u. a. `vehicle {speed, fuel, tank, engine, locked}` oder `false`, `station {name, sub, price}`, `radio [{id, name, talking}]`), `bank`, `role`, `hint {key, text}`, `notify {kind, title?, text}`

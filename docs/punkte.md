@@ -74,14 +74,14 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 4.1 | Fahrzeugklassen und Kaufliste | 🔧 | 8 Klassen, 52 Modelle |
-| 4.2 | Kaufhäuser (PDM, LKW) mit Vorschau und Kamera | 🔧 | |
-| 4.3 | Garagen (alle Parkplätze) und Garage-Ansicht | 🔧 | |
-| 4.4 | Verwahrhof | 🔧 | |
-| 4.5 | Schlüssel, Schloss, Schlüssel geben | 🔧 | |
-| 4.6 | Kofferraum | 🔧 | |
-| 4.7 | Tanken und Verbrauch, Tankstellenkarte | 🔧 | |
-| 4.8 | Fahrzeugmenü (F6 → Fahrzeug, X-Rad) | 🔧 | |
+| 4.1 | Fahrzeugklassen und Kaufliste | ✅ | 8 Klassen, 52 Modelle, kein Level |
+| 4.2 | Kaufhäuser (PDM, LKW) mit Vorschau und Kamera | ✅ | Kaufhaus-Ansicht mit Karten (07.11.) |
+| 4.3 | Garagen (alle Parkplätze) und Garage-Ansicht | 🔧 | Ausfahrten im Spiel prüfen |
+| 4.4 | Verwahrhof | ✅ | |
+| 4.5 | Schlüssel, Schloss, Schlüssel geben | ✅ | |
+| 4.6 | Kofferraum und Handschuhfach | ✅ | außen Kofferraum (offen = für alle), innen Handschuhfach 5 kg |
+| 4.7 | Tanken und Verbrauch, Tankstellenkarte | ✅ | |
+| 4.8 | Fahrzeugmenü (F6 → Fahrzeug, X-Rad) | ✅ | Motor startet nicht automatisch |
 | 4.9 | DMV: Zulassung, Halterwechsel | ⬜ | |
 | 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | ⬜ | |
 | 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | ⬜ | |
