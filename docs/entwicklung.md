@@ -1,5 +1,8 @@
 # Entwicklung
 
+## Reihenfolge
+Der verbindliche Bauplan steht in `docs/phasenplan.md` (Phasen 0–12 mit Abnahme je Phase).
+
 ## Lokale Umgebung
 
 Benötigt: FiveM-Server-Artefakte (aktueller Recommended-Build), MariaDB 11 mit phpMyAdmin als Weboberfläche, Node 20, Git.
