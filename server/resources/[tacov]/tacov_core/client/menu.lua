@@ -36,14 +36,20 @@ function TacoV.Menu.update(items, note)
   show()
 end
 
+--- def.onClose() wird gerufen, wenn das Menü (per Zurück oder Schließen) verschwindet – z. B. um eine Vorschau zu löschen.
 function TacoV.Menu.back()
   if #stack == 0 then return end
-  stack[#stack] = nil
+  local top = table.remove(stack)
+  if top.def.onClose then top.def.onClose() end
   show()
 end
 
 function TacoV.Menu.close()
+  local old = stack
   stack = {}
+  for i = #old, 1, -1 do
+    if old[i].def.onClose then old[i].def.onClose() end
+  end
   TacoV.UI.close()
 end
 

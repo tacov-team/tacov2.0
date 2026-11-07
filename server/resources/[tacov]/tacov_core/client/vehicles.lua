@@ -309,7 +309,40 @@ TacoV.Prompt.register({
   run = function() TriggerServerEvent('tacov:vehicles:dealer:open') end,
 })
 
+-- Vorschau im Showroom: lokales, eingefrorenes Fahrzeug ohne Kollision, dreht sich langsam
+local preview = nil
+
+local function clearPreview()
+  if preview and DoesEntityExist(preview) then DeleteEntity(preview) end
+  preview = nil
+end
+
+local function showPreview(model, spot)
+  clearPreview()
+  if not spot then return end
+  local hash = loadModel(model)
+  if not hash then return end
+  local veh = CreateVehicle(hash, spot.x, spot.y, spot.z, spot.h or 0.0, false, false)
+  SetModelAsNoLongerNeeded(hash)
+  if not DoesEntityExist(veh) then return end
+  preview = veh
+  SetVehicleOnGroundProperly(veh)
+  SetEntityInvincible(veh, true)
+  SetVehicleDoorsLocked(veh, 2)
+  SetVehicleNumberPlateText(veh, 'TACOV')
+  FreezeEntityPosition(veh, true)
+  SetEntityCollision(veh, false, false)
+  CreateThread(function()
+    while preview == veh and DoesEntityExist(veh) do
+      Wait(0)
+      SetEntityHeading(veh, (GetEntityHeading(veh) + 0.25) % 360.0)
+    end
+  end)
+end
+
 RegisterNetEvent('tacov:vehicles:dealer:data', function(d)
+  local loc = TacoV.Client.nearestLocation('dealer', 10.0)
+  local spot = loc and loc.preview
   local classItems = {}
   for _, cls in ipairs(d.classes) do
     classItems[#classItems + 1] = {
@@ -319,8 +352,9 @@ RegisterNetEvent('tacov:vehicles:dealer:data', function(d)
     }
   end
   local function openVehicle(cls, v)
+    showPreview(v.model, spot)
     TacoV.Menu.open({
-      id = 'dealer_buy', title = v.label, icon = 'cash',
+      id = 'dealer_buy', title = v.label, icon = 'cash', onClose = clearPreview,
       info = ('%s · %s · Zulassung %s inklusive'):format(cls.label, fmt(v.price), fmt(d.fee)),
       note = ('Bargeld %s · Konto %s'):format(fmt(d.cash), fmt(d.bank)),
       items = {

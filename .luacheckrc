@@ -32,7 +32,7 @@ globals = {
   "GetVehicleEngineHealth", "GetVehicleBodyHealth", "SetVehicleColours", "GetVehicleColours", "SetVehicleExtraColours",
   "GetVehicleExtraColours", "SetVehicleFuelLevel", "GetVehicleCurrentRpm", "SetVehicleEngineOn", "GetPedInVehicleSeat",
   "SetVehicleDoorsLocked", "NetworkRequestControlOfEntity", "NetworkHasControlOfEntity", "Entity", "SetModelAsNoLongerNeeded",
-  "SetVehicleLights",
+  "SetVehicleLights", "IsDisabledControlPressed", "SetEntityCollision",
 }
 
 ignore = { "212/_.*" }

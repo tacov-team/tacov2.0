@@ -160,10 +160,13 @@ add({ name = 'garage_rig_airport', kind = 'garage', category = 'rig', label = 'L
 add({ name = 'impound_missionrow', kind = 'impound', category = 'all', label = 'Verwahrhof Mission Row',
   x = 401.76, y = -1632.57, z = 29.29, spawn = { x = 396.55, y = -1643.93, z = 28.88, h = 321.91 } })
 -- Kaufhäuser (Konzept: Premium Deluxe Motorsport, LKW am Hafen)
+-- spawn = Ausfahrt draußen (gekauftes Fahrzeug), preview = Vorführplatz im Showroom (Vorschau beim Kauf)
 add({ name = 'dealer_autohaus', kind = 'dealer', dealer = 'autohaus', label = 'Premium Deluxe Motorsport',
-  x = -45.47, y = -1097.70, z = 26.42, spawn = { x = -30.60, y = -1090.20, z = 26.50, h = 160.0 } })
+  x = -41.80, y = -1098.90, z = 26.42, spawn = { x = -56.79, y = -1109.85, z = 26.43, h = 71.5 },
+  preview = { x = -45.65, y = -1093.66, z = 26.0, h = 69.5 } })
 add({ name = 'dealer_truck',    kind = 'dealer', dealer = 'truck',    label = 'LKW-Kaufhaus Hafen',
-  x = 153.40, y = -3200.10, z = 5.90, spawn = { x = 167.00, y = -3203.89, z = 5.94, h = 271.27 } })
+  x = 153.40, y = -3200.10, z = 5.90, spawn = { x = 167.00, y = -3203.89, z = 5.94, h = 271.27 },
+  preview = { x = 158.50, y = -3192.00, z = 5.90, h = 270.0 } })
 -- Tankstellen (Grundspiel)
 local fuel = {
   { 'Great Chaparral', 49.4187, 2778.793, 58.043 }, { 'Route 68 West', 263.894, 2606.463, 44.983 },

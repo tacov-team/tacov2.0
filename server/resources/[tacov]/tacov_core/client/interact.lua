@@ -39,6 +39,10 @@ local function context()
 end
 
 local current = nil
+local openedAt = 0
+
+-- Taste → GTA-Control, um das Loslassen auch bei NUI-Fokus zu erkennen (Controls sind dann „disabled“, aber lesbar)
+local CONTROL_OF = { X = 73, E = 38, F = 23, G = 47, H = 74, R = 45, Q = 44, Z = 20 }
 
 function TacoV.Interact.open()
   if TacoV.UI.current() then return end
@@ -58,12 +62,30 @@ function TacoV.Interact.open()
   if ctx.player then center = { kind = 'Spieler', title = 'Gegenüber', sub = 'ID ' .. ctx.player }
   else center = { kind = 'Fahrzeug', title = ctx.vehicleName, sub = ctx.plate } end
   current = ctx
-  TacoV.UI.open('wheel', { entries = list, center = center })
+  openedAt = GetGameTimer()
+  TacoV.UI.open('wheel', { entries = list, center = center, key = TacoV.Config.Keys.interact })
+  -- Beim Fokuswechsel zur NUI meldet FiveM sofort ein Loslassen aller Tasten; deshalb prüfen wir die Taste selbst,
+  -- bis sie wirklich losgelassen wurde (die UI meldet Keyup zusätzlich).
+  local control = CONTROL_OF[tostring(TacoV.Config.Keys.interact):upper()]
+  if control then
+    CreateThread(function()
+      Wait(250)
+      while TacoV.UI.current() == 'wheel' do
+        Wait(0)
+        if not IsDisabledControlPressed(0, control) and not IsControlPressed(0, control) then
+          TacoV.Interact.release(true)
+          break
+        end
+      end
+    end)
+  end
 end
 
 --- Beim Loslassen von X: Auswahl ausführen (die UI meldet den markierten Eintrag).
-function TacoV.Interact.release()
+--- Das Loslassen direkt nach dem Öffnen (Fokuswechsel) wird ignoriert.
+function TacoV.Interact.release(force)
   if TacoV.UI.current() ~= 'wheel' then return end
+  if not force and GetGameTimer() - openedAt < 300 then return end
   TacoV.UI.send('wheelRelease')
 end
 

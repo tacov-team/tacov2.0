@@ -4,7 +4,7 @@ import { nui, useNuiEvent } from '../nui';
 import { Icon } from '../components/Icon';
 
 export type WheelEntry = { id: string; label: string; icon: string; order: number };
-export type WheelData = { entries: WheelEntry[]; center: { kind: string; title: string; sub: string; icon?: string } };
+export type WheelData = { entries: WheelEntry[]; center: { kind: string; title: string; sub: string; icon?: string }; key?: string };
 
 const SIZE = 500;
 const INNER = 118;
@@ -19,11 +19,19 @@ export function Wheel({ data }: { data: WheelData }) {
   const entries = useMemo(() => [{ id: '__close', label: 'Schließen', icon: 'x', order: -1 }, ...data.entries], [data.entries]);
   const n = entries.length;
 
-  useNuiEvent('wheelRelease', () => {
+  const release = () => {
     const id = hoverRef.current;
     if (!id || id === '__close') nui('action', { view: 'wheel', action: 'close', data: {} });
     else nui('action', { view: 'wheel', action: 'pick', data: { id } });
-  });
+  };
+  useNuiEvent('wheelRelease', release);
+  // Die NUI hat den Fokus, solange das Rad offen ist: das Loslassen der Taste kommt hier an
+  useEffect(() => {
+    const key = (data.key ?? 'x').toLowerCase();
+    const onUp = (e: KeyboardEvent) => { if (e.key.toLowerCase() === key) release(); };
+    window.addEventListener('keyup', onUp);
+    return () => window.removeEventListener('keyup', onUp);
+  }, [data.key]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
