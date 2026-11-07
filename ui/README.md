@@ -36,6 +36,7 @@ Fehlen sie, fällt die UI auf Segoe UI/Inter zurück – alles bleibt bedienbar,
 | `src/views/Wheel.tsx` | Interaktionsrad (X) – nur Spieler und Fahrzeuge |
 | `src/views/Inventory.tsx` | Inventar (F2): Taschen · Auswahl · Boden/Gegenüber |
 | `src/views/Bank.tsx`, `Shop.tsx` | Bank/Geldautomat, Läden |
+| `src/views/Garage.tsx` | Garage/Verwahrhof: Suche, Filter, Fahrzeugkarten (Taste **G** in der Vorschau) |
 
 ## Nachrichten Lua → UI
 `open {view, data}`, `close`, `hud {…}` (u. a. `vehicle {speed, fuel, tank, engine, locked}` oder `false`, `station {name, sub, price}`, `radio [{id, name, talking}]`), `bank`, `role`, `hint {key, text}`, `notify {kind, title?, text}`

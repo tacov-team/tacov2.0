@@ -18,7 +18,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/characters.lua` | Liste, Anlage (Namensregeln, Blockliste, 2. Platz ab Level 15), Laden, Speichern, Spielzeit ohne AFK |
 | `server/accounts.lua` | `pay`, `receive`, `tax` für andere Module |
 | `server/connect.lua` | `playerConnecting`: Discord-ID Pflicht → Sperre → Whitelist → Slots → Doppelverbindung |
-| `server/commands.lua` | `/support`, `/ort setzen|liste`, `/rolle`, `/sperre`, `/kick` |
+| `server/commands.lua` | `/support`, `/ort setzen|liste`, `/geld` (Team), `/rolle`, `/sperre`, `/kick`; einmaliger Startbonus über Convar `tacov_grant_next` |
 | `server/main.lua` | Startfolge, Autosave, Speichern beim Stop |
 | `client/main.lua` | Anmeldung, Spawn nach Charakterwahl, Herzschlag (Position, Aktivität) |
 | `client/ui.lua` | NUI-Brücke (`TacoV.UI.open/close/send/openConsole`), Befehlszeile führt Befehle aus |
@@ -36,7 +36,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/vehicles.lua` | Fahrzeugklassen (Level, Führerschein, Kofferraum, Tank), Kaufliste (52 Modelle), Garagen (16 PKW + 5 LKW), Verwahrhof, Kaufhäuser, 27 Tankstellen, Gebühren |
 | `sql/003_vehicles.sql` | Tabellen `vehicles` (Halter, Zustand garage/out/impound, Tank, km, Zustand) und `vehicle_keys` |
 | `server/vehicles.lua` | Besitz und Schlüssel, Garage (ein-/ausparken, 50 $/Tag ab 24 h), Verwahrhof (24 h unterwegs → verwahrt, 500 $; nach Neustart gratis wenn kürzlich gefahren), Kaufhaus (Preis + Zulassung 150 $, Level je Klasse), Tanken (Preis aus `economy.lua`, 5 % USt), Kofferraum als Inventar-Behälter |
-| `client/vehicles.lua` | Spawn auf Serveranweisung, Tank (Statebag `fuel` in Litern, Verbrauch nach Drehzahl, leer = Motor aus), Kilometer, Herzschlag 60 s, X-Rad (Auf-/Abschließen, Motor, Kofferraum, Schlüssel geben), E-Aufforderungen (Garage, Einparken, Kaufhaus, Tanken), Menüs, Tankstellenkarte im HUD |
+| `client/vehicles.lua` | Spawn auf Serveranweisung, Tank (Statebag `fuel` in Litern, Verbrauch nach Drehzahl, leer = Motor aus), Kilometer, Herzschlag 60 s, X-Rad (Auf-/Abschließen, Motor, Kofferraum, Schlüssel geben), E-Aufforderungen (Garage, Einparken, Kaufhaus, Tanken), Garage-Ansicht (Karten mit Suche/Filter), Kaufhaus-Menüs mit Vorschau und Kamera, Tankstellenkarte im HUD |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |

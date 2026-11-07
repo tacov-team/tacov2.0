@@ -7,6 +7,7 @@ TacoV.Config.Commands = {
   { name = 'befehle', usage = 'befehle',                                help = 'Alle Befehle anzeigen' },
   { name = 'ort',     usage = 'ort setzen <Name> <Art> [Beschriftung]', help = 'Ort an deine Position setzen', right = 'admin.locations' },
   { name = 'ort',     usage = 'ort liste',                              help = 'Alle Orte anzeigen', right = 'admin.locations' },
+  { name = 'geld',    usage = 'geld <ID> <Betrag> [bank|bar]',                help = 'Geld geben (Test, Team)', right = 'admin.give' },
   { name = 'rolle',   usage = 'rolle <ID> <Rolle>',                     help = 'Teamrolle setzen', right = 'admin.roles' },
   { name = 'sperre',  usage = 'sperre <ID> <Stunden|0> <Grund>',        help = 'Spieler sperren', right = 'admin.ban' },
   { name = 'kick',    usage = 'kick <ID> <Grund>',                      help = 'Spieler vom Server entfernen', right = 'admin.warn' },

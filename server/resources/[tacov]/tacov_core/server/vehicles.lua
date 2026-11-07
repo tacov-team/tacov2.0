@@ -150,31 +150,23 @@ local function garageItems(src, loc)
   for _, r in ipairs(rows) do
     local def = byModel[r.model]
     local cls = classDef(r.class)
-    local label = def and def.label or r.model
-    local info = ('%s · %s · Tank %d/%d L · %s km'):format(r.plate, cls.label, math.floor(r.fuel + 0.5), cls.tank,
-      tostring(math.floor(r.mileage_km)))
-    local item = { id = tostring(r.id), label = label, sub = info, icon = (r.class == 'moto') and 'speed' or 'car' }
-    if loc.kind == 'impound' then
-      if r.state == 'impound' then
-        local fee = impoundFee(r)
-        item.price = fee > 0 and ('Auslösung ' .. fmt(fee)) or 'kostenlos'
+    local state, fee, garageLabel = 'out', 0, nil
+    if r.state == 'impound' then
+      state = 'impound'
+      if loc.kind == 'impound' then fee = impoundFee(r) end
+    elseif r.state == 'garage' then
+      if loc.kind == 'garage' and r.garage == loc.name then
+        state, fee = 'here', garageFee(r)
       else
-        item.dim, item.badge = true, (r.state == 'garage' and 'in Garage' or 'unterwegs')
-      end
-    else
-      if r.state == 'garage' and r.garage == loc.name then
-        local fee = garageFee(r)
-        item.price = fee > 0 and fmt(fee) or nil
-      elseif r.state == 'garage' then
-        item.dim, item.badge = true, 'andere Garage'
-      elseif r.state == 'out' then
-        item.dim, item.badge = true, 'unterwegs'
-      else
-        item.dim, item.badge = true, 'verwahrt'
+        state = 'elsewhere'
+        local g = r.garage and TacoV.Locations.get(r.garage)
+        garageLabel = g and g.label or r.garage
       end
     end
-    if r.own == 0 then item.sub = item.sub .. ' · Schlüssel' end
-    items[#items + 1] = item
+    items[#items + 1] = {
+      id = r.id, label = def and def.label or r.model, plate = r.plate, classLabel = cls.label, moto = r.class == 'moto',
+      fuel = r.fuel, tank = cls.tank, km = r.mileage_km, own = r.own == 1, fee = fee, state = state, garage = garageLabel,
+    }
   end
   return items
 end

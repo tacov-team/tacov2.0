@@ -236,3 +236,9 @@ select.input option { background: #1b1815; }
 .dialog { position: absolute; left: 40px; bottom: 40px; width: 460px; }
 .dialog .body { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
 .dialog p { margin: 0; font-size: 14px; color: #E6DFD4; line-height: 1.5; }
+
+/* Garage / Verwahrhof: Raster aus Fahrzeugkarten, leere Plätze gestrichelt */
+.garage-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; max-height: 560px; overflow-y: auto; padding-right: 4px; align-content: start; }
+.garage-card { min-height: 190px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
+.garage-card.dim { opacity: 0.55; }
+.garage-card .btn.sm { width: 100%; justify-content: center; }

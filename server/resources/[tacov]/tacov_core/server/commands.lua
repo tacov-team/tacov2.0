@@ -58,6 +58,44 @@ RegisterCommand('ort', function(src, args)
   notify(src, 'info', 'Nutzung: /ort setzen <name> <art> [Beschriftung] | /ort liste')
 end, false)
 
+-- /geld <Server-ID> <Betrag> [bank|bar]  – Testgeld geben (Team, Recht admin.give); läuft über das Journal und wird geloggt
+RegisterCommand('geld', function(src, args)
+  if src ~= 0 and not needRight(src, 'admin.give') then return end
+  local target = tonumber(args[1])
+  local amount = tonumber(args[2])
+  local kind = args[3] == 'bar' and 'cash' or 'bank'
+  local tc = target and TacoV.Characters.get(target)
+  if not tc or not amount or amount <= 0 then
+    if src ~= 0 then notify(src, 'info', 'Nutzung: /geld <Server-ID> <Betrag> [bank|bar]') else print('Nutzung: geld <ID> <Betrag> [bank|bar]') end
+    return
+  end
+  local ok
+  if kind == 'cash' then
+    ok = TacoV.Inventory.addCash(target, amount, 'teamgeld')
+  else
+    local actor = src ~= 0 and TacoV.Characters.get(src)
+    ok = TacoV.Journal.move('bank', nil, { type = 'character', id = tc.id }, amount, 'teamgeld', { actor = actor and actor.id or nil })
+    if ok then TacoV.Accounts.push(target) end
+  end
+  local p = TacoV.Players.get(src)
+  TacoV.Log.write('admin', ('Geld gegeben: %d $ (%s) an #%d'):format(amount, kind, tc.id), { discordId = p and p.discordId, characterId = tc.id })
+  if src ~= 0 then notify(src, ok and 'success' or 'error', ok and ('%d $ gegeben.'):format(amount) or 'Fehler beim Buchen.') end
+  notify(target, 'info', ('Das Team hat dir %d $ (%s) gegeben.'):format(amount, kind == 'cash' and 'bar' or 'Konto'))
+end, true)
+
+-- Einmaliges Startgeld für den nächsten Charakter, der lädt: `set tacov_grant_next <Betrag>` in server.cfg.
+-- Wird nur einmal gebucht (Journal-Grund 'startbonus'), auch wenn der Eintrag in der server.cfg stehen bleibt.
+AddEventHandler('tacov:core:characterSelected', function(source, characterId)
+  local amount = GetConvarInt('tacov_grant_next', 0)
+  if amount <= 0 then return end
+  if TacoV.DB.scalar("SELECT id FROM journal WHERE reason = 'startbonus' LIMIT 1") then return end
+  local ok = TacoV.Journal.move('bank', nil, { type = 'character', id = characterId }, amount, 'startbonus', { note = 'tacov_grant_next' })
+  if not ok then return end
+  TacoV.Accounts.push(source)
+  TacoV.Log.write('admin', ('Startbonus %d $ an #%d (tacov_grant_next)'):format(amount, characterId), { characterId = characterId })
+  notify(source, 'success', ('Startbonus: %d $ sind auf deinem Konto.'):format(amount))
+end)
+
 -- /rolle <Server-ID> <player|supporter|admin|management>
 RegisterCommand('rolle', function(src, args)
   if src ~= 0 and not needRight(src, 'admin.roles') then return end

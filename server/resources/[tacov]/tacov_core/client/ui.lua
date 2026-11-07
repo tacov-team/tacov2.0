@@ -10,14 +10,27 @@ function TacoV.UI.send(action, data)
 end
 
 --- Öffnet eine Ansicht. cursor=false für reine Tastatur-Ansichten (Befehlszeile).
-function TacoV.UI.open(view, data, cursor)
+--- keepInput=true: das Spiel behält die Tastatur (für Halten-Menüs wie das X-Rad); Bewegung/Kamera werden solange gesperrt.
+function TacoV.UI.open(view, data, cursor, keepInput)
   openView = view
   SetNuiFocus(true, cursor ~= false)
+  SetNuiFocusKeepInput(keepInput == true)
+  if keepInput then
+    CreateThread(function()
+      while openView == view do
+        DisableAllControlActions(0)
+        EnableControlAction(0, 73, true) -- X (Loslassen erkennen)
+        EnableControlAction(0, 200, true) -- Esc
+        Wait(0)
+      end
+    end)
+  end
   TacoV.UI.send('open', { view = view, data = data })
 end
 
 function TacoV.UI.close()
   openView = nil
+  SetNuiFocusKeepInput(false)
   SetNuiFocus(false, false)
   TacoV.UI.send('close')
 end

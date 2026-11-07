@@ -63,16 +63,16 @@ function TacoV.Interact.open()
   else center = { kind = 'Fahrzeug', title = ctx.vehicleName, sub = ctx.plate } end
   current = ctx
   openedAt = GetGameTimer()
-  TacoV.UI.open('wheel', { entries = list, center = center, key = TacoV.Config.Keys.interact })
-  -- Beim Fokuswechsel zur NUI meldet FiveM sofort ein Loslassen aller Tasten; deshalb prüfen wir die Taste selbst,
-  -- bis sie wirklich losgelassen wurde (die UI meldet Keyup zusätzlich).
+  -- Nur der Mauszeiger geht an die UI, die Tastatur bleibt beim Spiel: so kommt das echte Loslassen von X als
+  -- -tacov_interact an. Zur Sicherheit wird die Taste zusätzlich abgefragt.
+  TacoV.UI.open('wheel', { entries = list, center = center, key = TacoV.Config.Keys.interact }, true, true)
   local control = CONTROL_OF[tostring(TacoV.Config.Keys.interact):upper()]
   if control then
     CreateThread(function()
-      Wait(250)
+      Wait(300)
       while TacoV.UI.current() == 'wheel' do
         Wait(0)
-        if not IsDisabledControlPressed(0, control) and not IsControlPressed(0, control) then
+        if not IsControlPressed(0, control) and not IsDisabledControlPressed(0, control) then
           TacoV.Interact.release(true)
           break
         end

@@ -29,6 +29,13 @@ if (!inGame) {
     if (e.key === 'M') post('open', { view: 'menu', data: { id: 'brakes', title: 'Bremsen', info: 'Upgrades · Bremsen', icon: 'wrench', depth: 2, items: [
       { id: 'b0', label: 'Serie', price: '0 $', sub: 'eingebaut' }, { id: 'b1', label: 'Straße', price: '1.200 $' }, { id: 'b2', label: 'Sport', price: '2.800 $' }, { id: 'b3', label: 'Rennen', price: '5.900 $', dim: true, badge: 'gesperrt' },
     ] } });
+    if (e.key === 'g') post('open', { view: 'garage', data: { name: 'garage_legion', label: 'Parkhaus Legion Square', kind: 'garage', items: [
+      { id: 1, label: 'Sultan', plate: 'LS 48213', classLabel: 'Gehoben', moto: false, fuel: 38, tank: 65, km: 1234, own: true, fee: 0, state: 'here' },
+      { id: 2, label: 'Blista', plate: 'LS 00917', classLabel: 'Einstieg', moto: false, fuel: 12, tank: 45, km: 80, own: true, fee: 100, state: 'here' },
+      { id: 3, label: 'Bati 801', plate: 'LS 77120', classLabel: 'Motorrad', moto: true, fuel: 9, tank: 15, km: 410, own: false, fee: 0, state: 'elsewhere', garage: 'Parkplatz Vespucci Beach' },
+      { id: 4, label: 'Comet', plate: 'LS 31337', classLabel: 'Sport', moto: false, fuel: 55, tank: 70, km: 2900, own: true, fee: 0, state: 'out' },
+      { id: 5, label: 'Rumpo', plate: 'LS 55555', classLabel: 'Transporter', moto: false, fuel: 20, tank: 80, km: 15000, own: true, fee: 0, state: 'impound' },
+    ] } });
     if (e.key === 't' || e.key === 'T') post('open', { view: 'console', data: { history: ['support Hilfe bitte'], commands: [
       { name: 'support', usage: 'support <Text>', help: 'Ticket an das Team' },
       { name: 'ort', usage: 'ort setzen <Name> <Art>', help: 'Ort an deine Position setzen', staff: true },

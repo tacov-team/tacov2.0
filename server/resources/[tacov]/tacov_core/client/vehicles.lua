@@ -283,22 +283,24 @@ TacoV.Prompt.register({
 })
 
 RegisterNetEvent('tacov:vehicles:garage:list', function(g)
-  local items = g.items or {}
-  if #items == 0 then
-    items = { { id = 'none', label = 'Keine Fahrzeuge', sub = 'Hier steht nichts von dir.', dim = true, icon = 'info' } }
+  if TacoV.UI.current() == 'garage' then
+    TacoV.UI.send('open', { view = 'garage', data = g })
+  elseif not TacoV.UI.current() then
+    TacoV.UI.open('garage', g)
   end
-  TacoV.Menu.open({
-    id = 'garage', title = g.kind == 'impound' and 'Verwahrhof' or 'Garage', icon = g.kind == 'impound' and 'lock' or 'key',
-    info = g.label, items = items,
-    note = g.kind == 'impound' and ('Auslösung %s · Nach einem Neustart kostenlos, wenn du kürzlich gefahren bist.'):format(fmt(Cfg.impoundFee))
-      or ('Öffentliche Garage: %s je angefangenen Tag ab 24 h.'):format(fmt(Cfg.publicGarageDaily)),
-  }, function(id)
-    if id ~= 'none' then TriggerServerEvent('tacov:vehicles:garage:take', g.name, tonumber(id)) end
-  end)
+end)
+
+AddEventHandler('tacov:ui:garage:take', function(data)
+  local loc = TacoV.Client.nearestLocation('garage', 8.0) or TacoV.Client.nearestLocation('impound', 8.0)
+  if loc and data and data.id then TriggerServerEvent('tacov:vehicles:garage:take', loc.name, tonumber(data.id)) end
+end)
+
+AddEventHandler('tacov:ui:garage:close', function()
+  if TacoV.UI.current() == 'garage' then TacoV.UI.close() end
 end)
 
 RegisterNetEvent('tacov:vehicles:garage:close', function()
-  if TacoV.Menu.isOpen() then TacoV.Menu.close() end
+  if TacoV.UI.current() == 'garage' then TacoV.UI.close() end
 end)
 
 -- ---------------------------------------------------------------- Kaufhaus
@@ -309,16 +311,38 @@ TacoV.Prompt.register({
   run = function() TriggerServerEvent('tacov:vehicles:dealer:open') end,
 })
 
--- Vorschau im Showroom: lokales, eingefrorenes Fahrzeug ohne Kollision, dreht sich langsam
-local preview = nil
+-- Vorschau im Showroom: lokales, eingefrorenes Fahrzeug ohne Kollision, dreht sich langsam; die Kamera fährt darauf
+local preview, previewCam = nil, nil
 
 local function clearPreview()
   if preview and DoesEntityExist(preview) then DeleteEntity(preview) end
   preview = nil
+  if previewCam then
+    RenderScriptCams(false, true, 600, true, true)
+    DestroyCam(previewCam, false)
+    previewCam = nil
+  end
+end
+
+local function focusCamera(veh, spot)
+  local a = math.rad((spot.h or 0.0) + 140.0)
+  local dist = 6.5
+  local cx, cy, cz = spot.x - math.sin(a) * dist, spot.y + math.cos(a) * dist, spot.z + 1.7
+  if not previewCam then
+    previewCam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
+    SetCamCoord(previewCam, cx, cy, cz)
+    SetCamFov(previewCam, 45.0)
+    PointCamAtEntity(previewCam, veh, 0.0, 0.0, 0.3, true)
+    SetCamActive(previewCam, true)
+    RenderScriptCams(true, true, 600, true, true)
+  else
+    PointCamAtEntity(previewCam, veh, 0.0, 0.0, 0.3, true)
+  end
 end
 
 local function showPreview(model, spot)
-  clearPreview()
+  if preview and DoesEntityExist(preview) then DeleteEntity(preview) end
+  preview = nil
   if not spot then return end
   local hash = loadModel(model)
   if not hash then return end
@@ -332,6 +356,7 @@ local function showPreview(model, spot)
   SetVehicleNumberPlateText(veh, 'TACOV')
   FreezeEntityPosition(veh, true)
   SetEntityCollision(veh, false, false)
+  focusCamera(veh, spot)
   CreateThread(function()
     while preview == veh and DoesEntityExist(veh) do
       Wait(0)
