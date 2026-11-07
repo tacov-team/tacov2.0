@@ -9,15 +9,15 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
 | 0.1 | Servername, Slots, Sprache, Setting | ✅ | Name TacoV, 10 Slots, Deutsch, Los Santos Gegenwart (bestätigt 07.11.) |
-| 0.2 | Leitbild und Grundsätze | 🔧 | Sechs Grundsätze (Konzept 1.1) |
-| 0.3 | Weg zum Server (Discord, Whitelist) | 🔧 | Reaktion = Whitelist, Discord-ID als Anker |
-| 0.4 | Einreise, Neulingspfad, Level/Probezeit | 🔧 | Einreise mit Teammitglied, Startgeld 5.000 $, Level 3/8/15 |
-| 0.5 | Fraktionen zum Start und ihre Regeln | 🔧 | LSPD, LSMD, DMV, Regierung, DOJ, eine Streetgang; Caps |
-| 0.6 | Wirtschaft: Geldkreislauf, Jobs, Bank, Steuern | 🔧 | 6 Jobs, Steuern 8 %, Kaufzeiten 10/40/80/200 h |
-| 0.7 | Wirtschaft: Fahrzeuge, Immobilien, Firmen | 🔧 | Klassen, Garagen, Burger Shot |
-| 0.8 | Verbrechen und Justiz | 🔧 | Drogen, Waffen, Raub, Strafkatalog, Haft, Koma |
-| 0.9 | Alltag und Handy | 🔧 | Inventar, Bedürfnisse, 10 Apps, Interaktion, Läden |
-| 0.10 | Items- und Orte-Tabellen | 🔧 | `docs/konzept/items.md`, `orte.md` |
+| 0.2 | Leitbild und Grundsätze | ✅ | Sechs Grundsätze (Konzept 1.1) |
+| 0.3 | Weg zum Server (Discord, Whitelist) | ✅ | Reaktion = Whitelist, Discord-ID als Anker |
+| 0.4 | Einreise, Neulingspfad, Level/Probezeit | ✅ | Einreise mit Teammitglied, Startgeld 5.000 $, Level 3/8/15 |
+| 0.5 | Fraktionen zum Start und ihre Regeln | ✅ | LSPD, LSMD, DMV, Regierung, DOJ, eine Streetgang; Caps |
+| 0.6 | Wirtschaft: Geldkreislauf, Jobs, Bank, Steuern | ✅ | 6 Jobs, Steuern 8 %, Kaufzeiten 10/40/80/200 h |
+| 0.7 | Wirtschaft: Fahrzeuge, Immobilien, Firmen | ✅ | Klassen, Garagen, Burger Shot |
+| 0.8 | Verbrechen und Justiz | ✅ | Drogen, Waffen, Raub, Strafkatalog, Haft, Koma |
+| 0.9 | Alltag und Handy | ✅ | Inventar, Bedürfnisse, 10 Apps, Interaktion, Läden |
+| 0.10 | Items- und Orte-Tabellen | ✅ | `docs/konzept/items.md`, `orte.md` |
 | 0.11 | Team-Rollen und Rechte | ⬜ | Rollen im Detail, wer darf was (Frist 22.11.) |
 | 0.12 | Anti-Cheat-Ansatz | ⬜ | eigener Abgleich oder zusätzlich kommerziell |
 | 0.13 | Hoster, Testserver, Neustart-Fenster | ⬜ | |

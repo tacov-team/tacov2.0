@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Punkte 0.2–0.10 | Konzeptkapitel 1–5 sowie Items- und Orte-Tabellen beim Neudurchgang unverändert bestätigt | Betreiber: „passt“ |
 | 2026-11-07 | Spielstil | TacoV ist ein Softcore/Midcore-Server mit Bodyshot-Schadensmodell (keine Kopfschuss-Sofortkills) | Entscheidung des Betreibers |
 | 2026-11-07 | Vorgehen | Entwicklung Punkt für Punkt nach `docs/punkte.md`, von vorn; eigene Phase für Entwickler- und Admin-Werkzeuge (Creator-Systeme) direkt nach den Fahrzeugen | Entscheidung des Betreibers |
 | 2026-11-07 | Punkt 0.1 | Name TacoV, 10 Slots (Stufen 32/64/128), Deutsch, Los Santos Gegenwart, 18+ bestätigt | Betreiber: „wir starten sofort“ |
