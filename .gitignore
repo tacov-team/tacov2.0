@@ -23,5 +23,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Fremd-Resources (oxmysql) liegen nur auf dem Server
+# Fremd-Resources (SaltyChat) und gekaufte Map-Resources liegen nur auf dem Server
 server/resources/[external]/
+server/resources/[kauf]/
