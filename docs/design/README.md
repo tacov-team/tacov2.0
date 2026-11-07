@@ -1,5 +1,16 @@
 # Design
 
+## Stand V5 „Nachtviolett“ (07.11.2026) – gilt für alles Neue
+
+Abgenommen als Punkt 0.15. Aufbau, Schrift und Bedienung von V4 bleiben; neu ist die Farbwelt (`ui/src/theme.css`, alle Farben als Tokens):
+
+- Akzent: Lavendel `#C4A7FF` → Violett `#8B5CF6` → tiefes Violett `#5B21B6` (Verlauf für Knöpfe, Kacheln, Ringe, Tacho); Textakzent `#B794FF`; Hervorhebung Fuchsia `#E879F9` (Geldkarten, Gesamtpreis)
+- Fläche: kühles dunkles Glas `rgba(12,10,22,0.88)`, Interaktions-UIs `0.76`; aktive Elemente leuchten violett (`--accent-glow`)
+- Schwarzgeld Mint `#5EEAD4`; Erfolg `#34D399`, Fehler `#F05252`, Info `#38BDF8`; gedämpfter Text `#BDB4D6`
+- Das Logo bleibt unverändert; neue Farben nie hart in Komponenten, immer über `--accent*`-Tokens
+- **Regel des Betreibers:** Neue Oberflächen werden erst gebaut, wenn das zugehörige System dran ist – keine Vorrats-UIs. Tafeln im Canvas dienen nur noch der Abnahme direkt vor der Umsetzung.
+
+
 ## Stand V4 (07.11.2026) – gilt für alles Neue
 
 Vorbild sind die GLRP-Referenzbilder des Betreibers; Tafeln `V4 · …` im Canvas (Reihe ganz unten). Umgesetzt in `ui/src/theme.css`.

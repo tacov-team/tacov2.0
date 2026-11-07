@@ -22,7 +22,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 0.12 | Anti-Cheat-Ansatz | ✅ | eigener Abgleich im Kern (Punkt 5.16), kommerziell erst ab > 32 Slots (bestätigt 07.11.) |
 | 0.13 | Hoster, Testserver, Neustart-Fenster | ✅ | Testserver auf dem VPS (develop), Neustart alle 6 h, Backup täglich, Status-Embed in Discord (bestätigt 07.11.) |
 | 0.14 | Voice (TeamSpeak-Plugin, Lizenz) | ✅ | SaltyChat / TeamSpeak 3 (bestätigt 07.11.) |
-| 0.15 | Design-Richtung (V4: Gelb-Orange, Barlow, Listenmenüs) | 🔧 | `docs/design/README.md` |
+| 0.15 | Design-Richtung (V5 „Nachtviolett“, Barlow, Listenmenüs) | ✅ | `docs/design/README.md`; neue UIs erst mit ihrem System (bestätigt 07.11.) |
 | 0.16 | Spielstil: Softcore/Midcore, Bodyshot | ✅ | Konzept 1.2; Bodyshot im Kern umgesetzt (07.11.) |
 
 ## Phase 1 · Infrastruktur
@@ -60,7 +60,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 3.1 | Oberfläche V4: Grundlagen, Schriften, Panels | 🔧 | Schriftdateien fehlen noch (Betreiber) |
+| 3.1 | Oberfläche V5: Grundlagen, Schriften, Panels | 🔧 | Schriftdateien fehlen noch (Betreiber) |
 | 3.2 | HUD (Geld, Hunger/Durst, Funkliste, Infozeilen, Tacho) | 🔧 | |
 | 3.3 | Hinweise (Toasts) | 🔧 | |
 | 3.4 | Charakterauswahl | 🔧 | |

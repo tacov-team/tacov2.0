@@ -8,7 +8,7 @@ Die Phasen sind in `docs/punkte.md` in einzelne Punkte (ein Punkt = ein System) 
 
 | Phase | Thema | Stand |
 | --- | --- | --- |
-| 0 | Konzept und Entscheidungen | ✅ fertig |
+| 0 | Konzept und Entscheidungen | ✅ fertig, alle 16 Punkte bestätigt (07.11.) |
 | 1 | Infrastruktur: Repo, CI, VPS, Datenbank, Discord-Bot, Whitelist | ✅ fertig |
 | 2 | Kern: eigenes Framework (`tacov_db`, `tacov_core`) | ✅ fertig |
 | 3 | Alltag I: Oberfläche V4, HUD, Inventar, Bedürfnisse, Bank, Läden, Orte | ✅ fertig |
