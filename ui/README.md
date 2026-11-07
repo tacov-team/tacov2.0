@@ -12,10 +12,8 @@ Der Build ist eingecheckt, damit der VPS nach `git pull` sofort spielbar ist; `t
 
 Vorschau ohne Spiel: `server/resources/[tacov]/tacov_core/ui/index.html` im Browser öffnen – zeigt Beispielwerte. Tasten: **T** Befehlszeile, **C** Charakterauswahl, **I** Inventar, **X** Interaktionsrad, **B** Bank, **S** Laden, **M** Aktionsmenü, **Shift+M** Untermenü, **V** Fahrzeug-HUD an, **Shift+V** aus.
 
-## Schriften (V5)
-Das Design nutzt **Barlow** und **Kaushan Script** (beide SIL Open Font License). Die Dateien liegen nicht im Repo. Einmalig von Google Fonts laden und nach `ui/public/fonts/` legen, dann `npm run build`:
-`Barlow-Regular.ttf`, `Barlow-Medium.ttf`, `Barlow-SemiBold.ttf`, `Barlow-Bold.ttf`, `Barlow-ExtraBold.ttf`, `Barlow-Black.ttf`, `Barlow-BoldItalic.ttf`, `Barlow-BlackItalic.ttf`, `KaushanScript-Regular.ttf`.
-Fehlen sie, fällt die UI auf Segoe UI/Inter zurück – alles bleibt bedienbar, nur die Schrift weicht ab.
+## Schrift
+Die UI nutzt die Systemschrift (Segoe UI unter Windows, sonst Inter/Roboto) – keine Schriftdateien nötig (Punkt 3.1).
 
 ## Item-Icons
 `ui/public/items/<item>.svg` werden von `python3 ui/tools/make-item-icons.py` erzeugt (Linien-Icons im UI-Stil). Ein eigenes Bild ersetzt das Icon ohne Codeänderung: `ui/public/items/<item>.png` (128×128, transparent) ablegen, `npm run build`. Fehlt beides, zeigt die UI das Kategorie-Symbol. Welche Datei je Item aktiv ist, trägt der Build in die App ein (zusätzlich `assets/items/index.json`).

@@ -36,6 +36,14 @@ TacoV.Config.Locations = {
   { name = 'shop_hw_davis', kind = 'shop', shop = 'hardware', label = 'Baumarkt Davis', x = 45.68, y = -1749.04, z = 29.61 },
   { name = 'shop_hw_grapeseed', kind = 'shop', shop = 'hardware', label = 'Baumarkt Grapeseed', x = 2747.71, y = 3472.85, z = 55.67 },
   { name = 'shop_hw_paleto', kind = 'shop', shop = 'hardware', label = 'Baumarkt Paleto', x = -421.83, y = 6136.13, z = 31.88 },
+  { name = 'shop_gun_seoul', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Little Seoul', x = -661.96, y = -933.53, z = 21.83 },
+  { name = 'shop_gun_cypress', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Cypress Flats', x = 809.68, y = -2159.13, z = 29.62 },
+  { name = 'shop_gun_sandy', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Sandy Shores', x = 1692.67, y = 3761.38, z = 34.71 },
+  { name = 'shop_gun_paleto', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Paleto Bay', x = -331.23, y = 6085.37, z = 31.45 },
+  { name = 'shop_gun_pillbox', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Pillbox Hill', x = 253.63, y = -51.02, z = 69.94 },
+  { name = 'shop_gun_pillbox_s', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Pillbox South', x = 23.00, y = -1105.67, z = 29.80 },
+  { name = 'shop_gun_tataviam', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Tataviam', x = 2567.48, y = 292.59, z = 108.73 },
+  { name = 'shop_gun_chaparral', kind = 'shop', shop = 'gunshop', label = 'Waffenladen Great Chaparral', x = -1118.59, y = 2700.05, z = 18.55 },
 }
 
 -- Geldautomaten werden nicht einzeln gelistet: der Client erkennt die Grundspiel-Modelle in Reichweite.

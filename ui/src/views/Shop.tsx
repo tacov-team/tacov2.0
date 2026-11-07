@@ -6,10 +6,10 @@ import { ItemIcon } from '../components/ItemIcon';
 import { Panel, PanelHead } from '../components/Panel';
 import { money } from './Hud';
 
-export type ShopItem = { item: string; label: string; category: string; price: number; weight: number };
+export type ShopItem = { item: string; label: string; category: string; price: number; weight: number; license?: string; locked?: boolean };
 export type ShopData = { shop: string; type: string; name: string; cash: number; bank: number; taxPercent: number; weight: number; maxWeight: number; items: ShopItem[] };
 
-const catLabel: Record<string, string> = { food: 'Essen', drink: 'Trinken', daily: 'Alltag', tool: 'Werkzeug', weapon: 'Waffen', document: 'Dokumente' };
+const catLabel: Record<string, string> = { food: 'Essen', drink: 'Trinken', daily: 'Alltag', tool: 'Werkzeug', weapon: 'Waffen', ammo: 'Munition', armor: 'Schutz', document: 'Dokumente' };
 
 export function Shop({ data }: { data: ShopData }) {
   const [cat, setCat] = useState('all');
@@ -43,11 +43,11 @@ export function Shop({ data }: { data: ShopData }) {
             </div>
             <div className="shop-grid">
               {shown.map((i) => (
-                <div key={i.item} className={'card shop-item' + (cart[i.item] ? ' on' : '')} onClick={() => add(i.item, 1)}>
-                  {cart[i.item] ? <span className="tag qty">{cart[i.item]}×</span> : null}
+                <div key={i.item} className={'card shop-item' + (cart[i.item] ? ' on' : '') + (i.locked ? ' locked' : '')} onClick={() => { if (!i.locked) add(i.item, 1); }}>
+                  {i.locked ? <span className="tag dark qty">Waffenschein</span> : cart[i.item] ? <span className="tag qty">{cart[i.item]}×</span> : null}
                   <span className="ico"><ItemIcon item={i.item} category={i.category} size={44} /></span>
                   <b style={{ fontSize: 13 }}>{i.label}</b>
-                  <div className="foot"><span className="price num">{money(i.price)}</span><button className="plus" onClick={(e) => { e.stopPropagation(); add(i.item, 1); }}>+</button></div>
+                  <div className="foot"><span className="price num">{money(i.price)}</span>{!i.locked && <button className="plus" onClick={(e) => { e.stopPropagation(); add(i.item, 1); }}>+</button>}</div>
                 </div>
               ))}
             </div>

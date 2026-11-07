@@ -5,11 +5,11 @@ TacoV.Config = TacoV.Config or {}
 TacoV.Config.Economy = {
   accounts = { 'bank', 'cash', 'black' },     -- Girokonto, Bargeld (Item), Schwarzgeld (Item)
   bank = {
-    transferDailyLimit = 50000,
+    transferDailyLimit = 0,          -- 0 = kein Tageslimit (Punkt 3.8, 07.11.)
     transferFeePercent = 1,
     transferFeeFrom = 10000,
     invoiceDueDays = 7,
-    atmWithdrawMax = 5000,
+    atmWithdrawMax = 0,              -- 0 = kein Limit je Abhebung (Punkt 3.8, 07.11.)
     debtGarnishPercent = 20,
   },
   cash = { weightPer1000 = 0.1 },

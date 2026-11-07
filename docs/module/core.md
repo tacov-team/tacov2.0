@@ -21,6 +21,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/connect.lua` | `playerConnecting`: Discord-ID Pflicht → Sperre → Whitelist → Slots → Doppelverbindung |
 | `server/status.lua` | Status-Zeile alle 30 s (`server_status`), Neustart-Planer alle 6 h mit Ansagen 15/5/1 min (Spiel + `announcements`), Autosave und `quit`; `/neustart <Minuten>` (Manager) |
 | `server/permissions.lua` | Rechteprüfung gegen `config/permissions.lua`; Admin-Dienst (Aduty) je Spieler, Rolle wird beim Dienstbeginn frisch aus der DB gelesen |
+| `config/shops.lua` | Ladentypen Supermarkt, Baumarkt, Waffenladen (lizenzpflichtige Artikel gesperrt bis Waffenschein) |
 | `server/commands.lua` | `/support`, `/aduty`, `/ort setzen|liste`, `/geld` (Team), `/rolle`, `/sperre`, `/kick`; einmaliger Startbonus über Convar `tacov_grant_next` |
 | `server/main.lua` | Startfolge, Autosave, Speichern beim Stop |
 | `client/main.lua` | Anmeldung, Spawn nach Charakterwahl, Herzschlag (Position, Aktivität) |

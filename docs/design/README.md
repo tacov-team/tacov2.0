@@ -17,7 +17,7 @@ Vorbild sind die GLRP-Referenzbilder des Betreibers; Tafeln `V4 · …` im Canva
 
 - Grund: Panels `rgba(14,12,10,0.86)` mit Kopfzeile (Icon-Kachel, Titel, Info-Zeile, Schraffur-Streifen); Interaktions-UIs (X-Rad, Listenmenü) nutzen `panel soft` mit 0,74 – also leicht durchsichtig wie auf den Bildern
 - Akzent: `#FFB800` → `#FF9A1F` (Logo-Gelb/Orange), Textakzent `#FFD54A`; Schwarzgeld Lila `#C9A0FF`
-- Schrift: **Barlow** (400–900, Tacho kursiv 900), Akzent-Schriftzug **Kaushan Script**; Dateien liegen nicht im Repo, siehe `ui/README.md` (Fallback: Segoe UI/Inter)
+- Schrift: Systemschrift (Segoe UI unter Windows, sonst Inter/Roboto), Zahlen tabellarisch, Tacho kursiv-fett; Akzent-Schriftzug kursiv-leicht in Akzentfarbe (Punkt 3.1: keine Schriftdateien)
 - HUD: Logo + Geld oben rechts zentriert untereinander (Bargeld, Konto, Schwarzgeld), darunter Hunger/Durst als Kacheln, rechts die Funkliste (wer gerade funkt); Infozeilen (ID, Fitness, Fraktion + Rang, Datum/Uhrzeit) rechts neben der Vanilla-Minimap; keine Karte in der UI
 - HUD Fahrzeug: Tacho unten rechts (km/h, Balkenreihe, Tank in Litern, Motor, Schloss); Tankstellenkarte erscheint darüber
 - Bedienung: Listenmenüs nur per Tastatur (↑ ↓ wählen, Enter bestätigen, ⌫ zurück, Esc schließen), Zivilistenaktionen als Unterpunkt des F6-Aktionsmenüs, Werkstatt-Untermenüs Upgrades → Bremsen usw.; Orte/Objekte per E-Ring, X-Rad nur Spieler und Fahrzeuge

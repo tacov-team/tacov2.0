@@ -6,7 +6,7 @@ import { Panel, PanelHead } from '../components/Panel';
 import { money } from './Hud';
 
 export type BankEntry = { at: string; amount: number; reason: string; note?: string | null; who: string };
-export type BankData = { kind: 'bank' | 'atm'; title: string; account: string; balance: number; cash: number; transferLeft: number; atmMax: number; feePercent: number; feeFrom: number; statement: BankEntry[] };
+export type BankData = { kind: 'bank' | 'atm'; title: string; account: string; balance: number; cash: number; transferLeft: number; atmMax: number; feePercent: number; feeFrom: number; statement: BankEntry[]; noLimits?: boolean };
 type Tab = 'deposit' | 'withdraw' | 'transfer';
 
 function when(at: string) {
@@ -29,7 +29,7 @@ export function Bank({ data }: { data: BankData }) {
   useEffect(() => { if (atm && tab === 'transfer') setTab('withdraw'); }, [atm, tab]);
 
   const n = Math.max(0, Math.floor(Number(amount.replace(/[^\d]/g, '')) || 0));
-  const max = tab === 'deposit' ? data.cash : tab === 'withdraw' ? (atm ? Math.min(data.balance, data.atmMax) : data.balance) : Math.min(data.balance, data.transferLeft);
+  const max = tab === 'deposit' ? data.cash : tab === 'withdraw' ? (atm && data.atmMax > 0 ? Math.min(data.balance, data.atmMax) : data.balance) : (data.transferLeft > 0 ? Math.min(data.balance, data.transferLeft) : data.balance);
   const fee = tab === 'transfer' && n >= data.feeFrom ? Math.floor((n * data.feePercent) / 100) : 0;
   const ok = n > 0 && n <= max && (tab !== 'transfer' || (target.trim().length >= 3 && n + fee <= data.balance));
   const submit = () => { if (!ok) return; nui('action', { view: 'bank', action: 'action', data: { action: tab, amount: n, target: target.trim(), note: note.trim() } }); setAmount(''); };
@@ -45,7 +45,7 @@ export function Bank({ data }: { data: BankData }) {
             <div className="hl" style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 4 }}>
               <span className="label">KONTOSTAND</span>
               <b className="num" style={{ fontSize: 40, fontWeight: 900, fontStyle: 'italic' }}>{money(data.balance)}</b>
-              <span style={{ fontSize: 12, fontWeight: 700 }}>Bargeld {money(data.cash)}{atm ? ` · Automat max. ${money(data.atmMax)} je Abhebung` : ` · Überweisung heute noch ${money(data.transferLeft)}`}</span>
+              <span style={{ fontSize: 12, fontWeight: 700 }}>Bargeld {money(data.cash)}{atm && data.atmMax > 0 ? ` · Automat max. ${money(data.atmMax)} je Abhebung` : ''}{!atm && data.transferLeft > 0 ? ` · Überweisung heute noch ${money(data.transferLeft)}` : ''}</span>
             </div>
             <div className="seg" style={{ width: '100%' }}>
               {(['deposit', 'withdraw', 'transfer'] as Tab[]).filter((t) => !(atm && t === 'transfer')).map((t) => <button key={t} className={tab === t ? 'on' : ''} style={{ flex: 1, justifyContent: 'center' }} onClick={() => { setTab(t); setAmount(''); }}>{labels[t]}</button>)}

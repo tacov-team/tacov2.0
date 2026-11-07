@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Phase 3 Alltag I | Punkte 3.1–3.9 bestätigt mit Änderungen: Systemschrift statt Schriftdateien (3.1); existiert ein Charakter, geht es direkt ins Spiel (3.4); keine Limits am Automaten und bei Überweisungen (3.8); Läden nach Art getrennt: Supermarkt (Lebensmittel, Alltag), Baumarkt (Werkzeug), Waffenladen (Messer, Weste; Schusswaffen und Munition erst mit Waffenschein, 8 Orte) (3.9) | Entscheidung des Betreibers |
 | 2026-11-07 | Phase 2 Kern | Punkte 2.1–2.11 bestätigt mit zwei Änderungen: nur ein Charakter je Spieler (2.3); Spielzeit stoppt erst nach 20 Minuten Inaktivität statt 10 (2.9) | Entscheidung des Betreibers |
 | 2026-11-07 | Phase 1 komplett | Punkte 1.7–1.10 abgenommen: Backups + Status-Embeds (Server, TeamSpeak), Testserver auf develop (Port 30122), Neustarts alle 6 h, TeamSpeak 3 + SaltyChat laufen | Betreiber: „hat geklappt“ |
 | 2026-11-07 | Punkte 1.1–1.6 | Repo/CI, VPS, FXServer-Betrieb, Bot-Whitelist, Log-Spiegel, Geheimnisse beim Neudurchgang bestätigt | Betreiber: „passt“ |

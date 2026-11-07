@@ -16,7 +16,6 @@ TacoV.Config.Shops = {
       { item = 'spirits',      price = 12 },
       { item = 'cigarettes',   price = 10 },
       { item = 'radio',        price = 250 },
-      { item = 'weapon_knife', price = 80 },
     },
   },
   hardware = {
@@ -32,7 +31,22 @@ TacoV.Config.Shops = {
       { item = 'pickaxe',  price = 200 },
     },
   },
+  -- Waffenladen (Konzept 4.2): legale Schusswaffen nur mit Waffenschein (Prüfung kommt mit dem Waffenschein, Phase 11);
+  -- bis dahin verkauft er, was ohne Schein erlaubt ist.
+  gunshop = {
+    label = 'Waffenladen',
+    blip = { sprite = 110, color = 1, scale = 0.7 },
+    items = {
+      { item = 'weapon_knife',    price = 80 },
+      { item = 'armor',           price = 600 },
+      { item = 'weapon_pistol',   price = 1200, license = 'weapon' },
+      { item = 'weapon_revolver', price = 1800, license = 'weapon' },
+      { item = 'weapon_rifle',    price = 3500, license = 'weapon' },
+      { item = 'ammo_pistol',     price = 2,    license = 'weapon' },
+      { item = 'ammo_rifle',      price = 3,    license = 'weapon' },
+    },
+  },
 }
 
 -- Reihenfolge der Kategorie-Reiter im Laden
-TacoV.Config.ShopCategories = { 'food', 'drink', 'daily', 'tool', 'weapon' }
+TacoV.Config.ShopCategories = { 'food', 'drink', 'daily', 'tool', 'weapon', 'ammo', 'armor' }

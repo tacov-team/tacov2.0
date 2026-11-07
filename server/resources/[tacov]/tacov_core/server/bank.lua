@@ -88,7 +88,8 @@ function TacoV.Bank.send(source)
     account = TacoV.Bank.accountNumber(c.id),
     balance = TacoV.Journal.balance('character', c.id),
     cash = TacoV.Inventory.cash(inv),
-    transferLeft = math.max(0, Cfg.transferDailyLimit - transferredToday(c.id)),
+    transferLeft = Cfg.transferDailyLimit > 0 and math.max(0, Cfg.transferDailyLimit - transferredToday(c.id)) or 0,
+    noLimits = Cfg.transferDailyLimit == 0 and Cfg.atmWithdrawMax == 0,
     atmMax = Cfg.atmWithdrawMax,
     feePercent = Cfg.transferFeePercent, feeFrom = Cfg.transferFeeFrom,
     statement = TacoV.Bank.statement(c.id, 20),
@@ -138,7 +139,7 @@ RegisterNetEvent('tacov:bank:action', function(data)
     TriggerClientEvent('tacov:core:notify', src, 'success', ('%s $ eingezahlt.'):format(amount))
 
   elseif data.action == 'withdraw' then
-    if session[src] == 'atm' and amount > Cfg.atmWithdrawMax then
+    if session[src] == 'atm' and Cfg.atmWithdrawMax > 0 and amount > Cfg.atmWithdrawMax then
       return fail(src, ('Am Automaten höchstens %d $ je Abhebung.'):format(Cfg.atmWithdrawMax))
     end
     if TacoV.Journal.balance('character', c.id) < amount then return fail(src, 'Nicht genug Guthaben.') end
@@ -158,8 +159,10 @@ RegisterNetEvent('tacov:bank:action', function(data)
     local target = findCharacter(data.target)
     if not target then return fail(src, 'Empfänger nicht gefunden (Name oder Kontonummer LS-000000).') end
     if target.id == c.id then return fail(src, 'Du kannst dir nichts selbst überweisen.') end
-    local left = Cfg.transferDailyLimit - transferredToday(c.id)
-    if amount > left then return fail(src, ('Tageslimit: heute noch %d $.'):format(math.max(0, left))) end
+    if Cfg.transferDailyLimit > 0 then
+      local left = Cfg.transferDailyLimit - transferredToday(c.id)
+      if amount > left then return fail(src, ('Tageslimit: heute noch %d $.'):format(math.max(0, left))) end
+    end
     local fee = amount >= Cfg.transferFeeFrom and math.floor(amount * Cfg.transferFeePercent / 100) or 0
     if TacoV.Journal.balance('character', c.id) < amount + fee then return fail(src, 'Nicht genug Guthaben (inkl. Gebühr).') end
     local note = TacoV.Util.cleanText(data.note or '', 64)

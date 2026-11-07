@@ -82,8 +82,15 @@ RegisterNetEvent('tacov:core:clientReady', function()
     if not p then p = TacoV.Players.load(src, ids.discord, ids.license2 or ids.license) end
   end
   TriggerClientEvent('tacov:core:role', src, p.role)
+  -- Punkt 3.4: gibt es schon einen Charakter, geht es direkt ins Spiel (ein Charakter je Spieler)
+  local chars = TacoV.Characters.list(p.id)
+  if #chars >= 1 and TacoV.Config.Server.charactersPerPlayer == 1 then
+    local ok, err = TacoV.Characters.select(src, chars[1].id)
+    if ok then return end
+    TriggerClientEvent('tacov:core:notify', src, 'error', 'Charakter konnte nicht geladen werden: ' .. tostring(err))
+  end
   TriggerClientEvent('tacov:core:characters', src, {
-    characters = TacoV.Characters.list(p.id),
+    characters = chars,
     maxSlots = TacoV.Config.Server.charactersPerPlayer,
     secondSlotLevel = TacoV.Config.Server.secondCharacterLevel,
     maxLevel = TacoV.Characters.maxLevel(p.id),

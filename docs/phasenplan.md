@@ -11,7 +11,7 @@ Die Phasen sind in `docs/punkte.md` in einzelne Punkte (ein Punkt = ein System) 
 | 0 | Konzept und Entscheidungen | ✅ fertig, alle 16 Punkte bestätigt (07.11.) |
 | 1 | Infrastruktur: Repo, CI, VPS, Datenbank, Discord-Bot, Whitelist, Backups, Status-Embeds, Testserver, Neustarts, TeamSpeak | ✅ fertig, alle 10 Punkte bestätigt (07.11.) |
 | 2 | Kern: eigenes Framework (`tacov_db`, `tacov_core`) | ✅ fertig, 11 Punkte bestätigt (07.11.; 1 Charakter, AFK 20 min) |
-| 3 | Alltag I: Oberfläche V4, HUD, Inventar, Bedürfnisse, Bank, Läden, Orte | ✅ fertig |
+| 3 | Alltag I: Oberfläche V5, HUD, Inventar, Bedürfnisse, Bank, Läden, Orte | ✅ fertig, 9 Punkte bestätigt (07.11.) |
 | 4 | Fahrzeuge | 🔶 Teil 1 fertig, Teil 2 offen |
 | 5 | Entwickler- und Admin-Werkzeuge: Creator-Systeme (Türen, Aufzüge, Orte, Peds, Objekte, Zonen), Team-Menü | ⬜ |
 | 6 | Charakter und Einstieg: Aussehen, Kleidung, Einreise, Animationen, Voice | ⬜ |
@@ -53,7 +53,7 @@ GitHub-Repo `tacov-team/tacov2.0`, CI (luacheck, Struktur- und Geheimnis-Prüfun
 
 Oberfläche V4 (Barlow/Kaushan Script, Gelb-Orange), HUD mit Fahrzeug-Tacho, Hinweise, Befehlszeile (T), Charakterauswahl, Inventar (F2) mit Ablagen, Bedürfnisse Hunger/Durst, Hände hoch (H), Bank und Geldautomat, Läden (24/7, LTD, Rob's, Baumarkt), 79 Item-Icons, Listenmenü, E-Aufforderungen, X-Rad für Spieler/Fahrzeuge.
 
-Offen in dieser Phase: Schriftdateien in `ui/public/fonts/` ablegen (Betreiber).
+Änderungen 07.11.: Systemschrift, direkt ins Spiel bei vorhandenem Charakter, keine Banklimits, Waffenladen als eigener Ladentyp.
 
 ## Phase 4 – Fahrzeuge 🔶
 

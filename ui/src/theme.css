@@ -1,16 +1,5 @@
-/* TacoV UI · V5 „Nachtviolett“ · Akzent Violett, kühles dunkles Glas, Barlow */
+/* TacoV UI · V5 „Nachtviolett“ · Akzent Violett, kühles dunkles Glas, Systemschrift (Punkt 3.1: keine Schriftdateien) */
 
-/* Schrift: Dateien nach ui/public/fonts/ legen (Barlow-Regular/Medium/SemiBold/Bold/ExtraBold/Black(.ttf), Barlow-BoldItalic, Barlow-BlackItalic,
-   KaushanScript-Regular.ttf). Fehlen sie, greift die Systemschrift. */
-@font-face { font-family: 'Barlow'; font-weight: 400; src: url('assets/fonts/Barlow-Regular.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 500; src: url('assets/fonts/Barlow-Medium.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 600; src: url('assets/fonts/Barlow-SemiBold.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 700; src: url('assets/fonts/Barlow-Bold.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 800; src: url('assets/fonts/Barlow-ExtraBold.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 900; src: url('assets/fonts/Barlow-Black.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 700; font-style: italic; src: url('assets/fonts/Barlow-BoldItalic.ttf'); font-display: swap; }
-@font-face { font-family: 'Barlow'; font-weight: 900; font-style: italic; src: url('assets/fonts/Barlow-BlackItalic.ttf'); font-display: swap; }
-@font-face { font-family: 'Kaushan Script'; src: url('assets/fonts/KaushanScript-Regular.ttf'); font-display: swap; }
 
 :root {
   --accent: #B794FF;            /* helles Violett: Text, Zahlen, Ringe */
@@ -35,7 +24,7 @@
   --line-strong: rgba(255, 255, 255, 0.14);
   --field: rgba(0, 0, 0, 0.4);
   --shadow-text: 0 2px 6px rgba(0, 0, 0, 0.8);
-  --font: Barlow, 'Segoe UI', Inter, system-ui, sans-serif;
+  --font: 'Segoe UI', Inter, Roboto, system-ui, -apple-system, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -60,7 +49,7 @@ button { font-family: var(--font); }
 .title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .title .brand { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
 .title h1 { margin: 0; font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -0.01em; white-space: nowrap; }
-.title h1 .script { font-family: 'Kaushan Script', cursive; font-weight: 400; color: var(--accent); font-size: 28px; margin-left: 6px; }
+.title h1 .script { font-style: italic; font-weight: 300; letter-spacing: 0.02em; color: var(--accent); font-size: 26px; margin-left: 8px; }
 .title .info { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin-top: 8px; }
 .info-i { width: 16px; height: 16px; border-radius: 4px; background: rgba(255, 255, 255, 0.14); display: inline-grid; place-items: center; font-size: 10px; font-weight: 700; font-style: normal; color: #fff; flex: none; }
 .info-i.on { background: var(--accent); color: var(--on-accent); }
@@ -249,3 +238,5 @@ select.input option { background: #161226; }
 .hud-info .aduty { color: #fff; }
 .hud-info .aduty .b { background: linear-gradient(135deg, #ff3b3b, #b80000); color: #fff; }
 .hud-info .aduty small { color: #ff8a8a; }
+
+.shop-item.locked { opacity: 0.55; cursor: not-allowed; }

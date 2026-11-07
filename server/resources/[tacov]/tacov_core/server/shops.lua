@@ -8,13 +8,20 @@ local STATE = { type = 'state', id = 0 }
 
 local session = {} -- [source] = Ort (locations-Eintrag)
 
-local function catalog(shopType)
+--- Hat der Charakter die Lizenz? Bis der Waffenschein steht (Phase 11), hat niemand eine; lizenzpflichtige
+--- Artikel werden im Laden gezeigt, aber als gesperrt markiert und beim Kauf abgewiesen.
+local function hasLicense(_characterId, _license)
+  return false
+end
+
+local function catalog(shopType, characterId)
   local def = Shops[shopType]
   local list = {}
   for _, e in ipairs(def.items) do
     local it = Items[e.item]
     if it then
-      list[#list + 1] = { item = e.item, label = it.label, category = it.category, price = e.price, weight = it.weight or 0 }
+      list[#list + 1] = { item = e.item, label = it.label, category = it.category, price = e.price, weight = it.weight or 0,
+        license = e.license, locked = e.license ~= nil and not hasLicense(characterId, e.license) }
     end
   end
   return list
@@ -35,7 +42,7 @@ function TacoV.Shops.send(source)
     cash = TacoV.Inventory.cash(inv), bank = TacoV.Journal.balance('character', c.id),
     taxPercent = TacoV.Config.Economy.tax.sales.default,
     weight = TacoV.Inventory.weight(inv), maxWeight = TacoV.Inventory.maxWeight(inv),
-    items = catalog(loc.shop),
+    items = catalog(loc.shop, c.id),
   })
 end
 
@@ -61,14 +68,17 @@ RegisterNetEvent('tacov:shop:buy', function(data)
   if not loc or not c or not inv or type(data) ~= 'table' or type(data.cart) ~= 'table' then return end
   if #(GetEntityCoords(GetPlayerPed(src)) - vector3(loc.x, loc.y, loc.z)) > 5.0 then return fail(src, 'Du bist zu weit weg.') end
   local def = Shops[loc.shop]
-  local prices = {}
-  for _, e in ipairs(def.items) do prices[e.item] = e.price end
+  local prices, needs = {}, {}
+  for _, e in ipairs(def.items) do prices[e.item] = e.price; needs[e.item] = e.license end
 
   -- Warenkorb prüfen
   local lines, total, weight = {}, 0, 0
   for _, l in ipairs(data.cart) do
     local amount = math.floor(tonumber(l.amount) or 0)
     local price = prices[l.item]
+    if price and needs[l.item] and not hasLicense(c.id, needs[l.item]) then
+      return fail(src, ('%s gibt es nur mit %s.'):format(Items[l.item].label, needs[l.item] == 'weapon' and 'Waffenschein' or 'Lizenz'))
+    end
     if price and amount > 0 and amount <= 100 then
       lines[#lines + 1] = { item = l.item, amount = amount, price = price }
       total = total + price * amount

@@ -64,5 +64,4 @@ files {
   'ui/app.css',
   'ui/assets/*',
   'ui/assets/items/*',
-  'ui/assets/fonts/*',
 }
