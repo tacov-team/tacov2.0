@@ -91,12 +91,13 @@ def cmd(c):
     f.write(c + '\n'); f.flush()
     out = ''
     while True:
-        line = f.readline()
+        line = f.readline().lstrip('\r')  # ServerQuery beendet Zeilen mit \n\r
+        if not line: raise SystemExit('ServerQuery: Verbindung beendet bei ' + c)
         out += line
         if line.startswith('error id='):
             if 'id=0 ' not in line and 'id=0\n' not in line: raise SystemExit('ServerQuery: ' + line.strip() + ' bei ' + c)
             return out
-f.readline(); f.readline()
+f.readline(); f.readline()  # Banner: TS3 / Welcome
 cmd('login serveradmin ' + esc(qpass))
 cmd('use sid=1')
 cmd('serveredit virtualserver_name=' + esc('TacoV Roleplay') + ' virtualserver_welcomemessage=' + esc('Willkommen bei TacoV. Im Spiel wirst du automatisch in den Ingame-Kanal verschoben.'))
