@@ -2,6 +2,8 @@
 
 Stand: 07.11.2026. Dieser Plan ist die verbindliche Reihenfolge für den Bau des Servers. Jede Phase hat ein Ziel, Inhalte mit Verweis auf das Konzept (`docs/konzept/`), die nötigen Oberflächen, die Datenbanktabellen, die offenen Entscheidungen des Betreibers und eine Abnahme (wann ist die Phase fertig). Der Plan wird fortgeschrieben; Änderungen stehen in `docs/entscheidungen.md`.
 
+Die Phasen sind in `docs/punkte.md` in einzelne Punkte (ein Punkt = ein System) zerlegt; dort steht der Abnahme-Status je Punkt.
+
 ## Überblick
 
 | Phase | Thema | Stand |
