@@ -4,6 +4,7 @@ import { handleReaction, handleReactionRemoved, handleMemberUpdate } from './whi
 import { startLogMirror } from './logs.js';
 import { syncMember, syncAllTeamRoles } from './teamroles.js';
 import { startStatus } from './status.js';
+import { startTeamspeakStatus } from './teamspeak.js';
 import { pool } from './db.js';
 
 const client = new Client({
@@ -35,6 +36,7 @@ client.once('clientReady', async () => {
   await syncAllTeamRoles(client).catch((e) => console.error('[bot] Team-Rollen', e.message));
   await startLogMirror(client);
   await startStatus(client).catch((e) => console.error('[bot] Status', e.message));
+  await startTeamspeakStatus(client).catch((e) => console.error('[bot] TeamSpeak-Status', e.message));
 });
 
 client.on('messageReactionAdd', (reaction, user) => handleReaction(reaction, user, client).catch((e) => console.error('[bot] Reaktion', e)));

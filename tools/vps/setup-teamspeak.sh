@@ -162,6 +162,15 @@ PY
 chown -R "$SVC_USER:$SVC_USER" "$EXT"
 grep -q '^ensure saltychat' "$BASE/server/server.cfg" || printf '\n# Voice (Punkt 0.14): SaltyChat als einzige Fremd-Resource\nensure saltychat\n' >> "$BASE/server/server.cfg"
 
+# Bot: ServerQuery-Zugang für das TeamSpeak-Embed (nur in .env, nie eingecheckt)
+ENV="$BASE/bot/.env"
+if [ -f "$ENV" ]; then
+  grep -q '^TS_QUERY_PASS=' "$ENV" && sed -i "s#^TS_QUERY_PASS=.*#TS_QUERY_PASS=${QUERY_PASS}#" "$ENV" || printf 'TS_QUERY_HOST=127.0.0.1\nTS_QUERY_PORT=10011\nTS_QUERY_PASS=%s\n' "$QUERY_PASS" >> "$ENV"
+  if ! grep -q '^TS_ADDRESS=' "$ENV"; then printf 'TS_ADDRESS=%s\n' "$(hostname -I | awk '{print $1}')" >> "$ENV"; fi
+  chown "$SVC_USER:$SVC_USER" "$ENV"; chmod 600 "$ENV"
+  systemctl restart tacov2-bot 2>/dev/null || true
+fi
+
 echo "== 4/4 Fertig"
 cat <<EOT
 TeamSpeak 3 läuft (Port 9987). Kanäle: Lobby (Standard), TacoV Ingame (Passwort gesetzt), Support 1/2.

@@ -20,3 +20,6 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 
 ## Status-Embed und Ansagen (Punkte 1.7, 1.9)
 `src/status.js` postet einmal ein Embed in den Kanal „Server Status“ (`statusChannelId` in `discord.json`) und bearbeitet es alle 30 s: online/offline (Zeile `server_status` älter als 90 s = offline), Spieler/Slots, nächster Neustart, Laufzeit, Version (aus `version.json`, vom Deploy geschrieben). Die Nachrichten-ID steht in `bot_state`. Ansagen aus `announcements` (Neustart-Warnungen, `/neustart`) werden in denselben Kanal gepostet.
+
+## TeamSpeak-Embed (Punkt 1.10)
+`src/teamspeak.js` fragt alle 30 s den ServerQuery (127.0.0.1:10011, `TS_QUERY_PASS` aus `.env`, von `setup-teamspeak.sh` eingetragen) ab und bearbeitet ein zweites Embed im Status-Kanal: online/offline, Adresse (`TS_ADDRESS`), Verbundene/Max, Laufzeit, Namen der Verbundenen. Nachrichten-ID in `bot_state` (`ts_status_message_id`).

@@ -34,7 +34,7 @@ Updates: `bash /opt/tacov2/tools/vps/deploy.sh` – zieht `main`, baut UI und Bo
 Einrichten: `bash /opt/tacov2/tools/vps/setup-test.sh` (einmalig, danach zweiten Schlüssel von keymaster.fivem.net in `/opt/tacov2-test/server/server.cfg`). Einspielen: `bash /opt/tacov2-test/tools/vps/deploy-test.sh` (Branch `develop`). Verbinden: `connect <ip>:30122`. Eigene Datenbank `tacov2_test` (Whitelist wird beim Einrichten vom Live-Server kopiert), kein Bot.
 
 ## Voice (Punkt 1.10)
-Einrichten: `bash /opt/tacov2/tools/vps/setup-teamspeak.sh` – installiert TeamSpeak 3 (`/opt/teamspeak`, Dienst `teamspeak3`), legt Kanäle an und die SaltyChat-Resource unter `server/resources/[external]/saltychat` mit passender `config.json`. Danach: Non-Profit-Lizenz (`licensekey.dat`), Server-Kennung bei SaltyChat freischalten, Spieler brauchen TeamSpeak 3 + SaltyChat-Plugin. Zugangsdaten liegen nur in `/opt/teamspeak/.query`, `.ingame_pass`.
+Einrichten: `bash /opt/tacov2/tools/vps/setup-teamspeak.sh` – installiert TeamSpeak 3 (`/opt/teamspeak`, Dienst `teamspeak3`), legt Kanäle an und die SaltyChat-Resource unter `server/resources/[external]/saltychat` mit passender `config.json`. Danach: Non-Profit-Lizenz (`licensekey.dat`), Server-Kennung bei SaltyChat freischalten, Spieler brauchen TeamSpeak 3 + SaltyChat-Plugin. Zugangsdaten liegen nur in `/opt/teamspeak/.query`, `.ingame_pass` und `bot/.env` (TS_QUERY_PASS). SaltyChat-Server-Kennung (nicht geheim): `7DyVyplELNfMHWxG7Z98MhWTriY=`.
 
 ## Branching
 - `develop`: Stand des Testservers; neue Punkte landen zuerst hier. `main`: Live-Server, nur nach Abnahme auf dem Testserver (Fast-Forward-Merge).

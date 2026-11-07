@@ -37,5 +37,9 @@
   },
   "_teamRoles": "Discord-Rollen-IDs des Teams; leer = wird nicht gespiegelt. Höchste Rolle gewinnt.",
   "statusChannelId": "1568019535544455202",
-  "_statusChannelId": "Kanal „Server Status“: Embed mit den öffentlichen Infos (Punkt 1.7)"
+  "_statusChannelId": "Kanal „Server Status“: Embed mit den öffentlichen Infos (Punkt 1.7)",
+  "teamspeak": {
+    "address": ""
+  },
+  "_teamspeak": "Öffentliche TeamSpeak-Adresse fürs Embed (leer = aus .env TS_ADDRESS)"
 }
