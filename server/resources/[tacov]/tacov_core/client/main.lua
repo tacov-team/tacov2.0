@@ -45,6 +45,14 @@ RegisterNetEvent('tacov:core:role', function(role)
   TacoV.UI.send('role', role)
 end)
 
+-- Admin-Dienst (Aduty): HUD-Kennzeichnung; Rechte prüft der Server
+TacoV.Client.aduty = false
+RegisterNetEvent('tacov:core:aduty', function(on, label)
+  TacoV.Client.aduty = on
+  TacoV.UI.send('hud', { aduty = on and (label or 'Team') or false })
+  TacoV.UI.send('notify', { kind = on and 'warn' or 'info', text = on and ('Admin-Dienst begonnen (' .. tostring(label) .. ').') or 'Admin-Dienst beendet.' })
+end)
+
 RegisterNetEvent('tacov:core:characters', function(data)
   TacoV.UI.open('characters', data)
   DoScreenFadeIn(500)

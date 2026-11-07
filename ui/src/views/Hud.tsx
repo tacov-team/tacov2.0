@@ -107,6 +107,7 @@ export function Hud() {
         <div><span className="b"><Icon name="fitness" size={16} /></span><span className="num">{h.fitness.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %</span></div>
         <div><span className="b"><Icon name="briefcase" size={16} /></span><span>{h.faction || 'Zivilist'}{h.factionRank && <small>{h.factionRank}</small>}</span></div>
         <div><span className="b"><Icon name="clock" size={16} /></span><span className="num">{date}<small>{time} Uhr</small></span></div>
+        {h.aduty && <div className="aduty"><span className="b"><Icon name="shield" size={16} /></span><span>Admin-Dienst<small>{h.aduty}</small></span></div>}
       </div>
 
       {h.vehicle && <Vehicle h={h} />}

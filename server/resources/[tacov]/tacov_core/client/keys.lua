@@ -66,7 +66,8 @@ function TacoV.Client.openFactionMenu()
 end
 
 -- Team-Menü nur anzeigen, wenn der Spieler Teammitglied ist (prüft der Server beim Öffnen erneut)
-bind('tacov_admin', 'TacoV: Team-Menü', K.admin, function()
+-- F9: Admin-Dienst an/aus (Aduty). Das Team-Menü kommt in Phase 5 und öffnet dann im Dienst.
+bind('tacov_admin', 'TacoV: Admin-Dienst', K.admin, function()
   if TacoV.Client.role == 'player' then return end
-  soon('Das Team-Menü')
+  TriggerServerEvent('tacov:core:aduty:toggle')
 end)

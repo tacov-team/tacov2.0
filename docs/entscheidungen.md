@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-07 | Punkt 0.11 Team-Rollen | Zehn Discord-Rollen (Projektleitung, Stv. Projektleitung, Manager, Superadministrator, Administrator, Entwickler, Moderator, Supporter, Guide, Gamedesigner) werden vom Bot nach `players.role` gespiegelt; Rechte je Stufe in `config/permissions.lua`; Team-Rechte nur im Admin-Dienst (Aduty, F9/`/aduty`) | Entscheidung des Betreibers („wie der bekannte Aduty“) |
 | 2026-11-07 | Punkte 0.2–0.10 | Konzeptkapitel 1–5 sowie Items- und Orte-Tabellen beim Neudurchgang unverändert bestätigt | Betreiber: „passt“ |
 | 2026-11-07 | Spielstil | TacoV ist ein Softcore/Midcore-Server mit Bodyshot-Schadensmodell (keine Kopfschuss-Sofortkills) | Entscheidung des Betreibers |
 | 2026-11-07 | Vorgehen | Entwicklung Punkt für Punkt nach `docs/punkte.md`, von vorn; eigene Phase für Entwickler- und Admin-Werkzeuge (Creator-Systeme) direkt nach den Fahrzeugen | Entscheidung des Betreibers |

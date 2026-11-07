@@ -29,6 +29,8 @@ if (!inGame) {
     if (e.key === 'M') post('open', { view: 'menu', data: { id: 'brakes', title: 'Bremsen', info: 'Upgrades · Bremsen', icon: 'wrench', depth: 2, items: [
       { id: 'b0', label: 'Serie', price: '0 $', sub: 'eingebaut' }, { id: 'b1', label: 'Straße', price: '1.200 $' }, { id: 'b2', label: 'Sport', price: '2.800 $' }, { id: 'b3', label: 'Rennen', price: '5.900 $', dim: true, badge: 'gesperrt' },
     ] } });
+    if (e.key === 'a') post('hud', { aduty: 'Projektleitung' });
+    if (e.key === 'A') post('hud', { aduty: false });
     if (e.key === 'g') post('open', { view: 'garage', data: { name: 'garage_legion', label: 'Parkhaus Legion Square', kind: 'garage', items: [
       { id: 1, label: 'Sultan', plate: 'LS 48213', classLabel: 'Gehoben', moto: false, fuel: 38, tank: 65, km: 1234, own: true, fee: 0, state: 'here' },
       { id: 2, label: 'Blista', plate: 'LS 00917', classLabel: 'Einstieg', moto: false, fuel: 12, tank: 45, km: 80, own: true, fee: 100, state: 'here' },

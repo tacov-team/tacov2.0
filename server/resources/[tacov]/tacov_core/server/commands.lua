@@ -58,6 +58,17 @@ RegisterCommand('ort', function(src, args)
   notify(src, 'info', 'Nutzung: /ort setzen <name> <art> [Beschriftung] | /ort liste')
 end, false)
 
+-- /aduty – Admin-Dienst an/aus (Teammitglieder; Rechte gelten nur im Dienst)
+RegisterCommand('aduty', function(src)
+  if src == 0 then return end
+  TriggerEvent('tacov:core:aduty:toggle:server', src)
+end, false)
+
+AddEventHandler('tacov:core:aduty:toggle:server', function(src)
+  local ok, err = TacoV.Permissions.setDuty(src, not TacoV.Permissions.onDuty(src))
+  if not ok and err == 'right' then notify(src, 'error', 'Du bist kein Teammitglied.') end
+end)
+
 -- /geld <Server-ID> <Betrag> [bank|bar]  – Testgeld geben (Team, Recht admin.give); läuft über das Journal und wird geloggt
 RegisterCommand('geld', function(src, args)
   if src ~= 0 and not needRight(src, 'admin.give') then return end

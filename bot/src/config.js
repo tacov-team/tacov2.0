@@ -40,6 +40,8 @@ export const config = {
     einwohner: ids.roles?.einwohner || null,
   },
   logChannels,
+  // Discord-Rollen-IDs des Teams (discord.json → teamRoles); fehlende Einträge werden nicht gespiegelt
+  teamRoles: ids.teamRoles || {},
   db: {
     host: process.env.DB_HOST || '127.0.0.1',
     port: Number(process.env.DB_PORT || 3306),

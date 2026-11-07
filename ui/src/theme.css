@@ -242,3 +242,8 @@ select.input option { background: #1b1815; }
 .garage-card { min-height: 190px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
 .garage-card.dim { opacity: 0.55; }
 .garage-card .btn.sm { width: 100%; justify-content: center; }
+
+/* Admin-Dienst (Aduty) im HUD */
+.hud-info .aduty { color: #fff; }
+.hud-info .aduty .b { background: linear-gradient(135deg, #ff3b3b, #b80000); color: #fff; }
+.hud-info .aduty small { color: #ff8a8a; }

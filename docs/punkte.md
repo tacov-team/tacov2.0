@@ -18,7 +18,7 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 0.8 | Verbrechen und Justiz | ✅ | Drogen, Waffen, Raub, Strafkatalog, Haft, Koma |
 | 0.9 | Alltag und Handy | ✅ | Inventar, Bedürfnisse, 10 Apps, Interaktion, Läden |
 | 0.10 | Items- und Orte-Tabellen | ✅ | `docs/konzept/items.md`, `orte.md` |
-| 0.11 | Team-Rollen und Rechte | ⬜ | Rollen im Detail, wer darf was (Frist 22.11.) |
+| 0.11 | Team-Rollen und Rechte | ✅ | 10 Discord-Rollen, Rechte je Stufe, Aduty (bestätigt 07.11.; Rollen-IDs in `bot/discord.json` eintragen) |
 | 0.12 | Anti-Cheat-Ansatz | ⬜ | eigener Abgleich oder zusätzlich kommerziell |
 | 0.13 | Hoster, Testserver, Neustart-Fenster | ⬜ | |
 | 0.14 | Voice (TeamSpeak-Plugin, Lizenz) | ⬜ | |

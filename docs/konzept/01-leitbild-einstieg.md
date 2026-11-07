@@ -72,6 +72,23 @@ Eine Stunde aktive Spielzeit = ein Levelpunkt; AFK zählt nicht.
 
 Der Noobschutz endet vorzeitig, sobald der Spieler selbst eine Straftat begeht; der Kern hebt ihn auf und vermerkt es im Journal.
 
+## 6. Team-Rollen und Rechte
+
+Bestätigt am 2026-11-07 (Punkt 0.11). Die Rolle kommt aus Discord (der Bot spiegelt sie), Rechte gelten nur im **Admin-Dienst (Aduty, F9 oder `/aduty`)** – außerhalb ist ein Teammitglied ein normaler Spieler. Jede Team-Aktion wird geloggt (Kategorie `admin`).
+
+| Stufe | Discord-Rolle | Darf (zusätzlich zur darunterliegenden Stufe) |
+| --- | --- | --- |
+| 1 | Supporter | Admin-Dienst, Tickets und Spieler-Akte lesen, zu Spielern teleportieren, unsichtbar beobachten, Einreise durchführen, Verwarnungen |
+| 1 | Guide | nur: Admin-Dienst, Akte lesen, Teleport zu Spielern, Einreise |
+| 2 | Moderator | Kicken, Sperren bis 7 Tage, Fahrzeuge löschen/zurücksetzen, Erstattungen bis 10.000 $, Noclip |
+| 2 | Gamedesigner | nur: Akte lesen, Teleport, unsichtbar, Entwickler-Werkzeuge, Config lesen |
+| 3 | Administrator | dauerhafte Sperren, Creator-Systeme (Türen, Aufzüge, Orte, Peds, Objekte, Zonen), Fahrzeuge spawnen, Welt-Steuerung (Wetter, Zeit, Ansagen), Rollen bis unter die eigene Stufe |
+| 3 | Entwickler | wie Administrator plus Entwickler-Werkzeuge |
+| 4 | Superadministrator | Items und Geld geben, Erstattungen bis 50.000 $, Fraktionsleitungen und Ränge |
+| 5 | Manager | Config im Spiel ändern, Erstattungen über 50.000 $ (Vier-Augen-Prinzip), Datenbank-Werkzeuge |
+| 6 | Stv. Projektleitung | alles |
+| 7 | Projektleitung | alles |
+
 ## Config-Werte aus diesem Abschnitt
 
 | Schlüssel | Wert |

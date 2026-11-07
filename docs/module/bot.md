@@ -14,3 +14,6 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 - Rolle *Einwohner* nach erfolgreicher Einreise
 - Permatod-Antrag als Ticket
 - Supportticket aus `/support` als Thread
+
+## Team-Rollen (Punkt 0.11)
+`src/teamroles.js` spiegelt die Discord-Team-Rollen nach `players.role`: beim Start alle Mitglieder, danach bei jeder Rollenänderung (`guildMemberUpdate`) und beim Verlassen. Höchste Rolle gewinnt; ohne Team-Rolle wird der Spieler wieder `player`. Die Rollen-IDs stehen in `discord.json` unter `teamRoles` (leer = nicht gespiegelt). Im Spiel gelten die Rechte nur im Admin-Dienst (F9 / `/aduty`).

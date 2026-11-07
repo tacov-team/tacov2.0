@@ -18,7 +18,8 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/characters.lua` | Liste, Anlage (Namensregeln, Blockliste, 2. Platz ab Level 15), Laden, Speichern, Spielzeit ohne AFK |
 | `server/accounts.lua` | `pay`, `receive`, `tax` für andere Module |
 | `server/connect.lua` | `playerConnecting`: Discord-ID Pflicht → Sperre → Whitelist → Slots → Doppelverbindung |
-| `server/commands.lua` | `/support`, `/ort setzen|liste`, `/geld` (Team), `/rolle`, `/sperre`, `/kick`; einmaliger Startbonus über Convar `tacov_grant_next` |
+| `server/permissions.lua` | Rechteprüfung gegen `config/permissions.lua`; Admin-Dienst (Aduty) je Spieler, Rolle wird beim Dienstbeginn frisch aus der DB gelesen |
+| `server/commands.lua` | `/support`, `/aduty`, `/ort setzen|liste`, `/geld` (Team), `/rolle`, `/sperre`, `/kick`; einmaliger Startbonus über Convar `tacov_grant_next` |
 | `server/main.lua` | Startfolge, Autosave, Speichern beim Stop |
 | `client/main.lua` | Anmeldung, Spawn nach Charakterwahl, Herzschlag (Position, Aktivität) |
 | `client/ui.lua` | NUI-Brücke (`TacoV.UI.open/close/send/openConsole`), Befehlszeile führt Befehle aus |

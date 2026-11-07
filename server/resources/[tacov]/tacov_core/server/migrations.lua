@@ -10,6 +10,7 @@ local function listMigrations()
     { version = 1, file = 'sql/001_init.sql' },
     { version = 2, file = 'sql/002_inventory.sql' },
     { version = 3, file = 'sql/003_vehicles.sql' },
+    { version = 4, file = 'sql/004_roles.sql' },
   }
 end
 

@@ -22,5 +22,18 @@
     "crime": "1568038590389288971",
     "admin": "1568038627211083776",
     "support": "1568038660383965204"
-  }
+  },
+  "teamRoles": {
+    "projektleitung": "",
+    "stv_projektleitung": "",
+    "manager": "",
+    "superadmin": "",
+    "administrator": "",
+    "entwickler": "",
+    "gamedesigner": "",
+    "moderator": "",
+    "supporter": "",
+    "guide": ""
+  },
+  "_teamRoles": "Discord-Rollen-IDs des Teams; leer = wird nicht gespiegelt. Höchste Rolle gewinnt."
 }
