@@ -1,5 +1,18 @@
 # Design
 
+## Stand V6 „Klar“ (07.11.2026) – Neuaufbau der Oberflächen, gilt für alles Neue
+
+Betreiber: „UIs waren komplett komisch, bau es neu.“ Alle Ansichten neu geschrieben (`ui/src/theme.css`, `views/*`), Daten-Schnittstelle zu Lua unverändert.
+
+- **Maßstab:** alle Größen in `rem`, 1 rem = 1/67,5 der Bildschirmhöhe (16 px bei 1080p) → auf 768p, 1080p, 1440p, 4K identische Proportionen (geprüft 1366×768 und 1920×1080)
+- **Flächen:** fast deckendes dunkles Panel (`rgba(14,12,22,0.96)`), 1-px-Rand, Kopfzeile (Icon, Titel, Untertitel, Schließen), Fußzeile für Aktionen; wenig Zierde, hoher Kontrast
+- **Akzent:** Violett `#8B5CF6` (Knöpfe, aktive Elemente, Icon-Kacheln), Text `#F5F3FF`; Schwarzgeld Mint; Status-Farben Grün/Gelb/Rot/Blau; Item-Icons in Lavendel/Violett
+- **HUD:** Geld (Bargeld, Konto, Schwarzgeld) oben rechts mit ID/Fraktion/Datum darunter; Leben/Weste/Hunger/Durst als vier kompakte Balken direkt über der Minimap; Funkliste rechts; Tacho unten rechts (km/h, Balken, Tank, Motor, Schloss) mit Tankstellenkarte; Admin-Dienst als rotes Band oben mittig
+- **Inventar:** zwei gleich große Panels (Taschen | Boden/Behälter), 6 Spalten, Aktionsleiste unten (Auswahl, Menge, Benutzen/Geben/Teilen/Wegwerfen)
+- **Bank, Laden, Garage:** ein zentriertes Panel mit klaren Spalten; Listenmenü links; X-Rad mittig; Hinweise oben links; E-Aufforderung unten mittig
+- Regel bleibt: neue Oberflächen erst mit ihrem System.
+
+
 ## Stand V5 „Nachtviolett“ (07.11.2026) – gilt für alles Neue
 
 Abgenommen als Punkt 0.15. Aufbau, Schrift und Bedienung von V4 bleiben; neu ist die Farbwelt (`ui/src/theme.css`, alle Farben als Tokens):

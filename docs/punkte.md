@@ -60,15 +60,15 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 3.1 | Oberfläche V5: Grundlagen, Panels | ✅ | Systemschrift, keine Schriftdateien (07.11.) |
-| 3.2 | HUD (Geld, Hunger/Durst, Funkliste, Infozeilen, Tacho) | ✅ | |
-| 3.3 | Hinweise (Toasts) | ✅ | |
-| 3.4 | Charakterauswahl | ✅ | |
-| 3.5 | Inventar (F2), Ablagen, Items, Icons | ✅ | |
+| 3.1 | Oberfläche V6 „Klar“: Grundlagen, Panels, Maßstab | 🔧 | Neuaufbau 07.11., zur Abnahme auf dem Testserver |
+| 3.2 | HUD (Geld, Hunger/Durst, Funkliste, Infozeilen, Tacho) | 🔧 | |
+| 3.3 | Hinweise (Toasts) | 🔧 | |
+| 3.4 | Charakterauswahl | 🔧 | |
+| 3.5 | Inventar (F2), Ablagen, Items, Icons | 🔧 | |
 | 3.6 | Bedürfnisse Hunger/Durst | ✅ | Fitness und Promille: Phase 5/10 |
 | 3.7 | Hände hoch (H) | ✅ | |
-| 3.8 | Bank und Geldautomat | ✅ | |
-| 3.9 | Läden (24/7, LTD, Rob's, Baumarkt, Waffenladen) | ✅ | |
+| 3.8 | Bank und Geldautomat | 🔧 | |
+| 3.9 | Läden (24/7, LTD, Rob's, Baumarkt, Waffenladen) | 🔧 | |
 
 ## Phase 4 · Fahrzeuge
 

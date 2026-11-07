@@ -23,8 +23,8 @@ Die UI nutzt die Systemschrift (Segoe UI unter Windows, sonst Inter/Roboto) – 
 | --- | --- |
 | `src/nui.ts` | `nui(name, data)` ruft Lua-Callbacks, `useNuiEvent` empfängt `SendNUIMessage` |
 | `src/store.tsx` | Zustand: HUD, Ansicht, Hinweise, Rolle |
-| `src/theme.css` | V4-Stil: Schriften, Farben, Panels, Buttons, Listen, Layout aller Ansichten |
-| `src/components/Panel.tsx` | `Panel`/`PanelHead` (Kopfzeile mit Icon, Titel, Info), `Kbd`, `Keys` |
+| `src/theme.css` | V6-Stil: rem-Maßstab (1 rem = Bildschirmhöhe/67,5), Farben, Panels, Buttons, Listen, Layout aller Ansichten |
+| `src/components/Panel.tsx` | `Panel` (Kopf mit Icon/Titel/Untertitel/Schließen, Körper, Fuß), `Kbd` |
 | `src/components/Icon.tsx` | Linien-Icons (`<Icon name="fuel" />`) |
 | `src/views/Hud.tsx` | HUD: Logo, Geld, Hunger/Durst, Funkliste, Infozeilen neben der Minimap, Fahrzeug-Tacho, Tankstellenkarte |
 | `src/views/Toasts.tsx` | Hinweise oben links (Erfolg, Info, Warnung, Fehler) |

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { StoreProvider, useStore } from './store';
-import { GradientDefs } from './components/Ring';
 import { Hud } from './views/Hud';
 import { Toasts } from './views/Toasts';
 import { Console } from './views/Console';
@@ -40,7 +39,6 @@ function Views() {
 
   return (
     <>
-      <GradientDefs />
       <Hud />
       <Toasts />
       {v?.name === 'characters' && <Characters key={v.data.characters.map((c) => c.id).join(',')} data={v.data} />}
@@ -51,7 +49,7 @@ function Views() {
       {v?.name === 'shop' && <Shop data={v.data} />}
       {v?.name === 'menu' && <Menu data={v.data} />}
       {v?.name === 'garage' && <Garage data={v.data} />}
-      {!v && state.hint && <div className="hint"><span className="ring">{state.hint.key}</span><span className="txt">{state.hint.text}</span></div>}
+      {!v && state.hint && <div className="hint"><span className="key">{state.hint.key}</span><span>{state.hint.text}</span></div>}
     </>
   );
 }

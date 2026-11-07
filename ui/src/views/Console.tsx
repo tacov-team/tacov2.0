@@ -1,4 +1,4 @@
-// Befehlszeile (Taste T, oben links). Nur Befehle, kein Roleplay-Chat (Konzept 5).
+// Befehlszeile (T): Eingabe oben links mit Vorschlägen, nur Befehle.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { nui } from '../nui';
 import { useStore, type CommandInfo } from '../store';
@@ -30,21 +30,21 @@ export function Console({ commands, history }: { commands: CommandInfo[]; histor
 
   return (
     <div className="console">
-      {history.length > 0 && <div className="history">{history.slice(-3).map((h, i) => <span key={i}><strong>/{h.split(' ')[0]}</strong>{h.includes(' ') ? h.slice(h.indexOf(' ')) : ''}</span>)}</div>}
       <div className="line">
-        <Kbd>T</Kbd><span className="slash">/</span>
-        <input ref={input} value={text} onChange={(e) => { setText(e.target.value); setActive(0); }} onKeyDown={onKey} placeholder="Befehl eingeben" spellCheck={false} autoComplete="off" />
-        <span className="keys"><Kbd>Enter</Kbd> Ausführen <Kbd>Esc</Kbd> Schließen</span>
+        <span className="slash">/</span>
+        <input ref={input} value={text} onChange={(e) => { setText(e.target.value); setActive(0); }} onKeyDown={onKey} placeholder="Befehl eingeben…" spellCheck={false} autoComplete="off" />
+        <span className="keys"><Kbd>Tab</Kbd> ergänzen <Kbd>Esc</Kbd> schließen</span>
       </div>
       {suggestions.length > 0 && (
         <div className="suggest">
           {suggestions.map((s, i) => (
-            <div key={s.usage} className={'row' + (i === active ? ' on' : '')} style={{ minHeight: 36 }} onMouseDown={() => setText(s.name + ' ')}>
-              <span className="ic">/</span><span>{s.usage}</span><span className="sub" style={{ marginLeft: 'auto' }}>{s.help}{s.staff ? ' · Team' : ''}</span>
+            <div key={s.usage} className={'row' + (i === active ? ' on' : '')} onMouseDown={() => setText(s.name + ' ')}>
+              <b>/{s.usage}</b><span className="help">{s.help}{s.staff ? ' · Team' : ''}</span>
             </div>
           ))}
         </div>
       )}
+      {history.length > 0 && <div className="history">{history.slice(-3).map((h, i) => <span key={i}>/{h}</span>)}</div>}
     </div>
   );
 }
