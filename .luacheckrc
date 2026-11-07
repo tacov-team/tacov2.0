@@ -33,7 +33,7 @@ globals = {
   "GetVehicleExtraColours", "SetVehicleFuelLevel", "GetVehicleCurrentRpm", "SetVehicleEngineOn", "GetPedInVehicleSeat",
   "SetVehicleDoorsLocked", "NetworkRequestControlOfEntity", "NetworkHasControlOfEntity", "Entity", "SetModelAsNoLongerNeeded",
   "SetVehicleLights", "IsDisabledControlPressed", "SetEntityCollision", "SetNuiFocusKeepInput", "DisableAllControlActions", "EnableControlAction",
-  "SetPedSuffersCriticalHits", "GetPlayers", "SetVehicleDirtLevel", "SetVehicleFixed", "SetVehicleWindowTint", "GetVehicleWindowTint", "SetVehicleWheelType", "GetVehicleWheelType", "IsToggleModOn", "ToggleVehicleMod", "SetVehicleModKit", "SetVehicleMod", "GetVehicleMod", "TaskWarpPedIntoVehicle", "DrawMarker", "SetBlipRouteColour", "SetBlipRoute", "GetGamePool", "GetVehiclePedIsIn", "SetVehicleDoorOpen", "SetVehicleDoorShut", "GetVehicleDoorLockStatus", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
+  "SetPedSuffersCriticalHits", "GetPlayers", "PlaySoundFrontend", "AnimpostfxPlay", "GetEntityVelocity", "SetVehicleDirtLevel", "SetVehicleFixed", "SetVehicleWindowTint", "GetVehicleWindowTint", "SetVehicleWheelType", "GetVehicleWheelType", "IsToggleModOn", "ToggleVehicleMod", "SetVehicleModKit", "SetVehicleMod", "GetVehicleMod", "TaskWarpPedIntoVehicle", "DrawMarker", "SetBlipRouteColour", "SetBlipRoute", "GetGamePool", "GetVehiclePedIsIn", "SetVehicleDoorOpen", "SetVehicleDoorShut", "GetVehicleDoorLockStatus", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
 }
 
 ignore = { "212/_.*" }
@@ -43,3 +43,4 @@ files["**/fxmanifest.lua"] = { ignore = { "113" } }
 files["**/vehicles.lua"] = { max_line_length = 200 }
 files["**/dmv.lua"] = { max_line_length = 200 }
 files["**/workshop.lua"] = { max_line_length = 200 }
+files["**/traffic.lua"] = { max_line_length = 200 }

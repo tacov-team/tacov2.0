@@ -234,6 +234,12 @@ RegisterNetEvent('tacov:vehicles:garage:take', function(garageName, vehicleId)
     local paid = TacoV.Accounts.pay(src, STATE, fee, loc.kind == 'impound' and 'verwahrung' or 'garage', loc.label)
     if not paid then return fail(src, ('Nicht genug Guthaben (%s).'):format(fmt(fee))) end
   end
+  -- offene Kfz-Steuer (Punkt 4.13) wird beim Ausparken fällig
+  if (row.tax_due or 0) > 0 then
+    local paid = TacoV.Accounts.pay(src, STATE, row.tax_due, 'kfz_steuer', row.plate)
+    if not paid then return fail(src, ('Offene Kfz-Steuer %s – nicht genug Guthaben.'):format(fmt(row.tax_due))) end
+    TacoV.DB.update('UPDATE vehicles SET tax_due = 0 WHERE id = ?', { row.id })
+  end
   sendSpawn(src, row, loc.spawn)
   TriggerClientEvent('tacov:vehicles:garage:close', src)
 end)

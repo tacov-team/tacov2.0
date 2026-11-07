@@ -20,6 +20,7 @@ shared_scripts {
   'config/vehicles.lua',
   'config/dmv.lua',
   'config/workshop.lua',
+  'config/traffic.lua',
 }
 
 server_scripts {
@@ -39,6 +40,7 @@ server_scripts {
   'server/vehicles.lua',
   'server/dmv.lua',
   'server/workshop.lua',
+  'server/traffic.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -60,6 +62,7 @@ client_scripts {
   'client/vehicles.lua',
   'client/dmv.lua',
   'client/workshop.lua',
+  'client/traffic.lua',
   'client/keys.lua',
 }
 

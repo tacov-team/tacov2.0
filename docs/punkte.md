@@ -85,8 +85,8 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | 4.9 | DMV: Zulassung, Halterwechsel | 🔧 | DMV Vespucci; TMP-Kennzeichen bis Zulassung |
 | 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | 🔧 | B 500 / A 350 / C 800 $, Wiederholung 100 $; Kauf nur mit Führerschein |
 | 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | 🔧 | 5 Werkstätten; Upgrades 5/10/20 % vom Kaufpreis; Lack 500, Fenster 300, Felgen 800 $ |
-| 4.12 | Blitzer | ⬜ | |
-| 4.13 | Kfz-Steuer | ⬜ | |
+| 4.12 | Blitzer | 🔧 | 6 Blitzer (Olympic Fwy, Del Perro Fwy, Vinewood Blvd, Great Ocean Hwy, Route 68, Senora Fwy), Toleranz 5 km/h, Bußgeld 100–2000 $, ab 21 km/h Punkte; Orte per `/ort setzen blitzer_<n> speedcam` |
+| 4.13 | Kfz-Steuer | 🔧 | 1 % des Kaufpreises je Jahr, wöchentlich anteilig vom Bankkonto (auch offline); offen → fällig beim Ausparken |
 | 4.14 | Boote und Flugzeuge | ⏸ | Entscheidung später |
 
 ## Phase 5 · Entwickler- und Admin-Werkzeuge (Creator-Systeme)
