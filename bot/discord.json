@@ -24,16 +24,16 @@
     "support": "1568038660383965204"
   },
   "teamRoles": {
-    "projektleitung": "",
-    "stv_projektleitung": "",
-    "manager": "",
-    "superadmin": "",
-    "administrator": "",
-    "entwickler": "",
-    "gamedesigner": "",
-    "moderator": "",
-    "supporter": "",
-    "guide": ""
+    "projektleitung": "1568019423258738748",
+    "stv_projektleitung": "1568019425519734845",
+    "manager": "1568019426731884684",
+    "superadmin": "1568019427793051774",
+    "administrator": "1568019428833231014",
+    "entwickler": "1568019430049583126",
+    "moderator": "1568019431316004885",
+    "supporter": "1568019432297726045",
+    "guide": "1568019433367011420",
+    "gamedesigner": "1568019434390691950"
   },
   "_teamRoles": "Discord-Rollen-IDs des Teams; leer = wird nicht gespiegelt. Höchste Rolle gewinnt."
 }
