@@ -53,6 +53,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/world.lua`, `client/world.lua`, `server/world.lua` | Objekt-Placer (5.8: lokale Requisiten, Vorschau `previewProp`, `onGround`) und Zonen (5.9: Kreis/Polygon mit Punkt-in-Polygon-Test, Betreten/Verlassen-Ereignisse und Hinweis, Debug-Anzeige; Server-Abfrage `TacoV.Zones.at(x,y,z,kind)`, `playerIn(src,kind)`, Export `zonesAt`); Tabellen `props`, `zones` |
 | `server/admin.lua`, `client/admin.lua` (Fahrzeuge) | 5.10: `tacov:admin:vehicle(action, netId, a, b)` – Server prüft Recht, protokolliert, erledigt DB-Teile (Kennzeichen inkl. `replate`, Löschen setzt Eigentum auf `garage`), Client führt Natives aus (`tacov:admin:vehicle:do`) |
 | `server/refunds.lua` | Erstattungen (5.11): Stufen nach `Config.Permissions.refundSmallMax/refundMax` und Item-Kategorie, Vier-Augen (Antragsteller ≠ Bestätiger, `admin.refund.large`), Auszahlung per Journal bzw. Inventar (offline über `Inventory.load`), Tabelle `refunds`, Log `money`/`admin` |
+| `server/weather.lua`, `client/weather.lua`, `config/world.lua` (World) | Welt (5.12): Server führt Uhrzeit (`dayMinutes`) und Wetter (gewichtete Liste, `weatherMinutes`), Sync alle 10 s und bei Änderung; `tacov:world:set` (time, timeFreeze, weather, weatherFreeze, announce, restart) mit `admin.world`/`admin.config`; Ansage-Banner `tacov:core:announce` → NUI `announce` |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -97,6 +98,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Objekt-Placer (5.8) und Zonen-Creator (5.9) (Migration 013)
 - [x] Fahrzeug-Werkzeuge für das Team (5.10)
 - [x] Erstattungen mit Vier-Augen-Prinzip (5.11) (Migration 014)
+- [x] Welt-Steuerung (5.12): Uhrzeit, Wetter, Ansagen
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

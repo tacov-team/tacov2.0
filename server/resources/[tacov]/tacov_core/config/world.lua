@@ -30,3 +30,16 @@ TacoV.Config.ZoneKinds = {
   { id = 'nocars',   label = 'Fahrzeugverbot',   color = { 250, 160, 60 } },
   { id = 'custom',   label = 'Sonstiges',        color = { 200, 200, 200 } },
 }
+
+-- Welt (5.12): Uhrzeit und Wetter kommen vom Server, damit alle dasselbe sehen.
+TacoV.Config.World = {
+  dayMinutes = 120,          -- reale Minuten je Spieltag (24 h)
+  startHour = 9,             -- Uhrzeit beim Serverstart
+  weatherMinutes = 25,       -- Wetterwechsel alle x Minuten (wenn nicht eingefroren)
+  weathers = { 'CLEAR', 'EXTRASUNNY', 'CLOUDS', 'OVERCAST', 'CLEARING', 'SMOG', 'FOGGY', 'RAIN', 'THUNDER' },
+  weights  = {  5,       4,            3,        2,          2,          1,      1,       1,      1 },
+  labels = {
+    CLEAR = 'Klar', EXTRASUNNY = 'Sonnig', CLOUDS = 'Wolkig', OVERCAST = 'Bedeckt', CLEARING = 'Aufklarend', SMOG = 'Dunst',
+    FOGGY = 'Nebel', RAIN = 'Regen', THUNDER = 'Gewitter', SNOW = 'Schnee', XMAS = 'Weihnachten', BLIZZARD = 'Schneesturm', HALLOWEEN = 'Halloween',
+  },
+}

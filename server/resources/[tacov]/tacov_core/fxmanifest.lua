@@ -51,6 +51,7 @@ server_scripts {
   'server/peds.lua',
   'server/world.lua',
   'server/refunds.lua',
+  'server/weather.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -79,6 +80,7 @@ client_scripts {
   'client/teleports.lua',
   'client/peds.lua',
   'client/world.lua',
+  'client/weather.lua',
   'client/keys.lua',
 }
 

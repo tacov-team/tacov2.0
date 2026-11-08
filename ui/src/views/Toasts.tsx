@@ -1,6 +1,18 @@
 // Hinweise oben links: farbiger Streifen je Art, Titel, Text.
 import { useStore } from '../store';
 
+export function Announce() {
+  const { state } = useStore();
+  const a = state.announce;
+  if (!a) return null;
+  return (
+    <div className={'announce ' + a.kind}>
+      <div className="head"><span className="dot" />{a.title}</div>
+      <div className="text">{a.text}</div>
+    </div>
+  );
+}
+
 export function Toasts() {
   const { state } = useStore();
   if (state.toasts.length === 0) return null;

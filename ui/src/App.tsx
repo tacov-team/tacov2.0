@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { StoreProvider, useStore } from './store';
 import { Hud } from './views/Hud';
-import { Toasts } from './views/Toasts';
+import { Toasts, Announce } from './views/Toasts';
 import { Console } from './views/Console';
 import { Characters } from './views/Characters';
 import { Inventory } from './views/Inventory';
@@ -44,6 +44,7 @@ function Views() {
     <>
       <Hud />
       <Toasts />
+      <Announce />
       {v?.name === 'characters' && <Characters key={v.data.characters.map((c) => c.id).join(',')} data={v.data} />}
       {v?.name === 'console' && <Console commands={v.data.commands} history={v.data.history} />}
       {v?.name === 'inventory' && <Inventory data={v.data} />}
