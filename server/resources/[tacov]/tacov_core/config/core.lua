@@ -31,6 +31,7 @@ TacoV.Config.Onboarding = {
   socialHousingDays = 14,          -- Konzept 1: Sozialwohnung 14 Tage kostenlos
   retryHours = 24,                 -- Konzept 1: erneuter Einreiseversuch nach 24 h
   requiresStaff = true,            -- Konzept 1: Einreise nur mit Teammitglied
+  allowSelfDelete = true,          -- Testphase: /charreset löscht den eigenen Charakter; vor dem Start auf false
   airportRadius = 140.0,           -- Ohne Einreise bleibt der Charakter in diesem Umkreis um die Ankunftshalle
   immigrationItems = {             -- Ausstattung bei bestandener Einreise
     { item = 'id_card', amount = 1 }, { item = 'phone', amount = 1 }, { item = 'housing_key', amount = 1 },

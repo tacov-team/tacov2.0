@@ -292,6 +292,15 @@ RegisterNetEvent('tacov:admin:vehicle', function(action, netId, a, b)
   if action == 'fuel' then notify(src, 'success', ('%s vollgetankt.'):format(plate)) end
 end)
 
+RegisterNetEvent('tacov:admin:chardelete', function(target)
+  local src = source
+  if not need(src, 'admin.db') then return end
+  local c = TacoV.Characters.get(tonumber(target) or 0)
+  if not c then notify(src, 'error', 'Spieler hat keinen Charakter geladen.') return end
+  local okDel, err = TacoV.Characters.hardDelete(c.id, src)
+  notify(src, okDel and 'success' or 'error', okDel and 'Charakter vollständig gelöscht.' or tostring(err))
+end)
+
 -- Befehle
 RegisterCommand('tp', function(src, args)
   if src == 0 then return end

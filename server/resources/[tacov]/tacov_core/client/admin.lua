@@ -286,6 +286,7 @@ RegisterNetEvent('tacov:admin:file', function(f)
     { id = 'warn', label = 'Verwarnen', icon = 'warn', section = 'Maßnahmen' },
     { id = 'kick', label = 'Kicken', icon = 'x' },
     { id = 'ban', label = 'Sperren', icon = 'lock' },
+    { id = 'chardelete', label = 'Charakter komplett löschen', icon = 'x', sub = 'Name wird frei (Manager)' },
   }
   if f.licenses then
     local l = {}
@@ -333,6 +334,12 @@ RegisterNetEvent('tacov:admin:file', function(f)
             end)
           end)
         end
+      end)
+    elseif id == 'chardelete' then
+      TacoV.Menu.open({ id = 'chardel', title = 'Charakter wirklich löschen?', icon = 'warn', info = name, items = {
+        { id = 'yes', label = 'Ja, vollständig löschen', icon = 'x' }, { id = 'no', label = 'Abbrechen', icon = 'back' } } }, function(a)
+        TacoV.Menu.close()
+        if a == 'yes' then TriggerServerEvent('tacov:admin:chardelete', f.id) end
       end)
     elseif id == 'warn' then
       reasonMenu('Verwarnen · ' .. name, function(r) TacoV.Menu.back() TriggerServerEvent('tacov:admin:punish', 'warn', f.id, r) end)

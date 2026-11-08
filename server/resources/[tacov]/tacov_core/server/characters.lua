@@ -208,6 +208,64 @@ CreateThread(function()
   end
 end)
 
+--- Charakter vollständig löschen (Name wird frei): Charakterzeile, Inventare, Konto, Fahrzeuge, Schlüssel, Führerscheine,
+--- Outfits, Wohnung, Neulingspfad, Erstattungen. Journal und Logs bleiben als Nachweis. Online → zurück zur Charakterauswahl.
+function TacoV.Characters.hardDelete(characterId, actorSrc)
+  local row = TacoV.DB.single('SELECT id, first_name, last_name, player_id FROM characters WHERE id = ?', { characterId })
+  if not row then return false, 'Charakter nicht gefunden.' end
+  local onlineSrc
+  for src, c in pairs(loaded) do if c.id == characterId then onlineSrc = src end end
+  if onlineSrc then
+    TacoV.Characters.unload(onlineSrc)
+    TriggerClientEvent('tacov:core:notify', onlineSrc, 'warn', 'Dein Charakter wurde gelöscht.')
+  end
+  TacoV.DB.update('DELETE FROM inventory_items WHERE owner_type = \'character\' AND owner_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM accounts WHERE owner_type = \'character\' AND owner_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM vehicle_keys WHERE character_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM vehicles WHERE owner_type = \'character\' AND owner_id = ?', { characterId })
+  for _, t in ipairs({ 'licenses', 'outfits', 'newbie_steps', 'refunds' }) do
+    TacoV.DB.update(('DELETE FROM %s WHERE character_id = ?'):format(t), { characterId })
+  end
+  local homes = TacoV.DB.query('SELECT id FROM homes WHERE character_id = ?', { characterId }) or {}
+  for _, h in ipairs(homes) do TacoV.DB.update('DELETE FROM inventory_items WHERE owner_type = \'house\' AND owner_id = ?', { h.id }) end
+  TacoV.DB.update('DELETE FROM homes WHERE character_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM characters WHERE id = ?', { characterId })
+  local actor = actorSrc and TacoV.Players.get(actorSrc)
+  TacoV.Log.write('character', ('Charakter gelöscht (vollständig): %s %s (#%d)'):format(row.first_name, row.last_name, characterId), { discordId = actor and actor.discordId })
+  if onlineSrc then
+    SetTimeout(1000, function() TriggerEvent('tacov:core:requestCharacters:for', onlineSrc) end)
+  end
+  return true
+end
+
+AddEventHandler('tacov:core:requestCharacters:for', function(src)
+  local p = TacoV.Players.get(src)
+  if not p then return end
+  TriggerClientEvent('tacov:core:characters', src, {
+    characters = TacoV.Characters.list(p.id),
+    maxSlots = TacoV.Config.Server.charactersPerPlayer,
+    secondSlotLevel = TacoV.Config.Server.secondCharacterLevel,
+    maxLevel = TacoV.Characters.maxLevel(p.id),
+    staffOnline = #TacoV.Players.staff(1),
+  })
+end)
+
+-- /charreset bestaetigen – eigenen Charakter vollständig löschen (Testphase: Onboarding.allowSelfDelete)
+RegisterCommand('charreset', function(src, args)
+  if src == 0 then return end
+  local c = loaded[src]
+  if not c then return end
+  if not TacoV.Config.Onboarding.allowSelfDelete and not TacoV.Permissions.has(src, 'admin.db') then
+    TriggerClientEvent('tacov:core:notify', src, 'error', 'Das Löschen des eigenen Charakters ist nicht freigeschaltet.')
+    return
+  end
+  if args[1] ~= 'bestaetigen' then
+    TriggerClientEvent('tacov:core:notify', src, 'warn', ('Wirklich %s %s komplett löschen? Dann: /charreset bestaetigen'):format(c.first_name, c.last_name))
+    return
+  end
+  TacoV.Characters.hardDelete(c.id, src)
+end, false)
+
 RegisterNetEvent('tacov:core:requestCharacters', function()
   local src = source
   local p = TacoV.Players.get(src)
