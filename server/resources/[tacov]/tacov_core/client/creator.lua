@@ -3,7 +3,6 @@
 TacoV = TacoV or {}
 TacoV.Creator = {}
 
-local function notify(kind, text) TacoV.UI.send('notify', { kind = kind, text = text }) end
 local placing = false
 
 local function camRay(dist)
