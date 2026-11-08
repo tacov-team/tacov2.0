@@ -162,22 +162,51 @@ local function doAction(label, seconds, scenario, cb)
   end)
 end
 
+local function loadAnim(dict)
+  RequestAnimDict(dict)
+  local t = GetGameTimer()
+  while not HasAnimDictLoaded(dict) and GetGameTimer() - t < 1000 do Wait(10) end
+end
+local function spawnCarried(model)
+  local hash = GetHashKey(model)
+  RequestModel(hash)
+  local t = GetGameTimer()
+  while not HasModelLoaded(hash) and GetGameTimer() - t < 3000 do Wait(10) end
+  local pos = GetEntityCoords(PlayerPedId())
+  return CreateObject(hash, pos.x, pos.y, pos.z, true, true, false)
+end
+-- Stamm (Holzfäller): mit beiden Händen vor dem Körper
 local function carryLog()
   local ped = PlayerPedId()
-  RequestAnimDict('anim@heists@box_carry@')
-  local t = GetGameTimer()
-  while not HasAnimDictLoaded('anim@heists@box_carry@') and GetGameTimer() - t < 1000 do Wait(10) end
-  local model = GetHashKey('prop_log_01')
-  RequestModel(model)
-  t = GetGameTimer()
-  while not HasModelLoaded(model) and GetGameTimer() - t < 3000 do Wait(10) end
-  local pos = GetEntityCoords(ped)
-  carrying = CreateObject(model, pos.x, pos.y, pos.z, true, true, false)
+  loadAnim('anim@heists@box_carry@')
+  carrying = spawnCarried('prop_log_01')
   AttachEntityToEntity(carrying, ped, GetPedBoneIndex(ped, 60309), 0.05, 0.1, -0.25, 0.0, 90.0, 0.0, true, true, false, true, 1, true)
   TaskPlayAnim(ped, 'anim@heists@box_carry@', 'idle', 8.0, -8.0, -1, 50, 0.0, false, false, false)
 end
+-- Müllsack (Müllabfuhr): in der rechten Hand, Müllmann-Animation
+local function carryBag()
+  local ped = PlayerPedId()
+  loadAnim('missfbi4prepp1')
+  carrying = spawnCarried('prop_cs_rub_binbag_01')
+  AttachEntityToEntity(carrying, ped, GetPedBoneIndex(ped, 57005), 0.12, 0.0, -0.05, 10.0, 0.0, 0.0, true, true, false, true, 1, true)
+  TaskPlayAnim(ped, 'missfbi4prepp1', '_idle_garbage_man', 8.0, -8.0, -1, 49, 0.0, false, false, false)
+end
 
-local SCENARIO = { trash = 'WORLD_HUMAN_GARDENER_PLANT', deliver = nil, chop = 'WORLD_HUMAN_HAMMERING', mine = 'WORLD_HUMAN_HAMMERING' }
+-- Markierung am aktuellen Punkt (Container, Adresse, Baum, Erzader), solange man zu Fuß in der Nähe ist
+CreateThread(function()
+  while true do
+    local st = TacoV.Jobs.state
+    local s = st and st.current
+    if s and s.x and not IsPedInAnyVehicle(PlayerPedId(), false) and #(GetEntityCoords(PlayerPedId()) - vector3(s.x, s.y, s.z)) < 60.0 then
+      DrawMarker(1, s.x, s.y, s.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 139, 92, 246, 110, false, false, 2, false, nil, nil, false)
+      Wait(0)
+    else
+      Wait(500)
+    end
+  end
+end)
+
+local SCENARIO = { trash = 'PROP_HUMAN_BUM_BIN', deliver = nil, chop = 'WORLD_HUMAN_HAMMERING', mine = 'WORLD_HUMAN_HAMMERING' }
 
 TacoV.Prompt.register({ id = 'jobstep', label = 'Station', order = 6,
   when = function()
@@ -187,13 +216,13 @@ TacoV.Prompt.register({ id = 'jobstep', label = 'Station', order = 6,
     local ped = PlayerPedId()
     if IsPedInAnyVehicle(ped, false) and s.kind ~= 'return' then return false end
     if s.kind == 'stop' or s.kind == 'taxi' then return false end
-    if s.kind == 'load' then
+    if s.kind == 'load' or s.kind == 'dump' then
       if not carrying then return false end
       local veh = jobVehicle()
       if veh == 0 or #(GetEntityCoords(ped) - GetEntityCoords(veh)) > 6.0 then return false end
-      return { s = s, label = 'Stamm aufladen' }
+      return { s = s, label = s.kind == 'load' and 'Stamm aufladen' or 'Müllsack einwerfen' }
     end
-    if s.kind == 'chop' and carrying then return false end
+    if (s.kind == 'chop' or s.kind == 'trash') and carrying then return false end
     if not s.x or #(GetEntityCoords(ped) - vector3(s.x, s.y, s.z)) > R.pointRadius then return false end
     local label = s.label
     if s.kind == 'return' then label = (st.job == 'lumber' and 'Stämme abliefern') or 'Auftrag abschließen' end
@@ -203,10 +232,11 @@ TacoV.Prompt.register({ id = 'jobstep', label = 'Station', order = 6,
   run = function(ctx)
     local s = ctx.s
     if s.kind == 'return' or s.kind == 'sell' then TriggerServerEvent('tacov:jobs:step', { kind = s.kind }) return end
-    if s.kind == 'load' then dropLog() TriggerServerEvent('tacov:jobs:step', { kind = 'load' }) return end
+    if s.kind == 'load' or s.kind == 'dump' then dropLog() TriggerServerEvent('tacov:jobs:step', { kind = s.kind }) return end
     local secs = s.seconds or R.actionSeconds
     doAction(ctx.label, secs, SCENARIO[s.kind], function()
       if s.kind == 'chop' then carryLog() end
+      if s.kind == 'trash' then carryBag() end
       TriggerServerEvent('tacov:jobs:step', { kind = s.kind })
     end)
   end })

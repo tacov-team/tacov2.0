@@ -79,7 +79,8 @@ local function stepsFor(job)
   if job == 'garbage' then
     local n = math.min(R.trashPerRoute, #pts)
     for i, p in ipairs(shuffle(pts, n)) do
-      steps[#steps + 1] = { kind = 'trash', label = ('Container %d/%d einladen'):format(i, n), x = p.x, y = p.y, z = p.z, needVehicle = true }
+      steps[#steps + 1] = { kind = 'trash', label = ('Container %d/%d: Müllsack holen'):format(i, n), x = p.x, y = p.y, z = p.z, needVehicle = true, farVehicle = true }
+      steps[#steps + 1] = { kind = 'dump', label = 'Müllsack in den Müllwagen werfen', vehicle = true }
     end
     steps[#steps + 1] = { kind = 'return', label = 'Zurück zum Müllhof', x = hof.x, y = hof.y, z = hof.z, needVehicle = true, pay = J.garbage.pay, note = 'Müllroute' }
   elseif job == 'delivery' then
@@ -244,11 +245,13 @@ RegisterNetEvent('tacov:jobs:step', function(d)
   local s = a.steps[a.step]
   if not s or d.kind ~= s.kind then return end
   if s.x and not near(src, s, R.pointRadius + 4.0) then notify(src, 'error', 'Du bist nicht am richtigen Punkt.') return end
-  if s.needVehicle and not vehicleNear(src, a, s.kind == 'return' and 40.0 or R.vehicleRadius) then notify(src, 'error', 'Dein Firmenfahrzeug muss dabei sein.') return end
+  if s.needVehicle and not vehicleNear(src, a, (s.kind == 'return' or s.farVehicle) and 40.0 or R.vehicleRadius) then
+    notify(src, 'error', 'Dein Firmenfahrzeug muss dabei sein.') return
+  end
   if s.driving and not drivingJobVehicle(src, a) then notify(src, 'error', 'Du musst den Bus fahren.') return end
-  if s.kind == 'load' then
+  if s.kind == 'load' or s.kind == 'dump' then
     if not vehicleNear(src, a, 8.0) then notify(src, 'error', 'Der Wagen steht zu weit weg.') return end
-    a.logs = (a.logs or 0) + 1
+    if s.kind == 'load' then a.logs = (a.logs or 0) + 1 end
   elseif s.kind == 'mine' or s.kind == 'chop' then
     local tool = D[a.job].tool
     local inv = TacoV.Inventory.ofSource(src)
