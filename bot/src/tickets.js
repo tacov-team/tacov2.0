@@ -2,7 +2,7 @@
 // Datenbank (der Spielserver schreibt sie), Antworten aus dem Kanal gehen in `ticket_messages` (source = discord) und werden
 // dem Spieler im Spiel gezeigt. `!schliessen` im Kanal schließt das Ticket.
 import { ChannelType, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { query } from './db.js';
+import { query, ENVS } from './db.js';
 import { config } from './config.js';
 
 const POLL_MS = 10000;
@@ -11,7 +11,7 @@ function slug(s) {
   return String(s || 'spieler').toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24) || 'spieler';
 }
 
-async function createChannel(client, guild, t) {
+async function createChannel(client, guild, t, env) {
   const teamRoleIds = Object.values(config.teamRoles).filter(Boolean);
   const overwrites = [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
@@ -22,15 +22,15 @@ async function createChannel(client, guild, t) {
   const member = await guild.members.fetch(t.discord_id).catch(() => null);
   if (member) overwrites.push({ id: member.id, allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory] });
   const ch = await guild.channels.create({
-    name: `ticket-${t.id}-${slug(t.player_name)}`,
+    name: `${env.key === 'test' ? 'test-' : ''}ticket-${t.id}-${slug(t.player_name)}`,
     type: ChannelType.GuildText,
     parent: config.ticketsCategoryId,
-    topic: `Ticket #${t.id} · ${t.player_name} · Discord ${t.discord_id}`,
+    topic: `${env.tag}Ticket #${t.id} · ${t.player_name} · Discord ${t.discord_id}`,
     permissionOverwrites: overwrites,
   });
   const embed = new EmbedBuilder()
-    .setTitle(`Ticket #${t.id}`)
-    .setColor(0x8b5cf6)
+    .setTitle(`Ticket #${t.id}${env.key === 'test' ? ' · 🧪 Testserver' : ''}`)
+    .setColor(env.key === 'test' ? 0xf59e0b : 0x8b5cf6)
     .addFields(
       { name: 'Spieler', value: `${t.player_name}${member ? ` (<@${member.id}>)` : ''}`, inline: true },
       { name: 'Charakter', value: t.character_id ? `#${t.character_id}` : '–', inline: true },
@@ -39,38 +39,45 @@ async function createChannel(client, guild, t) {
     .setFooter({ text: 'Antworten hier erreichen den Spieler im Spiel · !schliessen beendet das Ticket' })
     .setTimestamp(new Date(t.created_at));
   await ch.send({ embeds: [embed] });
-  await query('UPDATE tickets SET discord_channel_id = ? WHERE id = ?', [ch.id, t.id]);
+  await query('UPDATE tickets SET discord_channel_id = ? WHERE id = ?', [ch.id, t.id], env.key);
   return ch;
 }
 
-async function tick(client) {
-  const guild = await client.guilds.fetch(config.guildId);
+async function tickEnv(client, guild, env) {
+  const db = env.key;
   // 1) Kanäle für neue Tickets
-  const fresh = await query("SELECT * FROM tickets WHERE discord_channel_id IS NULL AND status <> 'closed' ORDER BY id LIMIT 5");
+  const fresh = await query("SELECT * FROM tickets WHERE discord_channel_id IS NULL AND status <> 'closed' ORDER BY id LIMIT 5", [], db);
   for (const t of fresh) {
-    try { await createChannel(client, guild, t); } catch (e) { console.error('[tickets] Kanal anlegen', t.id, e.message); }
+    try { await createChannel(client, guild, t, env); } catch (e) { console.error(`[tickets] Kanal anlegen (${env.label})`, t.id, e.message); }
   }
   // 2) Spiel-/Systemnachrichten in die Kanäle
   const msgs = await query(
     "SELECT m.id, m.ticket_id, m.source, m.author, m.text, t.discord_channel_id FROM ticket_messages m JOIN tickets t ON t.id = m.ticket_id " +
-    "WHERE m.posted_discord = 0 AND m.source <> 'discord' AND t.discord_channel_id IS NOT NULL ORDER BY m.id LIMIT 30");
+    "WHERE m.posted_discord = 0 AND m.source <> 'discord' AND t.discord_channel_id IS NOT NULL ORDER BY m.id LIMIT 30", [], db);
   for (const m of msgs) {
     const ch = await client.channels.fetch(m.discord_channel_id).catch(() => null);
     if (ch) {
       const prefix = m.source === 'system' ? 'ℹ️' : '🎮';
-      await ch.send(`${prefix} **${m.author}:** ${m.text}`).catch((e) => console.error('[tickets] senden', e.message));
+      await ch.send(`${prefix} ${env.tag}**${m.author}:** ${m.text}`).catch((e) => console.error('[tickets] senden', e.message));
     }
-    await query('UPDATE ticket_messages SET posted_discord = 1 WHERE id = ?', [m.id]);
+    await query('UPDATE ticket_messages SET posted_discord = 1 WHERE id = ?', [m.id], db);
   }
   // 3) Geschlossene Tickets: Kanal sperren und umbenennen
-  const closed = await query("SELECT id, discord_channel_id, closed_by FROM tickets WHERE status = 'closed' AND discord_channel_id IS NOT NULL AND closed_at > NOW() - INTERVAL 2 MINUTE");
+  const closed = await query("SELECT id, discord_channel_id, closed_by FROM tickets WHERE status = 'closed' AND discord_channel_id IS NOT NULL AND closed_at > NOW() - INTERVAL 2 MINUTE", [], db);
   for (const t of closed) {
     const ch = await client.channels.fetch(t.discord_channel_id).catch(() => null);
-    if (ch && !ch.name.startsWith('geschlossen-')) {
-      await ch.setName(`geschlossen-${t.id}`).catch(() => {});
+    if (ch && !/^(test-)?geschlossen-/.test(ch.name)) {
+      await ch.setName(`${env.key === 'test' ? 'test-' : ''}geschlossen-${t.id}`).catch(() => {});
       await ch.permissionOverwrites.edit(guild.roles.everyone.id, { SendMessages: false }).catch(() => {});
-      await ch.send(`🔒 Ticket #${t.id} wurde geschlossen (${t.closed_by || 'Team'}).`).catch(() => {});
+      await ch.send(`🔒 ${env.tag}Ticket #${t.id} wurde geschlossen (${t.closed_by || 'Team'}).`).catch(() => {});
     }
+  }
+}
+
+async function tick(client) {
+  const guild = await client.guilds.fetch(config.guildId);
+  for (const env of ENVS) {
+    await tickEnv(client, guild, env).catch((e) => console.error(`[tickets] (${env.label})`, e.message));
   }
 }
 
@@ -87,19 +94,21 @@ export async function handleTicketMessage(message) {
   if (message.author.bot || !message.guild) return;
   const ch = message.channel;
   if (!ch || ch.parentId !== config.ticketsCategoryId) return;
-  const m = /^(?:ticket|geschlossen)-(\d+)/.exec(ch.name);
+  const m = /^(test-)?(?:ticket|geschlossen)-(\d+)/.exec(ch.name);
   if (!m) return;
-  const ticketId = Number(m[1]);
+  const db = m[1] ? 'test' : 'live';
+  if (db === 'test' && !ENVS.some((e) => e.key === 'test')) return;
+  const ticketId = Number(m[2]);
   const text = message.content.trim();
   if (!text) return;
   const author = message.member?.displayName || message.author.username;
   if (/^!(schliessen|schließen|close)$/i.test(text)) {
-    await query("UPDATE tickets SET status = 'closed', closed_by = ?, closed_at = NOW() WHERE id = ? AND status <> 'closed'", [author, ticketId]);
-    await query("INSERT INTO ticket_messages (ticket_id, source, author, text, posted_discord) VALUES (?, 'system', ?, ?, 1)", [ticketId, author, `${author} hat das Ticket in Discord geschlossen.`]);
+    await query("UPDATE tickets SET status = 'closed', closed_by = ?, closed_at = NOW() WHERE id = ? AND status <> 'closed'", [author, ticketId], db);
+    await query("INSERT INTO ticket_messages (ticket_id, source, author, text, posted_discord) VALUES (?, 'system', ?, ?, 1)", [ticketId, author, `${author} hat das Ticket in Discord geschlossen.`], db);
     return;
   }
   const isTeam = Object.values(config.teamRoles).some((id) => id && message.member?.roles.cache.has(id));
   await query("INSERT INTO ticket_messages (ticket_id, source, author, text, posted_discord) VALUES (?, 'discord', ?, ?, 1)",
-    [ticketId, isTeam ? `${author} (Team)` : author, text.slice(0, 1000)]);
+    [ticketId, isTeam ? `${author} (Team)` : author, text.slice(0, 1000)], db);
   await message.react('✅').catch(() => {});
 }

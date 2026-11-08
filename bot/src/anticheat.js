@@ -1,20 +1,20 @@
 // Anti-Cheat-Meldungen (Punkt 5.16): neue Zeilen aus `ac_reports` als Embed in den AC-Kanal, AC-Team-Rolle wird erwähnt.
 import { EmbedBuilder } from 'discord.js';
-import { query } from './db.js';
+import { query, ENVS } from './db.js';
 import { config } from './config.js';
 
 const POLL_MS = 10000;
 const COLORS = { none: 0x8b5cf6, kick: 0xf59e0b, ban: 0xf05252 };
 const LABELS = { none: 'Hinweis', kick: 'Sicherheits-Kick', ban: 'Sicherheitssperre' };
 
-async function tick(client) {
-  const rows = await query('SELECT * FROM ac_reports WHERE posted_discord = 0 ORDER BY id LIMIT 20');
+async function tickEnv(client, env) {
+  const rows = await query('SELECT * FROM ac_reports WHERE posted_discord = 0 ORDER BY id LIMIT 20', [], env.key);
   if (rows.length === 0) return;
   const ch = await client.channels.fetch(config.anticheat.channelId).catch(() => null);
   for (const r of rows) {
     if (ch) {
       const embed = new EmbedBuilder()
-        .setTitle(`Anti-Cheat #${r.id} · ${r.kind}`)
+        .setTitle(`Anti-Cheat #${r.id} · ${r.kind}${env.key === 'test' ? ' · 🧪 Testserver' : ''}`)
         .setColor(COLORS[r.action] ?? COLORS.none)
         .addFields(
           { name: 'Spieler', value: `${r.player_name}\nDiscord <@${r.discord_id}> (${r.discord_id})`, inline: true },
@@ -23,12 +23,18 @@ async function tick(client) {
           { name: 'Details', value: r.details.slice(0, 1000) },
         )
         .setTimestamp(new Date(r.created_at));
+      if (env.key === 'test') embed.setFooter({ text: 'Meldung vom Testserver (tacov2_test)' });
       const mention = config.anticheat.roleId ? `<@&${config.anticheat.roleId}>` : '';
-      await ch.send({ content: mention || undefined, embeds: [embed], allowedMentions: { roles: config.anticheat.roleId ? [config.anticheat.roleId] : [] } })
+      const content = `${env.tag}${mention}`.trim();
+      await ch.send({ content: content || undefined, embeds: [embed], allowedMentions: { roles: config.anticheat.roleId ? [config.anticheat.roleId] : [] } })
         .catch((e) => console.error('[ac] senden', e.message));
     }
-    await query('UPDATE ac_reports SET posted_discord = 1 WHERE id = ?', [r.id]);
+    await query('UPDATE ac_reports SET posted_discord = 1 WHERE id = ?', [r.id], env.key);
   }
+}
+
+async function tick(client) {
+  for (const env of ENVS) await tickEnv(client, env).catch((e) => console.error(`[ac] (${env.label})`, e.message));
 }
 
 export async function startAnticheat(client) {

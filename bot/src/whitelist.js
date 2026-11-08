@@ -1,6 +1,10 @@
 // Whitelist per Reaktion auf die Willkommensnachricht (Konzept 1, Abschnitt 3).
 // Ablauf: Reaktion -> Sperre? -> Name gegen Blockliste -> Rolle Whitelist + Zeile in `whitelist`.
-import { query } from './db.js';
+import { query, ENVS } from './db.js';
+
+async function queryAll(sql, params) {
+  for (const env of ENVS) await query(sql, params, env.key).catch((e) => console.error(`[bot] Whitelist (${env.label})`, e.message));
+}
 import { config } from './config.js';
 
 async function isBanned(discordId) {
@@ -43,13 +47,13 @@ export async function handleReaction(reaction, user, client) {
     return;
   }
 
-  await query(
+  await queryAll(
     'INSERT INTO whitelist (discord_id, discord_name, added_by) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE discord_name = VALUES(discord_name)',
     [user.id, displayName.slice(0, 64), 'bot'],
   );
   await member.roles.add(config.roles.whitelist).catch((e) => console.error('[bot] Rolle Whitelist', e.message));
   await user.send('Willkommen bei TacoV! Du bist freigeschaltet und kannst den Server betreten.').catch(() => {});
-  await query('INSERT INTO logs (category, discord_id, message) VALUES (?, ?, ?)', ['connect', user.id, `Whitelist per Reaktion: ${displayName}`]);
+  await queryAll('INSERT INTO logs (category, discord_id, message) VALUES (?, ?, ?)', ['connect', user.id, `Whitelist per Reaktion: ${displayName}`]);
 }
 
 export async function handleReactionRemoved(reaction, user) {
@@ -73,7 +77,7 @@ export async function handleMemberUpdate(oldMember, newMember) {
     );
   }
   if (had && !has) {
-    await query('DELETE FROM whitelist WHERE discord_id = ?', [newMember.id]);
-    await query('INSERT INTO logs (category, discord_id, message) VALUES (?, ?, ?)', ['admin', newMember.id, 'Whitelist-Rolle entfernt']);
+    await queryAll('DELETE FROM whitelist WHERE discord_id = ?', [newMember.id]);
+    await queryAll('INSERT INTO logs (category, discord_id, message) VALUES (?, ?, ?)', ['admin', newMember.id, 'Whitelist-Rolle entfernt']);
   }
 }

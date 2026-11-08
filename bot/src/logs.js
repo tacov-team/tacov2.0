@@ -1,18 +1,20 @@
 // Spiegelt neue Zeilen aus der Tabelle `logs` in die Discord-Log-Kanäle.
-import { query } from './db.js';
+import { query, ENVS } from './db.js';
 import { config } from './config.js';
 
-let lastId = 0;
+const lastId = {};
 
 async function init() {
-  const rows = await query('SELECT COALESCE(MAX(id), 0) AS id FROM logs');
-  lastId = Number(rows[0].id);
+  for (const env of ENVS) {
+    const rows = await query('SELECT COALESCE(MAX(id), 0) AS id FROM logs', [], env.key);
+    lastId[env.key] = Number(rows[0].id);
+  }
 }
 
-function fmt(row) {
+function fmt(row, env) {
   const when = new Date(row.at).toLocaleTimeString('de-DE');
   const who = row.character_id ? `#${row.character_id}` : row.discord_id ? `<@${row.discord_id}>` : '—';
-  return `\`${when}\` ${who} · ${row.message}`;
+  return `${env.tag}\`${when}\` ${who} · ${row.message}`;
 }
 
 export async function startLogMirror(client) {
@@ -25,15 +27,17 @@ export async function startLogMirror(client) {
   }
 
   setInterval(async () => {
-    try {
-      const rows = await query('SELECT id, at, category, character_id, discord_id, message FROM logs WHERE id > ? ORDER BY id LIMIT 50', [lastId]);
-      for (const row of rows) {
-        lastId = Number(row.id);
-        const ch = channels[row.category];
-        if (ch) await ch.send({ content: fmt(row), allowedMentions: { parse: [] } }).catch(() => {});
+    for (const env of ENVS) {
+      try {
+        const rows = await query('SELECT id, at, category, character_id, discord_id, message FROM logs WHERE id > ? ORDER BY id LIMIT 50', [lastId[env.key]], env.key);
+        for (const row of rows) {
+          lastId[env.key] = Number(row.id);
+          const ch = channels[row.category];
+          if (ch) await ch.send({ content: fmt(row, env), allowedMentions: { parse: [] } }).catch(() => {});
+        }
+      } catch (e) {
+        console.error(`[bot] Log-Spiegel (${env.label})`, e.message);
       }
-    } catch (e) {
-      console.error('[bot] Log-Spiegel', e.message);
     }
   }, config.logPollSeconds * 1000);
 }

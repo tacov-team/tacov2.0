@@ -59,5 +59,13 @@ export const config = {
     user: process.env.DB_USER || 'tacov',
     password: need('DB_PASS'),
   },
+  // Testserver-Datenbank (optional): Logs, Tickets, Anti-Cheat und Status des Testservers werden mit Kennzeichnung gespiegelt
+  dbTest: process.env.DB_TEST_NAME ? {
+    host: process.env.DB_TEST_HOST || process.env.DB_HOST || '127.0.0.1',
+    port: Number(process.env.DB_TEST_PORT || process.env.DB_PORT || 3306),
+    database: process.env.DB_TEST_NAME,
+    user: process.env.DB_TEST_USER || process.env.DB_USER || 'tacov',
+    password: process.env.DB_TEST_PASS || process.env.DB_PASS,
+  } : null,
   logPollSeconds: Number(process.env.LOG_POLL_SECONDS || 5),
 };

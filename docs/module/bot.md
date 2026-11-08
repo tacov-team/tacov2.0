@@ -31,3 +31,7 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 
 ## Anti-Cheat-Meldungen (Punkt 5.16, `src/anticheat.js`)
 - Alle 10 s: neue `ac_reports` → Embed (Spieler, Discord, Charakter, Maßnahme, Details) in `anticheat.channelId`, Erwähnung von `anticheat.roleId`.
+
+## Testserver-Spiegel (08.11.2026)
+- Ist `DB_TEST_NAME` in `.env` gesetzt (per `tools/vps/bot-test-db.sh`), liest der Bot zusätzlich die Testserver-Datenbank: Logs, Ansagen, Tickets (Kanäle `test-ticket-<id>-…`), Anti-Cheat-Meldungen und Serverstatus (eigenes Feld im Status-Embed) – jede Nachricht mit „🧪 Testserver“ gekennzeichnet.
+- Team-Rollen und Whitelist schreibt der Bot in beide Datenbanken, damit auf dem Testserver dieselben Rechte gelten.

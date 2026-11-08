@@ -56,3 +56,6 @@ Einrichten: `bash /opt/tacov2/tools/vps/setup-teamspeak.sh` – installiert Team
 5. Tests für Berechnungen plus Testprotokoll vom Testserver
 6. Abschnitt in `docs/module/<name>.md`
 7. Review durch ein zweites Augenpaar
+
+### Bot und Testserver
+`bash /opt/tacov2/tools/vps/bot-test-db.sh` trägt die Test-Datenbank in die Bot-.env ein; danach spiegelt der Bot Logs, Tickets, Anti-Cheat und Status des Testservers (gekennzeichnet) und synchronisiert Team-Rollen/Whitelist in beide Datenbanken.

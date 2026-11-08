@@ -2,7 +2,7 @@
 // Der Spielserver schreibt alle 30 s `server_status`; ist die Zeile älter als 90 s, gilt der Server als offline.
 // Die Embed-Nachricht wird einmal gepostet und danach nur noch bearbeitet (ID in `bot_state`).
 import { EmbedBuilder } from 'discord.js';
-import { query } from './db.js';
+import { query, ENVS } from './db.js';
 import { config } from './config.js';
 
 const STALE_SECONDS = 90;
@@ -25,7 +25,7 @@ function fmtTime(d) {
   return new Date(d).toLocaleString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' });
 }
 
-function buildEmbed(row) {
+function buildEmbed(row, testRow) {
   const now = Date.now();
   const updated = row ? new Date(row.updated_at).getTime() : 0;
   const online = row && now - updated < STALE_SECONDS * 1000;
@@ -46,6 +46,11 @@ function buildEmbed(row) {
     embed.setDescription(row?.updated_at ? `Zuletzt gesehen: ${fmtTime(row.updated_at)} Uhr` : 'Noch kein Lebenszeichen vom Spielserver.');
   }
   embed.setFooter({ text: 'Aktualisiert alle 30 Sekunden' });
+  if (ENVS.some((e) => e.key === 'test')) {
+    const tUpdated = testRow ? new Date(testRow.updated_at).getTime() : 0;
+    const tOnline = testRow && now - tUpdated < STALE_SECONDS * 1000;
+    embed.addFields({ name: '🧪 Testserver', value: tOnline ? `🟢 online · ${testRow.players} / ${testRow.slots} Spieler` : '🔴 offline', inline: false });
+  }
   return embed;
 }
 
@@ -69,7 +74,9 @@ export async function startStatus(client) {
     try {
       const rows = await query('SELECT * FROM server_status WHERE id = 1');
       const row = rows[0] || null;
-      const embed = buildEmbed(row);
+      let testRow = null;
+      if (ENVS.some((e) => e.key === 'test')) testRow = (await query('SELECT * FROM server_status WHERE id = 1', [], 'test').catch(() => []))[0] || null;
+      const embed = buildEmbed(row, testRow);
       const key = JSON.stringify(embed.data.fields || embed.data.description || '') + (embed.data.title || '');
       if (!message) {
         message = await channel.send({ embeds: [embed] });
@@ -81,11 +88,13 @@ export async function startStatus(client) {
       }
 
       // Ansagen (Neustart, Wartung) aus dem Spiel in den Status-Kanal
-      const pending = await query('SELECT id, kind, text FROM announcements WHERE posted_at IS NULL ORDER BY id LIMIT 10');
-      for (const a of pending) {
-        const prefix = a.kind === 'restart' ? '🔄' : 'ℹ️';
-        await channel.send(`${prefix} ${a.text}`).catch(() => {});
-        await query('UPDATE announcements SET posted_at = NOW() WHERE id = ?', [a.id]);
+      for (const env of ENVS) {
+        const pending = await query('SELECT id, kind, text FROM announcements WHERE posted_at IS NULL ORDER BY id LIMIT 10', [], env.key).catch(() => []);
+        for (const a of pending) {
+          const prefix = a.kind === 'restart' ? '🔄' : 'ℹ️';
+          await channel.send(`${prefix} ${env.tag}${a.text}`).catch(() => {});
+          await query('UPDATE announcements SET posted_at = NOW() WHERE id = ?', [a.id], env.key);
+        }
       }
     } catch (e) {
       console.error('[bot] Status', e.message);
