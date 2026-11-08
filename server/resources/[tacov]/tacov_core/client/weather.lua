@@ -12,8 +12,6 @@ local function setSnow(on)
   ForceSnowPass(on)
   SetForceVehicleTrails(on)
   SetForcePedFootstepsTracks(on)
-  UseSnowFootVfxWhenUnsheltered(on)
-  UseSnowWheelVfxWhenUnsheltered(on)
 end
 
 RegisterNetEvent('tacov:world:sync', function(s)
