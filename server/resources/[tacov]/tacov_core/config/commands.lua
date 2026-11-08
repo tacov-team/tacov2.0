@@ -12,5 +12,13 @@ TacoV.Config.Commands = {
   { name = 'geld',    usage = 'geld <ID> <Betrag> [bank|bar]',                help = 'Geld geben (Test, Team)', right = 'admin.give' },
   { name = 'rolle',   usage = 'rolle <ID> <Rolle>',                     help = 'Teamrolle setzen', right = 'admin.roles' },
   { name = 'sperre',  usage = 'sperre <ID> <Stunden|0> <Grund>',        help = 'Spieler sperren', right = 'admin.ban' },
+  { name = 'tp',      usage = 'tp <ID> | tp wp | tp <x> <y> [z]',  help = 'Teleport zu Spieler, Wegpunkt, Koordinaten', right = 'support.teleport' },
+  { name = 'bring',   usage = 'bring <ID>',                                  help = 'Spieler zu dir holen', right = 'support.teleport' },
+  { name = 'noclip',  usage = 'noclip',                                      help = 'Noclip an/aus', right = 'admin.noclip' },
+  { name = 'unsichtbar', usage = 'unsichtbar',                               help = 'Unsichtbar an/aus', right = 'support.invisible' },
+  { name = 'coords',  usage = 'coords',                                      help = 'Position kopieren (Entwickler)', right = 'dev.tools' },
+  { name = 'entsperren', usage = 'entsperren <Discord-ID>',                help = 'Sperre aufheben', right = 'admin.ban' },
+  { name = 'actest',  usage = 'actest',                                      help = 'Anti-Cheat-Testmeldung (Manager)', right = 'admin.config' },
+  { name = 'warn',    usage = 'warn <ID> <Grund>',                           help = 'Spieler verwarnen', right = 'admin.warn' },
   { name = 'kick',    usage = 'kick <ID> <Grund>',                      help = 'Spieler vom Server entfernen', right = 'admin.warn' },
 }

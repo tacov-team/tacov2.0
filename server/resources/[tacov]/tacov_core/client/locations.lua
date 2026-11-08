@@ -18,7 +18,7 @@ local function makeBlips()
       def = TacoV.Config.Shops[l.shop].blip
       def.label = TacoV.Config.Shops[l.shop].label
     end
-    if def then
+    if def and not (l.extra and l.extra.noblip) then
       local b = AddBlipForCoord(l.x, l.y, l.z)
       SetBlipSprite(b, def.sprite)
       SetBlipColour(b, def.color)

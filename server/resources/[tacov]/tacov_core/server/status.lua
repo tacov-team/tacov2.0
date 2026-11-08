@@ -41,6 +41,8 @@ end
 --- Ansage im Spiel (alle) und für Discord (Tabelle announcements)
 function TacoV.Status.announce(kind, text)
   TriggerClientEvent('tacov:core:notify', -1, kind == 'restart' and 'warn' or 'info', text)
+  local restart = kind == 'restart'
+  TriggerClientEvent('tacov:core:announce', -1, { title = restart and 'Neustart' or 'Ansage', text = text, kind = restart and 'warn' or 'info', seconds = 12 })
   TacoV.DB.insert('INSERT INTO announcements (kind, text) VALUES (?, ?)', { kind, text })
 end
 

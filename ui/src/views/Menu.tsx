@@ -26,6 +26,8 @@ export function Menu({ data }: { data: MenuData }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [data, idx]);
   useEffect(() => { (listRef.current?.querySelector('.row.on') as HTMLElement | null)?.scrollIntoView({ block: 'nearest' }); }, [idx]);
+  // Markierung melden (Vorschau in der Werkstatt u. a.)
+  useEffect(() => { const it = data.items[idx]; if (it) nui('action', { view: 'menu', action: 'focus', data: { menu: data.id, id: it.id } }); }, [data.id, idx]);
 
   let lastSection: string | undefined;
   return (

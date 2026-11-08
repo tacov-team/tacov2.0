@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { StoreProvider, useStore } from './store';
 import { Hud } from './views/Hud';
-import { Toasts } from './views/Toasts';
+import { Toasts, Announce, DevOverlay, Crosshair } from './views/Toasts';
 import { Console } from './views/Console';
 import { Characters } from './views/Characters';
 import { Inventory } from './views/Inventory';
@@ -11,6 +11,7 @@ import { Shop } from './views/Shop';
 import { Menu } from './views/Menu';
 import { Garage } from './views/Garage';
 import { Dealer } from './views/Dealer';
+import { Ask } from './views/Ask';
 import { inGame, nui } from './nui';
 
 function Views() {
@@ -43,6 +44,9 @@ function Views() {
     <>
       <Hud />
       <Toasts />
+      <Announce />
+      <DevOverlay />
+      <Crosshair />
       {v?.name === 'characters' && <Characters key={v.data.characters.map((c) => c.id).join(',')} data={v.data} />}
       {v?.name === 'console' && <Console commands={v.data.commands} history={v.data.history} />}
       {v?.name === 'inventory' && <Inventory data={v.data} />}
@@ -52,6 +56,7 @@ function Views() {
       {v?.name === 'menu' && <Menu data={v.data} />}
       {v?.name === 'garage' && <Garage data={v.data} />}
       {v?.name === 'dealer' && <Dealer data={v.data} />}
+      {v?.name === 'ask' && <Ask data={v.data} />}
       {!v && state.hint && <div className="hint"><span className="key">{state.hint.key}</span><span>{state.hint.text}</span></div>}
     </>
   );

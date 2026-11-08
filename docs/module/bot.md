@@ -23,3 +23,16 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 
 ## TeamSpeak-Embed (Punkt 1.10)
 `src/teamspeak.js` fragt alle 30 s den ServerQuery (127.0.0.1:10011, `TS_QUERY_PASS` aus `.env`, von `setup-teamspeak.sh` eingetragen) ab und bearbeitet ein zweites Embed im Status-Kanal: online/offline, Adresse (`TS_ADDRESS`), Verbundene/Max, Laufzeit, Namen der Verbundenen. Nachrichten-ID in `bot_state` (`ts_status_message_id`).
+
+## Tickets (Punkt 5.15, `src/tickets.js`)
+- Alle 10 s: neue Tickets → Textkanal `ticket-<id>-<name>` in der Kategorie `ticketsCategoryId` (Team-Rollen und der Spieler sehen ihn), Embed mit Anliegen; Spiel-/Systemnachrichten → Kanal; geschlossene Tickets → Kanal `geschlossen-<id>`, Schreiben gesperrt.
+- Nachrichten im Kanal → `ticket_messages` (source `discord`), der Spielserver zeigt sie dem Spieler; `!schliessen` schließt das Ticket.
+- Braucht die Intents `GuildMessages` und `MessageContent` (Message Content Intent im Discord-Entwicklerportal aktivieren!).
+
+## Anti-Cheat-Meldungen (Punkt 5.16, `src/anticheat.js`)
+- Alle 10 s: neue `ac_reports` → Embed (Spieler, Discord, Charakter, Maßnahme, Details) in `anticheat.channelId`, Erwähnung von `anticheat.roleId`.
+
+## Testserver-Spiegel (08.11.2026)
+- Ist `DB_TEST_NAME` in `.env` gesetzt (per `tools/vps/bot-test-db.sh`), liest der Bot zusätzlich die Testserver-Datenbank: Logs, Ansagen, Tickets (Kanäle `test-ticket-<id>-…`), Anti-Cheat-Meldungen und Serverstatus (eigenes Feld im Status-Embed) – jede Nachricht mit „🧪 Testserver“ gekennzeichnet.
+- Team-Rollen und Whitelist schreibt der Bot in beide Datenbanken, damit auf dem Testserver dieselben Rechte gelten.
+- Neustart-Ansagen: je Umgebung eine Nachricht im Status-Kanal, die bei jeder weiteren Warnung bearbeitet wird (`bot_state.restart_message_id_<env>`); sonstige Ansagen werden weiterhin einzeln gepostet.

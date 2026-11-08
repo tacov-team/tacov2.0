@@ -12,6 +12,18 @@ local function listMigrations()
     { version = 3, file = 'sql/003_vehicles.sql' },
     { version = 4, file = 'sql/004_roles.sql' },
     { version = 5, file = 'sql/005_status.sql' },
+    { version = 6, file = 'sql/006_dmv.sql' },
+    { version = 7, file = 'sql/007_traffic.sql' },
+    { version = 8, file = 'sql/008_warnings.sql' },
+    { version = 9, file = 'sql/009_locations_extra.sql' },
+    { version = 10, file = 'sql/010_doors.sql' },
+    { version = 11, file = 'sql/011_teleports.sql' },
+    { version = 12, file = 'sql/012_peds.sql' },
+    { version = 13, file = 'sql/013_props_zones.sql' },
+    { version = 14, file = 'sql/014_refunds.sql' },
+    { version = 15, file = 'sql/015_config.sql' },
+    { version = 16, file = 'sql/016_tickets.sql' },
+    { version = 17, file = 'sql/017_anticheat.sql' },
   }
 end
 

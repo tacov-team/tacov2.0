@@ -33,7 +33,7 @@ globals = {
   "GetVehicleExtraColours", "SetVehicleFuelLevel", "GetVehicleCurrentRpm", "SetVehicleEngineOn", "GetPedInVehicleSeat",
   "SetVehicleDoorsLocked", "NetworkRequestControlOfEntity", "NetworkHasControlOfEntity", "Entity", "SetModelAsNoLongerNeeded",
   "SetVehicleLights", "IsDisabledControlPressed", "SetEntityCollision", "SetNuiFocusKeepInput", "DisableAllControlActions", "EnableControlAction",
-  "SetPedSuffersCriticalHits", "GetPlayers", "GetVehiclePedIsIn", "SetVehicleDoorOpen", "SetVehicleDoorShut", "GetVehicleDoorLockStatus", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
+  "SetPedSuffersCriticalHits", "GetPlayers", "SetEntityDrawOutlineShader", "SetEntityDrawOutlineColor", "SetEntityDrawOutline", "GetEntityPopulationType", "UseSnowWheelVfxWhenUnsheltered", "UseSnowFootVfxWhenUnsheltered", "SetForcePedFootstepsTracks", "SetForceVehicleTrails", "ForceSnowPass", "GetVehicleNumberPlateTextIndex", "SetVehicleNumberPlateTextIndex", "GetVehicleClass", "GetModTextLabel", "vector2", "CancelEvent", "EndTextCommandDisplayText", "AddTextComponentSubstringPlayerName", "BeginTextCommandDisplayText", "SetTextOutline", "SetTextCentre", "SetTextScale", "SetTextFont", "ClearDrawOrigin", "SetDrawOrigin", "NetworkGetEntityIsNetworked", "GetEntityType", "NetworkGetEntityOwner", "SetWeatherTypeNowPersist", "SetWeatherTypeOvertimePersist", "NetworkOverrideClockTime", "GetVehicleNumberOfPassengers", "IsVehicleSeatFree", "GetNumVehicleMods", "SetVehiclePetrolTankHealth", "SetVehicleUndriveable", "SetVehicleDeformationFixed", "IsModelAVehicle", "PlaceObjectOnGroundProperly", "SetEntityRotation", "SetEntityAlpha", "PlayPedAmbientSpeechNative", "TaskStartScenarioInPlace", "SetPedFleeAttributes", "SetPedDiesWhenInjured", "SetPedCanRagdollFromPlayerImpact", "SetBlockingOfNonTemporaryEvents", "CreatePed", "IsModelValid", "PlaySoundFromCoord", "RemoveDoorFromSystem", "DoorSystemSetOpenRatio", "DoorSystemSetDoorState", "AddDoorToSystem", "IsDisabledControlJustPressed", "DrawLine", "GetShapeTestResult", "StartShapeTestLosProbe", "GetGameplayCamCoord", "ClearPedBloodDamage", "SetPedArmour", "ClearPedProp", "SetPedPropIndex", "SetPedComponentVariation", "GetPedPropTextureIndex", "GetPedPropIndex", "GetPedPaletteVariation", "GetPedTextureVariation", "GetPedDrawableVariation", "GetEntityArchetypeName", "GetWaterHeightNoWaves", "Player", "DisableControlAction", "GetGameplayCamRot", "GetBlipInfoIdCoord", "GetFirstBlipInfoId", "GetGroundZFor_3dCoord", "PlaySoundFrontend", "AnimpostfxPlay", "GetEntityVelocity", "SetVehicleDirtLevel", "SetVehicleFixed", "SetVehicleWindowTint", "GetVehicleWindowTint", "SetVehicleWheelType", "GetVehicleWheelType", "IsToggleModOn", "ToggleVehicleMod", "SetVehicleModKit", "SetVehicleMod", "GetVehicleMod", "TaskWarpPedIntoVehicle", "DrawMarker", "SetBlipRouteColour", "SetBlipRoute", "GetGamePool", "GetVehiclePedIsIn", "SetVehicleDoorOpen", "SetVehicleDoorShut", "GetVehicleDoorLockStatus", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
 }
 
 ignore = { "212/_.*" }
@@ -41,3 +41,19 @@ ignore = { "212/_.*" }
 -- fxmanifest.lua nutzt die Manifest-Funktionen von FiveM als Globale
 files["**/fxmanifest.lua"] = { ignore = { "113" } }
 files["**/vehicles.lua"] = { max_line_length = 200 }
+files["**/dmv.lua"] = { max_line_length = 200 }
+files["**/workshop.lua"] = { max_line_length = 200 }
+files["**/traffic.lua"] = { max_line_length = 200 }
+files["**/admin.lua"] = { max_line_length = 200 }
+files["**/creator.lua"] = { max_line_length = 200 }
+files["**/doors.lua"] = { max_line_length = 200 }
+files["**/teleports.lua"] = { max_line_length = 200 }
+files["**/access.lua"] = { max_line_length = 200 }
+files["**/peds.lua"] = { max_line_length = 200 }
+files["**/world.lua"] = { max_line_length = 200 }
+files["**/refunds.lua"] = { max_line_length = 200 }
+files["**/weather.lua"] = { max_line_length = 200 }
+files["**/configedit.lua"] = { max_line_length = 200 }
+files["**/devtools.lua"] = { max_line_length = 200 }
+files["**/tickets.lua"] = { max_line_length = 200 }
+files["**/anticheat.lua"] = { max_line_length = 200 }

@@ -11,17 +11,12 @@ local function needRight(src, right)
   return false
 end
 
--- /support <Text>  – Ticket an das Team (Konzept 1: Support)
+-- /support <Text>  – Ticket an das Team (Punkt 5.15); weitere Texte ergänzen das offene Ticket
 RegisterCommand('support', function(src, args)
   if src == 0 then return end
   local text = TacoV.Util.cleanText(table.concat(args, ' '), 255)
-  if #text < 5 then notify(src, 'error', 'Bitte beschreibe dein Anliegen.') return end
-  local p = TacoV.Players.get(src)
-  TacoV.Log.write('support', text, { discordId = p and p.discordId, characterId = p and p.characterId, data = { source = src } })
-  notify(src, 'info', 'Dein Anliegen ist beim Team eingegangen.')
-  for _, staff in ipairs(TacoV.Players.staff(1)) do
-    notify(staff, 'info', ('Support #%d: %s'):format(src, text))
-  end
+  if #text < 5 then notify(src, 'error', 'Bitte beschreibe dein Anliegen: /support <Text>') return end
+  TacoV.Tickets.create(src, text)
 end, false)
 
 -- /ort setzen <name> <art> [Beschriftung]  – Ort an die eigene Position legen (Konzept 5)
@@ -80,18 +75,8 @@ RegisterCommand('geld', function(src, args)
     if src ~= 0 then notify(src, 'info', 'Nutzung: /geld <Server-ID> <Betrag> [bank|bar]') else print('Nutzung: geld <ID> <Betrag> [bank|bar]') end
     return
   end
-  local ok
-  if kind == 'cash' then
-    ok = TacoV.Inventory.addCash(target, amount, 'teamgeld')
-  else
-    local actor = src ~= 0 and TacoV.Characters.get(src)
-    ok = TacoV.Journal.move('bank', nil, { type = 'character', id = tc.id }, amount, 'teamgeld', { actor = actor and actor.id or nil })
-    if ok then TacoV.Accounts.push(target) end
-  end
-  local p = TacoV.Players.get(src)
-  TacoV.Log.write('admin', ('Geld gegeben: %d $ (%s) an #%d'):format(amount, kind, tc.id), { discordId = p and p.discordId, characterId = tc.id })
+  local ok = TacoV.Admin.giveMoney(src, target, amount, kind)
   if src ~= 0 then notify(src, ok and 'success' or 'error', ok and ('%d $ gegeben.'):format(amount) or 'Fehler beim Buchen.') end
-  notify(target, 'info', ('Das Team hat dir %d $ (%s) gegeben.'):format(amount, kind == 'cash' and 'bar' or 'Konto'))
 end, true)
 
 -- Einmaliges Startgeld für den nächsten Charakter, der lädt: `set tacov_grant_next <Betrag>` in server.cfg.

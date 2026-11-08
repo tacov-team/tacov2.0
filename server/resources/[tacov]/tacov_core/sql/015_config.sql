@@ -1,0 +1,7 @@
+-- TacoV Kern · Migration 015 · Config im Spiel (Punkt 5.13)
+CREATE TABLE IF NOT EXISTS config_overrides (
+  path VARCHAR(96) NOT NULL PRIMARY KEY,
+  value TEXT NOT NULL,                 -- JSON
+  updated_by VARCHAR(32) NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

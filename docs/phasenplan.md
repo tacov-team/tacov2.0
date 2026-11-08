@@ -55,7 +55,7 @@ Oberfläche V4 (Barlow/Kaushan Script, Gelb-Orange), HUD mit Fahrzeug-Tacho, Hin
 
 Änderungen 07.11.: Systemschrift, direkt ins Spiel bei vorhandenem Charakter, keine Banklimits, Waffenladen als eigener Ladentyp.
 
-## Phase 4 – Fahrzeuge 🔶
+## Phase 4 – Fahrzeuge 🔶 ✅
 
 **Teil 1 (fertig):** Kaufliste 52 Modelle in 8 Klassen, Autohaus (PDM) mit Vorschau und Ausfahrt draußen, LKW-Kaufhaus, 21 Garagen (alle Parkplätze der Karte), Verwahrhof, Schlüssel (geben, Schloss), Kofferraum als Inventar, 27 Tankstellen mit Verbrauch, Herzschlag/Kilometer, Tankstellenkarte im HUD, Fahrzeugmenü (F6 → Fahrzeug, X-Rad).
 
@@ -72,7 +72,7 @@ Tabellen: `vehicles`, `vehicle_keys` (vorhanden), neu `licenses`, `speedcam_fine
 
 Abnahme: Kaufen → Zulassung → Fahrschule → tanken → Werkstatt → einparken → Verwahrhof auslösen; ein zweiter Spieler bekommt einen Schlüssel und fährt.
 
-## Phase 5 – Entwickler- und Admin-Werkzeuge ⬜
+## Phase 5 – Entwickler- und Admin-Werkzeuge ⬜ ✅
 
 Creator-Systeme, mit denen das Team Inhalte ohne Code setzt, plus Admin-Grundgerüst. Alles speichert in der Datenbank, hat Rechte je Rolle und wird geloggt.
 

@@ -77,6 +77,34 @@ local function newPlate()
   end
   return nil
 end
+TacoV.Vehicles.newPlate = newPlate
+
+--- Vorläufiges Kennzeichen bis zur Zulassung beim DMV (Punkt 4.9)
+function TacoV.Vehicles.tempPlate()
+  for _ = 1, 50 do
+    local plate = TacoV.Config.DMV.tempPlateFormat:format(math.random(0, 9999))
+    if not TacoV.DB.scalar('SELECT id FROM vehicles WHERE plate = ?', { plate }) then return plate end
+  end
+  return nil
+end
+
+--- Kennzeichen eines laufenden Fahrzeugs umhängen (Zulassung) und Schlüssel-Caches anpassen
+function TacoV.Vehicles.replate(oldPlate, plate)
+  if live[oldPlate] then live[plate] = live[oldPlate]; live[oldPlate] = nil end
+  for charId, map in pairs(keys) do
+    if map[oldPlate] then map[plate] = map[oldPlate]; map[oldPlate] = nil end
+    for src, p in pairs(TacoV.Players.all()) do
+      if p.characterId == charId then pushKeys(src) end
+    end
+  end
+end
+
+function TacoV.Vehicles.reloadKeys(src)
+  local c = TacoV.Characters.get(src)
+  if not c then return end
+  loadKeys(c.id)
+  pushKeys(src)
+end
 
 --- Entity zur Netz-ID, wenn sie existiert und ein Kennzeichen hat.
 local function entityOf(netId)
@@ -109,6 +137,28 @@ local function sendSpawn(src, row, spawn, fuel)
     bodyHealth = row.body_health, engineHealth = row.engine_health, props = props,
     spawn = spawn,
   })
+end
+
+--- Fahrzeug an einen Charakter vergeben (Team, Punkt 5.2): Eintrag wie ein Kauf (Kaufpreis aus der Liste), Spawn vor dem Spieler.
+function TacoV.Vehicles.grant(targetSrc, model)
+  local c = TacoV.Characters.get(targetSrc)
+  if not c then return false, 'Spieler hat keinen Charakter geladen.' end
+  local def
+  for _, v in ipairs(Cfg.list) do if v.model == model then def = v break end end
+  def = def or { model = model, label = model, class = 'C', price = 0 }
+  local cls = classDef(def.class)
+  local plate = TacoV.Vehicles.tempPlate()
+  local id = TacoV.DB.insert(
+    'INSERT INTO vehicles (plate, model, class, owner_type, owner_id, state, fuel, bought_price, last_seen_at) VALUES (?, ?, ?, \'character\', ?, \'out\', ?, ?, NOW())',
+    { plate, def.model, def.class, c.id, cls.tank, def.price })
+  giveKey(id, c.id, nil)
+  pushKeys(targetSrc)
+  local ped = GetPlayerPed(targetSrc)
+  local pos, h = GetEntityCoords(ped), GetEntityHeading(ped)
+  local rad = math.rad(h)
+  local spawn = { x = pos.x - math.sin(rad) * 4.0, y = pos.y + math.cos(rad) * 4.0, z = pos.z, h = h }
+  sendSpawn(targetSrc, vehicleById(id), spawn)
+  return true, def.label .. ' (' .. plate .. ')'
 end
 
 -- ---------------------------------------------------------------- Garagen und Verwahrhof
@@ -205,6 +255,12 @@ RegisterNetEvent('tacov:vehicles:garage:take', function(garageName, vehicleId)
   if fee > 0 then
     local paid = TacoV.Accounts.pay(src, STATE, fee, loc.kind == 'impound' and 'verwahrung' or 'garage', loc.label)
     if not paid then return fail(src, ('Nicht genug Guthaben (%s).'):format(fmt(fee))) end
+  end
+  -- offene Kfz-Steuer (Punkt 4.13) wird beim Ausparken fällig
+  if (row.tax_due or 0) > 0 then
+    local paid = TacoV.Accounts.pay(src, STATE, row.tax_due, 'kfz_steuer', row.plate)
+    if not paid then return fail(src, ('Offene Kfz-Steuer %s – nicht genug Guthaben.'):format(fmt(row.tax_due))) end
+    TacoV.DB.update('UPDATE vehicles SET tax_due = 0 WHERE id = ?', { row.id })
   end
   sendSpawn(src, row, loc.spawn)
   TriggerClientEvent('tacov:vehicles:garage:close', src)
@@ -404,7 +460,7 @@ RegisterNetEvent('tacov:vehicles:dealer:open', function()
   local inv = TacoV.Inventory.ofSource(src)
   TriggerClientEvent('tacov:vehicles:dealer:data', src, {
     name = loc.name, label = loc.label, dealer = loc.dealer, title = Cfg.dealers[loc.dealer].label,
-    level = levelOf(src), fee = Cfg.registrationFee,
+    level = levelOf(src), fee = 0,
     cash = inv and TacoV.Inventory.cash(inv) or 0, bank = TacoV.Journal.balance('character', c.id),
     classes = catalog(loc.dealer),
   })
@@ -423,9 +479,12 @@ RegisterNetEvent('tacov:vehicles:dealer:buy', function(dealerName, model, method
   for _, cls in ipairs(dealer.classes) do if cls == def.class then sold = true end end
   if not sold then return fail(src, 'Dieses Fahrzeug gibt es hier nicht.') end
   local cls = classDef(def.class)
-  if levelOf(src) < cls.level then return fail(src, ('Dafür brauchst du Level %d.'):format(cls.level)) end
+  if Cfg.requireLicense and TacoV.DMV and not TacoV.DMV.hasLicense(c.id, cls.license) then
+    return fail(src, ('Dafür brauchst du den Führerschein %s (Fahrschule beim DMV).'):format(cls.license))
+  end
   if not loc.spawn or not spawnFree(loc.spawn) then return fail(src, 'Die Ausfahrt ist belegt – bitte warte kurz.') end
-  local total = def.price + Cfg.registrationFee
+  -- Punkt 4.9: Kauf ohne Zulassung; Kennzeichen TMP bis zum DMV (dort 150 $)
+  local total = def.price
   local me = { type = 'character', id = c.id }
   local inv = TacoV.Inventory.ofSource(src)
   method = method == 'cash' and 'cash' or 'card'
@@ -434,16 +493,14 @@ RegisterNetEvent('tacov:vehicles:dealer:buy', function(dealerName, model, method
   elseif TacoV.Journal.balance('character', c.id) < total then
     return fail(src, ('Nicht genug Guthaben (%s).'):format(fmt(total)))
   end
-  local plate = newPlate()
+  local plate = TacoV.Vehicles.tempPlate()
   if not plate then return fail(src, 'Kein freies Kennzeichen – bitte das Team informieren.') end
 
   if method == 'cash' then
     TacoV.Inventory.remove(inv, 'cash', total)
     TacoV.Journal.move('cash', me, nil, total, 'fahrzeugkauf', { actor = c.id, note = def.label })
-    TacoV.Journal.move('bank', nil, STATE, Cfg.registrationFee, 'zulassung', { actor = c.id, note = plate })
   else
-    TacoV.Journal.move('bank', me, nil, def.price, 'fahrzeugkauf', { actor = c.id, note = def.label })
-    TacoV.Journal.move('bank', me, STATE, Cfg.registrationFee, 'zulassung', { actor = c.id, note = plate })
+    TacoV.Journal.move('bank', me, nil, total, 'fahrzeugkauf', { actor = c.id, note = def.label })
     TacoV.Accounts.push(src)
   end
   local id = TacoV.DB.insert(
@@ -451,9 +508,8 @@ RegisterNetEvent('tacov:vehicles:dealer:buy', function(dealerName, model, method
     { plate, def.model, def.class, c.id, cls.tank, def.price })
   giveKey(id, c.id, nil)
   pushKeys(src)
-  TacoV.Log.write('money', ('Fahrzeugkauf %s (%s) für %s + Zulassung %s (%s)'):format(def.label, plate, fmt(def.price), fmt(Cfg.registrationFee), method),
-    { characterId = c.id })
-  ok(src, ('%s gekauft – Kennzeichen %s. Es steht an der Ausfahrt.'):format(def.label, plate))
+  TacoV.Log.write('money', ('Fahrzeugkauf %s (%s) für %s (%s)'):format(def.label, plate, fmt(def.price), method), { characterId = c.id })
+  ok(src, ('%s gekauft – vorläufiges Kennzeichen %s. Zulassung beim DMV (%s).'):format(def.label, plate, fmt(TacoV.Config.DMV.registrationFee)))
   local row = vehicleById(id)
   sendSpawn(src, row, loc.spawn, cls.tank)
   TriggerClientEvent('tacov:vehicles:dealer:close', src)

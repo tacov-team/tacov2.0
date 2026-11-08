@@ -15,20 +15,33 @@ function TacoV.Locations.all()
     byName[l.name] = e
     order[#order + 1] = l.name
   end
-  local rows = TacoV.DB.query('SELECT name, kind, label, x, y, z, heading FROM locations') or {}
+  local rows = TacoV.DB.query('SELECT name, kind, label, x, y, z, heading, extra, disabled FROM locations') or {}
+  local disabled = {}
   for _, r in ipairs(rows) do
-    if not byName[r.name] then order[#order + 1] = r.name end
-    local base = byName[r.name] or {}
-    local e = {}
-    for k, v in pairs(base) do e[k] = v end
-    e.name, e.kind, e.label = r.name, r.kind, (r.label ~= '' and r.label) or base.label or r.name
-    e.x, e.y, e.z, e.heading = r.x, r.y, r.z, r.heading or 0.0
-    -- Ausfahrt wandert mit, wenn der Ort per Befehl verschoben wurde
-    if base.spawn and (base.x ~= r.x or base.y ~= r.y) then e.spawn = { x = r.x, y = r.y, z = r.z, h = r.heading or 0.0 } end
-    byName[r.name] = e
+    if r.disabled == 1 then
+      disabled[r.name] = true
+    else
+      if not byName[r.name] then order[#order + 1] = r.name end
+      local base = byName[r.name] or {}
+      local e = {}
+      for k, v in pairs(base) do e[k] = v end
+      e.name, e.kind, e.label = r.name, r.kind, (r.label ~= '' and r.label) or base.label or r.name
+      e.x, e.y, e.z, e.heading = r.x, r.y, r.z, r.heading or 0.0
+      -- Ausfahrt wandert mit, wenn der Ort per Befehl verschoben wurde
+      if base.spawn and (base.x ~= r.x or base.y ~= r.y) then e.spawn = { x = r.x, y = r.y, z = r.z, h = r.heading or 0.0 } end
+      -- Zusatzfelder aus dem Orte-Creator (5.3): Ausfahrt, Vorschau, Tempolimit, Blip aus
+      local extra = r.extra and json.decode(r.extra) or nil
+      if type(extra) == 'table' then
+        e.extra = extra
+        if extra.spawn then e.spawn = extra.spawn end
+        if extra.preview then e.preview = extra.preview end
+        if extra.limit then e.limit = extra.limit end
+      end
+      byName[r.name] = e
+    end
   end
   merged = {}
-  for _, n in ipairs(order) do merged[#merged + 1] = byName[n] end
+  for _, n in ipairs(order) do if not disabled[n] then merged[#merged + 1] = byName[n] end end
   return merged
 end
 
@@ -67,3 +80,4 @@ end)
 
 exports('locationNearest', TacoV.Locations.nearest)
 exports('locationGet', TacoV.Locations.get)
+AddEventHandler('tacov:core:reloadData', function() TriggerEvent('tacov:core:locationChanged') end)

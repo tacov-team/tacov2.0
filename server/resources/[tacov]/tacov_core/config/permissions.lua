@@ -11,7 +11,8 @@ TacoV.Config.Roles = {
   supporter          = { level = 1, label = 'Supporter' },
   moderator          = { level = 2, label = 'Moderator' },
   gamedesigner       = { level = 2, label = 'Gamedesigner',
-                         rights = { 'support.view', 'support.teleport', 'support.invisible', 'dev.tools', 'config.view', 'aduty' } },
+                         rights = { 'support.view', 'support.teleport', 'support.invisible', 'dev.tools', 'config.view',
+                                    'creator', 'admin.locations', 'aduty' } },
   entwickler         = { level = 3, label = 'Entwickler', dev = true },
   administrator      = { level = 3, label = 'Administrator' },
   superadmin         = { level = 4, label = 'Superadministrator' },
@@ -29,6 +30,7 @@ TacoV.Config.Rights = {
   ['support.invisible'] = 1,  -- unsichtbar beobachten
   ['immigration']       = 1,  -- Einreise durchführen (Konzept 1)
   ['admin.warn']        = 1,
+  ['support.heal']      = 1,  -- Spieler heilen
   -- Stufe 2 · Moderator
   ['admin.kick']        = 2,
   ['admin.ban.temp']    = 2,  -- Sperren bis 7 Tage
@@ -60,3 +62,25 @@ TacoV.Config.Permissions = {
   refundSmallMax = 10000,
   refundMax = 50000,
 }
+
+-- Admin-Dienst-Uniform (Punkt 5.1): wird beim Dienstbeginn angezogen, die eigene Kleidung beim Dienstende zurückgesetzt.
+-- Nur für Freemode-Modelle; Werte sind Vanilla-Komponenten (Drawable, Textur), per Config änderbar.
+TacoV.Config.AdutyOutfit = {
+  mp_m_freemode_01 = {
+    components = { [1] = { 135, 2 }, [3] = { 3, 0 }, [4] = { 114, 2 }, [5] = { 0, 0 }, [6] = { 78, 2 }, [7] = { 0, 0 },
+                   [8] = { 15, 0 }, [9] = { 0, 0 }, [10] = { 0, 0 }, [11] = { 287, 2 } },
+    props = { [0] = false, [1] = false, [2] = false },
+  },
+  mp_f_freemode_01 = {
+    components = { [1] = { 153, 2 }, [3] = { 8, 0 }, [4] = { 121, 2 }, [5] = { 0, 0 }, [6] = { 82, 2 }, [7] = { 0, 0 },
+                   [8] = { 15, 0 }, [9] = { 0, 0 }, [10] = { 0, 0 }, [11] = { 300, 2 } },
+    props = { [0] = false, [1] = false, [2] = false },
+  },
+}
+
+-- Vorgefertigte Gründe für Verwarnung, Kick und Sperre im Team-Menü (freier Text per /warn, /kick, /sperre)
+TacoV.Config.AdminReasons = {
+  'RDM', 'VDM', 'Metagaming', 'Powergaming', 'Fail-RP', 'Beleidigung', 'Bug-Abuse', 'Cheating', 'Safezone-Verstoß', 'Combat-Logging',
+}
+TacoV.Config.AdminBanDurations = { { 1, '1 Stunde' }, { 12, '12 Stunden' }, { 24, '1 Tag' }, { 72, '3 Tage' }, { 168, '7 Tage' }, { 0, 'Dauerhaft' } }
+TacoV.Config.AdminMoneyAmounts = { 1000, 5000, 10000, 50000, 100000, 1000000 }

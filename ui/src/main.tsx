@@ -11,7 +11,7 @@ if (!inGame) {
   setTimeout(() => {
     post('hud', { visible: true, health: 86, armor: 0, hunger: 64, thirst: 75, fitness: 48, cash: 2340, black: 850, bank: 14820, serverId: 47,
       street: 'Vespucci Boulevard', area: 'Little Seoul', weight: 24.6, maxWeight: 30, name: 'Diego Alvarez', level: 7, levelProgress: 0.62, status: 'Probezeit', faction: 'LSPD', factionRank: 'Officer · Rang 4',
-      radio: [{ id: 47, name: 'Diego Alvarez', talking: true }, { id: 12, name: 'Mara Kowalski' }, { id: 3, name: 'Tom Reyes' }], radioFrequency: '411.3', radioOn: true });
+      radio: [{ id: 47, name: 'Diego Alvarez', talking: true }, { id: 12, name: 'Mara Kowalski' }, { id: 3, name: 'Tom Reyes' }], radioFrequency: '411.3', radioOn: true, voice: 'normal', voiceMeters: 10 });
     post('notify', { kind: 'success', title: 'Auftrag abgeschlossen', text: '+2.000 $ und 20 XP aufs Konto' });
     post('notify', { kind: 'warn', title: 'Tank fast leer', text: 'Nächste Tankstelle: Grove Street' });
     post('hint', { key: 'E', text: 'Geldautomat' });

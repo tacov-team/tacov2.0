@@ -59,6 +59,7 @@ function TacoV.Permissions.setDuty(source, on)
   end
   if on and not roleHas(p.role, 'aduty') then return false, 'right' end
   onDuty[source] = on and true or nil
+  if not on then TriggerEvent('tacov:core:dutyOff', source) end
   TriggerClientEvent('tacov:core:aduty', source, on and true or false, roleDef(p.role).label)
   TacoV.Log.write('admin', ('Admin-Dienst %s (%s)'):format(on and 'begonnen' or 'beendet', roleDef(p.role).label),
     { discordId = p.discordId, characterId = p.characterId })

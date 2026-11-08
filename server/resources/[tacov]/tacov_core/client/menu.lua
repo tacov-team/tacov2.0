@@ -16,7 +16,7 @@ local function show()
   TacoV.UI.open('menu', {
     id = def.id, title = def.title, info = def.info, icon = def.icon, note = def.note,
     items = def.items, depth = #stack - 1,
-  }, false)
+  }, false, 'walk') -- Spieler kann während des Menüs weiterlaufen
 end
 
 --- Öffnet ein Menü. Ist bereits eines offen, wird es als Untermenü darauf gestapelt.
@@ -53,9 +53,24 @@ function TacoV.Menu.close()
   TacoV.UI.close()
 end
 
+--- Zeigt das oberste Menü erneut (z. B. nach einer Texteingabe darüber).
+function TacoV.Menu.refresh()
+  show()
+end
+
 function TacoV.Menu.isOpen()
   return #stack > 0
 end
+
+--- def.onFocus(itemId, item) wird beim Markieren eines Eintrags gerufen (Vorschau)
+AddEventHandler('tacov:ui:menu:focus', function(data)
+  local top = stack[#stack]
+  if not top or type(data) ~= 'table' or data.menu ~= top.def.id or not top.def.onFocus then return end
+  local id = tostring(data.id or '')
+  for _, it in ipairs(top.def.items or {}) do
+    if it.id == id then top.def.onFocus(id, it) return end
+  end
+end)
 
 AddEventHandler('tacov:ui:menu:select', function(data)
   local top = stack[#stack]

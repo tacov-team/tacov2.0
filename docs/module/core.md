@@ -41,6 +41,24 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `sql/003_vehicles.sql` | Tabellen `vehicles` (Halter, Zustand garage/out/impound, Tank, km, Zustand) und `vehicle_keys` |
 | `server/vehicles.lua` | Besitz und Schlüssel, Garage (ein-/ausparken, 50 $/Tag ab 24 h), Verwahrhof (24 h unterwegs → verwahrt, 500 $; nach Neustart gratis wenn kürzlich gefahren), Kaufhaus (Preis + Zulassung 150 $, Level je Klasse), Tanken (Preis aus `economy.lua`, 5 % USt), Kofferraum (außen; offen = für alle, sonst Schlüssel) und Handschuhfach (innen, 5 kg) als Inventar-Behälter |
 | `client/vehicles.lua` | Spawn auf Serveranweisung, Tank (Statebag `fuel` in Litern, Verbrauch nach Drehzahl, leer = Motor aus), Kilometer, Herzschlag 60 s, X-Rad (Auf-/Abschließen, Motor, Kofferraum, Schlüssel geben), E-Aufforderungen (Garage, Einparken, Kaufhaus, Tanken), Garage-Ansicht (Karten mit Suche/Filter), Kaufhaus-Menüs mit Vorschau und Kamera, Tankstellenkarte im HUD |
+| `config/dmv.lua`, `sql/006_dmv.sql`, `server/dmv.lua`, `client/dmv.lua` | DMV Vespucci (NPC-Schalter bis zur Fraktion): Führerscheine A/B/C (`licenses`, Punkte, Entzug ab 8), Zulassung 150 $ (TMP → LS-Kennzeichen), Halterwechsel 100 $ mit Bestätigung des Käufers, Fahrschule (Theorie 8 Fragen/7 richtig als Menü, Praxisfahrt mit Kontrollpunkten, Tempolimit, Unfall, Zeit) |
+| `config/workshop.lua`, `server/workshop.lua`, `client/workshop.lua` | NPC-Werkstatt (5 Orte): Reparatur (bis 10 % Kaufpreis nach Schaden, min. 150 $), Upgrades Motor/Bremsen/Getriebe/Fahrwerk in Stufen Straße/Sport/Rennen (5/10/20 %), Turbo 10 %, Lack 500 $, Fensterfarbe 300 $, Felgen 800 $; Karosserieteile, Felgen (alle Arten), Felgenfarbe, Zweitfarbe/Perlglanz, Xenon, Kennzeichenstil; Menü mit Live-Vorschau (`def.onFocus`); Ausstattung inkl. aller Mod-Typen wird am Fahrzeug gespeichert (`props.mods.all`) |
+| `config/traffic.lua`, `server/traffic.lua`, `client/traffic.lua` | Blitzer (Orte `speedcam` mit `limit`; Client meldet, Server misst nach: Toleranz 5 km/h, Bußgeld 100/250/500/1000/2000 $ nach Überschreitung bis 10/20/30/50/mehr km/h, ab 21 km/h 1–3 Punkte, 60 s Sperre je Fahrzeug und Blitzer, Log `justice`) und Kfz-Steuer (1 % Kaufpreis je Jahr, wöchentlich anteilig vom Bankkonto des Halters, stündliche Prüfung; nicht gedeckt → `tax_due`, fällig beim Ausparken) |
+| `server/admin.lua`, `client/admin.lua` | Admin-Grundgerüst: Unsichtbar (`support.invisible`), Noclip (`admin.noclip`; WASD, Q/E, Shift), Teleport zu Spieler/herholen/Wegpunkt/Koordinaten (`support.teleport`); Zustand als Statebag `admin_invisible`/`admin_noclip`, wird bei Dienstende zurückgesetzt; Team-Menü auf F9 im Dienst (Spieler laufen währenddessen weiter); Spieler-Akte und Aktionen (5.2): Heilen `support.heal`, Geld/Items `admin.give`, Fahrzeug `admin.vehicle.spawn` (`TacoV.Vehicles.grant`), Verwarnen `admin.warn` (Tabelle `warnings`), Kicken `admin.kick`, Sperren `admin.ban.temp` bis 7 Tage / `admin.ban`; Log `admin` |
+| `client/creator.lua`, `server/creator.lua` | Creator-Grundlage: `TacoV.Creator.place(opts, cb)` (Kamera-Strahl, Leertaste Zeiger/fest, Pfeile/Bild↑↓ verschieben, Q/E drehen, Shift fein, Enter/Backspace), `TacoV.UI.ask(opts, cb)` Texteingabe (Ansicht `ask`); Orte-Creator (5.3): speichert in `locations` (`extra` JSON: noblip, spawn, preview, limit; `disabled` blendet Config-Orte aus), Recht `admin.locations`, Push an alle Clients |
+| `client/doors.lua`, `server/doors.lua` | Door Creator (5.4): Tür-Teile (Modell+Position) im Door-System, Zustand zu/offen per Event synchron, Zugang `{faction,minRank}` oder `{item}` oder frei, Auto-Schließen in Sekunden; E-Aufforderung aufschließen/abschließen; Team mit `creator` bedient alle Türen; Tabelle `doors` |
+| `server/access.lua` | Zugangsregeln für Türen/Aufzüge/Portale: `TacoV.Access.check(src, access)` (Fraktion+Mindestrang oder Schlüssel-Item, sonst frei; `creator` immer), `clean`, `text` |
+| `client/teleports.lua`, `server/teleports.lua` | Aufzüge (5.5: Etagenliste, E → Etagenwahl → Blende) und Portale (5.6: Eingang/Ausgang, Einbahn optional, E „Betreten“); Server prüft Nähe (4 m) und Zugang; Creator-Menüs; Tabellen `elevators`, `portals` |
+| `config/peds.lua`, `client/peds.lua`, `server/peds.lua` | NPC-Creator (5.7): Modelle/Szenarien/Aufgaben aus Config, Peds lokal in 120 m gespawnt, E „Ansprechen“ (Reihenfolge 4) ruft die Aufforderung der Aufgabe (`TacoV.Prompt.entries[task]`) auf; Platzierer mit halbtransparenter Vorschau (`previewPed`); Tabelle `peds` |
+| `config/world.lua`, `client/world.lua`, `server/world.lua` | Objekt-Placer (5.8: lokale Requisiten, Vorschau `previewProp`, `onGround`) und Zonen (5.9: Kreis/Polygon mit Punkt-in-Polygon-Test, Betreten/Verlassen-Ereignisse und Hinweis, Debug-Anzeige; Server-Abfrage `TacoV.Zones.at(x,y,z,kind)`, `playerIn(src,kind)`, Export `zonesAt`); Tabellen `props`, `zones` |
+| `server/admin.lua`, `client/admin.lua` (Fahrzeuge) | 5.10: `tacov:admin:vehicle(action, netId, a, b)` – Server prüft Recht, protokolliert, erledigt DB-Teile (Kennzeichen inkl. `replate`, Löschen setzt Eigentum auf `garage`), Client führt Natives aus (`tacov:admin:vehicle:do`) |
+| `server/refunds.lua` | Erstattungen (5.11): Stufen nach `Config.Permissions.refundSmallMax/refundMax` und Item-Kategorie, Vier-Augen (Antragsteller ≠ Bestätiger, `admin.refund.large`), Auszahlung per Journal bzw. Inventar (offline über `Inventory.load`), Tabelle `refunds`, Log `money`/`admin` |
+| `server/weather.lua`, `client/weather.lua`, `config/world.lua` (World) | Welt (5.12): Server führt Uhrzeit (`dayMinutes`) und Wetter (gewichtete Liste, `weatherMinutes`), Sync alle 10 s und bei Änderung; `tacov:world:set` (time, timeFreeze, weather, weatherFreeze, announce, restart) mit `admin.world`/`admin.config`; Ansage-Banner `tacov:core:announce` → NUI `announce` |
+| `shared/configedit.lua`, `server/configedit.lua`, `client/configedit.lua` | Config im Spiel (5.13): bearbeitbare Wurzeln (`TacoV.ConfigEdit.roots`), Pfadzugriff `get/set` (nur Blattwerte, Typ muss passen), Überschreibungen aus `config_overrides` beim Start und bei Änderung an alle Clients (`tacov:config:overrides`), Ereignis `tacov:config:changed`; Hinweis: Module, die Werte beim Laden in Locals kopieren (z. B. Spieltag-Länge), übernehmen erst nach Neustart |
+| `server/devtools.lua`, `client/devtools.lua` | Entwickler-Werkzeuge (5.14): Freigabe über `dev.tools`, Overlay (NUI `dev`), Zwischenablage (NUI `copy`), Ereignis `tacov:core:reloadData` (Orte, Türen, Aufzüge/Portale, NPCs, Objekte/Zonen, Config-Überschreibungen laden neu), Resource-Neustart nach Speichern |
+| `server/tickets.lua` | Tickets (5.15): `TacoV.Tickets.create`, Liste/Detail/Aktionen (`support.view`), Discord-Antworten alle 10 s an Online-Spieler; Tabellen `tickets`, `ticket_messages` (Spiegelung über `posted_discord`/`seen_game`) |
+| `config/anticheat.lua`, `server/anticheat.lua` | Anti-Cheat (5.16): `TacoV.AC.report(src, kind, details, action)`, `TacoV.AC.allowTeleport(src)` (Server-Teleports melden, sonst zählt der Sprung), Prüfungen Bewegung/Tempo/Bargeld/Explosionen/Entities, Team im Dienst ausgenommen; Tabelle `ac_reports`; `/actest` |
+| `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
@@ -72,6 +90,23 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Läden 24/7, LTD, Rob's, Baumarkt (22 Orte)
 - [x] Design V4 in allen Oberflächen, Listenmenü (F6 Aktionsmenü), Fahrzeug-HUD-Daten
 - [x] Fahrzeuge Teil 1: Kauf, Garagen, Verwahrhof, Schlüssel, Schloss, Tanken, Kofferraum, Verbrauch
-- [ ] Fahrzeuge Teil 2: Fahrschule/DMV (Führerscheine, Zulassung, Halterwechsel), NPC-Werkstatt (Reparatur, Upgrades), Blitzer, Kfz-Steuer
+- [x] Fahrzeuge Teil 2a: DMV (Zulassung, Halterwechsel) und Fahrschule (Führerscheine A/B/C)
+- [x] Fahrzeuge Teil 2b: NPC-Werkstatt (Reparatur, Upgrades, Zubehör)
+- [x] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer (Migration 007)
+- [x] Admin-Grundgerüst (5.1): Unsichtbar, Noclip, Teleport, Team-Menü
+- [x] Team-Menü (5.2): Akte, Geben, Heilen, Verwarnen, Kicken, Sperren (Migration 008)
+- [x] Orte-Creator (5.3) mit Platzierer und Texteingabe (Migration 009)
+- [x] Door Creator (5.4) (Migration 010)
+- [x] Elevator Creator (5.5) und Portal Creator (5.6) (Migration 011)
+- [x] NPC-Creator (5.7) (Migration 012)
+- [x] Objekt-Placer (5.8) und Zonen-Creator (5.9) (Migration 013)
+- [x] Fahrzeug-Werkzeuge für das Team (5.10)
+- [x] Erstattungen mit Vier-Augen-Prinzip (5.11) (Migration 014)
+- [x] Welt-Steuerung (5.12): Uhrzeit, Wetter, Ansagen
+- [x] Config im Spiel (5.13) (Migration 015)
+- [x] Entwickler-Werkzeuge (5.14)
+- [x] Tickets im Spiel und Discord (5.15) (Migration 016)
+- [x] Anti-Cheat-Grundlage (5.16) (Migration 017)
+- [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

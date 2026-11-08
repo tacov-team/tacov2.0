@@ -5,6 +5,8 @@ TacoV = TacoV or {}
 local function bind(command, label, key, handler, release)
   RegisterCommand('+' .. command, function()
     if not TacoV.Client.character then return end
+    -- Bei offenem Listenmenü (Spieler kann laufen) nur die Menü-Tasten selbst durchlassen
+    if TacoV.UI.current() == 'menu' and command ~= 'tacov_faction' and command ~= 'tacov_admin' then return end
     handler()
   end, false)
   RegisterCommand('-' .. command, function()
@@ -65,9 +67,8 @@ function TacoV.Client.openFactionMenu()
   end)
 end
 
--- Team-Menü nur anzeigen, wenn der Spieler Teammitglied ist (prüft der Server beim Öffnen erneut)
--- F9: Admin-Dienst an/aus (Aduty). Das Team-Menü kommt in Phase 5 und öffnet dann im Dienst.
-bind('tacov_admin', 'TacoV: Admin-Dienst', K.admin, function()
+-- F9: außerhalb des Dienstes Admin-Dienst beginnen; im Dienst öffnet sich das Team-Menü (Punkt 5.1, Dienstende dort)
+bind('tacov_admin', 'TacoV: Admin-Dienst / Team-Menü', K.admin, function()
   if TacoV.Client.role == 'player' then return end
-  TriggerServerEvent('tacov:core:aduty:toggle')
+  if TacoV.Client.aduty then TacoV.Admin.openMenu() else TriggerServerEvent('tacov:core:aduty:toggle') end
 end)

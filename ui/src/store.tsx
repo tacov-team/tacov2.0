@@ -8,8 +8,10 @@ import type { ShopData } from './views/Shop';
 import type { MenuData } from './views/Menu';
 import type { GarageData } from './views/Garage';
 import type { DealerData } from './views/Dealer';
+import type { AskData } from './views/Ask';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
+export type Announce = { title: string; text: string; kind: 'info' | 'warn' } | null;
 
 export type HudData = {
   health: number; armor: number; hunger: number; thirst: number; fitness: number;
@@ -22,6 +24,7 @@ export type HudData = {
   minimap?: { x: number; y: number; w: number; h: number }; // Bruchteile des Bildschirms, von Lua
   radio?: { id: number; name: string; talking?: boolean }[]; // wer gerade im Funk ist
   radioFrequency?: string; radioOn?: boolean;
+  voice?: 'whisper' | 'normal' | 'shout'; voiceMeters?: number; // Sprechweite (Punkt 3.2)
   vehicle?: { speed: number; fuel: number; tank: number; engine: boolean; locked: boolean } | null; // nur im Fahrzeug
   station?: { name: string; sub?: string; price?: number } | null; // Tankstellenkarte über dem Tacho
 };
@@ -43,10 +46,11 @@ type View = null
   | { name: 'shop'; data: ShopData }
   | { name: 'menu'; data: MenuData }
   | { name: 'garage'; data: GarageData }
-  | { name: 'dealer'; data: DealerData };
+  | { name: 'dealer'; data: DealerData }
+  | { name: 'ask'; data: AskData };
 
 export type Hint = { key: string; text: string };
-type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null };
+type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null; crosshair: boolean };
 
 type Action =
   | { type: 'open'; view: View }
@@ -55,7 +59,10 @@ type Action =
   | { type: 'toast'; toast: Toast }
   | { type: 'toastRemove'; id: number }
   | { type: 'role'; role: string }
-  | { type: 'hint'; hint: Hint | null };
+  | { type: 'hint'; hint: Hint | null }
+  | { type: 'announce'; announce: Announce }
+  | { type: 'dev'; text: string | null }
+  | { type: 'crosshair'; on: boolean };
 
 const initialHud: HudData = {
   health: 100, armor: 0, hunger: 100, thirst: 100, fitness: 0,
@@ -72,6 +79,9 @@ function reducer(state: State, a: Action): State {
     case 'toastRemove': return { ...state, toasts: state.toasts.filter((t) => t.id !== a.id) };
     case 'role': return { ...state, role: a.role };
     case 'hint': return { ...state, hint: a.hint };
+    case 'announce': return { ...state, announce: a.announce };
+    case 'dev': return { ...state, dev: a.text };
+    case 'crosshair': return { ...state, crosshair: a.on };
   }
 }
 
@@ -80,7 +90,7 @@ const Ctx = createContext<{ state: State; dispatch: (a: Action) => void } | null
 let toastId = 0;
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null });
+  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null, announce: null, dev: null, crosshair: false });
 
   useNuiEvent<{ view: string; data: unknown }>('open', useCallback((d) => {
     dispatch({ type: 'open', view: { name: d.view, data: d.data } as View });
@@ -95,6 +105,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const titles = { success: 'Erledigt', info: 'Hinweis', warn: 'Achtung', error: 'Fehler' };
     dispatch({ type: 'toast', toast: { id, kind: d.kind, title: d.title ?? titles[d.kind] ?? 'Hinweis', text: d.text } });
     setTimeout(() => dispatch({ type: 'toastRemove', id }), 6000);
+  }, []));
+
+  useNuiEvent<string>('copy', useCallback((text) => {
+    try { void navigator.clipboard?.writeText(text); } catch { /* unten Fallback */ }
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    } catch { /* ignorieren */ }
+  }, []));
+  useNuiEvent<boolean>('crosshair', useCallback((on) => dispatch({ type: 'crosshair', on: !!on }), []));
+  useNuiEvent<string | null>('dev', useCallback((text) => dispatch({ type: 'dev', text: text || null }), []));
+  useNuiEvent<{ title?: string; text: string; kind?: 'info' | 'warn'; seconds?: number }>('announce', useCallback((d) => {
+    dispatch({ type: 'announce', announce: { title: d.title ?? 'Ansage', text: d.text, kind: d.kind ?? 'info' } });
+    setTimeout(() => dispatch({ type: 'announce', announce: null }), (d.seconds ?? 10) * 1000);
   }, []));
 
   const value = useMemo(() => ({ state, dispatch }), [state]);

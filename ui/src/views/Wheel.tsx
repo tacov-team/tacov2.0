@@ -6,9 +6,9 @@ import { Icon } from '../components/Icon';
 export type WheelEntry = { id: string; label: string; icon: string; order: number };
 export type WheelData = { entries: WheelEntry[]; center: { kind: string; title: string; sub: string; icon?: string }; key?: string };
 
-const SIZE = 520;
-const INNER = 110;
-const RING_R = 190;
+const SIZE = 400;
+const INNER = 84;
+const RING_R = 146;
 
 export function Wheel({ data }: { data: WheelData }) {
   const [hover, setHover] = useState<string | null>(null);
@@ -60,8 +60,8 @@ export function Wheel({ data }: { data: WheelData }) {
         <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`}>{segs}</svg>
         {entries.map((e, i) => {
           const a = (-90 + (i * 360) / n) * (Math.PI / 180);
-          const x = SIZE / 2 + Math.cos(a) * RING_R, y = SIZE / 2 + Math.sin(a) * RING_R - 20;
-          return <span key={e.id} className={'wicon' + (hover === e.id ? ' on' : '')} style={{ left: `${x / 16}rem`, top: `${y / 16}rem` }}><Icon name={e.icon} size={24} /><span>{e.label}</span></span>;
+          const x = SIZE / 2 + Math.cos(a) * RING_R, y = SIZE / 2 + Math.sin(a) * RING_R - 18;
+          return <span key={e.id} className={'wicon' + (hover === e.id ? ' on' : '')} style={{ left: `${x / 16}rem`, top: `${y / 16}rem` }}><Icon name={e.icon} size={20} /><span>{e.label}</span></span>;
         })}
         <div className="wheel-center" style={{ width: `${(INNER * 2 - 12) / 16}rem`, height: `${(INNER * 2 - 12) / 16}rem` }}>
           <Icon name={data.center.icon ?? 'user'} size={18} />

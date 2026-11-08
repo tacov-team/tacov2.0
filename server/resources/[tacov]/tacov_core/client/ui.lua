@@ -11,11 +11,20 @@ end
 
 --- Öffnet eine Ansicht. cursor=false für reine Tastatur-Ansichten (Befehlszeile).
 --- keepInput=true: das Spiel behält die Tastatur (für Halten-Menüs wie das X-Rad); Bewegung/Kamera werden solange gesperrt.
+--- keepInput='walk': Spieler kann weiterlaufen; nur die Menü-Tasten (Pfeile, Enter, Backspace, Esc) gehen nicht ans Spiel.
+local WALK_BLOCK = { 27, 172, 173, 174, 175, 177, 191, 194, 199, 200, 201, 202, 243, 322, 37, 24, 25, 257, 140, 141, 142 }
 function TacoV.UI.open(view, data, cursor, keepInput)
   openView = view
   SetNuiFocus(true, cursor ~= false)
-  SetNuiFocusKeepInput(keepInput == true)
-  if keepInput then
+  SetNuiFocusKeepInput(keepInput == true or keepInput == 'walk')
+  if keepInput == 'walk' then
+    CreateThread(function()
+      while openView == view do
+        for _, c in ipairs(WALK_BLOCK) do DisableControlAction(0, c, true) end
+        Wait(0)
+      end
+    end)
+  elseif keepInput then
     CreateThread(function()
       while openView == view do
         DisableAllControlActions(0)
@@ -48,6 +57,28 @@ function TacoV.UI.openConsole()
   end
   TacoV.UI.open('console', { commands = list, history = history }, false)
 end
+
+--- Texteingabe: TacoV.UI.ask({ title, label, placeholder, value, maxLength, numeric }, function(text) end) – nil bei Abbruch.
+local askCb = nil
+function TacoV.UI.ask(opts, cb)
+  if openView and openView ~= 'menu' then return false end
+  local wasMenu = openView == 'menu'
+  askCb = function(v)
+    askCb = nil
+    openView = nil
+    SetNuiFocusKeepInput(false)
+    SetNuiFocus(false, false)
+    if wasMenu and TacoV.Menu.isOpen() then TacoV.Menu.refresh() else TacoV.UI.send('close') end
+    cb(v)
+  end
+  openView = 'ask'
+  SetNuiFocus(true, true)
+  SetNuiFocusKeepInput(false)
+  TacoV.UI.send('open', { view = 'ask', data = opts })
+  return true
+end
+AddEventHandler('tacov:ui:ask:submit', function(d) if askCb then askCb(tostring(d.value or '')) end end)
+AddEventHandler('tacov:ui:ask:cancel', function() if askCb then askCb(nil) end end)
 
 RegisterNUICallback('close', function(_, cb)
   TacoV.UI.close()

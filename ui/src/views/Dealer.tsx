@@ -26,7 +26,7 @@ export function Dealer({ data }: { data: DealerData }) {
   return (
     <div className="dealer">
       <Panel icon="car" title={data.title} sub={data.label} onClose={close}
-        foot={<span className="muted" style={{ fontSize: '0.75rem' }}>Das gewählte Modell steht im Showroom. Nach dem Kauf findest du das Fahrzeug an der Ausfahrt – Zulassung ist im Preis enthalten.</span>}>
+        foot={<span className="muted" style={{ fontSize: '0.75rem' }}>Das gewählte Modell steht im Showroom. Nach dem Kauf steht das Fahrzeug mit vorläufigem Kennzeichen an der Ausfahrt – die Zulassung (150 $) machst du beim DMV. Kauf nur mit passendem Führerschein.</span>}>
         <div className="cols">
           <div className="catalog">
             <div className="row-flex">
@@ -54,7 +54,7 @@ export function Dealer({ data }: { data: DealerData }) {
                   <span><Icon name="trunk" size={13} /> {current.trunk} kg Kofferraum</span>
                 </div>
                 <div className="total">
-                  <span className="lbl">Preis inkl. Zulassung {money(data.fee)}</span>
+                  <span className="lbl">{data.fee > 0 ? `Preis inkl. Zulassung ${money(data.fee)}` : 'Kaufpreis · Zulassung danach beim DMV'}</span>
                   <span className="money-big num">{money(total)}</span>
                   <span style={{ fontSize: '0.75rem', opacity: 0.9 }}>Bargeld {money(data.cash)} · Konto {money(data.bank)}</span>
                 </div>
