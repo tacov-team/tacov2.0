@@ -187,6 +187,7 @@ RegisterNetEvent('tacov:dmv:practice:start', function(d)
   CreateThread(function()
     while exam and exam.veh == veh do
       Wait(0)
+      if not exam or exam.veh ~= veh then break end -- Prüfung wurde während des Wartens beendet
       local p = exam.points[exam.idx]
       if p then DrawMarker(1, p.x, p.y, p.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, exam.radius * 2, exam.radius * 2, 1.5, 139, 92, 246, 120, false, false, 2, false, nil, nil, false) end
       local ped = PlayerPedId()
