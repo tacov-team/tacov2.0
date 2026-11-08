@@ -4,6 +4,8 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Phase 5 Rest | Gamedesigner dürfen Creator nutzen (`creator`, `admin.locations`); Creator-Steuerung am Zeiger (Kamera-Raycast) mit Tasten zum Feintunen; Tickets: je Ticket ein Textkanal in Discord-Kategorie 1568940600257150976; Reihenfolge 5.3 → 5.16; Anti-Cheat: bei eindeutigen Fällen Sicherheits-Kick/-Sperre plus Meldung an AC-Team-Rolle 1568019443165036564 und Kanal 1568941437255688212 | Antworten des Betreibers auf die offenen Fragen |
+| 2026-11-08 | Inventar | Ziehen über Mausereignisse statt HTML5-Drag&Drop (liefert in der FiveM-NUI keine Drop-Ereignisse); Boden-Ablage nur außerhalb von Fahrzeugen, im Fahrzeug Hinweis auf Handschuhfach/Kofferraum | Betreiber: Verschieben ging nicht; Boden im Fahrzeug unsinnig |
 | 2026-11-08 | Arbeitsweise | Zu Beginn jeder Phase: Bauweise erklären, offene Entscheidungen nennen, Einverständnis abwarten; Team-Spielerliste zeigt auch den eigenen Eintrag (Akte, Geben, Heilen für sich selbst) | Betreiber-Wunsch |
 | 2026-11-08 | Punkt 5.2 | Team-Menü ohne eigene Oberfläche: Spielerliste → Akte → Aktionen als Listenmenüs; Gründe für Verwarnung/Kick/Sperre und Sperrdauern (1 h bis dauerhaft) als feste Auswahl, freier Text nur per Befehl; Geldbeträge 1.000–1.000.000 $ fest; Fahrzeug geben legt ein normales Eigentum mit TMP-Kennzeichen an | Schnell bedienbar, keine Texteingabe im Menü nötig |
 | 2026-11-08 | Menüs | Während Listenmenüs offen sind, kann der Spieler weiterlaufen; nur Pfeile, Enter, Backspace, Esc gehen ans Menü | Betreiber-Wunsch |

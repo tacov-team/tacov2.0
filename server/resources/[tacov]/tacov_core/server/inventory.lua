@@ -331,6 +331,7 @@ function TacoV.Inventory.send(source)
       cash = TacoV.Inventory.cash(inv), black = TacoV.Inventory.black(inv),
     }),
     other = other,
+    ground = GetVehiclePedIsIn(GetPlayerPed(source), false) == 0, -- Boden nur außerhalb eines Fahrzeugs (08.11.2026)
   })
 end
 
@@ -463,7 +464,7 @@ RegisterNetEvent('tacov:inventory:action', function(data)
     local text = ({
       weight = 'Zu schwer.', missing = 'Das hast du nicht.', notUsable = 'Das kannst du nicht benutzen.',
       noTarget = 'Niemand in der Nähe.', dropMax = 'Du hast schon zu viele Ablagen.', stack = 'Der Platz ist voll.',
-      occupied = 'Der Platz ist belegt.',
+      occupied = 'Der Platz ist belegt.', vehicle = 'Im Fahrzeug kannst du nichts ablegen.',
     })[err] or ('Fehler: ' .. tostring(err))
     TriggerClientEvent('tacov:core:notify', src, 'error', text)
   end
@@ -494,6 +495,7 @@ RegisterNetEvent('tacov:inventory:action', function(data)
     TriggerClientEvent('tacov:core:notify', src, 'success', ('%dx %s übergeben.'):format(pack.amount, def.label))
 
   elseif data.action == 'drop' and slot and amount then
+    if GetVehiclePedIsIn(GetPlayerPed(src), false) ~= 0 then return fail('vehicle') end
     local d = nearestDrop(src)
     if not d then
       local err
