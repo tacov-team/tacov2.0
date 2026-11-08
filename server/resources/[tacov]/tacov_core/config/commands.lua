@@ -4,6 +4,7 @@ TacoV.Config = TacoV.Config or {}
 
 TacoV.Config.Commands = {
   { name = 'support', usage = 'support <Text>',                         help = 'Anliegen an das Team' },
+  { name = 'stopanim', usage = 'stopanim',                                  help = 'Animation beenden' },
   { name = 'befehle', usage = 'befehle',                                help = 'Alle Befehle anzeigen' },
   { name = 'ort',     usage = 'ort setzen <Name> <Art> [Beschriftung]', help = 'Ort an deine Position setzen', right = 'admin.locations' },
   { name = 'ort',     usage = 'ort liste',                              help = 'Alle Orte anzeigen', right = 'admin.locations' },

@@ -26,6 +26,7 @@ shared_scripts {
   'config/anticheat.lua',
   'config/clothing.lua',
   'config/housing.lua',
+  'config/animations.lua',
   'shared/configedit.lua',
   'shared/clothingprice.lua',
 }
@@ -100,6 +101,7 @@ client_scripts {
   'client/clothing.lua',
   'client/immigration.lua',
   'client/housing.lua',
+  'client/animations.lua',
   'client/keys.lua',
 }
 

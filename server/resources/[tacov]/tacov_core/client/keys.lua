@@ -25,7 +25,7 @@ bind('tacov_inventory', 'TacoV: Inventar',        K.inventory,  function()
   if TacoV.UI.current() == 'inventory' then TacoV.Inventory.close() else TacoV.Inventory.open() end
 end)
 bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() soon('Das Handy') end)
-bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() soon('Das Animationsmenü') end)
+bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() TacoV.Anims.openMenu() end)
 bind('tacov_faction',   'TacoV: Fraktionsmenü',   K.faction,    function() TacoV.Client.openFactionMenu() end)
 bind('tacov_interact',  'TacoV: Interaktion',     K.interact,   function() TacoV.Interact.open() end, function() TacoV.Interact.release() end)
 bind('tacov_use',       'TacoV: Benutzen (E)',    K.use,        function() TacoV.Prompt.use() end)

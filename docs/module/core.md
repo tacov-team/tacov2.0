@@ -63,6 +63,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `loadscreen/index.html` | Ladebildschirm (6.4): Logo, Fortschritt aus `loadProgress`, Tipps; `loadscreen_manual_shutdown`, beendet in `client/main.lua` |
 | `server/immigration.lua`, `client/immigration.lua` | Einreise (6.4): Warteschlange (`TacoV.Immigration.queue`), `pass` (Startgeld + `Onboarding.immigrationItems`), `fail` (`immigration_retry_at`, Kick), Hook `tacov:core:beforeSelect` verweigert das Laden bis zum neuen Versuch; Client hält den Charakter im `airportRadius` |
 | `config/housing.lua`, `server/housing.lua`, `client/housing.lua`, `server/newbie.lua` | Sozialwohnung (6.5): `TacoV.Housing.grantSocial(cid)`, Betreten/Verlassen mit Routing-Bucket `10000 + characterId`, Lager (`Inventory.load('house', homeId, 20)`), Miete stündlich geprüft; Neulingspfad: `TriggerEvent('tacov:newbie:step', src, id)` aus anderen Modulen, Bonus per Journal, Tabellen `homes`, `newbie_steps` |
+| `config/animations.lua`, `client/animations.lua` | Animationsmenü (6.6): `TacoV.Anims.play(id)/stop()/openMenu()`, Liste mit `kind` anim/scenario, Favoriten in KVP `tacov_anim_favs`; F3 im Lauf = beenden |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -116,6 +117,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Kleiderläden, Outfits, Friseur, Chirurg (6.2/6.3) (Migration 018)
 - [x] Ladebildschirm und Einreise (6.4)
 - [x] Sozialwohnung und Neulingspfad (6.5) (Migration 019)
+- [x] Animationsmenü (6.6)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)
