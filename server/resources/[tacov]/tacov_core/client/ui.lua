@@ -127,15 +127,20 @@ RegisterNUICallback('createCharacter', function(data, cb)
   TacoV.UI.send('close')
   local spot = TacoV.Config.Onboarding.editorSpot or TacoV.Config.Onboarding.spawn
   local opts = { appearance = TacoV.Appearance.default(model), spot = spot, title = 'Dein Aussehen', doneLabel = 'Charakter anlegen' }
-  TacoV.Appearance.openEditor(opts, function(appearance)
-    if appearance then
-      form.appearance = appearance
-      TriggerServerEvent('tacov:core:createCharacter', form)
-    else
-      local ped = PlayerPedId()
-      SetEntityVisible(ped, false, false)
-      FreezeEntityPosition(ped, true)
-      if TacoV.Client.lastCharacters then TacoV.UI.open('characters', TacoV.Client.lastCharacters) end
-    end
+  TriggerServerEvent('tacov:core:editorWorld', true) -- eigene Welt während der Erstellung
+  CreateThread(function()
+    Wait(200) -- Welt-Wechsel greift, bevor die Figur sichtbar wird
+    TacoV.Appearance.openEditor(opts, function(appearance)
+      TriggerServerEvent('tacov:core:editorWorld', false)
+      if appearance then
+        form.appearance = appearance
+        TriggerServerEvent('tacov:core:createCharacter', form)
+      else
+        local ped = PlayerPedId()
+        SetEntityVisible(ped, false, false)
+        FreezeEntityPosition(ped, true)
+        if TacoV.Client.lastCharacters then TacoV.UI.open('characters', TacoV.Client.lastCharacters) end
+      end
+    end)
   end)
 end)

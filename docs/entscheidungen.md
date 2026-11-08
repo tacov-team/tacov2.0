@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Editor abgeschirmt | Charaktererstellung läuft in einer eigenen Welt (Routing-Bucket); erst nach „Charakter anlegen“ steht der Spieler am Flughafen und bleibt dort bis zur Einreise | Betreiber: ungestörte Erstellung, kein Einwirken von außen |
 | 2026-11-08 | Phase 7 Start | Handy kostet 300 $ und geht bei Koma verloren; Nummern vierstellig, Wunschnummer nur über Ticket (`/nummer`); Funk-Sprechtaste ist SaltyChats eigene Belegung; Handy funktioniert nur aus dem eigenen Inventar (Beschlagnahme sperrt); keine Funklöcher | Antworten des Betreibers |
 | 2026-11-08 | Phase 6 Start | Kleidung: alle Spielteile in jedem Laden, Preise je Kategorie; Einreise ohne Team: warten mit sichtbarer Warteschlange im Team-Menü; Editor fragt Geschlecht (Pflicht) und Herkunft (Text); Koma kostet Bargeld + 500 $ Krankenhaus; Reihenfolge 6.1 → 6.9 | Antworten des Betreibers |
 | 2026-11-08 | Outfits | Outfits lassen sich nur im Kleiderladen und am Kleiderschrank der Wohnung wechseln, nicht unterwegs über das Aktionsmenü | Betreiber: kein Umziehen auf offener Straße |

@@ -293,9 +293,19 @@ RegisterNetEvent('tacov:core:selectCharacter', function(characterId)
   if not ok then TriggerClientEvent('tacov:core:notify', src, 'error', 'Charakter konnte nicht geladen werden: ' .. tostring(err)) end
 end)
 
+-- Charaktereditor in eigener Welt: solange ein Spieler ohne geladenen Charakter sein Aussehen erstellt, steht er in einem
+-- eigenen Routing-Bucket (niemand sieht ihn, niemand kann einwirken). Danach zurück in die gemeinsame Welt.
+local EDITOR_BUCKET = 20000
+RegisterNetEvent('tacov:core:editorWorld', function(on)
+  local src = source
+  if TacoV.Characters.get(src) then return end -- nur bei der Erstellung, nicht in Läden
+  SetPlayerRoutingBucket(src, on == true and (EDITOR_BUCKET + src) or 0)
+end)
+
 RegisterNetEvent('tacov:core:createCharacter', function(data)
   local src = source
   if type(data) ~= 'table' then return end
+  SetPlayerRoutingBucket(src, 0)
   local ok, res = TacoV.Characters.create(src, data)
   if ok then
     TacoV.Characters.select(src, res)
