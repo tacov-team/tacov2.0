@@ -43,6 +43,7 @@ function TacoV.Immigration.pass(target, bySrc)
     TacoV.Inventory.add(inv, s.item, s.amount, meta)
   end
   TacoV.Inventory.remove(inv, 'passport', 1)
+  TacoV.Housing.grantSocial(c.id)
   TacoV.Inventory.send(target)
   TacoV.Accounts.push(target)
   TacoV.DB.update('UPDATE characters SET immigrated_at = NOW(), immigration_retry_at = NULL WHERE id = ?', { c.id })

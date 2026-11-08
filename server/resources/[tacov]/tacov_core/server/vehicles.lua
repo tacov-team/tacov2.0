@@ -453,6 +453,7 @@ end
 
 RegisterNetEvent('tacov:vehicles:dealer:open', function()
   local src = source
+  TriggerEvent('tacov:newbie:step', src, 'dealer')
   local c = TacoV.Characters.get(src)
   if not c then return end
   local loc = TacoV.Locations.nearest(src, 'dealer', 6.0)

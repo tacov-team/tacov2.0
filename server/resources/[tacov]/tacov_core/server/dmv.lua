@@ -38,6 +38,7 @@ function TacoV.DMV.hasLicense(characterId, kind)
 end
 
 function TacoV.DMV.grant(characterId, kind)
+  for src, p in pairs(TacoV.Players.all()) do if p.characterId == characterId then TriggerEvent('tacov:newbie:step', src, 'license') end end
   TacoV.DB.update(
     'INSERT INTO licenses (character_id, type) VALUES (?, ?) ON DUPLICATE KEY UPDATE revoked_at = NULL, points = 0, issued_at = NOW()',
     { characterId, kind })

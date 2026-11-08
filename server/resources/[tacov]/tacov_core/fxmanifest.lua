@@ -25,6 +25,7 @@ shared_scripts {
   'config/world.lua',
   'config/anticheat.lua',
   'config/clothing.lua',
+  'config/housing.lua',
   'shared/configedit.lua',
   'shared/clothingprice.lua',
 }
@@ -62,6 +63,8 @@ server_scripts {
   'server/anticheat.lua',
   'server/clothing.lua',
   'server/immigration.lua',
+  'server/housing.lua',
+  'server/newbie.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -96,6 +99,7 @@ client_scripts {
   'client/devtools.lua',
   'client/clothing.lua',
   'client/immigration.lua',
+  'client/housing.lua',
   'client/keys.lua',
 }
 

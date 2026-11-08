@@ -65,6 +65,7 @@ RegisterNetEvent('tacov:clothing:apply', function(kind, appearance, method)
     return fail(src, ('Nicht genug %s (%s).'):format(method == 'cash' and 'Bargeld' or 'Guthaben', fmt(price)))
   end
   TacoV.Characters.setAppearance(src, new)
+  if kind == 'clothing' and price > 0 then TriggerEvent('tacov:newbie:step', src, 'clothes') end
   if kind == 'surgeon' then TacoV.DB.update('UPDATE characters SET surgery_at = NOW() WHERE id = ?', { c.id }) c.surgery_at = os.date('%Y-%m-%d') end
   if price > 0 then TacoV.Log.write('money', ('%s: %s'):format(label, fmt(price)), { characterId = c.id }) end
   TriggerClientEvent('tacov:clothing:applied', src, c.appearance)

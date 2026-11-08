@@ -62,6 +62,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/clothing.lua`, `shared/clothingprice.lua`, `client/clothing.lua`, `server/clothing.lua` | Kleiderladen/Friseur/Chirurg (6.2/6.3): Editor mit Reiter-Filter, Live-Preis (`TacoV.Clothing.price/barberPrice`), `tacov:clothing:apply(kind, appearance, method)` prüft Ort/Preis/Zahlung und speichert; Outfits (`outfits`, max. 10); Statebag `masked` steuert den Ausweis |
 | `loadscreen/index.html` | Ladebildschirm (6.4): Logo, Fortschritt aus `loadProgress`, Tipps; `loadscreen_manual_shutdown`, beendet in `client/main.lua` |
 | `server/immigration.lua`, `client/immigration.lua` | Einreise (6.4): Warteschlange (`TacoV.Immigration.queue`), `pass` (Startgeld + `Onboarding.immigrationItems`), `fail` (`immigration_retry_at`, Kick), Hook `tacov:core:beforeSelect` verweigert das Laden bis zum neuen Versuch; Client hält den Charakter im `airportRadius` |
+| `config/housing.lua`, `server/housing.lua`, `client/housing.lua`, `server/newbie.lua` | Sozialwohnung (6.5): `TacoV.Housing.grantSocial(cid)`, Betreten/Verlassen mit Routing-Bucket `10000 + characterId`, Lager (`Inventory.load('house', homeId, 20)`), Miete stündlich geprüft; Neulingspfad: `TriggerEvent('tacov:newbie:step', src, id)` aus anderen Modulen, Bonus per Journal, Tabellen `homes`, `newbie_steps` |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -114,6 +115,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Charaktereditor (6.1)
 - [x] Kleiderläden, Outfits, Friseur, Chirurg (6.2/6.3) (Migration 018)
 - [x] Ladebildschirm und Einreise (6.4)
+- [x] Sozialwohnung und Neulingspfad (6.5) (Migration 019)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

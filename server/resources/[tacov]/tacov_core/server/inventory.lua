@@ -428,6 +428,7 @@ local function useSlot(source, slot)
   if type(def.use) == 'table' then
     for k, v in pairs(def.use) do TacoV.Needs.add(source, k, v) end
     TacoV.Inventory.takeSlot(inv, slot, 1)
+    TriggerEvent('tacov:newbie:step', source, 'eat')
     TriggerClientEvent('tacov:inventory:used', source, e.item)
     TacoV.Log.write('items', ('Benutzt: %s'):format(def.label), { characterId = inv.ownerId })
     return true
