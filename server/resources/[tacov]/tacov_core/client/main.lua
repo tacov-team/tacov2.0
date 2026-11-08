@@ -49,6 +49,7 @@ end)
 TacoV.Client.aduty = false
 RegisterNetEvent('tacov:core:aduty', function(on, label)
   TacoV.Client.aduty = on
+  TacoV.Client.adutyLabel = label
   TacoV.UI.send('hud', { aduty = on and (label or 'Team') or false })
   TacoV.UI.send('notify', { kind = on and 'warn' or 'info', text = on and ('Admin-Dienst begonnen (' .. tostring(label) .. ').') or 'Admin-Dienst beendet.' })
 end)

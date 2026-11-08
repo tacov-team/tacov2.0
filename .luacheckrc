@@ -33,7 +33,7 @@ globals = {
   "GetVehicleExtraColours", "SetVehicleFuelLevel", "GetVehicleCurrentRpm", "SetVehicleEngineOn", "GetPedInVehicleSeat",
   "SetVehicleDoorsLocked", "NetworkRequestControlOfEntity", "NetworkHasControlOfEntity", "Entity", "SetModelAsNoLongerNeeded",
   "SetVehicleLights", "IsDisabledControlPressed", "SetEntityCollision", "SetNuiFocusKeepInput", "DisableAllControlActions", "EnableControlAction",
-  "SetPedSuffersCriticalHits", "GetPlayers", "PlaySoundFrontend", "AnimpostfxPlay", "GetEntityVelocity", "SetVehicleDirtLevel", "SetVehicleFixed", "SetVehicleWindowTint", "GetVehicleWindowTint", "SetVehicleWheelType", "GetVehicleWheelType", "IsToggleModOn", "ToggleVehicleMod", "SetVehicleModKit", "SetVehicleMod", "GetVehicleMod", "TaskWarpPedIntoVehicle", "DrawMarker", "SetBlipRouteColour", "SetBlipRoute", "GetGamePool", "GetVehiclePedIsIn", "SetVehicleDoorOpen", "SetVehicleDoorShut", "GetVehicleDoorLockStatus", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
+  "SetPedSuffersCriticalHits", "GetPlayers", "Player", "DisableControlAction", "GetGameplayCamRot", "GetBlipInfoIdCoord", "GetFirstBlipInfoId", "GetGroundZFor_3dCoord", "PlaySoundFrontend", "AnimpostfxPlay", "GetEntityVelocity", "SetVehicleDirtLevel", "SetVehicleFixed", "SetVehicleWindowTint", "GetVehicleWindowTint", "SetVehicleWheelType", "GetVehicleWheelType", "IsToggleModOn", "ToggleVehicleMod", "SetVehicleModKit", "SetVehicleMod", "GetVehicleMod", "TaskWarpPedIntoVehicle", "DrawMarker", "SetBlipRouteColour", "SetBlipRoute", "GetGamePool", "GetVehiclePedIsIn", "SetVehicleDoorOpen", "SetVehicleDoorShut", "GetVehicleDoorLockStatus", "CreateCam", "SetCamCoord", "SetCamFov", "PointCamAtEntity", "SetCamActive", "RenderScriptCams", "DestroyCam",
 }
 
 ignore = { "212/_.*" }
@@ -44,3 +44,4 @@ files["**/vehicles.lua"] = { max_line_length = 200 }
 files["**/dmv.lua"] = { max_line_length = 200 }
 files["**/workshop.lua"] = { max_line_length = 200 }
 files["**/traffic.lua"] = { max_line_length = 200 }
+files["**/admin.lua"] = { max_line_length = 200 }

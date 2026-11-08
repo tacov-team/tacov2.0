@@ -41,6 +41,7 @@ server_scripts {
   'server/dmv.lua',
   'server/workshop.lua',
   'server/traffic.lua',
+  'server/admin.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -63,6 +64,7 @@ client_scripts {
   'client/dmv.lua',
   'client/workshop.lua',
   'client/traffic.lua',
+  'client/admin.lua',
   'client/keys.lua',
 }
 
