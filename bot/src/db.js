@@ -22,3 +22,18 @@ export async function query(sql, params = [], env = 'live') {
   const [rows] = await p.execute(sql, params);
   return rows;
 }
+
+const tableCache = {};
+/** Gibt es die Tabelle in dieser Umgebung? (gecacht, alle 5 min neu geprüft) – damit der Bot vor einer Migration nicht spammt */
+export async function hasTable(name, env = 'live') {
+  const k = `${env}:${name}`;
+  const c = tableCache[k];
+  if (c && Date.now() - c.at < 300000) return c.ok;
+  let ok = false;
+  try {
+    const rows = await query('SELECT 1 FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ? LIMIT 1', [name], env);
+    ok = rows.length > 0;
+  } catch { ok = false; }
+  tableCache[k] = { ok, at: Date.now() };
+  return ok;
+}

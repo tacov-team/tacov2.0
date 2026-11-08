@@ -2,7 +2,7 @@
 // Datenbank (der Spielserver schreibt sie), Antworten aus dem Kanal gehen in `ticket_messages` (source = discord) und werden
 // dem Spieler im Spiel gezeigt. `!schliessen` im Kanal schließt das Ticket.
 import { ChannelType, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { query, ENVS } from './db.js';
+import { query, ENVS, hasTable } from './db.js';
 import { config } from './config.js';
 
 const POLL_MS = 10000;
@@ -45,6 +45,7 @@ async function createChannel(client, guild, t, env) {
 
 async function tickEnv(client, guild, env) {
   const db = env.key;
+  if (!(await hasTable('tickets', db))) return;
   // 1) Kanäle für neue Tickets
   const fresh = await query("SELECT * FROM tickets WHERE discord_channel_id IS NULL AND status <> 'closed' ORDER BY id LIMIT 5", [], db);
   for (const t of fresh) {

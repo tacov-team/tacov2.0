@@ -1,6 +1,6 @@
 // Anti-Cheat-Meldungen (Punkt 5.16): neue Zeilen aus `ac_reports` als Embed in den AC-Kanal, AC-Team-Rolle wird erwähnt.
 import { EmbedBuilder } from 'discord.js';
-import { query, ENVS } from './db.js';
+import { query, ENVS, hasTable } from './db.js';
 import { config } from './config.js';
 
 const POLL_MS = 10000;
@@ -8,6 +8,7 @@ const COLORS = { none: 0x8b5cf6, kick: 0xf59e0b, ban: 0xf05252 };
 const LABELS = { none: 'Hinweis', kick: 'Sicherheits-Kick', ban: 'Sicherheitssperre' };
 
 async function tickEnv(client, env) {
+  if (!(await hasTable('ac_reports', env.key))) return;
   const rows = await query('SELECT * FROM ac_reports WHERE posted_discord = 0 ORDER BY id LIMIT 20', [], env.key);
   if (rows.length === 0) return;
   const ch = await client.channels.fetch(config.anticheat.channelId).catch(() => null);
