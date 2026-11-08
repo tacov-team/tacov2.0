@@ -1,6 +1,6 @@
 -- Voice (Konzept 5.5, Punkt 6.7): Sprechweiten 3 / 10 / 25 m per Z mit HUD-Anzeige, Megafon in Einsatzfahrzeugen (Halten),
--- Anbindung an SaltyChat über dessen Statebags (SaltyChat_VoiceRange, SaltyChat_IsUsingMegaphone). Ohne SaltyChat läuft
--- die Anzeige trotzdem.
+-- Anbindung an SaltyChat: Sprechweite über dessen Befehl +voiceRange und Ereignis SaltyChat_VoiceRangeChanged, Megafon über
+-- den Statebag SaltyChat_IsUsingMegaphone (bool). Ohne SaltyChat läuft die Anzeige trotzdem.
 TacoV = TacoV or {}
 TacoV.Voice = { range = 'normal', megaphone = false }
 
@@ -9,22 +9,44 @@ local labels = { whisper = 'Flüstern', normal = 'Normal', shout = 'Rufen' }
 
 local function salty() return GetResourceState('saltychat') == 'started' end
 
+-- Anzeige im HUD aus der tatsächlichen Sprechweite (Meter) ableiten
+local function show(meters)
+  local best = 'normal'
+  for _, r in ipairs(V.order) do if math.abs((V[r] or 0) - meters) < 0.6 then best = r end end
+  TacoV.Voice.range = best
+  TacoV.UI.send('hud', { voice = best, voiceMeters = math.floor(meters + 0.5) })
+end
+
 local function apply()
-  local meters = V[TacoV.Voice.range] or V.normal
-  TacoV.UI.send('hud', { voice = TacoV.Voice.range, voiceMeters = meters })
   if salty() then
-    pcall(function() LocalPlayer.state:set('SaltyChat_VoiceRange', meters + 0.0, true) end)
-    pcall(function() exports.saltychat:SetVoiceRange(meters + 0.0) end) -- ältere Versionen
+    local ok, m = pcall(function() return exports.saltychat:GetVoiceRange() end)
+    show(ok and tonumber(m) or V.normal)
+  else
+    TacoV.UI.send('hud', { voice = TacoV.Voice.range, voiceMeters = V[TacoV.Voice.range] or V.normal })
   end
 end
 
+--- Z: Sprechweite weiterschalten. Mit SaltyChat ausschließlich über dessen eigenen Umschalter (+voiceRange), damit der
+--- Statebag SaltyChat_VoiceRange den Typ behält, den die C#-Resource erwartet (ein von Lua gesetzter Wert bricht die
+--- Synchronisation aller Spieler). Die Stufen stehen in SaltyChats config.json (VoiceRanges = 3/10/25).
 function TacoV.Voice.cycle()
+  if salty() then
+    ExecuteCommand('+voiceRange')
+    return
+  end
   local idx = 1
   for i, r in ipairs(V.order) do if r == TacoV.Voice.range then idx = i end end
   TacoV.Voice.range = V.order[(idx % #V.order) + 1]
   apply()
   TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], V[TacoV.Voice.range]) })
 end
+
+-- SaltyChat meldet jede Änderung (Meter, Index, Anzahl)
+AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters)
+  meters = tonumber(meters) or V.normal
+  show(meters)
+  TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], math.floor(meters + 0.5)) })
+end)
 
 --- Megafon: nur in Einsatzfahrzeugen (Klasse 18) als Fahrer oder Beifahrer, solange die Taste gehalten wird
 local function canMegaphone()

@@ -156,6 +156,7 @@ cfg.update({
   'SwissChannelIds': [int(x) for x in swiss.split(',') if x], 'VoiceRanges': [3.0, 10.0, 25.0],
   'EnableVoiceRangeNotification': False, 'NamePattern': '[{serverid}] {guid}', 'SoundPack': 'default',
   'RadioType': 4, 'EnableRadioHardcoreMode': False, 'MegaphoneRange': 60.0,
+  'ToggleRange': '', 'TalkMegaphone': '', 'TalkPrimary': 'N', 'TalkSecondary': 'CAPITAL',  # Sprechweite/Megafon über TacoV (Z/Alt)
 })
 json.dump(cfg, open(path, 'w'), indent=2); open(path, 'a').write('\n')
 PY
