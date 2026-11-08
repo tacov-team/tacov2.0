@@ -46,7 +46,8 @@ function TacoV.UI.open(view, data, cursor, keepInput)
   TacoV.UI.send('open', { view = view, data = data })
 end
 
---- Cursor für eine 'free'-Ansicht ein-/ausschalten: an = Mauszeiger, alle Spielsteuerung gesperrt (nur Esc); aus = Spiel frei.
+--- Cursor für eine 'free'-Ansicht ein-/ausschalten: an = Mauszeiger (Maus geht an die Oberfläche, Umschauen geht nicht),
+--- Laufen bleibt möglich, Menü-/Angriffstasten gesperrt; aus = Spiel komplett frei.
 function TacoV.UI.setCursor(on)
   if not openView then return end
   cursorOn = on == true
@@ -56,8 +57,7 @@ function TacoV.UI.setCursor(on)
     local view = openView
     CreateThread(function()
       while openView == view and cursorOn do
-        DisableAllControlActions(0)
-        EnableControlAction(0, 200, true) -- Esc
+        for _, c in ipairs(WALK_BLOCK) do DisableControlAction(0, c, true) end
         Wait(0)
       end
     end)
