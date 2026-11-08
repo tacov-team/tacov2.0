@@ -232,6 +232,62 @@ RegisterCommand('warn', function(src, args)
   punish(src, 'warn', args[1], table.concat(args, ' ', 2))
 end, false)
 
+-- ---------------------------------------------------------------- Fahrzeuge (5.10): Rechte prüfen, protokollieren, Client führt aus
+
+local function trimPlate(s) return (tostring(s or ''):gsub('^%s+', ''):gsub('%s+$', '')) end
+
+RegisterNetEvent('tacov:admin:vehicle', function(action, netId, a, b)
+  local src = source
+  local right = action == 'spawn' and 'admin.vehicle.spawn' or 'admin.vehicle'
+  if not need(src, right) then return end
+  if action == 'spawn' then
+    local model = TacoV.Util.cleanText(tostring(a or ''), 32):lower():gsub('[^%w_]', '')
+    if #model == 0 then return end
+    local plate = ('TEAM %03d'):format(math.random(0, 999))
+    TriggerClientEvent('tacov:admin:vehicle:do', src, 'spawn', 0, model, plate)
+    log(src, ('Team-Fahrzeug gespawnt: %s (%s)'):format(model, plate))
+    return
+  end
+  local ent = NetworkGetEntityFromNetworkId(tonumber(netId) or 0)
+  if ent == 0 or not DoesEntityExist(ent) then notify(src, 'error', 'Kein Fahrzeug.') return end
+  local plate = trimPlate(GetVehicleNumberPlateText(ent))
+  if action == 'plate' then
+    local newPlate = TacoV.Util.cleanText(tostring(a or ''), 8):upper()
+    if #newPlate < 2 then notify(src, 'error', 'Kennzeichen zu kurz.') return end
+    if TacoV.DB.scalar('SELECT id FROM vehicles WHERE plate = ?', { newPlate }) then notify(src, 'error', 'Kennzeichen schon vergeben.') return end
+    local row = TacoV.DB.single('SELECT id FROM vehicles WHERE plate = ? AND deleted_at IS NULL', { plate })
+    if row then
+      TacoV.DB.update('UPDATE vehicles SET plate = ? WHERE id = ?', { newPlate, row.id })
+      TacoV.Vehicles.replate(plate, newPlate)
+    end
+    TriggerClientEvent('tacov:vehicles:setPlate', src, tonumber(netId), newPlate)
+    log(src, ('Kennzeichen geändert: %s → %s%s'):format(plate, newPlate, row and '' or ' (kein Eigentum)'))
+    notify(src, 'success', ('Kennzeichen jetzt %s.'):format(newPlate))
+    return
+  end
+  if action == 'owner' then
+    local row = TacoV.DB.single('SELECT v.owner_type, v.owner_id, v.bought_price, v.state, c.first_name, c.last_name FROM vehicles v ' ..
+      'LEFT JOIN characters c ON v.owner_type = \'character\' AND c.id = v.owner_id WHERE v.plate = ? AND v.deleted_at IS NULL', { plate })
+    if not row then notify(src, 'info', ('%s: kein Eigentum (Team- oder Welt-Fahrzeug).'):format(plate))
+    else notify(src, 'info', ('%s gehört %s (#%d), Kaufpreis %s, Zustand %s.'):format(plate, row.first_name and (row.first_name .. ' ' .. row.last_name) or row.owner_type,
+      row.owner_id or 0, fmt(row.bought_price), row.state)) end
+    return
+  end
+  if action == 'delete' then
+    local row = TacoV.DB.single('SELECT id FROM vehicles WHERE plate = ? AND deleted_at IS NULL', { plate })
+    if row then TacoV.DB.update('UPDATE vehicles SET state = \'garage\', garage = COALESCE(garage, \'impound\') WHERE id = ?', { row.id }) end
+    DeleteEntity(ent)
+    log(src, ('Fahrzeug gelöscht: %s%s'):format(plate, row and ' (Eigentum, in Garage zurückgesetzt)' or ''))
+    notify(src, 'success', ('%s entfernt.'):format(plate))
+    return
+  end
+  -- repair, fuel, tune, color, tint: Client führt aus
+  TriggerClientEvent('tacov:admin:vehicle:do', src, action, tonumber(netId), a, b)
+  log(src, ('Fahrzeug %s: %s%s'):format(plate, action, a and (' ' .. tostring(a)) or ''))
+  if action == 'repair' then notify(src, 'success', ('%s repariert.'):format(plate)) end
+  if action == 'fuel' then notify(src, 'success', ('%s vollgetankt.'):format(plate)) end
+end)
+
 -- Befehle
 RegisterCommand('tp', function(src, args)
   if src == 0 then return end

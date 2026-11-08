@@ -321,6 +321,157 @@ RegisterNetEvent('tacov:admin:file', function(f)
   end)
 end)
 
+-- ---------------------------------------------------------------- Fahrzeuge (5.10)
+
+local function loadModel(name)
+  local hash = GetHashKey(name)
+  if not IsModelValid(hash) or not IsModelAVehicle(hash) then return nil end
+  RequestModel(hash)
+  local t = GetGameTimer()
+  while not HasModelLoaded(hash) and GetGameTimer() - t < 5000 do Wait(20) end
+  return HasModelLoaded(hash) and hash or nil
+end
+
+local function control(veh)
+  NetworkRequestControlOfEntity(veh)
+  local t = GetGameTimer()
+  while not NetworkHasControlOfEntity(veh) and GetGameTimer() - t < 1000 do Wait(10) end
+  return NetworkHasControlOfEntity(veh)
+end
+
+local function targetVehicle()
+  local ped = PlayerPedId()
+  local veh = GetVehiclePedIsIn(ped, false)
+  if veh ~= 0 then return veh end
+  local pos = GetEntityCoords(ped)
+  local best, bestD = 0, 6.0
+  for _, v in ipairs(GetGamePool('CVehicle')) do
+    local d = #(GetEntityCoords(v) - pos)
+    if d < bestD then best, bestD = v, d end
+  end
+  return best
+end
+
+RegisterNetEvent('tacov:admin:vehicle:do', function(action, netId, a, b)
+  if action == 'spawn' then
+    local hash = loadModel(a)
+    if not hash then notify('error', 'Unbekanntes Fahrzeugmodell: ' .. tostring(a)) return end
+    local ped = PlayerPedId()
+    local old = GetVehiclePedIsIn(ped, false)
+    local pos, h = GetEntityCoords(ped), GetEntityHeading(ped)
+    if old ~= 0 and control(old) then DeleteEntity(old) end
+    local veh = CreateVehicle(hash, pos.x, pos.y, pos.z, h, true, false)
+    local t = GetGameTimer()
+    while not DoesEntityExist(veh) and GetGameTimer() - t < 3000 do Wait(20) end
+    if not DoesEntityExist(veh) then notify('error', 'Fahrzeug konnte nicht erstellt werden.') return end
+    SetModelAsNoLongerNeeded(hash)
+    SetEntityAsMissionEntity(veh, true, true)
+    SetVehicleNumberPlateText(veh, b)
+    SetVehicleOnGroundProperly(veh)
+    TacoV.Vehicles.keys[b] = true
+    local tank = TacoV.Vehicles.tankOf(veh)
+    Entity(veh).state:set('fuel', tank, true)
+    Entity(veh).state:set('engine', true, true)
+    SetVehicleEngineOn(veh, true, true, false)
+    TaskWarpPedIntoVehicle(ped, veh, -1)
+    notify('success', ('Team-Fahrzeug %s (%s) steht bereit.'):format(a, b))
+    return
+  end
+  local veh = NetworkGetEntityFromNetworkId(netId or 0)
+  if veh == 0 or not DoesEntityExist(veh) or not control(veh) then return end
+  if action == 'repair' then
+    SetVehicleFixed(veh) SetVehicleDeformationFixed(veh) SetVehicleUndriveable(veh, false)
+    SetVehicleEngineHealth(veh, 1000.0) SetVehicleBodyHealth(veh, 1000.0) SetVehiclePetrolTankHealth(veh, 1000.0) SetVehicleDirtLevel(veh, 0.0)
+  elseif action == 'fuel' then
+    local tank = TacoV.Vehicles.tankOf(veh)
+    Entity(veh).state:set('fuel', tank, true)
+    SetVehicleFuelLevel(veh, 100.0)
+  elseif action == 'tune' then
+    SetVehicleModKit(veh, 0)
+    for _, mt in ipairs({ 11, 12, 13, 15, 16 }) do SetVehicleMod(veh, mt, GetNumVehicleMods(veh, mt) - 1, false) end
+    ToggleVehicleMod(veh, 18, true)
+    ToggleVehicleMod(veh, 22, true)
+    notify('success', 'Voll getunt.')
+  elseif action == 'color' then
+    SetVehicleColours(veh, tonumber(a), tonumber(b) or tonumber(a))
+  elseif action == 'tint' then
+    SetVehicleWindowTint(veh, tonumber(a))
+  end
+end)
+
+function TacoV.Admin.openVehicles()
+  local veh = targetVehicle()
+  local plate = veh ~= 0 and TacoV.Vehicles.plateOf(veh) or nil
+  local items = {
+    { id = 'spawn', label = 'Team-Fahrzeug spawnen', icon = 'car', sub = 'temporär, kein Eigentum', section = 'Neu' },
+  }
+  if veh ~= 0 then
+    local sec = ('Fahrzeug %s'):format(plate)
+    items[#items + 1] = { id = 'owner', label = 'Besitzer anzeigen', icon = 'id', section = sec }
+    items[#items + 1] = { id = 'repair', label = 'Reparieren', icon = 'wrench' }
+    items[#items + 1] = { id = 'fuel', label = 'Volltanken', icon = 'fuel' }
+    items[#items + 1] = { id = 'plate', label = 'Kennzeichen ändern', icon = 'doc' }
+    items[#items + 1] = { id = 'tune', label = 'Voll tunen', icon = 'engine' }
+    items[#items + 1] = { id = 'color', label = 'Farbe', icon = 'star' }
+    items[#items + 1] = { id = 'tint', label = 'Fensterfarbe', icon = 'search' }
+    items[#items + 1] = { id = 'delete', label = 'Fahrzeug löschen', icon = 'x', section = 'Gefahr' }
+  else
+    items[#items + 1] = { id = 'none', label = 'Kein Fahrzeug in der Nähe', icon = 'info', dim = true, section = 'Fahrzeug' }
+  end
+  items[#items + 1] = { id = 'clear', label = 'Leere Fahrzeuge im Umkreis (15 m) löschen', icon = 'x', section = 'Aufräumen' }
+  TacoV.Menu.open({ id = 'admin_vehicles', title = 'Fahrzeuge', icon = 'car', info = 'Team-Werkzeuge', note = 'Jede Aktion wird protokolliert.', items = items }, function(id)
+    local netId = veh ~= 0 and NetworkGetNetworkIdFromEntity(veh) or 0
+    if id == 'spawn' then
+      local classes = {}
+      for cid, cls in pairs(TacoV.Config.Vehicles.classes) do classes[#classes + 1] = { id = cid, label = cls.label, icon = 'car', order = cls.order } end
+      table.sort(classes, function(x, y) return x.order < y.order end)
+      classes[#classes + 1] = { id = '__custom', label = 'Modell eingeben', icon = 'plus', section = 'Sonstiges' }
+      TacoV.Menu.open({ id = 'admin_vehcls', title = 'Team-Fahrzeug', icon = 'car', items = classes }, function(cls)
+        if cls == '__custom' then
+          TacoV.UI.ask({ title = 'Fahrzeugmodell (z. B. police)', maxLength = 32, icon = 'car' }, function(v)
+            if v and #v > 0 then TacoV.Menu.close() TriggerServerEvent('tacov:admin:vehicle', 'spawn', 0, v) end
+          end)
+          return
+        end
+        local list = {}
+        for _, v in ipairs(TacoV.Config.Vehicles.list) do if v.class == cls then list[#list + 1] = { id = v.model, label = v.label, icon = 'car', sub = v.model } end end
+        TacoV.Menu.open({ id = 'admin_vehmodel', title = TacoV.Config.Vehicles.classes[cls].label, icon = 'car', items = list }, function(model)
+          TacoV.Menu.close()
+          TriggerServerEvent('tacov:admin:vehicle', 'spawn', 0, model)
+        end)
+      end)
+    elseif id == 'owner' or id == 'repair' or id == 'fuel' or id == 'tune' then
+      TriggerServerEvent('tacov:admin:vehicle', id, netId)
+    elseif id == 'plate' then
+      TacoV.UI.ask({ title = 'Neues Kennzeichen (max. 8 Zeichen)', value = plate, maxLength = 8, icon = 'doc' }, function(v)
+        if v and #v > 1 then TriggerServerEvent('tacov:admin:vehicle', 'plate', netId, v) end
+      end)
+    elseif id == 'color' then
+      local items2 = {}
+      for _, c in ipairs(TacoV.Config.Workshop.colors) do items2[#items2 + 1] = { id = tostring(c.id), label = c.label, icon = 'star' } end
+      TacoV.Menu.open({ id = 'admin_vehcolor', title = 'Farbe', icon = 'star', items = items2 }, function(c) TriggerServerEvent('tacov:admin:vehicle', 'color', netId, tonumber(c)) end)
+    elseif id == 'tint' then
+      local items2 = {}
+      for _, t in ipairs(TacoV.Config.Workshop.tints) do items2[#items2 + 1] = { id = tostring(t.id), label = t.label, icon = 'search' } end
+      TacoV.Menu.open({ id = 'admin_vehtint', title = 'Fensterfarbe', icon = 'search', items = items2 }, function(t) TriggerServerEvent('tacov:admin:vehicle', 'tint', netId, tonumber(t)) end)
+    elseif id == 'delete' then
+      TacoV.Menu.close()
+      TriggerServerEvent('tacov:admin:vehicle', 'delete', netId)
+    elseif id == 'clear' then
+      TacoV.Menu.close()
+      local pos = GetEntityCoords(PlayerPedId())
+      local n = 0
+      for _, v in ipairs(GetGamePool('CVehicle')) do
+        if #(GetEntityCoords(v) - pos) < 15.0 and IsVehicleSeatFree(v, -1) and GetVehicleNumberOfPassengers(v) == 0 then
+          TriggerServerEvent('tacov:admin:vehicle', 'delete', NetworkGetNetworkIdFromEntity(v))
+          n = n + 1
+        end
+      end
+      notify('info', ('%d Fahrzeuge zum Löschen gemeldet.'):format(n))
+    end
+  end)
+end
+
 function TacoV.Admin.openMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   TriggerServerEvent('tacov:admin:players')
@@ -328,6 +479,7 @@ function TacoV.Admin.openMenu()
     return {
       { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
       { id = 'creator',   label = 'Creator', icon = 'tool', sub = 'Orte, Türen, Aufzüge, NPCs …' },
+      { id = 'vehicles',  label = 'Fahrzeuge', icon = 'car', sub = 'Spawnen, reparieren, Kennzeichen, löschen' },
       { id = 'invisible', label = 'Unsichtbar', icon = 'search', badge = TacoV.Admin.invisible and 'An' or 'Aus', section = 'Ich' },
       { id = 'noclip',    label = 'Noclip',     icon = 'play',   badge = TacoV.Admin.noclip and 'An' or 'Aus', sub = 'WASD, Q/E, Shift' },
       { id = 'waypoint',  label = 'Zum Wegpunkt teleportieren', icon = 'pin', section = 'Teleport' },
@@ -349,6 +501,8 @@ function TacoV.Admin.openMenu()
       TriggerServerEvent('tacov:admin:teleport', 'waypoint')
     elseif id == 'creator' then
       TacoV.Creator.openMenu()
+    elseif id == 'vehicles' then
+      TacoV.Admin.openVehicles()
     elseif id == 'players' then
       TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
         items = playerItems(true) }, function(pid)
