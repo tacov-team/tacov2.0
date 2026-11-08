@@ -119,6 +119,7 @@ ui_page 'ui/index.html'
 
 loadscreen 'loadscreen/index.html'
 loadscreen_manual_shutdown 'yes'
+loadscreen_cursor 'yes'
 
 files {
   'loadscreen/index.html',
