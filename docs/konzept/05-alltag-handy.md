@@ -29,6 +29,8 @@ Kein Stress, kein Schlaf. Offline keine Veränderung. Anzeige wird im Design fes
 
 ## 3. Handy
 
+Bedienung: F1 holt das Handy raus, das Spiel läuft weiter (laufen, Kamera). Alt blendet den Mauszeiger ein – dann steht der Spieler und bedient die Apps; Alt erneut nimmt den Zeiger weg, F1 legt das Handy weg (auch während eines Gesprächs).
+
 Item mit Nummer; Kontakte und Nachrichten hängen am Charakter. Zehn Apps:
 
 | App | Funktion |

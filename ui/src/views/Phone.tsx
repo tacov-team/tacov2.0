@@ -6,7 +6,7 @@ import { Icon } from '../components/Icon';
 import { money } from './Hud';
 
 export type PhoneApp = { id: string; label: string; icon: string; enabled: boolean; badge?: number };
-export type PhoneData = { number: string; time?: string; apps: PhoneApp[]; open?: string };
+export type PhoneData = { number: string; time?: string; apps: PhoneApp[]; open?: string; cursor?: boolean };
 export type Contact = { id: number; name: string; number: string; favorite: boolean };
 export type CallState = { with: string; name?: string; state: 'incoming' | 'outgoing' | 'active'; since?: number } | null;
 export type Thread = { number: string; name?: string; last: string; at: string; unread: number };
@@ -252,9 +252,11 @@ export function Phone({ data }: { data: PhoneData }) {
   const [call, setCall] = useState<CallState>(null);
   const [msgTarget, setMsgTarget] = useState<{ number: string; name?: string } | undefined>(undefined);
   const [settings, setSettings] = useState<Settings>(loadPhoneSettings);
+  const [cursor, setCursor] = useState<boolean>(data.cursor ?? true);
   useNuiEvent<{ app: string; data: unknown }>('phone', (d) => {
     if (d.app === 'apps') setApps(d.data as PhoneApp[]);
     if (d.app === 'call') setCall(d.data as CallState);
+    if (d.app === 'cursor') setCursor(d.data === true);
   });
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -291,7 +293,8 @@ export function Phone({ data }: { data: PhoneData }) {
   const isHome = !call && !app;
 
   return (
-    <div className="phone">
+    <div className={'phone' + (cursor ? '' : ' nocursor')}>
+      {!cursor && <div className="ph-hint"><b>Alt</b> Handy bedienen · <b>F1</b> weglegen</div>}
       <div className={'ph-screen' + (isHome ? ' home' : '')}>
         <div className="ph-island" />
         <div className="ph-status">

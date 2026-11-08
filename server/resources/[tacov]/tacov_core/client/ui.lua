@@ -12,9 +12,18 @@ end
 --- Öffnet eine Ansicht. cursor=false für reine Tastatur-Ansichten (Befehlszeile).
 --- keepInput=true: das Spiel behält die Tastatur (für Halten-Menüs wie das X-Rad); Bewegung/Kamera werden solange gesperrt.
 --- keepInput='walk': Spieler kann weiterlaufen; nur die Menü-Tasten (Pfeile, Enter, Backspace, Esc) gehen nicht ans Spiel.
+--- keepInput='free': die Ansicht wird nur angezeigt, das Spiel läuft ganz normal (Handy); Cursor erst per TacoV.UI.setCursor(true).
 local WALK_BLOCK = { 27, 172, 173, 174, 175, 177, 191, 194, 199, 200, 201, 202, 243, 322, 37, 24, 25, 257, 140, 141, 142 }
+local cursorOn = false
 function TacoV.UI.open(view, data, cursor, keepInput)
   openView = view
+  cursorOn = false
+  if keepInput == 'free' then
+    SetNuiFocusKeepInput(false)
+    SetNuiFocus(false, false)
+    TacoV.UI.send('open', { view = view, data = data })
+    return
+  end
   SetNuiFocus(true, cursor ~= false)
   SetNuiFocusKeepInput(keepInput == true or keepInput == 'walk')
   if keepInput == 'walk' then
@@ -37,8 +46,31 @@ function TacoV.UI.open(view, data, cursor, keepInput)
   TacoV.UI.send('open', { view = view, data = data })
 end
 
+--- Cursor für eine 'free'-Ansicht ein-/ausschalten: an = Mauszeiger, alle Spielsteuerung gesperrt (nur Esc); aus = Spiel frei.
+function TacoV.UI.setCursor(on)
+  if not openView then return end
+  cursorOn = on == true
+  if cursorOn then
+    SetNuiFocus(true, true)
+    SetNuiFocusKeepInput(true)
+    local view = openView
+    CreateThread(function()
+      while openView == view and cursorOn do
+        DisableAllControlActions(0)
+        EnableControlAction(0, 200, true) -- Esc
+        Wait(0)
+      end
+    end)
+  else
+    SetNuiFocusKeepInput(false)
+    SetNuiFocus(false, false)
+  end
+end
+function TacoV.UI.hasCursor() return cursorOn end
+
 function TacoV.UI.close()
   openView = nil
+  cursorOn = false
   SetNuiFocusKeepInput(false)
   SetNuiFocus(false, false)
   TacoV.UI.send('close')

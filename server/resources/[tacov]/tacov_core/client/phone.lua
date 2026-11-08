@@ -11,10 +11,18 @@ function TacoV.Phone.toggle()
   TriggerServerEvent('tacov:phone:open')
 end
 
+--- Alt: Mauszeiger ein/aus. Ohne Zeiger läuft das Spiel normal weiter (laufen, F1 weglegen, auch im Gespräch).
+function TacoV.Phone.toggleCursor()
+  if TacoV.UI.current() ~= 'phone' then return end
+  local on = not TacoV.UI.hasCursor()
+  TacoV.UI.setCursor(on)
+  TacoV.UI.send('phone', { app = 'cursor', data = on })
+end
+
 RegisterNetEvent('tacov:phone:show', function(d)
   TacoV.Phone.open = true
   for _, a in ipairs(d.apps) do if a.id == 'messages' then a.badge = d.unread end end
-  TacoV.UI.open('phone', { number = d.number, apps = d.apps, time = d.time }, true, 'walk')
+  TacoV.UI.open('phone', { number = d.number, apps = d.apps, time = d.time, cursor = false }, false, 'free')
   -- Handy-Animation
   local ped = PlayerPedId()
   RequestAnimDict('cellphone@')

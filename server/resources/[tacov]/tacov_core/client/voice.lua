@@ -65,10 +65,7 @@ local function canMegaphone()
 end
 
 function TacoV.Voice.setMegaphone(on)
-  if on and not canMegaphone() then
-    TacoV.UI.send('notify', { kind = 'error', text = 'Megafon nur im Einsatzfahrzeug (vorne).' })
-    return
-  end
+  if on and not canMegaphone() then return end -- still: Alt ist außerhalb des Einsatzfahrzeugs ohne Wirkung
   if TacoV.Voice.megaphone == on then return end
   TacoV.Voice.megaphone = on
   if salty() then pcall(function() LocalPlayer.state:set('SaltyChat_IsUsingMegaphone', on, true) end) end
@@ -78,9 +75,14 @@ end
 RegisterCommand('+tacov_voice', function() if TacoV.Client.character then TacoV.Voice.cycle() end end, false)
 RegisterCommand('-tacov_voice', function() end, false) -- Loslassen: nichts (sonst doppelt)
 RegisterKeyMapping('+tacov_voice', 'TacoV: Sprechweite', 'keyboard', V.key or 'Z')
-RegisterCommand('+tacov_megaphone', function() if TacoV.Client.character then TacoV.Voice.setMegaphone(true) end end, false)
+-- Alt: bei offenem Handy Mauszeiger ein/aus, sonst Megafon (halten)
+RegisterCommand('+tacov_megaphone', function()
+  if not TacoV.Client.character then return end
+  if TacoV.UI.current() == 'phone' then TacoV.Phone.toggleCursor() return end
+  TacoV.Voice.setMegaphone(true)
+end, false)
 RegisterCommand('-tacov_megaphone', function() TacoV.Voice.setMegaphone(false) end, false)
-RegisterKeyMapping('+tacov_megaphone', 'TacoV: Megafon (halten)', 'keyboard', V.megaphoneKey or 'LMENU')
+RegisterKeyMapping('+tacov_megaphone', 'TacoV: Megafon (halten) / Handy-Zeiger', 'keyboard', V.megaphoneKey or 'LMENU')
 
 AddEventHandler('tacov:core:characterLoaded', function() apply() end)
 CreateThread(function()
