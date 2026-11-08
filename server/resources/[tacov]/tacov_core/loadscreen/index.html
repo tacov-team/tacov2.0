@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>TacoV lädt</title>
+<style>
+  :root { --accent: #A78BFA; --accent-2: #8B5CF6; --text: #F4F1FA; --muted: rgba(244,241,250,0.65); }
+  html, body { margin: 0; height: 100%; overflow: hidden; font-family: "Segoe UI", system-ui, sans-serif; color: var(--text); background: #0d0b14; }
+  .bg { position: absolute; inset: 0; background:
+    radial-gradient(60% 50% at 20% 80%, rgba(139,92,246,0.35), transparent 60%),
+    radial-gradient(50% 40% at 85% 15%, rgba(167,139,250,0.25), transparent 60%),
+    linear-gradient(160deg, #0e0c16 0%, #16122a 50%, #0d0b14 100%); }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(circle at 50% 50%, #000 30%, transparent 80%); }
+  .wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+  .logo { width: 320px; filter: drop-shadow(0 8px 30px rgba(0,0,0,0.6)); animation: float 4s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .title { font-size: 14px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--muted); }
+  .bar { width: 420px; height: 6px; border-radius: 6px; background: rgba(255,255,255,0.08); overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+  .bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-2), var(--accent)); box-shadow: 0 0 14px rgba(167,139,250,0.8); transition: width 0.3s ease; }
+  .status { font-size: 13px; color: var(--muted); min-height: 1.2em; }
+  .tip { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); max-width: 720px; padding: 14px 22px; border-radius: 14px; background: rgba(14,12,22,0.78); border: 1px solid rgba(255,255,255,0.08); border-left: 4px solid var(--accent-2); backdrop-filter: blur(8px); text-align: center; font-size: 15px; line-height: 1.5; opacity: 0; transition: opacity 0.5s; }
+  .tip.on { opacity: 1; }
+  .tip b { display: block; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .foot { position: absolute; bottom: 16px; width: 100%; text-align: center; font-size: 11px; color: rgba(244,241,250,0.4); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="grid"></div>
+<div class="wrap">
+  <img class="logo" src="../ui/assets/logo.png" alt="TacoV">
+  <div class="title">Roleplay · Los Santos</div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="status" id="status">Verbindung wird aufgebaut …</div>
+</div>
+<div class="tip" id="tip"><b>Tipp</b><span id="tipText"></span></div>
+<div class="foot">TacoV · Softcore/Midcore · Bodyshot · Einreise mit dem Team am Flughafen</div>
+<script>
+  const tips = [
+    'Neue Charaktere landen in der Ankunftshalle des Flughafens – ein Teammitglied führt die Einreise durch.',
+    'F2 öffnet das Inventar, X das Interaktionsrad, T die Befehlszeile. /support erreicht das Team.',
+    'Blitzer stehen an den großen Straßen: 5 km/h Toleranz, danach wird es teuer.',
+    'Fahrzeuge vom Kaufhaus brauchen eine Zulassung beim DMV – mit TMP-Kennzeichen fällst du auf.',
+    'Der Motor startet nicht von allein: Im Fahrzeugmenü (F6) oder im X-Rad starten.',
+    'Z wechselt die Sprechweite: Flüstern 3 m, normal 10 m, Rufen 25 m.',
+    'Hunger und Durst sinken über drei Stunden – Läden und Burger Shot helfen.',
+    'Kleidung, Friseur und Outfits: bis zu 10 Outfits je Charakter, Maske verbirgt deinen Ausweis.',
+    'Die Kfz-Steuer wird wöchentlich vom Konto gebucht – offene Beträge sind beim Ausparken fällig.',
+  ];
+  let i = Math.floor(Math.random() * tips.length);
+  const tip = document.getElementById('tip'), tipText = document.getElementById('tipText');
+  function showTip() { tip.classList.remove('on'); setTimeout(() => { tipText.textContent = tips[i % tips.length]; i++; tip.classList.add('on'); }, 500); }
+  showTip(); setInterval(showTip, 7000);
+  const bar = document.getElementById('bar'), status = document.getElementById('status');
+  const names = { INIT_BEFORE_MAP_LOADED: 'Welt wird vorbereitet …', MAP: 'Karte wird geladen …', INIT_AFTER_MAP_LOADED: 'Straßen und Gebäude …', INIT_SESSION: 'Sitzung wird gestartet …' };
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.eventName === 'loadProgress') { bar.style.width = Math.round((d.loadFraction || 0) * 100) + '%'; }
+    if (d.eventName === 'startInitFunctionOrder' || d.eventName === 'startInitFunction') { status.textContent = names[d.type] || 'Wird geladen …'; }
+    if (d.eventName === 'onLogLine') { status.textContent = d.message || status.textContent; }
+    if (d.eventName === 'endDataFileEntries') { status.textContent = 'Fast fertig …'; bar.style.width = '96%'; }
+  });
+</script>
+</body>
+</html>

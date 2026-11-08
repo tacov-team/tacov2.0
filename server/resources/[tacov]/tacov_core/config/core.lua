@@ -31,6 +31,11 @@ TacoV.Config.Onboarding = {
   socialHousingDays = 14,          -- Konzept 1: Sozialwohnung 14 Tage kostenlos
   retryHours = 24,                 -- Konzept 1: erneuter Einreiseversuch nach 24 h
   requiresStaff = true,            -- Konzept 1: Einreise nur mit Teammitglied
+  airportRadius = 140.0,           -- Ohne Einreise bleibt der Charakter in diesem Umkreis um die Ankunftshalle
+  immigrationItems = {             -- Ausstattung bei bestandener Einreise
+    { item = 'id_card', amount = 1 }, { item = 'phone', amount = 1 }, { item = 'housing_key', amount = 1 },
+    { item = 'bus_ticket', amount = 1 }, { item = 'city_map', amount = 1 },
+  },
   spawn = vector4(-1037.6, -2737.7, 20.2, 330.0), -- Ankunftshalle LSIA
   editorSpot = vector4(-1037.6, -2737.7, 20.2, 330.0), -- Charaktereditor (Punkt 6.1): Standort der Figur
 }

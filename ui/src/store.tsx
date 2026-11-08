@@ -21,7 +21,7 @@ export type HudData = {
   name: string; level: number; levelProgress: number; status: string; faction: string;
   visible: boolean;
   factionRank?: string;
-  aduty?: string | false; // Admin-Dienst: Rollenname, sonst false
+  aduty?: string | false; notice?: string | false; // Admin-Dienst: Rollenname, sonst false
   minimap?: { x: number; y: number; w: number; h: number }; // Bruchteile des Bildschirms, von Lua
   radio?: { id: number; name: string; talking?: boolean }[]; // wer gerade im Funk ist
   radioFrequency?: string; radioOn?: boolean;

@@ -329,3 +329,5 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 .ed-step .num { flex: 1; text-align: center; }
 .ed-group { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.3rem; border-radius: 0.6rem; border: 1px dashed var(--line); }
 .ed-row input[type=range] { width: 100%; accent-color: var(--accent-2); height: 1.2rem; }
+
+.hud-info .aduty.notice .b { background: rgba(245, 158, 11, 0.25); color: var(--warn); }

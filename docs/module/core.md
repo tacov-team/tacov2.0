@@ -60,6 +60,8 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/anticheat.lua`, `server/anticheat.lua` | Anti-Cheat (5.16): `TacoV.AC.report(src, kind, details, action)`, `TacoV.AC.allowTeleport(src)` (Server-Teleports melden, sonst zählt der Sprung), Prüfungen Bewegung/Tempo/Bargeld/Explosionen/Entities, Team im Dienst ausgenommen; Tabelle `ac_reports`; `/actest` |
 | `client/appearance.lua` | Aussehen (6.1): `TacoV.Appearance.default/apply/applyTo/readClothes/limits`, Editor `openEditor(opts, cb)` (NUI `editor`, Live-Vorschau per `tacov:ui:editor:update`, Kamera Gesicht/Körper, Drehen); Server `TacoV.Characters.cleanAppearance/setAppearance` |
 | `config/clothing.lua`, `shared/clothingprice.lua`, `client/clothing.lua`, `server/clothing.lua` | Kleiderladen/Friseur/Chirurg (6.2/6.3): Editor mit Reiter-Filter, Live-Preis (`TacoV.Clothing.price/barberPrice`), `tacov:clothing:apply(kind, appearance, method)` prüft Ort/Preis/Zahlung und speichert; Outfits (`outfits`, max. 10); Statebag `masked` steuert den Ausweis |
+| `loadscreen/index.html` | Ladebildschirm (6.4): Logo, Fortschritt aus `loadProgress`, Tipps; `loadscreen_manual_shutdown`, beendet in `client/main.lua` |
+| `server/immigration.lua`, `client/immigration.lua` | Einreise (6.4): Warteschlange (`TacoV.Immigration.queue`), `pass` (Startgeld + `Onboarding.immigrationItems`), `fail` (`immigration_retry_at`, Kick), Hook `tacov:core:beforeSelect` verweigert das Laden bis zum neuen Versuch; Client hält den Charakter im `airportRadius` |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -111,6 +113,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Anti-Cheat-Grundlage (5.16) (Migration 017)
 - [x] Charaktereditor (6.1)
 - [x] Kleiderläden, Outfits, Friseur, Chirurg (6.2/6.3) (Migration 018)
+- [x] Ladebildschirm und Einreise (6.4)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

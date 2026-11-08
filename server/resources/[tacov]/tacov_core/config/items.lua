@@ -24,6 +24,7 @@ item('luxury_watch',{ label = 'Uhr',           category = 'loot', weight = 0.2, 
 
 -- Dokumente (unique: je Platz ein Stück mit eigenen Daten)
 item('id_card',     { label = 'Ausweis',       category = 'document', weight = 0.0, stack = 1, unique = true, use = 'event' })
+item('housing_key', { label = 'Wohnungsschlüssel', category = 'document', weight = 0.0, stack = 1, unique = true })
 item('passport',    { label = 'Reisepass',     category = 'document', weight = 0.0, stack = 1, unique = true })
 item('license_a',   { label = 'Führerschein A', category = 'document', weight = 0.0, stack = 1, unique = true })
 item('license_b',   { label = 'Führerschein B', category = 'document', weight = 0.0, stack = 1, unique = true })
@@ -111,8 +112,7 @@ item('prison_clothes',  { label = 'Gefängniskleidung', category = 'daily', weig
 
 TacoV.Config.Items = I
 
--- Startausrüstung bei der Charakteranlage (Entscheidung 06.11.2026: kein Handy)
+-- Bei der Charakteranlage: nur der Reisepass (Konzept 1.4). Den Rest gibt es mit der Einreise (config/core.lua, Onboarding).
 TacoV.Config.StartItems = {
-  { item = 'id_card', amount = 1 },
-  { item = 'city_map', amount = 1 },
+  { item = 'passport', amount = 1 },
 }

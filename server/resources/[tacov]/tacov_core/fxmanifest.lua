@@ -61,6 +61,7 @@ server_scripts {
   'server/tickets.lua',
   'server/anticheat.lua',
   'server/clothing.lua',
+  'server/immigration.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -94,12 +95,17 @@ client_scripts {
   'client/configedit.lua',
   'client/devtools.lua',
   'client/clothing.lua',
+  'client/immigration.lua',
   'client/keys.lua',
 }
 
 ui_page 'ui/index.html'
 
+loadscreen 'loadscreen/index.html'
+loadscreen_manual_shutdown 'yes'
+
 files {
+  'loadscreen/index.html',
   'ui/index.html',
   'ui/app.js',
   'ui/app.css',

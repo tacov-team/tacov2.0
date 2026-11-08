@@ -108,13 +108,11 @@ function TacoV.Characters.create(source, data)
       TacoV.Util.intInRange(data.gender, 0, 1) and data.gender or 0,
       json.encode(TacoV.Characters.cleanAppearance(data.appearance, data.gender)), json.encode(TacoV.Config.Onboarding.spawn) }
   )
-  -- Girokonto mit Startgeld, über das Journal (Konzept 1: Startgeld aufs Konto)
+  -- Konto anlegen; Startgeld und Ausstattung gibt es erst mit bestandener Einreise (Punkt 6.4). Bis dahin: nur Reisepass.
   TacoV.Journal.account('character', id)
-  TacoV.Journal.move('bank', nil, { type = 'character', id = id }, TacoV.Config.Onboarding.startCash, 'startgeld')
-  -- Startausrüstung (config/items.lua): Ausweis trägt Name und Geburtsdatum
   local inv = TacoV.Inventory.load('character', id)
   for _, s in ipairs(TacoV.Config.StartItems) do
-    local meta = s.item == 'id_card' and { name = first .. ' ' .. last, birth = data.birthDate } or nil
+    local meta = s.item == 'passport' and { name = first .. ' ' .. last, birth = data.birthDate } or nil
     TacoV.Inventory.add(inv, s.item, s.amount, meta)
   end
   TacoV.Log.write('character', ('Charakter angelegt: %s %s (#%d)'):format(first, last, id),
@@ -128,6 +126,9 @@ function TacoV.Characters.select(source, characterId)
   if not p then return false, 'player' end
   local c = TacoV.DB.single('SELECT * FROM characters WHERE id = ? AND player_id = ? AND deleted_at IS NULL', { characterId, p.id })
   if not c then return false, 'character' end
+  local denied = nil
+  TriggerEvent('tacov:core:beforeSelect', source, c, function(reason) denied = reason end)
+  if denied then return false, denied end
   c.appearance = c.appearance and json.decode(c.appearance) or {}
   c.position = c.position and json.decode(c.position) or TacoV.Config.Onboarding.spawn
   c.needs = c.needs and json.decode(c.needs) or { hunger = 100, thirst = 100 }
