@@ -19,7 +19,8 @@ function TacoV.Immigration.queue()
   for src, p in pairs(TacoV.Players.all()) do
     local c = TacoV.Characters.get(src)
     if c and not c.immigrated_at then
-      list[#list + 1] = { id = src, name = nameOf(c), characterId = c.id, origin = c.origin, since = c.sessionStart or os.time(), discordId = p.discordId }
+      list[#list + 1] = { id = src, name = nameOf(c), characterId = c.id, origin = c.origin, since = c.sessionStart or os.time(),
+        waitMinutes = math.floor((os.time() - (c.sessionStart or os.time())) / 60), discordId = p.discordId }
     end
   end
   table.sort(list, function(a, b) return a.since < b.since end)

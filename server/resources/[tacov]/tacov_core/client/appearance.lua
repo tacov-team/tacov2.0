@@ -122,7 +122,7 @@ local editing = nil -- { cb, cam, heading, base }
 local function camFor(mode)
   local ped = PlayerPedId()
   local pos = GetEntityCoords(ped)
-  local h = math.rad(GetEntityHeading(ped))
+  local h = math.rad(editing and editing.baseHeading or GetEntityHeading(ped))
   local fwd = vector3(-math.sin(h), math.cos(h), 0.0)
   if mode == 'body' then
     return pos + fwd * 2.6 + vector3(0.0, 0.0, 0.2), pos + vector3(0.0, 0.0, 0.1)
@@ -155,6 +155,7 @@ function TacoV.Appearance.openEditor(opts, cb)
     SetEntityCoordsNoOffset(ped, opts.spot.x, opts.spot.y, opts.spot.z, false, false, false)
     SetEntityHeading(ped, opts.spot.w)
   end
+  editing.baseHeading = GetEntityHeading(ped)
   SetEntityVisible(ped, true, false)
   FreezeEntityPosition(ped, true)
   SetEntityInvincible(ped, true)
@@ -207,7 +208,6 @@ AddEventHandler('tacov:ui:editor:rotate', function(d)
   if not editing then return end
   local ped = PlayerPedId()
   SetEntityHeading(ped, (GetEntityHeading(ped) + (tonumber(d.delta) or 0)) % 360)
-  setCam(editing.mode)
 end)
 AddEventHandler('tacov:ui:editor:done', function(d)
   if not editing then return end

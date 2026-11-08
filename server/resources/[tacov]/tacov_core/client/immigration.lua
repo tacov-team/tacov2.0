@@ -34,9 +34,8 @@ end)
 -- Team-Menü → Einreise
 RegisterNetEvent('tacov:immigration:list', function(list)
   local items = {}
-  local now = os.time()
   for i, e in ipairs(list) do
-    local mins = math.floor((now - (e.since or now)) / 60)
+    local mins = e.waitMinutes or 0
     items[#items + 1] = { id = tostring(e.id), label = ('#%d  %s'):format(e.id, e.name), icon = 'user', sub = ('Herkunft: %s · wartet seit %d min'):format(e.origin or '–', mins),
       section = i == 1 and 'Warteschlange' or nil }
   end
