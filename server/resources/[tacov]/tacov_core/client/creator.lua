@@ -46,6 +46,21 @@ function TacoV.Creator.place(opts, cb)
         end
       end
     end
+    if opts.previewProp then
+      local hash = GetHashKey(opts.previewProp)
+      if IsModelValid(hash) then
+        RequestModel(hash)
+        local t0 = GetGameTimer()
+        while not HasModelLoaded(hash) and GetGameTimer() - t0 < 5000 do Wait(20) end
+        if HasModelLoaded(hash) then
+          preview = CreateObjectNoOffset(hash, pos.x, pos.y, pos.z, false, false, false)
+          SetEntityAlpha(preview, 170, false)
+          SetEntityCollision(preview, false, false)
+          FreezeEntityPosition(preview, true)
+          SetModelAsNoLongerNeeded(hash)
+        end
+      end
+    end
     local function finish(ok)
       placing = false
       TacoV.UI.send('hint', nil)
@@ -77,8 +92,9 @@ function TacoV.Creator.place(opts, cb)
       if IsDisabledControlPressed(0, 44) then heading = (heading + rstep) % 360 end
       if IsDisabledControlPressed(0, 38) then heading = (heading - rstep) % 360 end
       if preview then
-        SetEntityCoordsNoOffset(preview, pos.x, pos.y, pos.z + 1.0, false, false, false)
+        SetEntityCoordsNoOffset(preview, pos.x, pos.y, pos.z + (opts.previewPed and 1.0 or 0.0), false, false, false)
         SetEntityHeading(preview, heading)
+        if opts.previewProp and opts.onGround then PlaceObjectOnGroundProperly(preview) end
       end
       DrawMarker(1, pos.x, pos.y, pos.z - 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.5, 167, 139, 250, locked and 170 or 110, false, true, 2, nil, nil, false)
       local tip = pos + fwd * 1.2
@@ -340,13 +356,15 @@ function TacoV.Creator.openMenu()
     { id = 'elevators', label = 'Aufzüge', icon = 'home', sub = 'Etagen, Zugang' },
     { id = 'portals', label = 'Portale', icon = 'next', sub = 'Ein-/Ausgang für Interiors' },
     { id = 'peds', label = 'NPCs', icon = 'user', sub = 'Ansprechpartner mit Aufgabe' },
-    { id = 'props', label = 'Objekte', icon = 'box', dim = true, badge = 'bald' },
-    { id = 'zones', label = 'Zonen', icon = 'pin', dim = true, badge = 'bald' },
+    { id = 'props', label = 'Objekte', icon = 'box', sub = 'Requisiten setzen und drehen' },
+    { id = 'zones', label = 'Zonen', icon = 'pin', sub = 'Kreis oder Polygon' },
   } }, function(id)
     if id == 'locations' then TacoV.Creator.openLocations()
     elseif id == 'doors' then TacoV.Doors.openCreator()
     elseif id == 'elevators' then TacoV.Teleports.openElevatorCreator()
     elseif id == 'portals' then TacoV.Teleports.openPortalCreator()
-    elseif id == 'peds' then TacoV.Peds.openCreator() end
+    elseif id == 'peds' then TacoV.Peds.openCreator()
+    elseif id == 'props' then TacoV.Props.openCreator()
+    elseif id == 'zones' then TacoV.Zones.openCreator() end
   end)
 end

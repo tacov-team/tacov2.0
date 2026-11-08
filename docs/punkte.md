@@ -104,8 +104,8 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 | 5.5 | Elevator Creator: Aufzüge mit Etagen, Zugang, Teleport mit Blende | 🔧 | Creator → Aufzüge: Bezeichnung, Etagen nacheinander platzieren und benennen; E am Etagenpunkt → Etagenwahl → Blende; Zugang wie Türen; Etagen ergänzen/verschieben/entfernen; Tabelle `elevators` (Migration 011) |
 | 5.6 | Teleport-/Portal-Creator: Ein-/Ausgänge für Interiors (z. B. Polizeiwache, Wohnungen) | 🔧 | Creator → Portale: Eingang und Ausgang platzieren, beide Richtungen oder Einbahn, Zugang wie Türen; E „Betreten“ mit Blende; Tabelle `portals` (Migration 011) |
 | 5.7 | Ped-/NPC-Creator: Ansprechpartner mit Modell, Animation, Aufgabe (Shop, Job, Kaufhaus) | 🔧 | Creator → NPCs: 20 Modelle + freie Eingabe, Vorschau am Zeiger, 15 Szenarien, Aufgabe (Laden, Bank, Kaufhaus, DMV, Garage, Werkstatt, Tankstelle) – E „Ansprechen“ löst sie aus, wenn der NPC am Ort steht; lokal gespawnt (unverwundbar, eingefroren); Tabelle `peds` (Migration 012) |
-| 5.8 | Objekt-Placer: Requisiten setzen, drehen, speichern (Schranken, Container, Möbel-Grundlage) | ⬜ | |
-| 5.9 | Zonen-Creator: Bereiche (Polygon/Kreis) für Gebiete, Sicherheitszonen, Jobs | ⬜ | |
+| 5.8 | Objekt-Placer: Requisiten setzen, drehen, speichern (Schranken, Container, Möbel-Grundlage) | 🔧 | Creator → Objekte: 18 Requisiten + freie Eingabe, Vorschau am Zeiger, Q/E drehen, auf Boden ausrichten; lokal gespawnt in 200 m; Tabelle `props` (Migration 013) |
+| 5.9 | Zonen-Creator: Bereiche (Polygon/Kreis) für Gebiete, Sicherheitszonen, Jobs | 🔧 | Creator → Zonen: Art (Sicherheitszone, Job, Gebiet, Fahrzeugverbot, Sonstiges), Kreis (Mittelpunkt+Radius) oder Polygon (Punkte ablaufen), Höhenbereich, Anzeige ein/aus; Client-Ereignisse `tacov:zone:enter/leave`, `TacoV.Zones.inside(kind)`; Server `TacoV.Zones.at/playerIn`; Tabelle `zones` |
 | 5.10 | Fahrzeug-Spawner und Fahrzeug-Editor für das Team (Modell, Kennzeichen, Tuning) | ⬜ | |
 | 5.11 | Item- und Geld-Werkzeuge mit Vier-Augen-Prinzip (Erstattung) | ⬜ | |
 | 5.12 | Welt-Steuerung: Wetter, Uhrzeit, Ansagen, Neustart-Ankündigung | ⬜ | |

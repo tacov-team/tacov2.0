@@ -50,6 +50,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/access.lua` | Zugangsregeln für Türen/Aufzüge/Portale: `TacoV.Access.check(src, access)` (Fraktion+Mindestrang oder Schlüssel-Item, sonst frei; `creator` immer), `clean`, `text` |
 | `client/teleports.lua`, `server/teleports.lua` | Aufzüge (5.5: Etagenliste, E → Etagenwahl → Blende) und Portale (5.6: Eingang/Ausgang, Einbahn optional, E „Betreten“); Server prüft Nähe (4 m) und Zugang; Creator-Menüs; Tabellen `elevators`, `portals` |
 | `config/peds.lua`, `client/peds.lua`, `server/peds.lua` | NPC-Creator (5.7): Modelle/Szenarien/Aufgaben aus Config, Peds lokal in 120 m gespawnt, E „Ansprechen“ (Reihenfolge 4) ruft die Aufforderung der Aufgabe (`TacoV.Prompt.entries[task]`) auf; Platzierer mit halbtransparenter Vorschau (`previewPed`); Tabelle `peds` |
+| `config/world.lua`, `client/world.lua`, `server/world.lua` | Objekt-Placer (5.8: lokale Requisiten, Vorschau `previewProp`, `onGround`) und Zonen (5.9: Kreis/Polygon mit Punkt-in-Polygon-Test, Betreten/Verlassen-Ereignisse und Hinweis, Debug-Anzeige; Server-Abfrage `TacoV.Zones.at(x,y,z,kind)`, `playerIn(src,kind)`, Export `zonesAt`); Tabellen `props`, `zones` |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -91,6 +92,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Door Creator (5.4) (Migration 010)
 - [x] Elevator Creator (5.5) und Portal Creator (5.6) (Migration 011)
 - [x] NPC-Creator (5.7) (Migration 012)
+- [x] Objekt-Placer (5.8) und Zonen-Creator (5.9) (Migration 013)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

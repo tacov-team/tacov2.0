@@ -22,6 +22,7 @@ shared_scripts {
   'config/workshop.lua',
   'config/traffic.lua',
   'config/peds.lua',
+  'config/world.lua',
 }
 
 server_scripts {
@@ -48,6 +49,7 @@ server_scripts {
   'server/doors.lua',
   'server/teleports.lua',
   'server/peds.lua',
+  'server/world.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -75,6 +77,7 @@ client_scripts {
   'client/doors.lua',
   'client/teleports.lua',
   'client/peds.lua',
+  'client/world.lua',
   'client/keys.lua',
 }
 
