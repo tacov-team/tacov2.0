@@ -17,7 +17,7 @@ TacoV = { Config = {} }
 function vector3(x, y, z) return { x = x, y = y, z = z } end
 function vector4(x, y, z, w) return { x = x, y = y, z = z, w = w } end
 local base = 'server/resources/[tacov]/tacov_core/config/'
-for _, f in ipairs({ 'core.lua', 'economy.lua', 'vehicles.lua', 'dmv.lua' }) do
+for _, f in ipairs({ 'core.lua', 'locations.lua', 'economy.lua', 'vehicles.lua', 'dmv.lua' }) do
   local chunk = assert(loadfile(base .. f))
   chunk()
 end
