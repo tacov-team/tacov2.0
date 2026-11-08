@@ -37,6 +37,7 @@ item('city_map',    { label = 'Stadtplan',     category = 'document', weight = 0
 
 -- Alltag
 item('phone',       { label = 'Handy',         category = 'daily', weight = 0.2, stack = 1, unique = true })
+item('bandage',     { label = 'Verband',        category = 'daily', weight = 0.1, stack = 20, use = 'event' })
 item('first_aid',   { label = 'Erste-Hilfe-Kit', category = 'daily', weight = 0.5, stack = 10, use = 'event' })
 item('water',       { label = 'Wasser',        category = 'drink', weight = 0.5, stack = 20, use = { thirst = 35 } })
 item('burger',      { label = 'Burger',        category = 'food', weight = 0.3, stack = 20, use = { hunger = 35 } })

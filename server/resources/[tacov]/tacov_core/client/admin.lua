@@ -171,6 +171,7 @@ local players = {}
 RegisterNetEvent('tacov:admin:players', function(list) players = list end)
 
 RegisterNetEvent('tacov:admin:healed', function()
+  TriggerEvent('tacov:admin:healedLocal')
   local ped = PlayerPedId()
   SetEntityHealth(ped, GetEntityMaxHealth(ped))
   SetPedArmour(ped, 100)

@@ -81,7 +81,7 @@ export function Hud() {
           {h.black > 0 && <><span className="num" style={{ color: 'var(--black-money)' }}>{money(h.black)}</span><span className="coin black">S</span></>}
         </div>
         <div className="hud-stats">
-          <div className={'stat voice ' + (h.voice ?? 'normal')} title="Sprechweite"><span className="c"><Icon name="mic" size={15} /></span><span className="num">{h.voiceMeters ?? 10} m</span></div>
+          <div className={'stat voice ' + (h.megaphone ? 'shout' : (h.voice ?? 'normal'))} title={h.megaphone ? 'Megafon' : 'Sprechweite'}><span className="c"><Icon name={h.megaphone ? 'radio' : 'mic'} size={15} /></span><span className="num">{h.megaphone ? 'MEGA' : `${h.voiceMeters ?? 10} m`}</span></div>
           <Stat icon="food" value={h.hunger} />
           <Stat icon="drop" value={h.thirst} />
           {h.radioOn && <div className="stat"><span className="c" title="Funk an"><Icon name="radio" size={16} /></span></div>}
@@ -100,6 +100,8 @@ export function Hud() {
         <div><span className="b"><Icon name="briefcase" size={16} /></span><span>{h.faction || 'Zivilist'}{h.factionRank && <small>{h.factionRank}</small>}</span></div>
         <div><span className="b"><Icon name="clock" size={16} /></span><span className="num">{date}<small>{time} Uhr</small></span></div>
         {h.aduty && <div className="aduty"><span className="b"><Icon name="shield" size={16} /></span><span>Admin-Dienst<small>{h.aduty}</small></span></div>}
+        {h.injury && <div className="aduty notice"><span className="b"><Icon name="heart" size={16} /></span><span>Verletzt<small>{h.injury === 'medium' ? 'mittel – Erste Hilfe oder LSMD' : 'leicht'}</small></span></div>}
+        {typeof h.downed === 'number' && <div className="aduty"><span className="b"><Icon name="heart" size={16} /></span><span>Bewusstlos<small>Koma in {Math.floor(h.downed / 60)}:{String(h.downed % 60).padStart(2, '0')} · Hilfe rufen</small></span></div>}
         {h.notice && <div className="aduty notice"><span className="b"><Icon name="id" size={16} /></span><span>Hinweis<small>{h.notice}</small></span></div>}
       </div>
 

@@ -133,6 +133,7 @@ RegisterNetEvent('tacov:admin:heal', function(target)
   target = tonumber(target)
   if not TacoV.Players.get(target) then return end
   TriggerClientEvent('tacov:admin:healed', target)
+  TriggerEvent('tacov:health:adminHeal', target)
   if TacoV.Characters.get(target) then
     TacoV.Needs.add(target, 'hunger', 100)
     TacoV.Needs.add(target, 'thirst', 100)
