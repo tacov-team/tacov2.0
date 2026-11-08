@@ -26,7 +26,10 @@ function TacoV.AC.report(src, kind, details, action)
   local p, c, name = who(src)
   if not p then return end
   action = action or 'none'
-  if action == 'kick' and kicks[p.discordId] and os.time() - kicks[p.discordId] < 86400 then action = 'ban' end
+  if action == 'kick' then
+    local k = kicks[p.discordId]
+    if k and os.time() - k.at < 86400 and k.n >= 2 then action = 'ban' end -- dritter eindeutiger Fall binnen 24 h → Sperre
+  end
   TacoV.DB.insert('INSERT INTO ac_reports (discord_id, character_id, player_name, kind, details, action) VALUES (?, ?, ?, ?, ?, ?)',
     { p.discordId, c and c.id, name, kind, TacoV.Util.cleanText(details, 500), action })
   TacoV.Log.write('admin', ('AC %s: %s – %s (%s)'):format(kind, name, details, action), { discordId = p.discordId, characterId = c and c.id })
@@ -36,7 +39,8 @@ function TacoV.AC.report(src, kind, details, action)
     end
   end
   if action == 'kick' then
-    kicks[p.discordId] = os.time()
+    local k = kicks[p.discordId]
+    kicks[p.discordId] = { at = os.time(), n = (k and os.time() - k.at < 86400) and k.n + 1 or 1 }
     DropPlayer(src, 'Sicherheits-Kick (Anti-Cheat): ' .. kind .. '. Bei Fragen: Support im Discord.')
   elseif action == 'ban' then
     TacoV.DB.insert('INSERT INTO bans (discord_id, reason, issued_by, until_at) VALUES (?, ?, \'anticheat\', DATE_ADD(NOW(), INTERVAL ? HOUR))',
@@ -135,6 +139,9 @@ for _, m in ipairs(C.blacklistedModels) do blacklist[GetHashKey(m)] = m end
 AddEventHandler('entityCreating', function(entity)
   local owner = NetworkGetEntityOwner(entity)
   if not owner or owner <= 0 or TacoV.Permissions.onDuty(owner) then return end
+  -- Nur von Skripten erzeugte Entities zählen (Population 7 = Mission, 8 = dauerhaft); Verkehr/Passanten (1–6) sind normal
+  local pop = GetEntityPopulationType(entity)
+  if pop ~= 7 and pop ~= 8 then return end
   local model = GetEntityModel(entity)
   if blacklist[model] then
     CancelEvent()
@@ -167,6 +174,18 @@ RegisterNetEvent('tacov:ac:list', function()
   if not TacoV.Permissions.has(src, 'admin.ban') then return end
   TriggerClientEvent('tacov:ac:list', src, TacoV.DB.query('SELECT id, player_name, kind, details, action, created_at FROM ac_reports ORDER BY id DESC LIMIT 25') or {})
 end)
+
+-- /entsperren <Discord-ID> – Sperre aufheben (admin.ban; Konsole erlaubt)
+RegisterCommand('entsperren', function(src, args)
+  if src ~= 0 and not TacoV.Permissions.has(src, 'admin.ban') then return end
+  local id = tostring(args[1] or '')
+  if #id < 5 then if src ~= 0 then TriggerClientEvent('tacov:core:notify', src, 'info', 'Nutzung: /entsperren <Discord-ID>') else print('Nutzung: entsperren <Discord-ID>') end return end
+  local n = TacoV.DB.update('UPDATE bans SET lifted_at = NOW() WHERE discord_id = ? AND lifted_at IS NULL', { id })
+  kicks[id] = nil
+  local p = src ~= 0 and TacoV.Players.get(src)
+  TacoV.Log.write('admin', ('Entsperrt: %s (%s Sperren)'):format(id, tostring(n)), { discordId = p and p.discordId })
+  if src ~= 0 then TriggerClientEvent('tacov:core:notify', src, 'success', ('Sperren von %s aufgehoben.'):format(id)) else print(('Sperren von %s aufgehoben.'):format(id)) end
+end, true)
 
 RegisterCommand('actest', function(src)
   if src == 0 or not TacoV.Permissions.has(src, 'admin.config') then return end
