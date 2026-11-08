@@ -77,32 +77,7 @@ TacoV.Prompt.register({ id = 'door_lock', label = 'Tür abschließen', order = 1
 
 -- ---------------------------------------------------------------- Creator
 
---- Entität anvisieren: Kamera-Strahl auf Objekte; cb(entity) oder cb(nil)
-local function pickEntity(label, cb)
-  CreateThread(function()
-    TacoV.UI.send('hint', { key = 'Enter', text = label .. ' anschauen und Enter drücken · Backspace abbrechen' })
-    while true do
-      Wait(0)
-      DisableControlAction(0, 191, true) DisableControlAction(0, 201, true) DisableControlAction(0, 177, true) DisableControlAction(0, 202, true)
-      local rot = GetGameplayCamRot(2)
-      local yaw, pitch = math.rad(rot.z), math.rad(rot.x)
-      local dir = vector3(-math.sin(yaw) * math.cos(pitch), math.cos(yaw) * math.cos(pitch), math.sin(pitch))
-      local from = GetGameplayCamCoord()
-      local to = from + dir * 15.0
-      local handle = StartShapeTestLosProbe(from.x, from.y, from.z, to.x, to.y, to.z, 16, PlayerPedId(), 4)
-      local _, hit, coords, _, ent = GetShapeTestResult(handle)
-      if hit == 1 and ent ~= 0 and DoesEntityExist(ent) then
-        local p = GetEntityCoords(ent)
-        DrawMarker(28, p.x, p.y, p.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 167, 139, 250, 160, false, true, 2, nil, nil, false)
-        DrawLine(coords.x, coords.y, coords.z, p.x, p.y, p.z, 255, 255, 255, 180)
-        if IsDisabledControlJustPressed(0, 191) or IsDisabledControlJustPressed(0, 201) then
-          TacoV.UI.send('hint', nil) cb(ent) return
-        end
-      end
-      if IsDisabledControlJustPressed(0, 177) or IsDisabledControlJustPressed(0, 202) then TacoV.UI.send('hint', nil) cb(nil) return end
-    end
-  end)
-end
+local pickEntity = function(label, cb) return TacoV.Creator.pickEntity(label, cb) end
 
 local function partOf(ent)
   local p = GetEntityCoords(ent)
@@ -111,12 +86,7 @@ end
 
 local function save(d) TriggerServerEvent('tacov:doors:save', d) end
 
-local function accessText(a)
-  a = a or {}
-  if a.faction then return ('Fraktion %s ab Rang %d'):format(a.faction, a.minRank or 0) end
-  if a.item then return 'Schlüssel: ' .. ((TacoV.Config.Items[a.item] or {}).label or a.item) end
-  return 'Frei (jeder darf)'
-end
+local function accessText(a) return TacoV.Creator.accessText(a) end
 
 local function doorMenu(d)
   d.access = d.access or {}
@@ -124,9 +94,7 @@ local function doorMenu(d)
     { id = 'info', label = ('%d Teil(e) · %s'):format(#d.parts, d.locked and 'abgeschlossen' or 'offen'), icon = 'door', dim = true, sub = accessText(d.access) },
     { id = 'toggle', label = d.locked and 'Aufschließen' or 'Abschließen', icon = 'key', section = 'Zustand' },
     { id = 'label', label = 'Bezeichnung ändern', icon = 'doc', sub = d.label, section = 'Einstellungen' },
-    { id = 'faction', label = 'Zugang: Fraktion', icon = 'shield', sub = d.access.faction and (d.access.faction .. ' ab Rang ' .. tostring(d.access.minRank or 0)) or 'nicht gesetzt' },
-    { id = 'item', label = 'Zugang: Schlüssel-Item', icon = 'key', sub = d.access.item or 'nicht gesetzt' },
-    { id = 'free', label = 'Zugang: frei', icon = 'lock', sub = 'Fraktion und Schlüssel entfernen' },
+    { id = 'access', label = 'Zugang', icon = 'lock', sub = accessText(d.access) },
     { id = 'auto', label = 'Automatisch schließen', icon = 'clock', sub = (d.autoClose or 0) > 0 and (d.autoClose .. ' s') or 'nie' },
     { id = 'addpart', label = 'Teil hinzufügen', icon = 'plus', sub = 'z. B. zweiter Flügel', section = 'Teile' },
     { id = 'clearparts', label = 'Teile neu erfassen', icon = 'search' },
@@ -136,27 +104,7 @@ local function doorMenu(d)
     if id == 'toggle' then TriggerServerEvent('tacov:doors:toggle', d.id) TacoV.Menu.back()
     elseif id == 'label' then
       TacoV.UI.ask({ title = 'Bezeichnung', value = d.label, maxLength = 64, icon = 'door' }, function(v) if v and #v > 0 then d.label = v save(d) end end)
-    elseif id == 'faction' then
-      TacoV.UI.ask({ title = 'Fraktion (Kürzel, z. B. lspd)', value = d.access.faction or '', maxLength = 32, icon = 'shield' }, function(f)
-        if not f or #f == 0 then return end
-        TacoV.UI.ask({ title = 'Mindestrang (0 = alle Mitglieder)', value = tostring(d.access.minRank or 0), maxLength = 2, numeric = true, icon = 'shield' }, function(r)
-          d.access.faction = f:lower()
-          d.access.minRank = tonumber(r or '') or 0
-          d.access.item = nil
-          save(d)
-        end)
-      end)
-    elseif id == 'item' then
-      local list = {}
-      for name, def in pairs(TacoV.Config.Items) do
-        if not def.money then list[#list + 1] = { id = name, label = def.label, icon = 'key', sub = name } end
-      end
-      table.sort(list, function(x, y) return x.label < y.label end)
-      TacoV.Menu.open({ id = 'door_item', title = 'Schlüssel-Item', icon = 'key', items = list }, function(item)
-        d.access.item = item d.access.faction = nil d.access.minRank = nil
-        save(d) TacoV.Menu.back()
-      end)
-    elseif id == 'free' then d.access = {} save(d) TacoV.Menu.back()
+    elseif id == 'access' then TacoV.Creator.accessMenu(d, function() save(d) end)
     elseif id == 'auto' then
       TacoV.UI.ask({ title = 'Sekunden bis zum Abschließen (0 = nie)', value = tostring(d.autoClose or 0), maxLength = 4, numeric = true, icon = 'clock' }, function(v)
         d.autoClose = math.max(0, math.floor(tonumber(v or '') or 0)) save(d)

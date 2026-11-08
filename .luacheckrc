@@ -47,3 +47,5 @@ files["**/traffic.lua"] = { max_line_length = 200 }
 files["**/admin.lua"] = { max_line_length = 200 }
 files["**/creator.lua"] = { max_line_length = 200 }
 files["**/doors.lua"] = { max_line_length = 200 }
+files["**/teleports.lua"] = { max_line_length = 200 }
+files["**/access.lua"] = { max_line_length = 200 }

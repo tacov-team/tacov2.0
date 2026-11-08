@@ -74,6 +74,94 @@ function TacoV.Creator.place(opts, cb)
   return true
 end
 
+--- Entität anvisieren (Kamera-Strahl auf Objekte): cb(entity, trefferpunkt) oder cb(nil)
+function TacoV.Creator.pickEntity(label, cb)
+  if placing then return false end
+  placing = true
+  CreateThread(function()
+    TacoV.UI.send('hint', { key = 'Enter', text = label .. ' anschauen und Enter drücken · Backspace abbrechen' })
+    while placing do
+      Wait(0)
+      for _, c in ipairs({ 191, 201, 177, 202 }) do DisableControlAction(0, c, true) end
+      local rot = GetGameplayCamRot(2)
+      local yaw, pitch = math.rad(rot.z), math.rad(rot.x)
+      local dir = vector3(-math.sin(yaw) * math.cos(pitch), math.cos(yaw) * math.cos(pitch), math.sin(pitch))
+      local from = GetGameplayCamCoord()
+      local to = from + dir * 15.0
+      local handle = StartShapeTestLosProbe(from.x, from.y, from.z, to.x, to.y, to.z, 16, PlayerPedId(), 4)
+      local _, hit, coords, _, ent = GetShapeTestResult(handle)
+      if hit == 1 and ent ~= 0 and DoesEntityExist(ent) then
+        local p = GetEntityCoords(ent)
+        DrawMarker(28, p.x, p.y, p.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 167, 139, 250, 160, false, true, 2, nil, nil, false)
+        DrawLine(coords.x, coords.y, coords.z, p.x, p.y, p.z, 255, 255, 255, 180)
+        if IsDisabledControlJustPressed(0, 191) or IsDisabledControlJustPressed(0, 201) then
+          placing = false TacoV.UI.send('hint', nil) cb(ent, coords) return
+        end
+      end
+      if IsDisabledControlJustPressed(0, 177) or IsDisabledControlJustPressed(0, 202) then
+        placing = false TacoV.UI.send('hint', nil) cb(nil) return
+      end
+    end
+  end)
+  return true
+end
+
+--- Zugangsregel als Text
+function TacoV.Creator.accessText(a)
+  a = a or {}
+  if a.faction then return ('Fraktion %s ab Rang %d'):format(a.faction, a.minRank or 0) end
+  if a.item then return 'Schlüssel: ' .. ((TacoV.Config.Items[a.item] or {}).label or a.item) end
+  return 'Frei (jeder darf)'
+end
+
+--- Untermenü „Zugang“: bearbeitet obj.access und ruft onSave() auf
+function TacoV.Creator.accessMenu(obj, onSave)
+  obj.access = obj.access or {}
+  TacoV.Menu.open({ id = 'creator_access', title = 'Zugang', icon = 'lock', info = TacoV.Creator.accessText(obj.access), items = {
+    { id = 'faction', label = 'Fraktion mit Mindestrang', icon = 'shield', sub = obj.access.faction and (obj.access.faction .. ' ab Rang ' .. tostring(obj.access.minRank or 0)) or 'nicht gesetzt' },
+    { id = 'item', label = 'Schlüssel-Item', icon = 'key', sub = obj.access.item or 'nicht gesetzt' },
+    { id = 'free', label = 'Frei (jeder darf)', icon = 'check' },
+  } }, function(id)
+    if id == 'faction' then
+      TacoV.UI.ask({ title = 'Fraktion (Kürzel, z. B. lspd)', value = obj.access.faction or '', maxLength = 32, icon = 'shield' }, function(f)
+        if not f or #f == 0 then return end
+        TacoV.UI.ask({ title = 'Mindestrang (0 = alle Mitglieder)', value = tostring(obj.access.minRank or 0), maxLength = 2, numeric = true, icon = 'shield' }, function(r)
+          obj.access = { faction = f:lower(), minRank = tonumber(r or '') or 0 }
+          onSave() TacoV.Menu.back()
+        end)
+      end)
+    elseif id == 'item' then
+      local list = {}
+      for name, def in pairs(TacoV.Config.Items) do
+        if not def.money then list[#list + 1] = { id = name, label = def.label, icon = 'key', sub = name } end
+      end
+      table.sort(list, function(x, y) return x.label < y.label end)
+      TacoV.Menu.open({ id = 'creator_access_item', title = 'Schlüssel-Item', icon = 'key', items = list }, function(item)
+        obj.access = { item = item }
+        onSave() TacoV.Menu.back() TacoV.Menu.back()
+      end)
+    elseif id == 'free' then
+      obj.access = {}
+      onSave() TacoV.Menu.back()
+    end
+  end)
+end
+
+--- Teleport mit Blende (Aufzug, Portal, Team)
+function TacoV.Creator.fadeTeleport(x, y, z, h)
+  local ped = PlayerPedId()
+  local ent = IsPedInAnyVehicle(ped, false) and GetVehiclePedIsIn(ped, false) or ped
+  DoScreenFadeOut(300)
+  Wait(320)
+  RequestCollisionAtCoord(x, y, z)
+  SetEntityCoordsNoOffset(ent, x, y, z, false, false, false)
+  if h then SetEntityHeading(ent, h) end
+  local waited = 0
+  while not HasCollisionLoadedAroundEntity(ent) and waited < 1500 do Wait(50) waited = waited + 50 end
+  Wait(100)
+  DoScreenFadeIn(400)
+end
+
 -- ---------------------------------------------------------------- Orte-Creator (5.3)
 
 local function kinds()
@@ -232,13 +320,15 @@ function TacoV.Creator.openMenu()
   TacoV.Menu.open({ id = 'creator', title = 'Creator', icon = 'tool', info = 'Inhalte ohne Code setzen', items = {
     { id = 'locations', label = 'Orte', icon = 'pin', sub = 'Blips, E-Punkte, Ausfahrten' },
     { id = 'doors', label = 'Türen', icon = 'door', sub = 'Erfassen, Zugang, zu/offen' },
-    { id = 'elevators', label = 'Aufzüge', icon = 'home', dim = true, badge = 'bald' },
-    { id = 'portals', label = 'Portale', icon = 'next', dim = true, badge = 'bald' },
+    { id = 'elevators', label = 'Aufzüge', icon = 'home', sub = 'Etagen, Zugang' },
+    { id = 'portals', label = 'Portale', icon = 'next', sub = 'Ein-/Ausgang für Interiors' },
     { id = 'peds', label = 'NPCs', icon = 'user', dim = true, badge = 'bald' },
     { id = 'props', label = 'Objekte', icon = 'box', dim = true, badge = 'bald' },
     { id = 'zones', label = 'Zonen', icon = 'pin', dim = true, badge = 'bald' },
   } }, function(id)
     if id == 'locations' then TacoV.Creator.openLocations()
-    elseif id == 'doors' then TacoV.Doors.openCreator() end
+    elseif id == 'doors' then TacoV.Doors.openCreator()
+    elseif id == 'elevators' then TacoV.Teleports.openElevatorCreator()
+    elseif id == 'portals' then TacoV.Teleports.openPortalCreator() end
   end)
 end

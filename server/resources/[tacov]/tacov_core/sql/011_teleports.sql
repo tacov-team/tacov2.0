@@ -1,0 +1,20 @@
+-- TacoV Kern · Migration 011 · Aufzüge (5.5) und Portale (5.6)
+CREATE TABLE IF NOT EXISTS elevators (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  label VARCHAR(64) NOT NULL DEFAULT '',
+  floors TEXT NOT NULL,                -- JSON: [{ label, x, y, z, h }]
+  access TEXT NULL,
+  updated_by VARCHAR(32) NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS portals (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  label VARCHAR(64) NOT NULL DEFAULT '',
+  entry TEXT NOT NULL,                 -- JSON: { x, y, z, h }
+  target TEXT NOT NULL,                -- JSON: { x, y, z, h }
+  one_way TINYINT(1) NOT NULL DEFAULT 0,
+  access TEXT NULL,
+  updated_by VARCHAR(32) NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

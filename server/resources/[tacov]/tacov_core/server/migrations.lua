@@ -17,6 +17,7 @@ local function listMigrations()
     { version = 8, file = 'sql/008_warnings.sql' },
     { version = 9, file = 'sql/009_locations_extra.sql' },
     { version = 10, file = 'sql/010_doors.sql' },
+    { version = 11, file = 'sql/011_teleports.sql' },
   }
 end
 

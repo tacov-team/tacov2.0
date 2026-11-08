@@ -37,14 +37,7 @@ function TacoV.Doors.get(id) return doors[id] end
 
 --- Darf die Quelle diese Tür bedienen?
 function TacoV.Doors.canUse(src, d)
-  if TacoV.Permissions.has(src, 'creator') then return true end
-  local c = TacoV.Characters.get(src)
-  if not c then return false end
-  local a = d.access or {}
-  if a.faction and c.faction == a.faction and (c.faction_rank or 0) >= (a.minRank or 0) then return true end
-  if a.item and TacoV.Inventory.has(TacoV.Inventory.ofSource(src), a.item, 1) then return true end
-  if not a.faction and not a.item then return true end -- Tür ohne Zugangsregel: jeder darf
-  return false
+  return TacoV.Access.check(src, d.access)
 end
 
 local function setLocked(d, locked, src)
@@ -82,11 +75,7 @@ RegisterNetEvent('tacov:doors:save', function(d)
   for _, pt in ipairs(d.parts) do
     if tonumber(pt.model) and tonumber(pt.x) then parts[#parts + 1] = { model = math.floor(tonumber(pt.model)), x = tonumber(pt.x), y = tonumber(pt.y), z = tonumber(pt.z) } end
   end
-  local a = type(d.access) == 'table' and d.access or {}
-  local access = {}
-  if type(a.faction) == 'string' and #a.faction > 0 then access.faction = TacoV.Util.cleanText(a.faction, 32):lower() end
-  if tonumber(a.minRank) then access.minRank = math.floor(tonumber(a.minRank)) end
-  if type(a.item) == 'string' and TacoV.Config.Items[a.item] then access.item = a.item end
+  local access = TacoV.Access.clean(d.access)
   local label = TacoV.Util.cleanText(tostring(d.label or ''), 64)
   local autoClose = math.max(0, math.floor(tonumber(d.autoClose) or 0))
   local locked = d.locked ~= false
@@ -100,8 +89,7 @@ RegisterNetEvent('tacov:doors:save', function(d)
       { label, json.encode(parts), json.encode(access), locked and 1 or 0, autoClose, p and p.discordId })
   end
   doors[id] = { id = id, label = label, parts = parts, access = access, locked = locked, autoClose = autoClose }
-  TacoV.Log.write('admin', ('Tür gespeichert #%d „%s“ (%d Teile, %s)'):format(id, label, #parts,
-    access.faction and ('Fraktion ' .. access.faction .. ' ab Rang ' .. tostring(access.minRank or 0)) or (access.item and ('Schlüssel ' .. access.item) or 'frei')),
+  TacoV.Log.write('admin', ('Tür gespeichert #%d „%s“ (%d Teile, %s)'):format(id, label, #parts, TacoV.Access.text(access)),
     { discordId = p and p.discordId })
   notify(src, 'success', ('Tür „%s“ gespeichert.'):format(label))
   TacoV.Doors.push(-1)
