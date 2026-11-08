@@ -29,6 +29,7 @@ TacoV.Config.Rights = {
   ['support.invisible'] = 1,  -- unsichtbar beobachten
   ['immigration']       = 1,  -- Einreise durchführen (Konzept 1)
   ['admin.warn']        = 1,
+  ['support.heal']      = 1,  -- Spieler heilen
   -- Stufe 2 · Moderator
   ['admin.kick']        = 2,
   ['admin.ban.temp']    = 2,  -- Sperren bis 7 Tage
@@ -75,3 +76,10 @@ TacoV.Config.AdutyOutfit = {
     props = { [0] = false, [1] = false, [2] = false },
   },
 }
+
+-- Vorgefertigte Gründe für Verwarnung, Kick und Sperre im Team-Menü (freier Text per /warn, /kick, /sperre)
+TacoV.Config.AdminReasons = {
+  'RDM', 'VDM', 'Metagaming', 'Powergaming', 'Fail-RP', 'Beleidigung', 'Bug-Abuse', 'Cheating', 'Safezone-Verstoß', 'Combat-Logging',
+}
+TacoV.Config.AdminBanDurations = { { 1, '1 Stunde' }, { 12, '12 Stunden' }, { 24, '1 Tag' }, { 72, '3 Tage' }, { 168, '7 Tage' }, { 0, 'Dauerhaft' } }
+TacoV.Config.AdminMoneyAmounts = { 1000, 5000, 10000, 50000, 100000, 1000000 }

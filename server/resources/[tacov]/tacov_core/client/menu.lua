@@ -16,7 +16,7 @@ local function show()
   TacoV.UI.open('menu', {
     id = def.id, title = def.title, info = def.info, icon = def.icon, note = def.note,
     items = def.items, depth = #stack - 1,
-  }, false)
+  }, false, 'walk') -- Spieler kann während des Menüs weiterlaufen
 end
 
 --- Öffnet ein Menü. Ist bereits eines offen, wird es als Untermenü darauf gestapelt.

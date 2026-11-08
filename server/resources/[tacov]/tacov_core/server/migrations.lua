@@ -14,6 +14,7 @@ local function listMigrations()
     { version = 5, file = 'sql/005_status.sql' },
     { version = 6, file = 'sql/006_dmv.sql' },
     { version = 7, file = 'sql/007_traffic.sql' },
+    { version = 8, file = 'sql/008_warnings.sql' },
   }
 end
 

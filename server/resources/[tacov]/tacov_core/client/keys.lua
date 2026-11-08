@@ -5,6 +5,8 @@ TacoV = TacoV or {}
 local function bind(command, label, key, handler, release)
   RegisterCommand('+' .. command, function()
     if not TacoV.Client.character then return end
+    -- Bei offenem Listenmenü (Spieler kann laufen) nur die Menü-Tasten selbst durchlassen
+    if TacoV.UI.current() == 'menu' and command ~= 'tacov_faction' and command ~= 'tacov_admin' then return end
     handler()
   end, false)
   RegisterCommand('-' .. command, function()

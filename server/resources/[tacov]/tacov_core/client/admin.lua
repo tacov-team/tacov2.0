@@ -170,6 +170,13 @@ end)
 local players = {}
 RegisterNetEvent('tacov:admin:players', function(list) players = list end)
 
+RegisterNetEvent('tacov:admin:healed', function()
+  local ped = PlayerPedId()
+  SetEntityHealth(ped, GetEntityMaxHealth(ped))
+  SetPedArmour(ped, 100)
+  ClearPedBloodDamage(ped)
+end)
+
 local function playerItems()
   local items = {}
   for _, p in ipairs(players) do
@@ -182,18 +189,140 @@ local function playerItems()
   return items
 end
 
+local Cfg = TacoV.Config
+local function reasonMenu(title, onPick)
+  local items = {}
+  for i, r in ipairs(Cfg.AdminReasons) do items[#items + 1] = { id = tostring(i), label = r, icon = 'warn' } end
+  TacoV.Menu.open({ id = 'admin_reason', title = title, icon = 'warn', info = 'Grund wählen · freier Text per Befehl',
+    items = items }, function(id) onPick(Cfg.AdminReasons[tonumber(id)]) end)
+end
+
+local function sortedItems()
+  local list = {}
+  for name, def in pairs(Cfg.Items) do if not def.money then list[#list + 1] = { name = name, def = def } end end
+  table.sort(list, function(a, b) return a.def.label < b.def.label end)
+  return list
+end
+
+--- Untermenü „Geben“ für einen Spieler
+local function giveMenu(target, name)
+  TacoV.Menu.open({ id = 'admin_give', title = 'Geben', icon = 'gift', info = name, items = {
+    { id = 'money', label = 'Geld', icon = 'cash', sub = 'Konto oder bar' },
+    { id = 'item', label = 'Item', icon = 'bag', sub = 'nach Kategorie' },
+    { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'aus der Kaufliste, spawnt beim Spieler' },
+  } }, function(kind)
+    if kind == 'money' then
+      local items = {}
+      for _, a in ipairs(Cfg.AdminMoneyAmounts) do
+        items[#items + 1] = { id = 'bank:' .. a, label = ('%s $ auf das Konto'):format(a), icon = 'card' }
+      end
+      for _, a in ipairs(Cfg.AdminMoneyAmounts) do
+        items[#items + 1] = { id = 'cash:' .. a, label = ('%s $ bar'):format(a), icon = 'cash', section = #items == #Cfg.AdminMoneyAmounts and 'Bar' or nil }
+      end
+      TacoV.Menu.open({ id = 'admin_money', title = 'Geld geben', icon = 'cash', info = name, items = items }, function(id)
+        local kind2, amount = id:match('^(%a+):(%d+)$')
+        TriggerServerEvent('tacov:admin:give', target, 'money', tonumber(amount), kind2)
+      end)
+    elseif kind == 'item' then
+      local cats = {}
+      for id, label in pairs(Cfg.ItemCategories) do if id ~= 'money' then cats[#cats + 1] = { id = id, label = label, icon = 'box' } end end
+      table.sort(cats, function(a, b) return a.label < b.label end)
+      TacoV.Menu.open({ id = 'admin_itemcat', title = 'Item geben', icon = 'bag', info = name, items = cats }, function(cat)
+        local items = {}
+        for _, e in ipairs(sortedItems()) do
+          if e.def.category == cat then items[#items + 1] = { id = e.name, label = e.def.label, icon = 'box', sub = e.name } end
+        end
+        if #items == 0 then items[1] = { id = 'none', label = 'Keine Items in dieser Kategorie', dim = true } end
+        TacoV.Menu.open({ id = 'admin_item', title = Cfg.ItemCategories[cat], icon = 'bag', info = name, items = items }, function(item)
+          if item == 'none' then return end
+          local amounts = {}
+          for _, n in ipairs({ 1, 5, 10, 25, 50, 100 }) do amounts[#amounts + 1] = { id = tostring(n), label = n .. 'x', icon = 'plus' } end
+          TacoV.Menu.open({ id = 'admin_itemamount', title = Cfg.Items[item].label, icon = 'bag', info = 'Anzahl', items = amounts }, function(n)
+            TriggerServerEvent('tacov:admin:give', target, 'item', item, tonumber(n))
+            TacoV.Menu.back()
+          end)
+        end)
+      end)
+    elseif kind == 'vehicle' then
+      local classes = {}
+      for id, cls in pairs(Cfg.Vehicles.classes) do classes[#classes + 1] = { id = id, label = cls.label, icon = 'car', order = cls.order } end
+      table.sort(classes, function(a, b) return a.order < b.order end)
+      TacoV.Menu.open({ id = 'admin_vehcls', title = 'Fahrzeug geben', icon = 'car', info = name, items = classes }, function(cls)
+        local items = {}
+        for _, v in ipairs(Cfg.Vehicles.list) do
+          if v.class == cls then items[#items + 1] = { id = v.model, label = v.label, icon = 'car', sub = v.model, price = v.price } end
+        end
+        TacoV.Menu.open({ id = 'admin_veh', title = Cfg.Vehicles.classes[cls].label, icon = 'car', info = name, items = items }, function(model)
+          TacoV.Menu.close()
+          TriggerServerEvent('tacov:admin:give', target, 'vehicle', model)
+        end)
+      end)
+    end
+  end)
+end
+
+--- Akte + Aktionen eines Spielers
+RegisterNetEvent('tacov:admin:file', function(f)
+  local name = ('#%d %s'):format(f.id, f.name)
+  local items = {
+    { id = 'i1', label = 'Rolle: ' .. tostring(f.role), icon = 'id', dim = true, section = 'Akte',
+      sub = 'Discord ' .. tostring(f.discordId) },
+    f.characterId and { id = 'i2', label = ('Charakter #%d · Level %s · %s h Spielzeit'):format(f.characterId, tostring(f.level), tostring(f.playtimeHours)),
+      icon = 'user', dim = true, sub = f.faction and (f.faction .. ' · Rang ' .. tostring(f.factionRank)) or 'Zivilist' }
+      or { id = 'i2', label = 'Kein Charakter geladen', icon = 'user', dim = true },
+    { id = 'i3', label = ('Konto %s · Bar %s'):format(tostring(f.bank or '–'), tostring(f.cash or '–')), icon = 'cash', dim = true },
+    { id = 'i4', label = ('%d Verwarnungen · %d Sperren'):format(f.warns or 0, f.bans or 0), icon = 'warn', dim = true,
+      sub = f.lastWarn and ('Zuletzt: ' .. f.lastWarn) or nil },
+    { id = 'goto', label = 'Zu Spieler teleportieren', icon = 'next', section = 'Aktionen' },
+    { id = 'bring', label = 'Spieler herholen', icon = 'back' },
+    { id = 'heal', label = 'Heilen', icon = 'heart', sub = 'Leben, Rüstung, Hunger, Durst' },
+    { id = 'give', label = 'Geben', icon = 'gift', sub = 'Geld, Items, Fahrzeug' },
+    { id = 'warn', label = 'Verwarnen', icon = 'warn', section = 'Maßnahmen' },
+    { id = 'kick', label = 'Kicken', icon = 'x' },
+    { id = 'ban', label = 'Sperren', icon = 'lock' },
+  }
+  if f.licenses then
+    local l = {}
+    for k in pairs(f.licenses) do l[#l + 1] = k end
+    table.sort(l)
+    items[4].sub = (items[4].sub and (items[4].sub .. ' · ') or '') .. 'Führerscheine: ' .. (#l > 0 and table.concat(l, ', ') or 'keine')
+  end
+  TacoV.Menu.open({ id = 'admin_player', title = f.name, icon = 'user', info = name, items = items,
+    note = 'Jede Aktion wird protokolliert.' }, function(id)
+    if id == 'goto' or id == 'bring' then
+      TacoV.Menu.close()
+      TriggerServerEvent('tacov:admin:teleport', id == 'goto' and 'player' or 'bring', f.id)
+    elseif id == 'heal' then
+      TriggerServerEvent('tacov:admin:heal', f.id)
+    elseif id == 'give' then
+      giveMenu(f.id, name)
+    elseif id == 'warn' then
+      reasonMenu('Verwarnen · ' .. name, function(r) TacoV.Menu.back() TriggerServerEvent('tacov:admin:punish', 'warn', f.id, r) end)
+    elseif id == 'kick' then
+      reasonMenu('Kicken · ' .. name, function(r) TacoV.Menu.close() TriggerServerEvent('tacov:admin:punish', 'kick', f.id, r) end)
+    elseif id == 'ban' then
+      local durations = {}
+      for i, d in ipairs(Cfg.AdminBanDurations) do durations[#durations + 1] = { id = tostring(i), label = d[2], icon = 'clock' } end
+      TacoV.Menu.open({ id = 'admin_bandur', title = 'Sperren · ' .. name, icon = 'lock', info = 'Dauer wählen', items = durations }, function(di)
+        local hours = Cfg.AdminBanDurations[tonumber(di)][1]
+        reasonMenu('Sperren · ' .. name, function(r) TacoV.Menu.close() TriggerServerEvent('tacov:admin:punish', 'ban', f.id, r, hours) end)
+      end)
+    end
+  end)
+end)
+
 function TacoV.Admin.openMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   TriggerServerEvent('tacov:admin:players')
   local function items()
     return {
+      { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
       { id = 'invisible', label = 'Unsichtbar', icon = 'search', badge = TacoV.Admin.invisible and 'An' or 'Aus', section = 'Ich' },
       { id = 'noclip',    label = 'Noclip',     icon = 'play',   badge = TacoV.Admin.noclip and 'An' or 'Aus', sub = 'WASD, Q/E, Shift' },
       { id = 'waypoint',  label = 'Zum Wegpunkt teleportieren', icon = 'pin', section = 'Teleport' },
       { id = 'goto',      label = 'Zu Spieler teleportieren', icon = 'next' },
       { id = 'bring',     label = 'Spieler herholen', icon = 'back' },
-      { id = 'players',   label = 'Spielerliste und Akte', icon = 'group', dim = true, badge = 'bald', section = 'Team' },
-      { id = 'offduty',   label = 'Admin-Dienst beenden', icon = 'shield' },
+      { id = 'offduty',   label = 'Admin-Dienst beenden', icon = 'shield', section = 'Dienst' },
     }
   end
   TacoV.Menu.open({
@@ -207,6 +336,12 @@ function TacoV.Admin.openMenu()
     elseif id == 'waypoint' then
       TacoV.Menu.close()
       TriggerServerEvent('tacov:admin:teleport', 'waypoint')
+    elseif id == 'players' then
+      TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
+        items = playerItems() }, function(pid)
+        if pid == 'none' then return end
+        TriggerServerEvent('tacov:admin:file', tonumber(pid))
+      end)
     elseif id == 'goto' or id == 'bring' then
       TacoV.Menu.open({ id = 'admin_' .. id, title = id == 'goto' and 'Zu Spieler teleportieren' or 'Spieler herholen', icon = 'group',
         info = 'Team-Menü · Teleport', items = playerItems() }, function(pid)

@@ -80,18 +80,8 @@ RegisterCommand('geld', function(src, args)
     if src ~= 0 then notify(src, 'info', 'Nutzung: /geld <Server-ID> <Betrag> [bank|bar]') else print('Nutzung: geld <ID> <Betrag> [bank|bar]') end
     return
   end
-  local ok
-  if kind == 'cash' then
-    ok = TacoV.Inventory.addCash(target, amount, 'teamgeld')
-  else
-    local actor = src ~= 0 and TacoV.Characters.get(src)
-    ok = TacoV.Journal.move('bank', nil, { type = 'character', id = tc.id }, amount, 'teamgeld', { actor = actor and actor.id or nil })
-    if ok then TacoV.Accounts.push(target) end
-  end
-  local p = TacoV.Players.get(src)
-  TacoV.Log.write('admin', ('Geld gegeben: %d $ (%s) an #%d'):format(amount, kind, tc.id), { discordId = p and p.discordId, characterId = tc.id })
+  local ok = TacoV.Admin.giveMoney(src, target, amount, kind)
   if src ~= 0 then notify(src, ok and 'success' or 'error', ok and ('%d $ gegeben.'):format(amount) or 'Fehler beim Buchen.') end
-  notify(target, 'info', ('Das Team hat dir %d $ (%s) gegeben.'):format(amount, kind == 'cash' and 'bar' or 'Konto'))
 end, true)
 
 -- Einmaliges Startgeld für den nächsten Charakter, der lädt: `set tacov_grant_next <Betrag>` in server.cfg.

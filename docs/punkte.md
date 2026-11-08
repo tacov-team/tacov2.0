@@ -96,7 +96,7 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
 | 5.1 | Admin-Grundgerüst: Rechte, Admin-Modus, Unsichtbar, Noclip, Teleport (Spieler/Koordinaten/Wegpunkt) | 🔧 | F9 im Dienst = Team-Menü (Unsichtbar, Noclip, Teleport Wegpunkt/zu Spieler/herholen, Dienst beenden); `/tp`, `/tpm`, `/bring`, `/noclip`, `/unsichtbar`; Dienst-Uniform automatisch (Config `AdutyOutfit`); alles geloggt |
-| 5.2 | Team-Menü (F9): Spielerliste mit Akte, Items/Geld/Fahrzeug geben, Heilen, Kicken, Sperren, Warnen | ⬜ | jede Aktion mit Log |
+| 5.2 | Team-Menü (F9): Spielerliste mit Akte, Items/Geld/Fahrzeug geben, Heilen, Kicken, Sperren, Warnen | 🔧 | Team-Menü → Spieler → Akte (Rolle, Charakter, Konto, Verwarnungen/Sperren, Führerscheine) + Aktionen; Gründe/Dauern aus Config, freier Text per `/warn`, `/kick`, `/sperre`; Tabelle `warnings` (Migration 008); jede Aktion mit Log |
 | 5.3 | Orte-Creator: Orte, Blips, E-Punkte im Spiel setzen und verschieben (ersetzt `/ort setzen`) | ⬜ | Vorschau am Zeiger |
 | 5.4 | Door Creator: Türen und Tore erfassen, Zugang je Fraktion/Rang/Schlüssel, Zustand (offen/zu) | ⬜ | |
 | 5.5 | Elevator Creator: Aufzüge mit Etagen, Zugang, Teleport mit Blende | ⬜ | |

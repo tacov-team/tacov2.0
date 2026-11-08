@@ -139,6 +139,28 @@ local function sendSpawn(src, row, spawn, fuel)
   })
 end
 
+--- Fahrzeug an einen Charakter vergeben (Team, Punkt 5.2): Eintrag wie ein Kauf (Kaufpreis aus der Liste), Spawn vor dem Spieler.
+function TacoV.Vehicles.grant(targetSrc, model)
+  local c = TacoV.Characters.get(targetSrc)
+  if not c then return false, 'Spieler hat keinen Charakter geladen.' end
+  local def
+  for _, v in ipairs(Cfg.list) do if v.model == model then def = v break end end
+  def = def or { model = model, label = model, class = 'C', price = 0 }
+  local cls = classDef(def.class)
+  local plate = TacoV.Vehicles.tempPlate()
+  local id = TacoV.DB.insert(
+    'INSERT INTO vehicles (plate, model, class, owner_type, owner_id, state, fuel, bought_price, last_seen_at) VALUES (?, ?, ?, \'character\', ?, \'out\', ?, ?, NOW())',
+    { plate, def.model, def.class, c.id, cls.tank, def.price })
+  giveKey(id, c.id, nil)
+  pushKeys(targetSrc)
+  local ped = GetPlayerPed(targetSrc)
+  local pos, h = GetEntityCoords(ped), GetEntityHeading(ped)
+  local rad = math.rad(h)
+  local spawn = { x = pos.x - math.sin(rad) * 4.0, y = pos.y + math.cos(rad) * 4.0, z = pos.z, h = h }
+  sendSpawn(targetSrc, vehicleById(id), spawn)
+  return true, def.label .. ' (' .. plate .. ')'
+end
+
 -- ---------------------------------------------------------------- Garagen und Verwahrhof
 
 local function garageFee(row)
