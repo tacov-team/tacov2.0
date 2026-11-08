@@ -126,7 +126,8 @@ RegisterNUICallback('createCharacter', function(data, cb)
   SetNuiFocus(false, false)
   TacoV.UI.send('close')
   local spot = TacoV.Config.Onboarding.editorSpot or TacoV.Config.Onboarding.spawn
-  TacoV.Appearance.openEditor({ appearance = TacoV.Appearance.default(model), spot = spot, title = 'Dein Aussehen', doneLabel = 'Charakter anlegen' }, function(appearance)
+  local opts = { appearance = TacoV.Appearance.default(model), spot = spot, title = 'Dein Aussehen', doneLabel = 'Charakter anlegen' }
+  TacoV.Appearance.openEditor(opts, function(appearance)
     if appearance then
       form.appearance = appearance
       TriggerServerEvent('tacov:core:createCharacter', form)
