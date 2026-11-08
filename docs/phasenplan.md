@@ -99,7 +99,7 @@ Tafeln: Charaktereditor, Kleidungsladen, Ladebildschirm, Animationen (alle als V
 
 Abnahme: Neuer Spieler erstellt Charakter mit Aussehen, reist mit Teammitglied ein, kauft Kleidung, speichert ein Outfit, spricht in drei Reichweiten.
 
-## Phase 7 – Handy und Funk 🔧
+## Phase 7 – Handy und Funk ✅
 
 - Handy als Item (F1 nur mit Handy), Nummer je Charakter – Konzept 5.3
 - Apps in dieser Reihenfolge: Kontakte, Nachrichten (SMS, Standort, Gruppen bis 8), Bank, Fahrzeuge (Standort, Garage, Tank, Schlüssel teilen), Einstellungen; danach Notruf, Fraktion, Firma, Kamera, Feed mit den jeweiligen Phasen
