@@ -35,6 +35,7 @@ function TacoV.Voice.cycle()
   if now - lastCycle < 300 then return end
   lastCycle = now
   if salty() then
+    print('[voice] Z: +voiceRange') -- Diagnose (F8)
     ExecuteCommand('+voiceRange')
     return
   end
@@ -47,7 +48,8 @@ end
 
 -- SaltyChat meldet jede Änderung (Meter, Index, Anzahl)
 local lastShown, lastShownAt = nil, 0
-AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters)
+AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters, index, count)
+  print(('[voice] SaltyChat: %s m (Stufe %s von %s)'):format(tostring(meters), tostring(index), tostring(count))) -- Diagnose (F8)
   meters = tonumber(meters) or V.normal
   if lastShown == meters and GetGameTimer() - lastShownAt < 300 then return end
   lastShown, lastShownAt = meters, GetGameTimer()

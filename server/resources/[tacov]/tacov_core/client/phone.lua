@@ -5,8 +5,19 @@ TacoV.Phone = { open = false, ringing = false }
 
 local function notify(kind, text) TacoV.UI.send('notify', { kind = kind, text = text }) end
 
+local function stopAnim()
+  local ped = PlayerPedId()
+  if IsEntityPlayingAnim(ped, 'cellphone@', 'cellphone_text_in', 3) then StopAnimTask(ped, 'cellphone@', 'cellphone_text_in', 1.0) end
+end
+
+local function closePhone()
+  TacoV.Phone.open = false
+  stopAnim()
+  if TacoV.UI.current() == 'phone' then TacoV.UI.close() end
+end
+
 function TacoV.Phone.toggle()
-  if TacoV.UI.current() == 'phone' then TacoV.UI.close() TacoV.Phone.open = false return end
+  if TacoV.UI.current() == 'phone' then closePhone() return end
   if TacoV.UI.current() then return end
   TriggerServerEvent('tacov:phone:open')
 end
@@ -31,13 +42,18 @@ RegisterNetEvent('tacov:phone:show', function(d)
   TaskPlayAnim(ped, 'cellphone@', 'cellphone_text_in', 8.0, -8.0, -1, 50, 0.0, false, false, false)
 end)
 
-local function closePhone()
-  TacoV.Phone.open = false
-  local ped = PlayerPedId()
-  StopAnimTask(ped, 'cellphone@', 'cellphone_text_in', 1.0)
-  TacoV.UI.close()
-end
 AddEventHandler('tacov:ui:phone:close', function() closePhone() end)
+
+-- Sicherheitsnetz: Handy-Animation nie ohne offenes Handy (z. B. nach Ansichtswechsel oder Tod)
+CreateThread(function()
+  while true do
+    Wait(1000)
+    if TacoV.UI.current() ~= 'phone' then
+      if TacoV.Phone.open then TacoV.Phone.open = false end
+      stopAnim()
+    end
+  end
+end)
 
 -- Alle App-Aktionen zum Server: 'contacts:add' → tacov:phone:contacts:add
 for _, name in ipairs({ 'contacts:list', 'contacts:add', 'contacts:rename', 'contacts:favorite', 'contacts:delete', 'calls:start', 'calls:accept', 'calls:end',
