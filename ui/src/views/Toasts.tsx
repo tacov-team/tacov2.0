@@ -13,6 +13,12 @@ export function Announce() {
   );
 }
 
+export function DevOverlay() {
+  const { state } = useStore();
+  if (!state.dev) return null;
+  return <pre className="dev">{state.dev}</pre>;
+}
+
 export function Toasts() {
   const { state } = useStore();
   if (state.toasts.length === 0) return null;

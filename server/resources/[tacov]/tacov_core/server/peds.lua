@@ -64,3 +64,4 @@ end)
 
 AddEventHandler('tacov:core:ready', function() load() end)
 AddEventHandler('tacov:core:characterSelected', function(source) TacoV.Peds.push(source) end)
+AddEventHandler('tacov:core:reloadData', function() load() TacoV.Peds.push(-1) end)

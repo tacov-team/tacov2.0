@@ -110,3 +110,4 @@ end)
 
 AddEventHandler('tacov:core:ready', function() load() end)
 AddEventHandler('tacov:core:characterSelected', function(source) TacoV.Doors.push(source) end)
+AddEventHandler('tacov:core:reloadData', function() load() TacoV.Doors.push(-1) end)

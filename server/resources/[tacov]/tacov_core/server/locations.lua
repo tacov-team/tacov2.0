@@ -80,3 +80,4 @@ end)
 
 exports('locationNearest', TacoV.Locations.nearest)
 exports('locationGet', TacoV.Locations.get)
+AddEventHandler('tacov:core:reloadData', function() TriggerEvent('tacov:core:locationChanged') end)

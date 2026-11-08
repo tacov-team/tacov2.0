@@ -16,6 +16,7 @@ TacoV.Config.Commands = {
   { name = 'bring',   usage = 'bring <ID>',                                  help = 'Spieler zu dir holen', right = 'support.teleport' },
   { name = 'noclip',  usage = 'noclip',                                      help = 'Noclip an/aus', right = 'admin.noclip' },
   { name = 'unsichtbar', usage = 'unsichtbar',                               help = 'Unsichtbar an/aus', right = 'support.invisible' },
+  { name = 'coords',  usage = 'coords',                                      help = 'Position kopieren (Entwickler)', right = 'dev.tools' },
   { name = 'warn',    usage = 'warn <ID> <Grund>',                           help = 'Spieler verwarnen', right = 'admin.warn' },
   { name = 'kick',    usage = 'kick <ID> <Grund>',                      help = 'Spieler vom Server entfernen', right = 'admin.warn' },
 }

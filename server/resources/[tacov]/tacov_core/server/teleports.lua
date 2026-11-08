@@ -139,3 +139,4 @@ end)
 
 AddEventHandler('tacov:core:ready', function() load() end)
 AddEventHandler('tacov:core:characterSelected', function(source) TacoV.Teleports.push(source) end)
+AddEventHandler('tacov:core:reloadData', function() load() TacoV.Teleports.push(-1) end)

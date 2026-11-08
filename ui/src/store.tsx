@@ -50,7 +50,7 @@ type View = null
   | { name: 'ask'; data: AskData };
 
 export type Hint = { key: string; text: string };
-type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce };
+type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null };
 
 type Action =
   | { type: 'open'; view: View }
@@ -60,7 +60,8 @@ type Action =
   | { type: 'toastRemove'; id: number }
   | { type: 'role'; role: string }
   | { type: 'hint'; hint: Hint | null }
-  | { type: 'announce'; announce: Announce };
+  | { type: 'announce'; announce: Announce }
+  | { type: 'dev'; text: string | null };
 
 const initialHud: HudData = {
   health: 100, armor: 0, hunger: 100, thirst: 100, fitness: 0,
@@ -78,6 +79,7 @@ function reducer(state: State, a: Action): State {
     case 'role': return { ...state, role: a.role };
     case 'hint': return { ...state, hint: a.hint };
     case 'announce': return { ...state, announce: a.announce };
+    case 'dev': return { ...state, dev: a.text };
   }
 }
 
@@ -86,7 +88,7 @@ const Ctx = createContext<{ state: State; dispatch: (a: Action) => void } | null
 let toastId = 0;
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null, announce: null });
+  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null, announce: null, dev: null });
 
   useNuiEvent<{ view: string; data: unknown }>('open', useCallback((d) => {
     dispatch({ type: 'open', view: { name: d.view, data: d.data } as View });
@@ -103,6 +105,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setTimeout(() => dispatch({ type: 'toastRemove', id }), 6000);
   }, []));
 
+  useNuiEvent<string>('copy', useCallback((text) => {
+    try { void navigator.clipboard?.writeText(text); } catch { /* unten Fallback */ }
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    } catch { /* ignorieren */ }
+  }, []));
+  useNuiEvent<string | null>('dev', useCallback((text) => dispatch({ type: 'dev', text: text || null }), []));
   useNuiEvent<{ title?: string; text: string; kind?: 'info' | 'warn'; seconds?: number }>('announce', useCallback((d) => {
     dispatch({ type: 'announce', announce: { title: d.title ?? 'Ansage', text: d.text, kind: d.kind ?? 'info' } });
     setTimeout(() => dispatch({ type: 'announce', announce: null }), (d.seconds ?? 10) * 1000);

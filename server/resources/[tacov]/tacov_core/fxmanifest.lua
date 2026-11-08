@@ -54,6 +54,7 @@ server_scripts {
   'server/refunds.lua',
   'server/weather.lua',
   'server/configedit.lua',
+  'server/devtools.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -84,6 +85,7 @@ client_scripts {
   'client/world.lua',
   'client/weather.lua',
   'client/configedit.lua',
+  'client/devtools.lua',
   'client/keys.lua',
 }
 
