@@ -42,6 +42,7 @@ server_scripts {
   'server/workshop.lua',
   'server/traffic.lua',
   'server/admin.lua',
+  'server/creator.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -65,6 +66,7 @@ client_scripts {
   'client/workshop.lua',
   'client/traffic.lua',
   'client/admin.lua',
+  'client/creator.lua',
   'client/keys.lua',
 }
 

@@ -327,6 +327,7 @@ function TacoV.Admin.openMenu()
   local function items()
     return {
       { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
+      { id = 'creator',   label = 'Creator', icon = 'tool', sub = 'Orte, Türen, Aufzüge, NPCs …' },
       { id = 'invisible', label = 'Unsichtbar', icon = 'search', badge = TacoV.Admin.invisible and 'An' or 'Aus', section = 'Ich' },
       { id = 'noclip',    label = 'Noclip',     icon = 'play',   badge = TacoV.Admin.noclip and 'An' or 'Aus', sub = 'WASD, Q/E, Shift' },
       { id = 'waypoint',  label = 'Zum Wegpunkt teleportieren', icon = 'pin', section = 'Teleport' },
@@ -346,6 +347,8 @@ function TacoV.Admin.openMenu()
     elseif id == 'waypoint' then
       TacoV.Menu.close()
       TriggerServerEvent('tacov:admin:teleport', 'waypoint')
+    elseif id == 'creator' then
+      TacoV.Creator.openMenu()
     elseif id == 'players' then
       TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
         items = playerItems(true) }, function(pid)

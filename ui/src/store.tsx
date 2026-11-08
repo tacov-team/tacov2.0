@@ -8,6 +8,7 @@ import type { ShopData } from './views/Shop';
 import type { MenuData } from './views/Menu';
 import type { GarageData } from './views/Garage';
 import type { DealerData } from './views/Dealer';
+import type { AskData } from './views/Ask';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 
@@ -44,7 +45,8 @@ type View = null
   | { name: 'shop'; data: ShopData }
   | { name: 'menu'; data: MenuData }
   | { name: 'garage'; data: GarageData }
-  | { name: 'dealer'; data: DealerData };
+  | { name: 'dealer'; data: DealerData }
+  | { name: 'ask'; data: AskData };
 
 export type Hint = { key: string; text: string };
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null };

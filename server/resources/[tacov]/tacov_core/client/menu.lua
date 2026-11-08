@@ -53,6 +53,11 @@ function TacoV.Menu.close()
   TacoV.UI.close()
 end
 
+--- Zeigt das oberste Menü erneut (z. B. nach einer Texteingabe darüber).
+function TacoV.Menu.refresh()
+  show()
+end
+
 function TacoV.Menu.isOpen()
   return #stack > 0
 end

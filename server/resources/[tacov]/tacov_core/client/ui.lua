@@ -58,6 +58,28 @@ function TacoV.UI.openConsole()
   TacoV.UI.open('console', { commands = list, history = history }, false)
 end
 
+--- Texteingabe: TacoV.UI.ask({ title, label, placeholder, value, maxLength, numeric }, function(text) end) – nil bei Abbruch.
+local askCb = nil
+function TacoV.UI.ask(opts, cb)
+  if openView and openView ~= 'menu' then return false end
+  local wasMenu = openView == 'menu'
+  askCb = function(v)
+    askCb = nil
+    openView = nil
+    SetNuiFocusKeepInput(false)
+    SetNuiFocus(false, false)
+    if wasMenu and TacoV.Menu.isOpen() then TacoV.Menu.refresh() else TacoV.UI.send('close') end
+    cb(v)
+  end
+  openView = 'ask'
+  SetNuiFocus(true, true)
+  SetNuiFocusKeepInput(false)
+  TacoV.UI.send('open', { view = 'ask', data = opts })
+  return true
+end
+AddEventHandler('tacov:ui:ask:submit', function(d) if askCb then askCb(tostring(d.value or '')) end end)
+AddEventHandler('tacov:ui:ask:cancel', function() if askCb then askCb(nil) end end)
+
 RegisterNUICallback('close', function(_, cb)
   TacoV.UI.close()
   cb({})
