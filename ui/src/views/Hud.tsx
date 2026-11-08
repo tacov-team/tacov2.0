@@ -61,7 +61,7 @@ export function Hud() {
   const h = state.hud;
   const now = useClock();
   const vp = useViewport();
-  const fullView = state.view && ['inventory', 'characters', 'bank', 'shop', 'garage', 'dealer'].includes(state.view.name);
+  const fullView = state.view && ['inventory', 'characters', 'bank', 'shop', 'garage', 'dealer', 'editor'].includes(state.view.name);
   if (!h.visible || fullView) return null;
   const time = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   const date = now.toLocaleDateString('de-DE');

@@ -65,6 +65,7 @@ server_scripts {
 }
 
 client_scripts {
+  'client/appearance.lua',
   'client/main.lua',
   'client/ui.lua',
   'client/menu.lua',

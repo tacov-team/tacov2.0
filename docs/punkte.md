@@ -118,7 +118,7 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | ⬜ | |
+| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | 🔧 | Nach Name/Geburtsdatum öffnet der Editor (Figur in der Ankunftshalle, Kamera Gesicht/Körper, ←/→ drehen): Geschlecht, Eltern (46 Vorlagen), Ähnlichkeit/Hautton, Augenfarbe, 20 Gesichtszüge, Frisur/Farbe/Strähnen, Bart/Brauen/Brustbehaarung, Alterung/Teint/Sonne/Sommersprossen/Hautunreinheiten, Make-up/Rouge/Lippenstift, Zufall; gespeichert in `appearance`, beim Laden angewendet |
 | 6.2 | Kleiderläden und Outfits | ⬜ | |
 | 6.3 | Friseur, Tattoo, Chirurg | ⬜ | |
 | 6.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ | |

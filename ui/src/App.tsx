@@ -12,6 +12,7 @@ import { Menu } from './views/Menu';
 import { Garage } from './views/Garage';
 import { Dealer } from './views/Dealer';
 import { Ask } from './views/Ask';
+import { Editor } from './views/Editor';
 import { inGame, nui } from './nui';
 
 function Views() {
@@ -57,6 +58,7 @@ function Views() {
       {v?.name === 'garage' && <Garage data={v.data} />}
       {v?.name === 'dealer' && <Dealer data={v.data} />}
       {v?.name === 'ask' && <Ask data={v.data} />}
+      {v?.name === 'editor' && <Editor key={v.data.title ?? 'editor'} data={v.data} />}
       {!v && state.hint && <div className="hint"><span className="key">{state.hint.key}</span><span>{state.hint.text}</span></div>}
     </>
   );

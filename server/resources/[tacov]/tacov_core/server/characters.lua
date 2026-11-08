@@ -39,6 +39,48 @@ local function validName(s)
   return true
 end
 
+--- Aussehen aus dem Editor bereinigen (nur bekannte Felder, Zahlenbereiche)
+function TacoV.Characters.cleanAppearance(a, gender)
+  a = type(a) == 'table' and a or {}
+  local function num(v, lo, hi, d) v = tonumber(v) if not v then return d end return math.max(lo, math.min(hi, v)) end
+  local model = (tonumber(gender) == 1) and 'mp_f_freemode_01' or 'mp_m_freemode_01'
+  if a.model == 'mp_f_freemode_01' or a.model == 'mp_m_freemode_01' then model = a.model end
+  local p = type(a.parents) == 'table' and a.parents or {}
+  local face = {}
+  for i = 1, 20 do face[i] = num(type(a.face) == 'table' and a.face[i], -1.0, 1.0, 0.0) end
+  local h = type(a.hair) == 'table' and a.hair or {}
+  local overlays = {}
+  for id, o in pairs(type(a.overlays) == 'table' and a.overlays or {}) do
+    if type(o) == 'table' then overlays[tostring(id)] = { style = math.floor(num(o.style, -1, 60, -1)), opacity = num(o.opacity, 0.0, 1.0, 1.0), color = math.floor(num(o.color, 0, 80, 0)) } end
+  end
+  local function pairsOf(t, maxIdx)
+    local out = {}
+    for k, v in pairs(type(t) == 'table' and t or {}) do
+      if tonumber(k) and type(v) == 'table' then out[tostring(math.floor(tonumber(k)))] = { math.floor(num(v[1], -1, maxIdx, 0)), math.floor(num(v[2], 0, 60, 0)) } end
+    end
+    return out
+  end
+  return {
+    model = model,
+    parents = { father = math.floor(num(p.father, 0, 45, 0)), mother = math.floor(num(p.mother, 0, 45, 21)), shapeMix = num(p.shapeMix, 0.0, 1.0, 0.5), skinMix = num(p.skinMix, 0.0, 1.0, 0.5) },
+    face = face,
+    hair = { style = math.floor(num(h.style, 0, 200, 0)), color = math.floor(num(h.color, 0, 80, 0)), highlight = math.floor(num(h.highlight, 0, 80, 0)) },
+    eyeColor = math.floor(num(a.eyeColor, 0, 31, 0)),
+    overlays = overlays,
+    components = pairsOf(a.components, 500),
+    props = pairsOf(a.props, 500),
+  }
+end
+
+--- Speichert ein neues Aussehen (Friseur, Chirurg, Kleiderladen)
+function TacoV.Characters.setAppearance(source, a)
+  local c = loaded[source]
+  if not c then return false end
+  c.appearance = TacoV.Characters.cleanAppearance(a, c.gender)
+  TacoV.DB.update('UPDATE characters SET appearance = ? WHERE id = ?', { json.encode(c.appearance), c.id })
+  return true
+end
+
 --- Legt einen Charakter an. data = { firstName, lastName, birthDate 'YYYY-MM-DD', origin, gender, appearance }
 function TacoV.Characters.create(source, data)
   local p = TacoV.Players.get(source)
@@ -64,7 +106,7 @@ function TacoV.Characters.create(source, data)
     'INSERT INTO characters (player_id, slot, first_name, last_name, birth_date, origin, gender, appearance, position) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     { p.id, slot, first, last, data.birthDate, TacoV.Util.cleanText(data.origin, 64),
       TacoV.Util.intInRange(data.gender, 0, 1) and data.gender or 0,
-      json.encode(data.appearance or {}), json.encode(TacoV.Config.Onboarding.spawn) }
+      json.encode(TacoV.Characters.cleanAppearance(data.appearance, data.gender)), json.encode(TacoV.Config.Onboarding.spawn) }
   )
   -- Girokonto mit Startgeld, über das Journal (Konzept 1: Startgeld aufs Konto)
   TacoV.Journal.account('character', id)

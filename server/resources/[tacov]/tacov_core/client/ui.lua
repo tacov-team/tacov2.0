@@ -118,9 +118,23 @@ RegisterNUICallback('selectCharacter', function(data, cb)
 end)
 
 RegisterNUICallback('createCharacter', function(data, cb)
-  TriggerServerEvent('tacov:core:createCharacter', {
-    firstName = data.firstName, lastName = data.lastName, birthDate = data.birthDate,
-    origin = data.origin, gender = tonumber(data.gender) or 0, appearance = {},
-  })
   cb({})
+  -- Erst das Aussehen (Charaktereditor, Punkt 6.1), dann legt der Server den Charakter an
+  local form = { firstName = data.firstName, lastName = data.lastName, birthDate = data.birthDate, origin = data.origin, gender = tonumber(data.gender) or 0 }
+  local model = form.gender == 1 and 'mp_f_freemode_01' or 'mp_m_freemode_01'
+  openView = nil
+  SetNuiFocus(false, false)
+  TacoV.UI.send('close')
+  local spot = TacoV.Config.Onboarding.editorSpot or TacoV.Config.Onboarding.spawn
+  TacoV.Appearance.openEditor({ appearance = TacoV.Appearance.default(model), spot = spot, title = 'Dein Aussehen', doneLabel = 'Charakter anlegen' }, function(appearance)
+    if appearance then
+      form.appearance = appearance
+      TriggerServerEvent('tacov:core:createCharacter', form)
+    else
+      local ped = PlayerPedId()
+      SetEntityVisible(ped, false, false)
+      FreezeEntityPosition(ped, true)
+      if TacoV.Client.lastCharacters then TacoV.UI.open('characters', TacoV.Client.lastCharacters) end
+    end
+  end)
 end)

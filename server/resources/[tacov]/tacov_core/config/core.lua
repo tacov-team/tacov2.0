@@ -32,6 +32,7 @@ TacoV.Config.Onboarding = {
   retryHours = 24,                 -- Konzept 1: erneuter Einreiseversuch nach 24 h
   requiresStaff = true,            -- Konzept 1: Einreise nur mit Teammitglied
   spawn = vector4(-1037.6, -2737.7, 20.2, 330.0), -- Ankunftshalle LSIA
+  editorSpot = vector4(-1037.6, -2737.7, 20.2, 330.0), -- Charaktereditor (Punkt 6.1): Standort der Figur
 }
 
 TacoV.Config.Level = {
