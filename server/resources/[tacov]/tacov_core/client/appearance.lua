@@ -75,6 +75,11 @@ function TacoV.Appearance.applyTo(ped, a)
   end
 end
 
+local function updateMasked(ped)
+  local masked = GetPedDrawableVariation(ped, 1) > 0
+  LocalPlayer.state:set('masked', masked, true)
+end
+
 --- Komplett anwenden (Modell + Rest) auf den Spieler
 function TacoV.Appearance.apply(a)
   if type(a) ~= 'table' or not a.model then return end
@@ -108,10 +113,7 @@ function TacoV.Appearance.limits(ped)
     overlays = overlays, components = comps, props = props, textures = textures }
 end
 
-local function updateMasked(ped)
-  local masked = GetPedDrawableVariation(ped, 1) > 0
-  LocalPlayer.state:set('masked', masked, true)
-end
+
 
 -- ---------------------------------------------------------------- Editor
 

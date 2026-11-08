@@ -9,7 +9,6 @@ local function fmt(n)
   if out:sub(1, 1) == '.' then out = out:sub(2) end
   return out .. ' $'
 end
-local function notify(kind, text) TacoV.UI.send('notify', { kind = kind, text = text }) end
 
 local function currentAppearance()
   local c = TacoV.Client.character
