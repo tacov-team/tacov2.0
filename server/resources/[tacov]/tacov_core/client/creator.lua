@@ -29,6 +29,29 @@ function TacoV.Creator.place(opts, cb)
     local pos = opts.start or GetEntityCoords(PlayerPedId())
     local heading = opts.heading or GetEntityHeading(PlayerPedId())
     local locked = opts.start ~= nil
+    local preview = nil
+    if opts.previewPed then
+      local hash = GetHashKey(opts.previewPed)
+      if IsModelValid(hash) then
+        RequestModel(hash)
+        local t0 = GetGameTimer()
+        while not HasModelLoaded(hash) and GetGameTimer() - t0 < 5000 do Wait(20) end
+        if HasModelLoaded(hash) then
+          preview = CreatePed(4, hash, pos.x, pos.y, pos.z, heading, false, false)
+          SetEntityAlpha(preview, 160, false)
+          SetEntityCollision(preview, false, false)
+          FreezeEntityPosition(preview, true)
+          SetEntityInvincible(preview, true)
+          SetModelAsNoLongerNeeded(hash)
+        end
+      end
+    end
+    local function finish(ok)
+      placing = false
+      TacoV.UI.send('hint', nil)
+      if preview and DoesEntityExist(preview) then DeleteEntity(preview) end
+      if ok then cb(pos, heading) else cb(nil) end
+    end
     TacoV.UI.send('hint', { key = 'Enter', text = (opts.label or 'Ort') ..
       ' platzieren · Leertaste: Zeiger/fest · Pfeile, Bild↑↓ verschieben · Q/E drehen · Shift fein · Backspace abbrechen' })
     while placing do
@@ -53,22 +76,16 @@ function TacoV.Creator.place(opts, cb)
       if IsDisabledControlPressed(0, 11) then pos = pos - vector3(0.0, 0.0, step) locked = true end
       if IsDisabledControlPressed(0, 44) then heading = (heading + rstep) % 360 end
       if IsDisabledControlPressed(0, 38) then heading = (heading - rstep) % 360 end
+      if preview then
+        SetEntityCoordsNoOffset(preview, pos.x, pos.y, pos.z + 1.0, false, false, false)
+        SetEntityHeading(preview, heading)
+      end
       DrawMarker(1, pos.x, pos.y, pos.z - 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.5, 167, 139, 250, locked and 170 or 110, false, true, 2, nil, nil, false)
       local tip = pos + fwd * 1.2
       DrawLine(pos.x, pos.y, pos.z + 0.3, tip.x, tip.y, tip.z + 0.3, 255, 255, 255, 220)
       DrawMarker(0, tip.x, tip.y, tip.z + 0.9, 0.0, 0.0, 0.0, 180.0, 0.0, heading, 0.3, 0.3, 0.3, 255, 255, 255, 200, false, true, 2, nil, nil, false)
-      if IsDisabledControlJustPressed(0, 191) or IsDisabledControlJustPressed(0, 201) then
-        placing = false
-        TacoV.UI.send('hint', nil)
-        cb(pos, heading)
-        return
-      end
-      if IsDisabledControlJustPressed(0, 177) or IsDisabledControlJustPressed(0, 202) then
-        placing = false
-        TacoV.UI.send('hint', nil)
-        cb(nil)
-        return
-      end
+      if IsDisabledControlJustPressed(0, 191) or IsDisabledControlJustPressed(0, 201) then finish(true) return end
+      if IsDisabledControlJustPressed(0, 177) or IsDisabledControlJustPressed(0, 202) then finish(false) return end
     end
   end)
   return true
@@ -322,13 +339,14 @@ function TacoV.Creator.openMenu()
     { id = 'doors', label = 'Türen', icon = 'door', sub = 'Erfassen, Zugang, zu/offen' },
     { id = 'elevators', label = 'Aufzüge', icon = 'home', sub = 'Etagen, Zugang' },
     { id = 'portals', label = 'Portale', icon = 'next', sub = 'Ein-/Ausgang für Interiors' },
-    { id = 'peds', label = 'NPCs', icon = 'user', dim = true, badge = 'bald' },
+    { id = 'peds', label = 'NPCs', icon = 'user', sub = 'Ansprechpartner mit Aufgabe' },
     { id = 'props', label = 'Objekte', icon = 'box', dim = true, badge = 'bald' },
     { id = 'zones', label = 'Zonen', icon = 'pin', dim = true, badge = 'bald' },
   } }, function(id)
     if id == 'locations' then TacoV.Creator.openLocations()
     elseif id == 'doors' then TacoV.Doors.openCreator()
     elseif id == 'elevators' then TacoV.Teleports.openElevatorCreator()
-    elseif id == 'portals' then TacoV.Teleports.openPortalCreator() end
+    elseif id == 'portals' then TacoV.Teleports.openPortalCreator()
+    elseif id == 'peds' then TacoV.Peds.openCreator() end
   end)
 end

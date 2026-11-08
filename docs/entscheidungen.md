@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Punkt 5.7 | NPCs sind lokale, eingefrorene Peds (kein Netzwerk-Sync nötig); die Aufgabe eines NPCs ist die Aufforderung des zugehörigen Orts (Laden, Bank …) – der NPC muss dafür am Ort stehen; Modelle/Szenarien als Vorauswahl mit freier Eingabe | Kein doppelter Code je System, NPCs ersetzen E-Punkte sichtbar |
 | 2026-11-08 | Punkte 5.5/5.6 | Aufzug = Liste von Etagenpunkten, Fahrt = Blende (kein bewegter Aufzug); Portal = Eingang/Ausgang-Paar, wahlweise Einbahn; beide nutzen dieselben Zugangsregeln wie Türen; Server prüft Nähe (4 m) vor jedem Teleport | Einfach, robust, für alle MLOs nutzbar |
 | 2026-11-08 | Punkt 5.4 | Türen über das Spiel-Door-System (Modell + Position je Flügel), Zustand serverseitig; Zugang entweder Fraktion mit Mindestrang oder Schlüssel-Item, sonst frei; Team im Dienst öffnet jede Tür; Fraktionskürzel werden als Text eingegeben, bis das Fraktionsmodul (Phase 7) eine Auswahl liefert | Konzept 5; Fraktionen gibt es noch nicht |
 | 2026-11-08 | Punkt 5.3 | Orte-Creator im Team-Menü; Config-Orte bleiben Vorgabe, Datenbank überschreibt (auch Löschen = Ausblenden); Zusatzfelder (Ausfahrt, Vorschau, Tempolimit, Blip aus) als JSON in `locations.extra`; Namen klein mit Unterstrich; `/ort setzen` bleibt als Schnellweg | Keine Config-Änderung nötig, alles sofort live |

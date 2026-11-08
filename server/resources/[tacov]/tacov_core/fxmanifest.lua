@@ -21,6 +21,7 @@ shared_scripts {
   'config/dmv.lua',
   'config/workshop.lua',
   'config/traffic.lua',
+  'config/peds.lua',
 }
 
 server_scripts {
@@ -46,6 +47,7 @@ server_scripts {
   'server/creator.lua',
   'server/doors.lua',
   'server/teleports.lua',
+  'server/peds.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -72,6 +74,7 @@ client_scripts {
   'client/creator.lua',
   'client/doors.lua',
   'client/teleports.lua',
+  'client/peds.lua',
   'client/keys.lua',
 }
 
