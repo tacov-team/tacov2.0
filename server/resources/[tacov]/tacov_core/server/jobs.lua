@@ -29,13 +29,13 @@ end
 
 --- Verdienst der letzten Stunde (Obergrenze gilt je Job)
 local function earnedLastHour(characterId, job)
-  return TacoV.DB.scalar('SELECT COALESCE(SUM(amount + tax), 0) FROM job_pay WHERE character_id = ? AND job = ? AND paid_at > DATE_SUB(NOW(), INTERVAL ? SECOND)',
-    { characterId, job, R.capLookbackSeconds }) or 0
+  return tonumber(TacoV.DB.scalar('SELECT COALESCE(SUM(amount + tax), 0) FROM job_pay WHERE character_id = ? AND job = ? AND paid_at > DATE_SUB(NOW(), INTERVAL ? SECOND)',
+    { characterId, job, R.capLookbackSeconds })) or 0
 end
 local function capResetMinutes(characterId, job)
   local row = TacoV.DB.single('SELECT TIMESTAMPDIFF(SECOND, NOW(), DATE_ADD(MIN(paid_at), INTERVAL ? SECOND)) AS s FROM job_pay ' ..
     'WHERE character_id = ? AND job = ? AND paid_at > DATE_SUB(NOW(), INTERVAL ? SECOND)', { R.capLookbackSeconds, characterId, job, R.capLookbackSeconds })
-  return row and row.s and math.max(1, math.ceil(row.s / 60)) or 1
+  return row and tonumber(row.s) and math.max(1, math.ceil(tonumber(row.s) / 60)) or 1
 end
 
 --- Lohn auszahlen: brutto aus dem NPC-Topf, Steuer an den Staat, netto aufs Konto. Beendet den Job, wenn die Obergrenze erreicht ist.

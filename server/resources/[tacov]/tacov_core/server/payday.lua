@@ -86,7 +86,8 @@ RegisterNetEvent('tacov:treasury:show', function()
     "SELECT reason, SUM(CASE WHEN to_type = 'state' THEN amount ELSE 0 END) AS income, SUM(CASE WHEN from_type = 'state' THEN amount ELSE 0 END) AS expense " ..
     "FROM journal WHERE (to_type = 'state' OR from_type = 'state') AND at > DATE_SUB(NOW(), INTERVAL 7 DAY) GROUP BY reason ORDER BY reason") or {}
   local totals = TacoV.Journal.totals()
-  local paidJobs = TacoV.DB.scalar('SELECT COALESCE(SUM(amount), 0) FROM job_pay WHERE paid_at > DATE_SUB(NOW(), INTERVAL 7 DAY)') or 0
-  TriggerClientEvent('tacov:treasury:data', src, { balance = balance, rows = rows, bank = totals.bank, cut = TacoV.Payday.cutPercent(),
+  local paidJobs = tonumber(TacoV.DB.scalar('SELECT COALESCE(SUM(amount), 0) FROM job_pay WHERE paid_at > DATE_SUB(NOW(), INTERVAL 7 DAY)')) or 0
+  for _, r in ipairs(rows) do r.income, r.expense = tonumber(r.income) or 0, tonumber(r.expense) or 0 end
+  TriggerClientEvent('tacov:treasury:data', src, { balance = tonumber(balance) or 0, rows = rows, bank = tonumber(totals.bank) or 0, cut = TacoV.Payday.cutPercent(),
     reserveWeeks = E.treasury.salaryReserveWeeks or 2, weeklyNeed = weeklySalaryNeed(), jobsWeek = paidJobs })
 end)
