@@ -7,12 +7,25 @@ local function notify(kind, text) TacoV.UI.send('notify', { kind = kind, text = 
 
 -- ---------------------------------------------------------------- Teleport
 
-local function groundZ(x, y, z)
-  for _, h in ipairs({ z > 0 and z or 1000.0, 800.0, 500.0, 300.0, 150.0, 80.0, 40.0, 10.0 }) do
-    local ok, gz = GetGroundZFor_3dCoord(x, y, h, false)
-    if ok then return gz + 0.5 end
+--- Bodenhöhe an x/y finden: Entity schrittweise nach oben setzen, Kollision laden lassen, Boden abfragen (wie vMenu).
+local function findGround(ent, x, y, hint)
+  local heights = { hint }
+  for h = 0, 1000, 25 do heights[#heights + 1] = h + 0.0 end
+  FreezeEntityPosition(ent, true)
+  for _, h in ipairs(heights) do
+    if h then
+      SetEntityCoordsNoOffset(ent, x, y, h, false, false, false)
+      RequestCollisionAtCoord(x, y, h)
+      Wait(20)
+      local ok, gz = GetGroundZFor_3dCoord(x, y, h, false)
+      if ok and gz > 0.0 then
+        local water, wz = GetWaterHeightNoWaves(x, y, gz)
+        if water and wz > gz then gz = wz end
+        return gz + 0.6
+      end
+    end
   end
-  return z > 0 and z or 100.0
+  return hint or 100.0
 end
 
 local function teleport(x, y, z, heading)
@@ -20,16 +33,16 @@ local function teleport(x, y, z, heading)
   local ent = IsPedInAnyVehicle(ped, false) and GetVehiclePedIsIn(ped, false) or ped
   DoScreenFadeOut(200)
   Wait(220)
-  RequestCollisionAtCoord(x, y, z)
   if not z or z <= 0 then
-    SetEntityCoordsNoOffset(ent, x, y, 1000.0, false, false, false)
-    FreezeEntityPosition(ent, true)
+    z = findGround(ent, x, y, nil)
+  else
+    SetEntityCoordsNoOffset(ent, x, y, z, false, false, false)
+    RequestCollisionAtCoord(x, y, z)
     local waited = 0
     while not HasCollisionLoadedAroundEntity(ent) and waited < 2000 do Wait(50) waited = waited + 50 end
-    z = groundZ(x, y, 0.0)
-    FreezeEntityPosition(ent, false)
   end
   SetEntityCoordsNoOffset(ent, x, y, z, false, false, false)
+  FreezeEntityPosition(ent, TacoV.Admin.noclip)
   if heading then SetEntityHeading(ent, heading) end
   Wait(150)
   DoScreenFadeIn(300)
@@ -64,7 +77,9 @@ RegisterNetEvent('tacov:admin:state', function(s)
     SetEntityInvincible(ent, s.noclip)
     if not s.noclip then
       local p = GetEntityCoords(ent)
-      SetEntityCoordsNoOffset(ent, p.x, p.y, groundZ(p.x, p.y, p.z), false, false, false)
+      local gz = findGround(ent, p.x, p.y, p.z)
+      SetEntityCoordsNoOffset(ent, p.x, p.y, math.min(gz, p.z), false, false, false)
+      FreezeEntityPosition(ent, false)
     end
     notify('info', s.noclip and 'Noclip an · WASD, Q/E hoch/runter, Shift schnell.' or 'Noclip aus.')
   end
@@ -113,6 +128,41 @@ CreateThread(function()
       end
     end
   end
+end)
+
+-- ---------------------------------------------------------------- Dienst-Uniform
+
+local savedOutfit = nil
+
+local function wearOutfit()
+  local ped = PlayerPedId()
+  local outfit = TacoV.Config.AdutyOutfit[GetEntityArchetypeName(ped)]
+  if not outfit or savedOutfit then return end
+  savedOutfit = { components = {}, props = {} }
+  for comp = 0, 11 do
+    savedOutfit.components[comp] = { GetPedDrawableVariation(ped, comp), GetPedTextureVariation(ped, comp), GetPedPaletteVariation(ped, comp) }
+  end
+  for prop = 0, 7 do
+    savedOutfit.props[prop] = { GetPedPropIndex(ped, prop), GetPedPropTextureIndex(ped, prop) }
+  end
+  for comp, v in pairs(outfit.components) do SetPedComponentVariation(ped, comp, v[1], v[2], 0) end
+  for prop, v in pairs(outfit.props) do
+    if v then SetPedPropIndex(ped, prop, v[1], v[2], true) else ClearPedProp(ped, prop) end
+  end
+end
+
+local function restoreOutfit()
+  if not savedOutfit then return end
+  local ped = PlayerPedId()
+  for comp, v in pairs(savedOutfit.components) do SetPedComponentVariation(ped, comp, v[1], v[2], v[3]) end
+  for prop, v in pairs(savedOutfit.props) do
+    if v[1] >= 0 then SetPedPropIndex(ped, prop, v[1], v[2], true) else ClearPedProp(ped, prop) end
+  end
+  savedOutfit = nil
+end
+
+AddEventHandler('tacov:client:aduty', function(on)
+  if on then wearOutfit() else restoreOutfit() end
 end)
 
 -- ---------------------------------------------------------------- Team-Menü (F9 im Dienst)

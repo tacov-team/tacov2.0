@@ -20,8 +20,8 @@
   --accent-bar: linear-gradient(90deg, #C4A7FF, #8B5CF6 60%, #6D28D9);
   --accent-glow: 0 0.5rem 1.5rem rgba(139, 92, 246, 0.35);
   --bg: rgba(14, 12, 22, 0.82);          /* Vollbild-Ansichten */
-  --bg-soft: rgba(14, 12, 22, 0.7);      /* Interaktions-UIs: Rad, Menü, Hinweise */
-  --hud: rgba(14, 12, 22, 0.55);         /* HUD-Kacheln */
+  --bg-soft: rgba(14, 12, 22, 0.78);      /* Interaktions-UIs: Rad, Menü, Hinweise */
+  --hud: rgba(14, 12, 22, 0.74);         /* HUD-Kacheln */
   --bg-2: rgba(255, 255, 255, 0.04);
   --bg-3: rgba(255, 255, 255, 0.08);
   --line: rgba(255, 255, 255, 0.09);

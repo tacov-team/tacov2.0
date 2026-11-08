@@ -60,3 +60,18 @@ TacoV.Config.Permissions = {
   refundSmallMax = 10000,
   refundMax = 50000,
 }
+
+-- Admin-Dienst-Uniform (Punkt 5.1): wird beim Dienstbeginn angezogen, die eigene Kleidung beim Dienstende zurückgesetzt.
+-- Nur für Freemode-Modelle; Werte sind Vanilla-Komponenten (Drawable, Textur), per Config änderbar.
+TacoV.Config.AdutyOutfit = {
+  mp_m_freemode_01 = {
+    components = { [1] = { 135, 2 }, [3] = { 3, 0 }, [4] = { 114, 2 }, [5] = { 0, 0 }, [6] = { 78, 2 }, [7] = { 0, 0 },
+                   [8] = { 15, 0 }, [9] = { 0, 0 }, [10] = { 0, 0 }, [11] = { 287, 2 } },
+    props = { [0] = false, [1] = false, [2] = false },
+  },
+  mp_f_freemode_01 = {
+    components = { [1] = { 153, 2 }, [3] = { 8, 0 }, [4] = { 121, 2 }, [5] = { 0, 0 }, [6] = { 82, 2 }, [7] = { 0, 0 },
+                   [8] = { 15, 0 }, [9] = { 0, 0 }, [10] = { 0, 0 }, [11] = { 300, 2 } },
+    props = { [0] = false, [1] = false, [2] = false },
+  },
+}
