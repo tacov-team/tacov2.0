@@ -14,7 +14,8 @@ RegisterNetEvent('tacov:voice:cycle', function()
   local idx = 2 -- Standard: normal
   for i, r in ipairs(V.order) do if math.abs((V[r] or 0) - current) < 0.6 then idx = i end end
   local nextRange = V[V.order[(idx % #V.order) + 1]] + 0.0
-  print(('[voice] cycle %d: aktuell %s → Stufe %d/%d → %s (Reihenfolge %s)'):format(src, tostring(current), idx, #V.order, nextRange, table.concat(V.order, ',')))
+  print(('[voice] cycle %d: aktuell %s → Stufe %d/%d → %s (Reihenfolge %s)'):format(src, tostring(current), idx, #V.order, nextRange,
+    table.concat(V.order, ',')))
   local okSet, err = pcall(function() exports.saltychat:SetPlayerVoiceRange(src, nextRange) end)
   if not okSet then
     print(('[voice] SetPlayerVoiceRange fehlgeschlagen: %s'):format(tostring(err)))
