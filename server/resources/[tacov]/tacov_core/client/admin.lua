@@ -553,6 +553,16 @@ RegisterNetEvent('tacov:tickets:detail', function(t, msgs)
   end)
 end)
 
+RegisterNetEvent('tacov:ac:list', function(rows)
+  local items = {}
+  for _, r in ipairs(rows) do
+    items[#items + 1] = { id = tostring(r.id), label = ('#%d · %s · %s'):format(r.id, r.player_name, r.kind), icon = r.action == 'none' and 'info' or 'warn',
+      sub = r.details, badge = r.action ~= 'none' and r.action or nil, dim = true }
+  end
+  if #items == 0 then items[1] = { id = 'none', label = 'Keine Meldungen', icon = 'info', dim = true } end
+  TacoV.Menu.open({ id = 'ac', title = 'Anti-Cheat', icon = 'shield', info = 'Letzte 25 Meldungen · Testmeldung: /actest', items = items }, function() end)
+end)
+
 function TacoV.Admin.openMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   TriggerServerEvent('tacov:admin:players')
@@ -566,6 +576,7 @@ function TacoV.Admin.openMenu()
       { id = 'world',     label = 'Welt', icon = 'clock', sub = 'Uhrzeit, Wetter, Ansage, Neustart' },
       { id = 'config',    label = 'Config', icon = 'settings', sub = 'Werte lesen und ändern (Manager)' },
       { id = 'dev',       label = 'Entwickler', icon = 'tool', sub = 'Koordinaten, Entity-Info, Debug, Neuladen' },
+      { id = 'ac',        label = 'Anti-Cheat', icon = 'shield', sub = 'Letzte Meldungen (ab Administrator)' },
       { id = 'invisible', label = 'Unsichtbar', icon = 'search', badge = TacoV.Admin.invisible and 'An' or 'Aus', section = 'Ich' },
       { id = 'noclip',    label = 'Noclip',     icon = 'play',   badge = TacoV.Admin.noclip and 'An' or 'Aus', sub = 'WASD, Q/E, Shift' },
       { id = 'waypoint',  label = 'Zum Wegpunkt teleportieren', icon = 'pin', section = 'Teleport' },
@@ -599,6 +610,8 @@ function TacoV.Admin.openMenu()
       TacoV.ConfigEdit.openMenu()
     elseif id == 'dev' then
       TacoV.Dev.openMenu()
+    elseif id == 'ac' then
+      TriggerServerEvent('tacov:ac:list')
     elseif id == 'players' then
       TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
         items = playerItems(true) }, function(pid)

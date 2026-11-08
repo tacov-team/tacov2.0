@@ -57,6 +57,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `shared/configedit.lua`, `server/configedit.lua`, `client/configedit.lua` | Config im Spiel (5.13): bearbeitbare Wurzeln (`TacoV.ConfigEdit.roots`), Pfadzugriff `get/set` (nur Blattwerte, Typ muss passen), Überschreibungen aus `config_overrides` beim Start und bei Änderung an alle Clients (`tacov:config:overrides`), Ereignis `tacov:config:changed`; Hinweis: Module, die Werte beim Laden in Locals kopieren (z. B. Spieltag-Länge), übernehmen erst nach Neustart |
 | `server/devtools.lua`, `client/devtools.lua` | Entwickler-Werkzeuge (5.14): Freigabe über `dev.tools`, Overlay (NUI `dev`), Zwischenablage (NUI `copy`), Ereignis `tacov:core:reloadData` (Orte, Türen, Aufzüge/Portale, NPCs, Objekte/Zonen, Config-Überschreibungen laden neu), Resource-Neustart nach Speichern |
 | `server/tickets.lua` | Tickets (5.15): `TacoV.Tickets.create`, Liste/Detail/Aktionen (`support.view`), Discord-Antworten alle 10 s an Online-Spieler; Tabellen `tickets`, `ticket_messages` (Spiegelung über `posted_discord`/`seen_game`) |
+| `config/anticheat.lua`, `server/anticheat.lua` | Anti-Cheat (5.16): `TacoV.AC.report(src, kind, details, action)`, `TacoV.AC.allowTeleport(src)` (Server-Teleports melden, sonst zählt der Sprung), Prüfungen Bewegung/Tempo/Bargeld/Explosionen/Entities, Team im Dienst ausgenommen; Tabelle `ac_reports`; `/actest` |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -105,6 +106,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Config im Spiel (5.13) (Migration 015)
 - [x] Entwickler-Werkzeuge (5.14)
 - [x] Tickets im Spiel und Discord (5.15) (Migration 016)
+- [x] Anti-Cheat-Grundlage (5.16) (Migration 017)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

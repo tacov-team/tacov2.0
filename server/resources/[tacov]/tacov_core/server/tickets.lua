@@ -88,6 +88,7 @@ RegisterNetEvent('tacov:tickets:action', function(id, action, text)
   elseif action == 'goto' then
     if not target then notify(src, 'error', 'Spieler ist nicht online.') return end
     local pos = GetEntityCoords(GetPlayerPed(target))
+    TacoV.AC.allowTeleport(src)
     TriggerClientEvent('tacov:admin:setCoords', src, pos.x, pos.y, pos.z, GetEntityHeading(GetPlayerPed(target)))
     addMessage(t.id, 'system', me, ('%s ist zum Spieler teleportiert.'):format(me), true)
   elseif action == 'close' then

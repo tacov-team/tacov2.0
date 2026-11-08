@@ -23,6 +23,7 @@ local function listMigrations()
     { version = 14, file = 'sql/014_refunds.sql' },
     { version = 15, file = 'sql/015_config.sql' },
     { version = 16, file = 'sql/016_tickets.sql' },
+    { version = 17, file = 'sql/017_anticheat.sql' },
   }
 end
 

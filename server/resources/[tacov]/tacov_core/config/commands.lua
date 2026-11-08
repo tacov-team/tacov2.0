@@ -17,6 +17,7 @@ TacoV.Config.Commands = {
   { name = 'noclip',  usage = 'noclip',                                      help = 'Noclip an/aus', right = 'admin.noclip' },
   { name = 'unsichtbar', usage = 'unsichtbar',                               help = 'Unsichtbar an/aus', right = 'support.invisible' },
   { name = 'coords',  usage = 'coords',                                      help = 'Position kopieren (Entwickler)', right = 'dev.tools' },
+  { name = 'actest',  usage = 'actest',                                      help = 'Anti-Cheat-Testmeldung (Manager)', right = 'admin.config' },
   { name = 'warn',    usage = 'warn <ID> <Grund>',                           help = 'Spieler verwarnen', right = 'admin.warn' },
   { name = 'kick',    usage = 'kick <ID> <Grund>',                      help = 'Spieler vom Server entfernen', right = 'admin.warn' },
 }

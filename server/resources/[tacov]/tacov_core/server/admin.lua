@@ -63,6 +63,7 @@ local function teleport(src, mode, a, b, c)
     local _, _, other = who(target)
     local fromPed, toPed = GetPlayerPed(mode == 'player' and src or target), GetPlayerPed(mode == 'player' and target or src)
     local pos = GetEntityCoords(toPed)
+    TacoV.AC.allowTeleport(mode == 'player' and src or target)
     TriggerClientEvent('tacov:admin:setCoords', mode == 'player' and src or target, pos.x, pos.y, pos.z, GetEntityHeading(toPed))
     if mode == 'bring' then notify(target, 'warn', ('Du wurdest von %s (Team) geholt.'):format(me)) end
     notify(src, 'info', mode == 'player' and ('Teleportiert zu %s.'):format(other) or ('%s hergeholt.'):format(other))
@@ -71,9 +72,11 @@ local function teleport(src, mode, a, b, c)
   elseif mode == 'coords' then
     local x, y, z = tonumber(a), tonumber(b), tonumber(c)
     if not x or not y then notify(src, 'error', 'Nutzung: /tp <x> <y> [z]') return end
+    TacoV.AC.allowTeleport(src)
     TriggerClientEvent('tacov:admin:setCoords', src, x, y, z or -1.0, nil)
     log(src, ('Teleport zu %.1f %.1f %s'):format(x, y, z and ('%.1f'):format(z) or 'Boden'))
   elseif mode == 'waypoint' then
+    TacoV.AC.allowTeleport(src)
     TriggerClientEvent('tacov:admin:toWaypoint', src)
     log(src, 'Teleport zum Wegpunkt')
   end

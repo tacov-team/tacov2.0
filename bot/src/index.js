@@ -6,6 +6,7 @@ import { syncMember, syncAllTeamRoles } from './teamroles.js';
 import { startStatus } from './status.js';
 import { startTeamspeakStatus } from './teamspeak.js';
 import { startTickets, handleTicketMessage } from './tickets.js';
+import { startAnticheat } from './anticheat.js';
 import { pool } from './db.js';
 
 const client = new Client({
@@ -41,6 +42,7 @@ client.once('clientReady', async () => {
   await startStatus(client).catch((e) => console.error('[bot] Status', e.message));
   await startTeamspeakStatus(client).catch((e) => console.error('[bot] TeamSpeak-Status', e.message));
   await startTickets(client).catch((e) => console.error('[bot] Tickets', e.message));
+  await startAnticheat(client).catch((e) => console.error('[bot] Anti-Cheat', e.message));
 });
 
 client.on('messageCreate', (m) => handleTicketMessage(m).catch((e) => console.error('[bot] Ticket-Nachricht', e)));

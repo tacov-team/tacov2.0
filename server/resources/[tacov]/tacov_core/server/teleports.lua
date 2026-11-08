@@ -44,6 +44,7 @@ RegisterNetEvent('tacov:elevator:go', function(id, floorIndex)
   for _, f in ipairs(e.floors) do if near(src, f, 4.0) then atFloor = true break end end
   if not atFloor then return end
   if not TacoV.Access.check(src, e.access) then notify(src, 'error', 'Du hast keinen Zugang zu diesem Aufzug.') return end
+  TacoV.AC.allowTeleport(src)
   TriggerClientEvent('tacov:teleports:go', src, to.x, to.y, to.z, to.h)
 end)
 
@@ -58,6 +59,7 @@ RegisterNetEvent('tacov:portal:use', function(id, back)
   end
   if not near(src, from, 4.0) then return end
   if not TacoV.Access.check(src, p.access) then notify(src, 'error', 'Du hast keinen Zugang.') return end
+  TacoV.AC.allowTeleport(src)
   TriggerClientEvent('tacov:teleports:go', src, to.x, to.y, to.z, to.h)
 end)
 

@@ -19,6 +19,7 @@ TacoV.ConfigEdit.roots = {
   { key = 'Voice',       label = 'Stimme' },
   { key = 'Onboarding',  label = 'Einstieg' },
   { key = 'Status',      label = 'Status' },
+  { key = 'AntiCheat',   label = 'Anti-Cheat (Schwellen)' },
 }
 
 local function split(path)

@@ -29,5 +29,5 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 - Nachrichten im Kanal → `ticket_messages` (source `discord`), der Spielserver zeigt sie dem Spieler; `!schliessen` schließt das Ticket.
 - Braucht die Intents `GuildMessages` und `MessageContent` (Message Content Intent im Discord-Entwicklerportal aktivieren!).
 
-## Anti-Cheat-Meldungen (Punkt 5.16)
-- `anticheat.roleId` wird bei Meldungen erwähnt, `anticheat.channelId` erhält die Meldung mit allen Infos.
+## Anti-Cheat-Meldungen (Punkt 5.16, `src/anticheat.js`)
+- Alle 10 s: neue `ac_reports` → Embed (Spieler, Discord, Charakter, Maßnahme, Details) in `anticheat.channelId`, Erwähnung von `anticheat.roleId`.
