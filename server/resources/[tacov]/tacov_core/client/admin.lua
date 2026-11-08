@@ -177,12 +177,16 @@ RegisterNetEvent('tacov:admin:healed', function()
   ClearPedBloodDamage(ped)
 end)
 
-local function playerItems()
+--- Spielerliste; includeSelf = true zeigt den eigenen Eintrag (Akte), für Teleports bleibt er weg
+local function playerItems(includeSelf)
   local items = {}
+  local me = GetPlayerServerId(PlayerId())
   for _, p in ipairs(players) do
-    if p.id ~= GetPlayerServerId(PlayerId()) then
+    if p.id ~= me then
       items[#items + 1] = { id = tostring(p.id), label = ('#%d  %s'):format(p.id, p.name), icon = 'user',
         sub = p.dist < 1000 and ('%.0f m entfernt'):format(p.dist) or ('%.1f km entfernt'):format(p.dist / 1000) }
+    elseif includeSelf then
+      table.insert(items, 1, { id = tostring(p.id), label = ('#%d  %s'):format(p.id, p.name), icon = 'shield', sub = 'Du', badge = 'Ich' })
     end
   end
   if #items == 0 then items[1] = { id = 'none', label = 'Keine anderen Spieler online', icon = 'info', dim = true } end
@@ -287,6 +291,12 @@ RegisterNetEvent('tacov:admin:file', function(f)
     table.sort(l)
     items[4].sub = (items[4].sub and (items[4].sub .. ' · ') or '') .. 'Führerscheine: ' .. (#l > 0 and table.concat(l, ', ') or 'keine')
   end
+  if f.id == GetPlayerServerId(PlayerId()) then
+    for i = #items, 1, -1 do
+      if items[i].id == 'goto' or items[i].id == 'bring' or items[i].id == 'kick' or items[i].id == 'ban' or items[i].id == 'warn' then table.remove(items, i) end
+    end
+    items[5].section = 'Aktionen'
+  end
   TacoV.Menu.open({ id = 'admin_player', title = f.name, icon = 'user', info = name, items = items,
     note = 'Jede Aktion wird protokolliert.' }, function(id)
     if id == 'goto' or id == 'bring' then
@@ -338,7 +348,7 @@ function TacoV.Admin.openMenu()
       TriggerServerEvent('tacov:admin:teleport', 'waypoint')
     elseif id == 'players' then
       TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
-        items = playerItems() }, function(pid)
+        items = playerItems(true) }, function(pid)
         if pid == 'none' then return end
         TriggerServerEvent('tacov:admin:file', tonumber(pid))
       end)

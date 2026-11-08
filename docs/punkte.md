@@ -4,6 +4,8 @@ Stand: 07.11.2026. Der Phasenplan (`docs/phasenplan.md`) in einzelne Punkte zerl
 
 Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸ zurückgestellt
 
+**Arbeitsweise (seit 08.11.2026):** Zu Beginn jeder Phase erklärt Claude zuerst, wie die Punkte gebaut werden sollen, nennt offene Entscheidungen und wartet auf das Einverständnis des Betreibers; erst dann wird gebaut.
+
 ## Phase 0 · Konzept und Grundentscheidungen
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |

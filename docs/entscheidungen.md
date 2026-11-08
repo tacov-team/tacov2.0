@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Arbeitsweise | Zu Beginn jeder Phase: Bauweise erklären, offene Entscheidungen nennen, Einverständnis abwarten; Team-Spielerliste zeigt auch den eigenen Eintrag (Akte, Geben, Heilen für sich selbst) | Betreiber-Wunsch |
 | 2026-11-08 | Punkt 5.2 | Team-Menü ohne eigene Oberfläche: Spielerliste → Akte → Aktionen als Listenmenüs; Gründe für Verwarnung/Kick/Sperre und Sperrdauern (1 h bis dauerhaft) als feste Auswahl, freier Text nur per Befehl; Geldbeträge 1.000–1.000.000 $ fest; Fahrzeug geben legt ein normales Eigentum mit TMP-Kennzeichen an | Schnell bedienbar, keine Texteingabe im Menü nötig |
 | 2026-11-08 | Menüs | Während Listenmenüs offen sind, kann der Spieler weiterlaufen; nur Pfeile, Enter, Backspace, Esc gehen ans Menü | Betreiber-Wunsch |
 | 2026-11-08 | Aduty-Uniform, HUD | Teammitglieder bekommen im Admin-Dienst automatisch eine Dienstkleidung (schwarzes Vanilla-Outfit mit Maske, je Freemode-Modell in `config/permissions.lua` änderbar), eigene Kleidung kommt beim Dienstende zurück; HUD-Kacheln deckender (0.74 statt 0.55), Menüs 0.78 | Betreiber: Uniform wie auf vielen Servern üblich; HUD zu transparent |
