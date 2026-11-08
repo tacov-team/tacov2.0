@@ -86,7 +86,7 @@ Tafeln: Team-Menü, Creator-Leiste (V4 neu). Tabellen: `doors`, `elevators`, `po
 
 Abnahme: Ein Teammitglied setzt im Spiel eine Tür mit LSPD-Zugang, einen Aufzug mit drei Etagen und einen Ansprechpartner – ohne Neustart; ein Spieler ohne Rechte kommt nicht durch die Tür.
 
-## Phase 6 – Charakter und Einstieg ⬜
+## Phase 6 – Charakter und Einstieg ✅
 
 - Charaktereditor bei der Anlage (Gesicht, Eltern-Mix, Haare, Farben), Speicherung in `appearance` – Konzept 5.4
 - Kleiderläden (15 Orte), Friseur (7), Tattoo (6), Chirurg im Krankenhaus; 10 Outfits je Charakter; Maske verbirgt den Ausweis
