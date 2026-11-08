@@ -71,17 +71,26 @@ end)
 RegisterNetEvent('tacov:phone:waypoint', function(x, y) SetNewWaypoint(x + 0.0, y + 0.0) end)
 
 -- Klingeln: Ton + Hinweis; Handy öffnet sich mit dem Anruf
+-- Klingeln: 'Remote_Ring' ist ein Dauerton – mit eigener Sound-ID starten und beim Beenden ausdrücklich stoppen
+local ringId = nil
+local function stopRing()
+  TacoV.Phone.ringing = false
+  if ringId then StopSound(ringId) ReleaseSoundId(ringId) ringId = nil end
+end
 RegisterNetEvent('tacov:phone:ring', function(on)
-  TacoV.Phone.ringing = on
-  if on then
-    if not TacoV.Phone.open and not TacoV.UI.current() then TriggerServerEvent('tacov:phone:open') end
-    CreateThread(function()
-      while TacoV.Phone.ringing do
-        PlaySoundFrontend(-1, 'Remote_Ring', 'Phone_SoundSet_Michael', true)
-        Wait(2500)
-      end
-    end)
-  end
+  if not on then stopRing() return end
+  if ringId then return end
+  TacoV.Phone.ringing = true
+  ringId = GetSoundId()
+  PlaySoundFrontend(ringId, 'Remote_Ring', 'Phone_SoundSet_Michael', true)
+  if not TacoV.Phone.open and not TacoV.UI.current() then TriggerServerEvent('tacov:phone:open') end
+  -- Sicherheitsnetz: spätestens nach der Klingeldauer verstummen, auch wenn das Stopp-Signal verloren geht
+  local my = ringId
+  SetTimeout((TacoV.Config.Phone.ringSeconds + 2) * 1000, function() if ringId == my then stopRing() end end)
+end)
+-- Anruf angenommen/beendet: Ton sicher aus
+RegisterNetEvent('tacov:phone:app', function(app, data)
+  if app == 'call' and (data == false or (type(data) == 'table' and data.state == 'active')) then stopRing() end
 end)
 
 RegisterNetEvent('tacov:phone:sms', function(from, name, preview)
