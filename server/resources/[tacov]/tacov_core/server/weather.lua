@@ -75,6 +75,9 @@ RegisterNetEvent('tacov:world:set', function(what, a, b)
     if not W.labels[w] then notify(src, 'error', 'Unbekanntes Wetter.') return end
     state.weather = w
     log(src, 'Wetter gesetzt: ' .. w)
+  elseif what == 'snow' then
+    if a == true then state.weather = 'XMAS' state.weatherFrozen = true else state.weather = 'CLEAR' state.weatherFrozen = false end
+    log(src, a == true and 'Schnee eingeschaltet (XMAS, eingefroren)' or 'Schnee beendet')
   elseif what == 'weatherFreeze' then
     state.weatherFrozen = a == true
     log(src, 'Wetter ' .. (state.weatherFrozen and 'eingefroren' or 'wechselt wieder'))

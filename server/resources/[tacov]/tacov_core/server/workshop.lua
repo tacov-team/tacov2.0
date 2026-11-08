@@ -64,8 +64,9 @@ RegisterNetEvent('tacov:workshop:open', function(netId, health)
   local inv = TacoV.Inventory.ofSource(src)
   TriggerClientEvent('tacov:workshop:data', src, {
     label = v.loc.label, plate = v.plate, model = v.row.model, repair = repair, damagePercent = math.floor(damage * 100 + 0.5),
-    upgrades = ups, paint = Cfg.paintPrice, tint = Cfg.tintPrice, wheels = Cfg.wheelsPrice,
-    colors = Cfg.colors, tints = Cfg.tints, wheelTypes = Cfg.wheelTypes, wheelsPerType = Cfg.wheelsPerType,
+    upgrades = ups, paint = Cfg.paintPrice, tint = Cfg.tintPrice, wheels = Cfg.wheelsPrice, wheelColor = Cfg.wheelColorPrice,
+    plateStyle = Cfg.plateStylePrice, xenon = Cfg.xenonPrice, parts = Cfg.parts, plateStyles = Cfg.plateStyles, wheelColors = Cfg.wheelColors,
+    colors = Cfg.colors, tints = Cfg.tints, wheelTypes = Cfg.wheelTypes,
     cash = inv and TacoV.Inventory.cash(inv) or 0, bank = TacoV.Journal.balance('character', v.c.id),
   })
 end)
@@ -110,8 +111,32 @@ RegisterNetEvent('tacov:workshop:apply', function(data)
     local idx = math.floor(tonumber(data.value) or -1)
     local valid = false
     for _, t in ipairs(Cfg.wheelTypes) do if t.id == wtype then valid = true end end
-    if not valid or idx < 0 or idx >= Cfg.wheelsPerType then return end
+    if not valid or idx < 0 or idx >= Cfg.wheelsMax then return end
     price, label, action = Cfg.wheelsPrice, 'Felgen', { kind = 'wheels', wheelType = wtype, value = idx }
+  elseif data.kind == 'part' then
+    local modType = math.floor(tonumber(data.modType) or -1)
+    local idx = math.floor(tonumber(data.value) or -2)
+    local part
+    for _, pt in ipairs(Cfg.parts) do if pt.modType == modType then part = pt end end
+    if not part or idx < -1 or idx > 200 then return end
+    price = idx == -1 and 0 or part.price
+    label, action = part.label .. (idx == -1 and ' (Serie)' or ''), { kind = 'part', modType = modType, index = idx }
+  elseif data.kind == 'pearl' or data.kind == 'wheelcolor' then
+    local idx = math.floor(tonumber(data.value) or -1)
+    local list = data.kind == 'pearl' and Cfg.colors or Cfg.wheelColors
+    local valid = false
+    for _, col in ipairs(list) do if col.id == idx then valid = true; label = (data.kind == 'pearl' and 'Perlglanz ' or 'Felgenfarbe ') .. col.label end end
+    if not valid then return end
+    price, action = data.kind == 'pearl' and Cfg.paintPrice or Cfg.wheelColorPrice, { kind = data.kind, value = idx }
+  elseif data.kind == 'plate' then
+    local idx = math.floor(tonumber(data.value) or -1)
+    local valid = false
+    for _, ps in ipairs(Cfg.plateStyles) do if ps.id == idx then valid = true; label = 'Kennzeichen ' .. ps.label end end
+    if not valid then return end
+    price, action = Cfg.plateStylePrice, { kind = 'plate', value = idx }
+  elseif data.kind == 'xenon' then
+    local on = data.value == true
+    price, label, action = on and Cfg.xenonPrice or 0, on and 'Xenon-Scheinwerfer' or 'Xenon ausgebaut', { kind = 'xenon', value = on }
   else
     return
   end

@@ -36,10 +36,12 @@ TacoV.Config.World = {
   dayMinutes = 120,          -- reale Minuten je Spieltag (24 h)
   startHour = 9,             -- Uhrzeit beim Serverstart
   weatherMinutes = 25,       -- Wetterwechsel alle x Minuten (wenn nicht eingefroren)
+  snowWeathers = { XMAS = true, SNOW = true, SNOWLIGHT = true, BLIZZARD = true }, -- mit Schneedecke, Spuren und Schnee-Effekten
   weathers = { 'CLEAR', 'EXTRASUNNY', 'CLOUDS', 'OVERCAST', 'CLEARING', 'SMOG', 'FOGGY', 'RAIN', 'THUNDER' },
   weights  = {  5,       4,            3,        2,          2,          1,      1,       1,      1 },
   labels = {
     CLEAR = 'Klar', EXTRASUNNY = 'Sonnig', CLOUDS = 'Wolkig', OVERCAST = 'Bedeckt', CLEARING = 'Aufklarend', SMOG = 'Dunst',
-    FOGGY = 'Nebel', RAIN = 'Regen', THUNDER = 'Gewitter', SNOW = 'Schnee', XMAS = 'Weihnachten', BLIZZARD = 'Schneesturm', HALLOWEEN = 'Halloween',
+    FOGGY = 'Nebel', RAIN = 'Regen', THUNDER = 'Gewitter', SNOW = 'Schnee', SNOWLIGHT = 'Leichter Schnee', XMAS = 'Schnee (Weihnachten, liegt)',
+    BLIZZARD = 'Schneesturm', HALLOWEEN = 'Halloween',
   },
 }

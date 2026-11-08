@@ -62,6 +62,16 @@ function TacoV.Menu.isOpen()
   return #stack > 0
 end
 
+--- def.onFocus(itemId, item) wird beim Markieren eines Eintrags gerufen (Vorschau)
+AddEventHandler('tacov:ui:menu:focus', function(data)
+  local top = stack[#stack]
+  if not top or type(data) ~= 'table' or data.menu ~= top.def.id or not top.def.onFocus then return end
+  local id = tostring(data.id or '')
+  for _, it in ipairs(top.def.items or {}) do
+    if it.id == id then top.def.onFocus(id, it) return end
+  end
+end)
+
 AddEventHandler('tacov:ui:menu:select', function(data)
   local top = stack[#stack]
   if not top or type(data) ~= 'table' or data.menu ~= top.def.id then return end

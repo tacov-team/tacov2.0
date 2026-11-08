@@ -97,14 +97,24 @@ end)
 
 -- Ausstattung (Farben, Tuning) lesen/setzen – wird beim Einparken gespeichert und beim Ausparken gesetzt
 local MODS = { engine = 11, brakes = 12, transmission = 13, suspension = 15, wheels = 23 }
+-- alle Teile-Typen (Spoiler 0 … Hupe 14, Felgen 23/24, Armatur etc.), Umschalter 18 Turbo, 20 Reifenrauch, 22 Xenon
+local ALL_MODS = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48 }
 function TacoV.Vehicles.propsOf(veh)
   local c1, c2 = GetVehicleColours(veh)
   local e1, e2 = GetVehicleExtraColours(veh)
   local mods = {}
   for k, t in pairs(MODS) do mods[k] = GetVehicleMod(veh, t) end
   mods.turbo = IsToggleModOn(veh, 18)
+  mods.xenon = IsToggleModOn(veh, 22)
   mods.wheelType = GetVehicleWheelType(veh)
   mods.tint = GetVehicleWindowTint(veh)
+  mods.plateIndex = GetVehicleNumberPlateTextIndex(veh)
+  local all = {}
+  for _, t in ipairs(ALL_MODS) do
+    local v = GetVehicleMod(veh, t)
+    if v >= 0 then all[tostring(t)] = v end
+  end
+  mods.all = all
   return { colors = { c1, c2 }, extraColors = { e1, e2 }, mods = mods }
 end
 local propsOf = TacoV.Vehicles.propsOf
@@ -117,9 +127,17 @@ function TacoV.Vehicles.applyProps(veh, props)
   local m = props.mods
   if type(m) == 'table' then
     if m.wheelType then SetVehicleWheelType(veh, m.wheelType) end
+    if type(m.all) == 'table' then
+      for _, t in ipairs(ALL_MODS) do
+        local v = m.all[tostring(t)]
+        SetVehicleMod(veh, t, v ~= nil and v or -1, false)
+      end
+    end
     for k, t in pairs(MODS) do if m[k] ~= nil then SetVehicleMod(veh, t, m[k], false) end end
     if m.turbo ~= nil then ToggleVehicleMod(veh, 18, m.turbo == true) end
+    if m.xenon ~= nil then ToggleVehicleMod(veh, 22, m.xenon == true) end
     if m.tint then SetVehicleWindowTint(veh, m.tint) end
+    if m.plateIndex then SetVehicleNumberPlateTextIndex(veh, m.plateIndex) end
   end
 end
 

@@ -5,6 +5,17 @@ TacoV.World = { state = nil }
 local W = TacoV.Config.World
 local currentWeather = nil
 
+local snowOn = false
+local function setSnow(on)
+  if on == snowOn then return end
+  snowOn = on
+  ForceSnowPass(on)
+  SetForceVehicleTrails(on)
+  SetForcePedFootstepsTracks(on)
+  UseSnowFootVfxWhenUnsheltered(on)
+  UseSnowWheelVfxWhenUnsheltered(on)
+end
+
 RegisterNetEvent('tacov:world:sync', function(s)
   TacoV.World.state = s
   NetworkOverrideClockTime(s.hour, s.minute, 0)
@@ -12,6 +23,7 @@ RegisterNetEvent('tacov:world:sync', function(s)
     if currentWeather then SetWeatherTypeOvertimePersist(s.weather, 20.0) else SetWeatherTypeNowPersist(s.weather) end
     currentWeather = s.weather
   end
+  setSnow(W.snowWeathers[s.weather] == true)
 end)
 
 CreateThread(function()
@@ -36,6 +48,7 @@ function TacoV.World.openMenu()
     { id = 'timeFreeze', label = s.timeFrozen and 'Uhrzeit weiterlaufen lassen' or 'Uhrzeit einfrieren', icon = 'lock' },
     { id = 'weather', label = 'Wetter setzen', icon = 'drop', sub = W.labels[s.weather] or s.weather, section = 'Wetter' },
     { id = 'weatherFreeze', label = s.weatherFrozen and 'Wetterwechsel wieder erlauben' or 'Wetter einfrieren', icon = 'lock' },
+    { id = 'snow', label = W.snowWeathers[s.weather] and 'Schnee beenden' or 'Schnee (Winter) einschalten', icon = 'drop', sub = 'Schneedecke, Spuren, eingefroren' },
     { id = 'announce', label = 'Ansage an alle', icon = 'mic', sub = 'Banner oben für alle Spieler', section = 'Ansagen' },
     { id = 'restart', label = 'Neustart ankündigen', icon = 'warn', sub = 'Minuten eingeben (Manager)' },
   } }, function(id)
@@ -54,6 +67,8 @@ function TacoV.World.openMenu()
       TacoV.Menu.open({ id = 'world_weather', title = 'Wetter', icon = 'drop', items = items }, function(w)
         TriggerServerEvent('tacov:world:set', 'weather', w) TacoV.Menu.close()
       end)
+    elseif id == 'snow' then
+      TriggerServerEvent('tacov:world:set', 'snow', not W.snowWeathers[s.weather]) TacoV.Menu.close()
     elseif id == 'weatherFreeze' then TriggerServerEvent('tacov:world:set', 'weatherFreeze', not s.weatherFrozen) TacoV.Menu.close()
     elseif id == 'announce' then
       TacoV.UI.ask({ title = 'Ansage an alle Spieler', maxLength = 300, icon = 'mic' }, function(v)
