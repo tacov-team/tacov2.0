@@ -26,10 +26,14 @@ local function apply()
   end
 end
 
---- Z: Sprechweite weiterschalten. Mit SaltyChat ausschließlich über dessen eigenen Umschalter (+voiceRange), damit der
---- Statebag SaltyChat_VoiceRange den Typ behält, den die C#-Resource erwartet (ein von Lua gesetzter Wert bricht die
---- Synchronisation aller Spieler). Die Stufen stehen in SaltyChats config.json (VoiceRanges = 3/10/25).
+--- Z: Sprechweite weiterschalten. Mit SaltyChat über dessen eigenen Umschalter (+voiceRange); der Statebag
+--- SaltyChat_VoiceRange wird nie direkt aus Lua gesetzt (falscher Zahlentyp bricht die Sprach-Synchronisation).
+--- Entprellt: ein Druck = ein Schritt, auch wenn die Taste doppelt gemeldet wird.
+local lastCycle = 0
 function TacoV.Voice.cycle()
+  local now = GetGameTimer()
+  if now - lastCycle < 300 then return end
+  lastCycle = now
   if salty() then
     ExecuteCommand('+voiceRange')
     return
@@ -42,8 +46,11 @@ function TacoV.Voice.cycle()
 end
 
 -- SaltyChat meldet jede Änderung (Meter, Index, Anzahl)
+local lastShown, lastShownAt = nil, 0
 AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters)
   meters = tonumber(meters) or V.normal
+  if lastShown == meters and GetGameTimer() - lastShownAt < 300 then return end
+  lastShown, lastShownAt = meters, GetGameTimer()
   show(meters)
   TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], math.floor(meters + 0.5)) })
 end)
@@ -68,8 +75,9 @@ function TacoV.Voice.setMegaphone(on)
   TacoV.UI.send('hud', { megaphone = on })
 end
 
-RegisterCommand('tacov_voice', function() if TacoV.Client.character then TacoV.Voice.cycle() end end, false)
-RegisterKeyMapping('tacov_voice', 'TacoV: Sprechweite', 'keyboard', V.key or 'Z')
+RegisterCommand('+tacov_voice', function() if TacoV.Client.character then TacoV.Voice.cycle() end end, false)
+RegisterCommand('-tacov_voice', function() end, false) -- Loslassen: nichts (sonst doppelt)
+RegisterKeyMapping('+tacov_voice', 'TacoV: Sprechweite', 'keyboard', V.key or 'Z')
 RegisterCommand('+tacov_megaphone', function() if TacoV.Client.character then TacoV.Voice.setMegaphone(true) end end, false)
 RegisterCommand('-tacov_megaphone', function() TacoV.Voice.setMegaphone(false) end, false)
 RegisterKeyMapping('+tacov_megaphone', 'TacoV: Megafon (halten)', 'keyboard', V.megaphoneKey or 'LMENU')

@@ -1,4 +1,4 @@
-// Handy (Phase 7, F1): Gerät unten rechts im V6-Stil. Startseite mit App-Raster; jede App bekommt ihre Daten per
+// Handy (Phase 7, F1): Gerät unten rechts in iPhone-Optik (eigenes Farbsystem, Dynamic Island, Dock, Home-Indikator). Startseite mit App-Raster; jede App bekommt ihre Daten per
 // NUI-Nachricht 'phone' ({ app, data }) und schickt Aktionen als nui('action', { view: 'phone', action: '<app>:<aktion>' }).
 import { useEffect, useState } from 'react';
 import { nui, useNuiEvent } from '../nui';
@@ -31,7 +31,7 @@ export function applyPhoneSettings(s: Settings) {
 function Header({ title, onBack, right }: { title: string; onBack?: () => void; right?: React.ReactNode }) {
   return (
     <div className="ph-head">
-      {onBack ? <button className="ph-back" onClick={onBack}><Icon name="back" size={16} /></button> : <span style={{ width: '1.8rem' }} />}
+      {onBack ? <button className="ph-back" onClick={onBack}><Icon name="back" size={18} /></button> : <span className="ph-right" />}
       <span className="ph-title">{title}</span>
       <span className="ph-right">{right}</span>
     </div>
@@ -51,7 +51,7 @@ function Contacts({ onCall, onMessage }: { onCall: (n: string) => void; onMessag
     return (<>
       <Header title={sel.name} onBack={() => setSel(null)} right={<button className="ph-icon" onClick={() => { act('contacts:favorite', { id: sel.id, favorite: !sel.favorite }); setSel({ ...sel, favorite: !sel.favorite }); }}><Icon name="star" size={16} /></button>} />
       <div className="ph-body">
-        <div className="ph-card center"><div className="ph-avatar">{sel.name.slice(0, 1).toUpperCase()}</div><b>{sel.name}</b><span className="muted num">{sel.number}</span></div>
+        <div className="ph-card ph-center"><div className="ph-avatar">{sel.name.slice(0, 1).toUpperCase()}</div><b>{sel.name}</b><span className="muted num">{sel.number}</span></div>
         <div className="ph-grid2">
           <button className="btn primary" onClick={() => onCall(sel.number)}><Icon name="phone" size={14} /> Anrufen</button>
           <button className="btn" onClick={() => onMessage(sel.number, sel.name)}><Icon name="doc" size={14} /> Nachricht</button>
@@ -91,15 +91,15 @@ function Contacts({ onCall, onMessage }: { onCall: (n: string) => void; onMessag
 
 function Dialer({ onCall }: { onCall: (n: string) => void }) {
   const [n, setN] = useState('');
-  const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'];
+  const keys: [string, string][] = [['1', ''], ['2', 'ABC'], ['3', 'DEF'], ['4', 'GHI'], ['5', 'JKL'], ['6', 'MNO'], ['7', 'PQRS'], ['8', 'TUV'], ['9', 'WXYZ'], ['', ''], ['0', '+'], ['⌫', '']];
   return (<>
-    <Header title="Wählen" />
-    <div className="ph-body">
-      <div className="ph-dial num">{n || <span className="muted">Nummer</span>}</div>
+    <Header title="Telefon" />
+    <div className="ph-body" style={{ justifyContent: 'flex-end', gap: '1rem' }}>
+      <div className="ph-dial num">{n || <span className="muted" style={{ fontSize: '1rem', letterSpacing: 0 }}>Nummer eingeben</span>}</div>
       <div className="ph-keys">
-        {keys.map((k, i) => <button key={i} className={'ph-key' + (k === '' ? ' blank' : '')} disabled={k === ''} onClick={() => setN((v) => (k === '⌫' ? v.slice(0, -1) : (v + k).slice(0, 4)))}>{k}</button>)}
+        {keys.map(([k, sub], i) => <button key={i} className={'ph-key' + (k === '' ? ' blank' : '')} disabled={k === ''} onClick={() => setN((v) => (k === '⌫' ? v.slice(0, -1) : (v + k).slice(0, 4)))}>{k}{sub && <small>{sub}</small>}</button>)}
       </div>
-      <button className="btn primary block" disabled={n.length !== 4} onClick={() => onCall(n)}><Icon name="phone" size={14} /> Anrufen</button>
+      <button className="ph-callbtn" disabled={n.length !== 4} onClick={() => onCall(n)} title="Anrufen"><Icon name="phone" size={26} /></button>
     </div>
   </>);
 }
@@ -164,7 +164,7 @@ function BankApp() {
   return (<>
     <Header title="Bank" />
     <div className="ph-body">
-      <div className="ph-card center"><span className="muted">Girokonto</span><b className="ph-big num">{money(d?.balance ?? 0)}</b></div>
+      <div className="ph-card ph-center"><span className="muted">Girokonto</span><b className="ph-big num">{money(d?.balance ?? 0)}</b></div>
       <div className="ph-tabs">
         {(['overview', 'transfer', 'invoice'] as const).map((t) => <button key={t} className={'ph-tab' + (tab === t ? ' on' : '')} onClick={() => setTab(t)}>{{ overview: 'Umsätze', transfer: 'Überweisen', invoice: 'Rechnung' }[t]}</button>)}
       </div>
@@ -219,7 +219,7 @@ function Radio() {
     <Header title="Funk" />
     <div className="ph-body">
       {!d.hasRadio ? <div className="ph-empty"><Icon name="radio" size={28} /><span>Kein Funkgerät in der Tasche. Gibt es im Baumarkt (250 $).</span></div> : (<>
-        <div className="ph-card center"><span className="muted">Frequenz</span><b className="ph-big num">{d.channel ?? '—'}</b>
+        <div className="ph-card ph-center"><span className="muted">Frequenz</span><b className="ph-big num">{d.channel ?? '—'}</b>
           {d.channel && <button className="btn sm danger" onClick={() => act('radio:leave')}>Verlassen</button>}</div>
         <div className="ph-card">
           <input className="input num" placeholder="Frequenz 1–999" value={freq} maxLength={3} onChange={(e) => setFreq(e.target.value.replace(/\D/g, ''))} />
@@ -237,11 +237,11 @@ function SettingsApp({ number, s, onChange }: { number: string; s: Settings; onC
   return (<>
     <Header title="Einstellungen" />
     <div className="ph-body">
-      <div className="ph-card center"><span className="muted">Deine Nummer</span><b className="ph-big num">{number}</b></div>
-      <div className="ph-row static"><span className="grow">Klingelton</span><div className="ph-step">{[1, 2, 3].map((n) => <button key={n} className={'btn sm' + (s.ringtone === n ? ' primary' : '')} onClick={() => { onChange({ ...s, ringtone: n }); act('settings:ringtone', { n }); }}>{n}</button>)}</div></div>
-      <div className="ph-row static"><span className="grow">Flugmodus<small>keine Anrufe, keine Nachrichten</small></span><button className={'btn sm' + (s.airplane ? ' primary' : '')} onClick={() => onChange({ ...s, airplane: !s.airplane })}>{s.airplane ? 'An' : 'Aus'}</button></div>
-      <div className="ph-row static"><span className="grow">Bedürfnisse als Zahl</span><button className={'btn sm' + (s.needsNumbers ? ' primary' : '')} onClick={() => onChange({ ...s, needsNumbers: !s.needsNumbers })}>{s.needsNumbers ? 'An' : 'Aus'}</button></div>
-      <div className="ph-row static"><span className="grow">HUD-Größe</span><div className="ph-step">{[90, 100, 110].map((n) => <button key={n} className={'btn sm' + (s.hudScale === n ? ' primary' : '')} onClick={() => onChange({ ...s, hudScale: n })}>{n} %</button>)}</div></div>
+      <div className="ph-card ph-center"><span className="muted">Deine Nummer</span><b className="ph-big num">{number}</b></div>
+      <div className="ph-row static"><span className="grow"><b>Klingelton</b></span><div className="ph-step">{[1, 2, 3].map((n) => <button key={n} className={'btn sm' + (s.ringtone === n ? ' primary' : '')} onClick={() => { onChange({ ...s, ringtone: n }); act('settings:ringtone', { n }); }}>{n}</button>)}</div></div>
+      <div className="ph-row static"><span className="grow"><b>Flugmodus</b><small>keine Anrufe, keine Nachrichten</small></span><button className={'ph-switch' + (s.airplane ? ' on' : '')} onClick={() => onChange({ ...s, airplane: !s.airplane })} aria-label="Flugmodus" /></div>
+      <div className="ph-row static"><span className="grow"><b>Bedürfnisse als Zahl</b><small>Hunger und Durst im HUD mit Prozent</small></span><button className={'ph-switch' + (s.needsNumbers ? ' on' : '')} onClick={() => onChange({ ...s, needsNumbers: !s.needsNumbers })} aria-label="Bedürfnisse als Zahl" /></div>
+      <div className="ph-row static"><span className="grow"><b>HUD-Größe</b></span><div className="ph-step">{[90, 100, 110].map((n) => <button key={n} className={'btn sm' + (s.hudScale === n ? ' primary' : '')} onClick={() => onChange({ ...s, hudScale: n })}>{n} %</button>)}</div></div>
     </div>
   </>);
 }
@@ -273,49 +273,64 @@ export function Phone({ data }: { data: PhoneData }) {
   const startCall = (n: string) => act('calls:start', { number: n });
   const openMessage = (n: string, name?: string) => { setMsgTarget({ number: n, name }); setApp('messages'); };
 
+  const DOCK = ['dialer', 'messages', 'contacts', 'bank'];
+  const dockApps: PhoneApp[] = [
+    { id: 'dialer', label: 'Telefon', icon: 'phone', enabled: true },
+    { id: 'messages', label: 'Nachrichten', icon: 'doc', enabled: true, badge: apps.find((a) => a.id === 'messages')?.badge },
+    { id: 'contacts', label: 'Kontakte', icon: 'group', enabled: true },
+    ...apps.filter((a) => a.id === 'bank'),
+  ];
+  const gridApps = apps.filter((a) => !DOCK.includes(a.id));
+  const AppIcon = ({ a }: { a: PhoneApp }) => (
+    <button className={'ph-app' + (a.enabled ? '' : ' off')} disabled={!a.enabled} onClick={() => setApp(a.id)} title={a.label}>
+      <span className={'ph-app-ico c-' + a.id}><Icon name={a.icon} size={24} />{a.badge ? <i className="ph-badge">{a.badge}</i> : null}</span>
+      <span>{a.label}</span>
+    </button>
+  );
+  const time = data.time ?? '';
+  const isHome = !call && !app;
+
   return (
     <div className="phone">
-      <div className="ph-status"><span className="num">{data.time ?? ''}</span><span className="ph-dot" /><span className="num">{data.number}</span><Icon name="radio" size={12} /></div>
-      {call && (
-        <div className={'ph-call ' + call.state}>
-          <div className="ph-avatar">{(call.name ?? call.with).slice(0, 1).toUpperCase()}</div>
-          <b>{call.name ?? call.with}</b>
-          <span className="muted">{call.state === 'incoming' ? 'Eingehender Anruf' : call.state === 'outgoing' ? 'Wählt …' : 'Verbunden'}</span>
-          <div className="ph-grid2">
-            {call.state === 'incoming' && <button className="btn primary" onClick={() => act('calls:accept')}><Icon name="phone" size={14} /> Annehmen</button>}
-            <button className="btn danger" onClick={() => act('calls:end')}><Icon name="x" size={14} /> {call.state === 'incoming' ? 'Ablehnen' : 'Auflegen'}</button>
-          </div>
+      <div className={'ph-screen' + (isHome ? ' home' : '')}>
+        <div className="ph-island" />
+        <div className="ph-status">
+          <span className="num">{time}</span>
+          <span className="right"><span className="ph-sig"><i /><i /><i /><i /></span><Icon name="radio" size={12} /><span className="ph-bat" /></span>
         </div>
-      )}
-      {!call && !app && (
-        <div className="ph-home">
-          <div className="ph-apps">
-            {apps.map((a) => (
-              <button key={a.id} className={'ph-app' + (a.enabled ? '' : ' off')} disabled={!a.enabled} onClick={() => setApp(a.id)}>
-                <span className="ph-app-ico"><Icon name={a.icon} size={22} />{a.badge ? <i className="ph-badge">{a.badge}</i> : null}</span>
-                <span>{a.label}</span>
-              </button>
-            ))}
+        {call && (
+          <div className={'ph-call ' + call.state}>
+            <div className="who">
+              <div className="ph-avatar">{(call.name ?? call.with).slice(0, 1).toUpperCase()}</div>
+              <b>{call.name ?? call.with}</b>
+              <span>{call.state === 'incoming' ? 'Eingehender Anruf · ' + call.with : call.state === 'outgoing' ? 'Wählt …' : 'Verbunden'}</span>
+            </div>
+            <div className="actions">
+              <div><button className="ph-callbtn red" onClick={() => act('calls:end')} title="Auflegen"><Icon name="x" size={26} /></button>{call.state === 'incoming' ? 'Ablehnen' : 'Auflegen'}</div>
+              {call.state === 'incoming' && <div><button className="ph-callbtn" onClick={() => act('calls:accept')} title="Annehmen"><Icon name="phone" size={26} /></button>Annehmen</div>}
+            </div>
           </div>
-          <div className="ph-dock">
-            <button className="ph-app" onClick={() => setApp('dialer')}><span className="ph-app-ico"><Icon name="phone" size={22} /></span><span>Wählen</span></button>
-            <button className="ph-app" onClick={() => setApp('contacts')}><span className="ph-app-ico"><Icon name="group" size={22} /></span><span>Kontakte</span></button>
-            <button className="ph-app" onClick={() => setApp('messages')}><span className="ph-app-ico"><Icon name="doc" size={22} /></span><span>Nachrichten</span></button>
+        )}
+        {isHome && (
+          <div className="ph-home">
+            <div className="ph-clock"><b className="num">{time}</b><span>{data.number}</span></div>
+            <div className="ph-apps">{gridApps.map((a) => <AppIcon key={a.id} a={a} />)}</div>
+            <div className="ph-dock">{dockApps.map((a) => <AppIcon key={a.id} a={a} />)}</div>
           </div>
-        </div>
-      )}
-      {!call && app === 'contacts' && <Contacts onCall={startCall} onMessage={openMessage} />}
-      {!call && app === 'dialer' && <Dialer onCall={startCall} />}
-      {!call && app === 'messages' && <Messages initial={msgTarget} />}
-      {!call && app === 'bank' && <BankApp />}
-      {!call && app === 'vehicles' && <Vehicles />}
-      {!call && app === 'radio' && <Radio />}
-      {!call && app === 'settings' && <SettingsApp number={data.number} s={settings} onChange={changeSettings} />}
-      {!call && app && !['contacts', 'dialer', 'messages', 'bank', 'vehicles', 'radio', 'settings'].includes(app) && (<>
-        <Header title={apps.find((a) => a.id === app)?.label ?? app} onBack={() => setApp(null)} />
-        <div className="ph-body"><div className="ph-empty"><Icon name="clock" size={28} /><span>Kommt mit einer späteren Phase.</span></div></div>
-      </>)}
-      <button className="ph-homebtn" onClick={() => (app ? setApp(null) : act('close'))} title={app ? 'Startseite' : 'Handy weglegen'} />
+        )}
+        {!call && app === 'contacts' && <Contacts onCall={startCall} onMessage={openMessage} />}
+        {!call && app === 'dialer' && <Dialer onCall={startCall} />}
+        {!call && app === 'messages' && <Messages initial={msgTarget} />}
+        {!call && app === 'bank' && <BankApp />}
+        {!call && app === 'vehicles' && <Vehicles />}
+        {!call && app === 'radio' && <Radio />}
+        {!call && app === 'settings' && <SettingsApp number={data.number} s={settings} onChange={changeSettings} />}
+        {!call && app && !['contacts', 'dialer', 'messages', 'bank', 'vehicles', 'radio', 'settings'].includes(app) && (<>
+          <Header title={apps.find((a) => a.id === app)?.label ?? app} onBack={() => setApp(null)} />
+          <div className="ph-body"><div className="ph-empty"><Icon name="clock" size={28} /><span>Kommt mit einer späteren Phase.</span></div></div>
+        </>)}
+        <button className="ph-indicator" onClick={() => (app ? setApp(null) : act('close'))} title={app ? 'Startseite' : 'Handy weglegen'} />
+      </div>
     </div>
   );
 }
