@@ -19,7 +19,7 @@ export type HudData = {
   health: number; armor: number; hunger: number; thirst: number; fitness: number;
   cash: number; black: number; bank: number; serverId: number;
   street: string; area: string; weight: number; maxWeight: number;
-  name: string; level: number; levelProgress: number; status: string; faction: string;
+  name: string; level: number; levelProgress: number; status: string; faction: string; job?: string | null;
   visible: boolean;
   factionRank?: string;
   aduty?: string | false; notice?: string | false; // Admin-Dienst: Rollenname, sonst false
@@ -53,7 +53,7 @@ type View = null
   | { name: 'editor'; data: EditorData }
   | { name: 'phone'; data: PhoneData };
 
-export type Hint = { key: string; text: string };
+export type Hint = { key: string; text: string; progress?: number };
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null; crosshair: boolean };
 
 type Action =

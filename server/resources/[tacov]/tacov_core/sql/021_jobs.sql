@@ -1,0 +1,36 @@
+-- Phase 8: Jobs – Schichten und Lohnbuchungen (Obergrenze je Stunde, Berichte)
+CREATE TABLE IF NOT EXISTS job_sessions (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  character_id INT UNSIGNED NOT NULL,
+  job VARCHAR(32) NOT NULL,
+  started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ended_at TIMESTAMP NULL DEFAULT NULL,
+  orders INT UNSIGNED NOT NULL DEFAULT 0,
+  earned INT UNSIGNED NOT NULL DEFAULT 0,
+  end_reason VARCHAR(32) NULL,
+  KEY idx_job_sessions_char (character_id, started_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS job_pay (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  character_id INT UNSIGNED NOT NULL,
+  job VARCHAR(32) NOT NULL,
+  amount INT UNSIGNED NOT NULL,
+  tax INT UNSIGNED NOT NULL DEFAULT 0,
+  note VARCHAR(64) NULL,
+  paid_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY idx_job_pay_char_time (character_id, paid_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Payday (Fraktionsgehälter) – Protokoll je Auszahlung
+CREATE TABLE IF NOT EXISTS payday_log (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  character_id INT UNSIGNED NOT NULL,
+  faction VARCHAR(32) NOT NULL,
+  faction_rank TINYINT UNSIGNED NOT NULL,
+  gross INT UNSIGNED NOT NULL,
+  tax INT UNSIGNED NOT NULL,
+  cut_percent TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  paid_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY idx_payday_char (character_id, paid_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

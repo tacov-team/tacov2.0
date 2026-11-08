@@ -22,6 +22,11 @@ jobs:
       - name: Geheimnisse prüfen
         run: bash tools/ci/check_secrets.sh
 
+      - name: Kaufzeiten-Simulation (Konzept 3.9)
+        run: |
+          sudo apt-get install -y -qq lua5.4 >/dev/null
+          lua5.4 tools/ci/sim_economy.lua
+
       - name: JavaScript prüfen
         run: |
           (cd bot && npm run check)

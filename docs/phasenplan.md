@@ -111,7 +111,7 @@ Tafel: „V4 · Handy“ (vorhanden, nach Abnahme der Realismus-Korrektur). Tabe
 
 Abnahme: Zwei Spieler tauschen Nummern, schreiben, telefonieren, funken auf einer Frequenz; Funkliste im HUD zeigt, wer spricht.
 
-## Phase 8 – Jobs, Lohn, Steuern, Staatshaushalt ⬜
+## Phase 8 – Jobs, Lohn, Steuern, Staatshaushalt 🔧
 
 - Sechs Jobs: Müllabfuhr, Lieferfahrer, Busfahrer, Taxi, Holzfäller, Bergbau – Konzept 3.2 (Lohn, Stundenlimit, Führerschein-Voraussetzung aus Phase 4)
 - Jobcenter, Job-Ansprechpartner an den Orten, Firmenfahrzeuge vom Hof

@@ -163,6 +163,8 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 
 /* E-Aufforderung */
 .hint { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.75rem 0.4rem 0.4rem; border-radius: 0.75rem; background: var(--bg-soft); backdrop-filter: blur(0.5rem); border: 1px solid var(--line-2); box-shadow: var(--shadow); font-size: 0.875rem; font-weight: 700; }
+.hint.busy { overflow: hidden; }
+.hint .bar { position: absolute; left: 0; bottom: 0; height: 0.2rem; background: var(--accent-grad); box-shadow: var(--accent-glow); transition: width 0.1s linear; }
 .hint .key { width: 1.875rem; height: 1.875rem; border-radius: 50%; background: var(--accent-grad); color: #fff; display: grid; place-items: center; font-weight: 900; box-shadow: var(--accent-glow); }
 
 /* Befehlszeile */

@@ -40,9 +40,13 @@ function TacoV.Client.openActionsMenu()
       { id = 'show_id', label = 'Ausweis vorzeigen', icon = 'id', sub = 'Zeigt deinen Ausweis den Spielern in der Nähe' },
       { id = 'newbie', label = 'Neulingspfad', icon = 'star', sub = 'Zehn Schritte mit Bonus' },
       { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Schloss, Kofferraum', section = 'Fahrzeug' },
+      { id = 'taxi_call', label = 'Taxi rufen', icon = 'phone', sub = 'Taxifahrer im Dienst bekommen deinen Standort', section = 'Unterwegs' },
+      (TacoV.Jobs.state and TacoV.Jobs.state.job == 'taxi') and { id = 'taxi_fare', label = 'Fahrgast suchen', icon = 'user', sub = 'NPC-Fahrgast mit Ziel' } or nil,
     },
   }, function(id)
     if id == 'vehicle' then TacoV.Menu.close() TacoV.Vehicles.openMenu() return end
+    if id == 'taxi_call' then TacoV.Menu.close() TacoV.Jobs.callTaxi() return end
+    if id == 'taxi_fare' then TacoV.Menu.close() TacoV.Jobs.findFare() return end
     if id == 'handsup' then TacoV.Menu.close() TacoV.Client.toggleHandsUp() end
     if id == 'show_id' then TacoV.Menu.close() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end
     if id == 'newbie' then TacoV.Menu.close() TacoV.Housing.openNewbie() end

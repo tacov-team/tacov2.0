@@ -49,7 +49,9 @@ function TacoV.World.openMenu()
     { id = 'snow', label = W.snowWeathers[s.weather] and 'Schnee beenden' or 'Schnee (Winter) einschalten', icon = 'drop', sub = 'Schneedecke, Spuren, eingefroren' },
     { id = 'announce', label = 'Ansage an alle', icon = 'mic', sub = 'Banner oben für alle Spieler', section = 'Ansagen' },
     { id = 'restart', label = 'Neustart ankündigen', icon = 'warn', sub = 'Minuten eingeben (Manager)' },
+    { id = 'treasury', label = 'Staatshaushalt', icon = 'cash', sub = 'Kontostand, Einnahmen und Ausgaben der Woche', section = 'Wirtschaft' },
   } }, function(id)
+    if id == 'treasury' then TriggerServerEvent('tacov:treasury:show') return end
     if id == 'time' then
       TacoV.UI.ask({ title = 'Uhrzeit (z. B. 21:30)', value = ('%02d:%02d'):format(s.hour, s.minute), maxLength = 5, icon = 'clock' }, function(v)
         local h, m = tostring(v or ''):match('^(%d%d?):?(%d?%d?)$')
@@ -80,3 +82,22 @@ function TacoV.World.openMenu()
     end
   end)
 end
+
+-- Staatshaushalt (Punkt 8.8): Übersicht der letzten 7 Tage
+local function fmtMoney(n) return (tostring(math.floor(n or 0)):reverse():gsub('(%d%d%d)', '%1.'):reverse():gsub('^%.', '')) .. ' $' end
+RegisterNetEvent('tacov:treasury:data', function(d)
+  local items = {
+    { id = 'bal', label = 'Kontostand Staat', icon = 'cash', sub = fmtMoney(d.balance), section = 'Stand', dim = true },
+    { id = 'bank', label = 'Geld auf Spielerkonten', icon = 'card', sub = fmtMoney(d.bank), dim = true },
+    { id = 'need', label = ('Reserve-Soll (%d Wochen Gehälter)'):format(d.reserveWeeks), icon = 'briefcase',
+      sub = fmtMoney(d.weeklyNeed * d.reserveWeeks) .. (d.cut > 0 and (' · Gehälter gekürzt um ' .. d.cut .. ' %') or ' · keine Kürzung'), dim = true },
+    { id = 'jobs', label = 'Löhne aus Jobs (7 Tage)', icon = 'tool', sub = fmtMoney(d.jobsWeek), dim = true },
+  }
+  local income, expense = 0, 0
+  for _, r in ipairs(d.rows or {}) do
+    income, expense = income + (r.income or 0), expense + (r.expense or 0)
+    items[#items + 1] = { id = 'r_' .. r.reason, label = r.reason, icon = (r.income or 0) >= (r.expense or 0) and 'plus' or 'x',
+      sub = ('+%s · −%s'):format(fmtMoney(r.income), fmtMoney(r.expense)), section = 'Buchungen der letzten 7 Tage', dim = true }
+  end
+  TacoV.Menu.open({ id = 'treasury', title = 'Staatshaushalt', icon = 'cash', info = ('7 Tage: +%s · −%s'):format(fmtMoney(income), fmtMoney(expense)), items = items }, function() end)
+end)

@@ -25,6 +25,8 @@ TacoV.Config.Shops = {
       { item = 'phone',    price = 300 },
       { item = 'radio',    price = 250 },
       { item = 'toolbox',  price = 400 },
+      { item = 'axe',      price = 150 },
+      { item = 'pickaxe',  price = 150 },
       { item = 'lockpick', price = 250 },
       { item = 'crowbar',  price = 180 },
       { item = 'hammer',   price = 60 },

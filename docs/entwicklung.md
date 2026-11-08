@@ -1,5 +1,9 @@
 # Entwicklung
 
+## Kaufzeiten-Simulation
+
+`lua5.4 tools/ci/sim_economy.lua` (läuft in der CI) rechnet aus den Config-Werten die Spielstunden bis Auto, Wohnung, Haus und Sportwagen; Annahmen stehen oben im Skript. Auto und Sportwagen müssen innerhalb ±15 % liegen, sonst wird die CI rot.
+
 ## Reihenfolge
 Der verbindliche Bauplan steht in `docs/phasenplan.md` (Phasen 0–12 mit Abnahme je Phase).
 

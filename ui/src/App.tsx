@@ -64,7 +64,12 @@ function Views() {
       {v?.name === 'ask' && <Ask data={v.data} />}
       {v?.name === 'editor' && <Editor key={v.data.title ?? 'editor'} data={v.data} />}
       {v?.name === 'phone' && <Phone data={v.data} />}
-      {!v && state.hint && <div className="hint"><span className="key">{state.hint.key}</span><span>{state.hint.text}</span></div>}
+      {!v && state.hint && (
+        <div className={'hint' + (state.hint.progress !== undefined ? ' busy' : '')}>
+          <span className="key">{state.hint.key}</span><span>{state.hint.text}</span>
+          {state.hint.progress !== undefined && <i className="bar" style={{ width: `${Math.round(Math.min(1, state.hint.progress) * 100)}%` }} />}
+        </div>
+      )}
     </>
   );
 }

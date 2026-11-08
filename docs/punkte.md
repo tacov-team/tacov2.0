@@ -143,17 +143,17 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 
 ## Phase 8 · Jobs, Lohn, Steuern
 
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 8.1 | Jobcenter und Job-Grundgerüst (Anmelden, Firmenfahrzeug, Lohn) | ⬜ |
-| 8.2 | Müllabfuhr | ⬜ |
-| 8.3 | Lieferfahrer | ⬜ |
-| 8.4 | Busfahrer | ⬜ |
-| 8.5 | Taxi | ⬜ |
-| 8.6 | Holzfäller | ⬜ |
-| 8.7 | Bergbau | ⬜ |
-| 8.8 | Payday, Einkommensteuer, Staatshaushalt | ⬜ |
-| 8.9 | Kaufzeiten-Simulation in der CI | ⬜ |
+| Nr. | Punkt | Status | Details |
+| --- | --- | --- | --- |
+| 8.1 | Jobcenter und Job-Grundgerüst (Anmelden, Firmenfahrzeug, Lohn) | 🔧 | Jobcenter (Innenstadt, E) und Ansprechpartner je Hof (E, NPC-Aufgabe „Job-Ansprechpartner“); nur ein Job aktiv; Firmenfahrzeug am Hof (Kennzeichen JOB nnn, Schlüssel nur für den Arbeiter, weg bei Feierabend, zerstört = nur Lohn des Auftrags weg); Lohn je Auftrag aus dem NPC-Topf **aufs Konto**, 8 % Einkommensteuer in den Staatshaushalt; Obergrenze je Stunde als gleitendes Fenster → Schicht endet automatisch mit Hinweis; Routenpunkte sind Orte (Arten trash, busstop, address, tree, ore) und per Orte-Creator verschiebbar; Tabellen `job_sessions`, `job_pay` (Migration 021); HUD zeigt Job und Station, Blip mit Route |
+| 8.2 | Müllabfuhr | 🔧 | Müllhof La Puerta, Müllwagen; 8 Container je Route (E „einladen“, 4 s, Wagen in der Nähe), zurück zum Hof → 180 $; **Führerschein C** |
+| 8.3 | Lieferfahrer | 🔧 | Depot Cypress Flats, Transporter; 3–5 Adressen aus dem Pool (E „Paket abgeben“), zurück → 150/205/260 $; Führerschein B |
+| 8.4 | Busfahrer | 🔧 | Busdepot, Bus; 10 Haltestellen in fester Reihenfolge, Halt 4 s mit ein-/aussteigenden NPC-Fahrgästen, zurück → 300 $; Führerschein C |
+| 8.5 | Taxi | 🔧 | Downtown Cab Co., Taxi; Taxameter 25 $ + 1,80 $/100 m; NPC-Fahrgäste über F4 → „Fahrgast suchen“ (Abholung ≥ 300 m, Ziel aus dem Adresspool); Spieler rufen über F4 → „Taxi rufen“ (Fahrer bekommen Wegpunkt), Fahrpreis geht beim Aussteigen automatisch vom Fahrgast an den Fahrer (Steuer an den Staat); Führerschein B |
+| 8.6 | Holzfäller | 🔧 | Sägewerk Paleto, Pickup; **Axt aus dem Baumarkt (150 $)** nötig; Baum fällen (8 s), Stamm tragen und aufladen (×4), am Sägewerk abliefern → 220 $ |
+| 8.7 | Bergbau | 🔧 | Mine Davis Quartz, zu Fuß; **Spitzhacke (150 $)** nötig; Erz abbauen (8 s, Item „Erz“ 2 kg), beim Händler verkaufen → 240 $ je 5 Erz (anteilig) |
+| 8.8 | Payday, Einkommensteuer, Staatshaushalt | 🔧 | Fraktionsgehalt je volle Stunde (linear Rang 1–12 aus `Salaries`, bis Phase 9 zählt Spielzeit als Dienst) aus dem Staatshaushalt, 8 % Steuer; Kürzung anteilig, wenn die Reserve unter 2 Wochen Gehälter fällt, nie nachgedruckt; `payday_log`; Team-Menü → Welt → Staatshaushalt (Stand, Spielerkonten, Reserve, Buchungen der Woche je Grund) |
+| 8.9 | Kaufzeiten-Simulation in der CI | 🔧 | `tools/ci/sim_economy.lua` (lua5.4 in der CI): rechnet aus Config-Werten die Stunden bis Auto D, Wohnung, Haus, Sportwagen A; Auto und Sportwagen sind Pflicht (±15 %), Wohnung/Haus bis Phase 10 nur Hinweis – mit den Konzeptwerten liegen sie weit außerhalb (siehe Entscheidungen 08.11.) |
 
 ## Phase 9 · Fraktionen
 
