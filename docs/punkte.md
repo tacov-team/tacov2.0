@@ -62,15 +62,15 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 3.1 | Oberfläche V6 „Klar“: Grundlagen, Panels, Maßstab | 🔧 | Neuaufbau 07.11., zur Abnahme auf dem Testserver |
-| 3.2 | HUD (Geld, Hunger/Durst, Funkliste, Infozeilen, Tacho) | 🔧 | |
-| 3.3 | Hinweise (Toasts) | 🔧 | |
-| 3.4 | Charakterauswahl | 🔧 | |
-| 3.5 | Inventar (F2), Ablagen, Items, Icons | 🔧 | |
+| 3.1 | Oberfläche V6 „Klar“: Grundlagen, Panels, Maßstab | ✅ | Neuaufbau 07.11., zur Abnahme auf dem Testserver |
+| 3.2 | HUD (Geld, Hunger/Durst, Funkliste, Infozeilen, Tacho) | ✅ | |
+| 3.3 | Hinweise (Toasts) | ✅ | |
+| 3.4 | Charakterauswahl | ✅ | |
+| 3.5 | Inventar (F2), Ablagen, Items, Icons | ✅ | |
 | 3.6 | Bedürfnisse Hunger/Durst | ✅ | Fitness und Promille: Phase 5/10 |
 | 3.7 | Hände hoch (H) | ✅ | |
-| 3.8 | Bank und Geldautomat | 🔧 | |
-| 3.9 | Läden (24/7, LTD, Rob's, Baumarkt, Waffenladen) | 🔧 | |
+| 3.8 | Bank und Geldautomat | ✅ | |
+| 3.9 | Läden (24/7, LTD, Rob's, Baumarkt, Waffenladen) | ✅ | |
 
 ## Phase 4 · Fahrzeuge
 
@@ -78,17 +78,17 @@ Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸
 | --- | --- | --- | --- |
 | 4.1 | Fahrzeugklassen und Kaufliste | ✅ | 8 Klassen, 52 Modelle, kein Level |
 | 4.2 | Kaufhäuser (PDM, LKW) mit Vorschau und Kamera | ✅ | Kaufhaus-Ansicht mit Karten (07.11.) |
-| 4.3 | Garagen (alle Parkplätze) und Garage-Ansicht | 🔧 | Ausfahrten im Spiel prüfen |
+| 4.3 | Garagen (alle Parkplätze) und Garage-Ansicht | ✅ | Ausfahrten im Spiel prüfen |
 | 4.4 | Verwahrhof | ✅ | |
 | 4.5 | Schlüssel, Schloss, Schlüssel geben | ✅ | |
 | 4.6 | Kofferraum und Handschuhfach | ✅ | außen Kofferraum (offen = für alle), innen Handschuhfach 5 kg |
 | 4.7 | Tanken und Verbrauch, Tankstellenkarte | ✅ | |
 | 4.8 | Fahrzeugmenü (F6 → Fahrzeug, X-Rad) | ✅ | Motor startet nicht automatisch |
-| 4.9 | DMV: Zulassung, Halterwechsel | 🔧 | DMV Vespucci; TMP-Kennzeichen bis Zulassung |
-| 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | 🔧 | B 500 / A 350 / C 800 $, Wiederholung 100 $; Kauf nur mit Führerschein |
-| 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | 🔧 | 5 Werkstätten; Leistung 5/10/20 % vom Kaufpreis; Karosserie (Spoiler, Stoßstangen, Schweller, Auspuff, Käfig, Grill, Haube, Kotflügel, Dach, Hupe, Folierung) 150–900 $; Felgen alle Arten/Modelle 800 $, Felgenfarbe 250 $; Lack Haupt/Zweit/Perlglanz 500 $ (28 Farben), Fenster 300 $, Xenon 600 $, Kennzeichenstil 200 $; **Live-Vorschau beim Markieren**, ohne Kauf zurückgesetzt |
-| 4.12 | Blitzer | 🔧 | 6 Blitzer (Olympic Fwy, Del Perro Fwy, Vinewood Blvd, Great Ocean Hwy, Route 68, Senora Fwy), Toleranz 5 km/h, Bußgeld 100–2000 $, ab 21 km/h Punkte; Orte per `/ort setzen blitzer_<n> speedcam` |
-| 4.13 | Kfz-Steuer | 🔧 | 1 % des Kaufpreises je Jahr, wöchentlich anteilig vom Bankkonto (auch offline); offen → fällig beim Ausparken |
+| 4.9 | DMV: Zulassung, Halterwechsel | ✅ | DMV Vespucci; TMP-Kennzeichen bis Zulassung |
+| 4.10 | Fahrschule: Theorie, Praxis, Führerschein A/B/C, Punkte | ✅ | B 500 / A 350 / C 800 $, Wiederholung 100 $; Kauf nur mit Führerschein |
+| 4.11 | NPC-Werkstatt: Reparatur, Upgrades, Zubehör | ✅ | 5 Werkstätten; Leistung 5/10/20 % vom Kaufpreis; Karosserie (Spoiler, Stoßstangen, Schweller, Auspuff, Käfig, Grill, Haube, Kotflügel, Dach, Hupe, Folierung) 150–900 $; Felgen alle Arten/Modelle 800 $, Felgenfarbe 250 $; Lack Haupt/Zweit/Perlglanz 500 $ (28 Farben), Fenster 300 $, Xenon 600 $, Kennzeichenstil 200 $; **Live-Vorschau beim Markieren**, ohne Kauf zurückgesetzt |
+| 4.12 | Blitzer | ✅ | 6 Blitzer (Olympic Fwy, Del Perro Fwy, Vinewood Blvd, Great Ocean Hwy, Route 68, Senora Fwy), Toleranz 5 km/h, Bußgeld 100–2000 $, ab 21 km/h Punkte; Orte per `/ort setzen blitzer_<n> speedcam` |
+| 4.13 | Kfz-Steuer | ✅ | 1 % des Kaufpreises je Jahr, wöchentlich anteilig vom Bankkonto (auch offline); offen → fällig beim Ausparken |
 | 4.14 | Boote und Flugzeuge | ⏸ | Entscheidung später |
 
 ## Phase 5 · Entwickler- und Admin-Werkzeuge (Creator-Systeme)
@@ -97,36 +97,36 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 5.1 | Admin-Grundgerüst: Rechte, Admin-Modus, Unsichtbar, Noclip, Teleport (Spieler/Koordinaten/Wegpunkt) | 🔧 | F9 im Dienst = Team-Menü (Unsichtbar, Noclip, Teleport Wegpunkt/zu Spieler/herholen, Dienst beenden); `/tp`, `/tpm`, `/bring`, `/noclip`, `/unsichtbar`; Dienst-Uniform automatisch (Config `AdutyOutfit`); alles geloggt |
-| 5.2 | Team-Menü (F9): Spielerliste mit Akte, Items/Geld/Fahrzeug geben, Heilen, Kicken, Sperren, Warnen | 🔧 | Team-Menü → Spieler → Akte (Rolle, Charakter, Konto, Verwarnungen/Sperren, Führerscheine) + Aktionen; Gründe/Dauern aus Config, freier Text per `/warn`, `/kick`, `/sperre`; Tabelle `warnings` (Migration 008); jede Aktion mit Log |
-| 5.3 | Orte-Creator: Orte, Blips, E-Punkte im Spiel setzen und verschieben (ersetzt `/ort setzen`) | 🔧 | Team-Menü → Creator → Orte: neu (Art, Platzieren am Zeiger, Name, Beschriftung), in der Nähe/alle bearbeiten (verschieben, Beschriftung, Art, Blip aus, Ausfahrt/Vorschau, Tempolimit, löschen); Platzierer mit Leertaste Zeiger/fest, Pfeile/Bild↑↓, Q/E, Shift; Migration 009 |
-| 5.4 | Door Creator: Türen und Tore erfassen, Zugang je Fraktion/Rang/Schlüssel, Zustand (offen/zu) | 🔧 | Creator → Türen: Tür anvisieren + Enter (zweiter Flügel optional), Zugang Fraktion+Mindestrang oder Schlüssel-Item oder frei, Auto-Schließen, Teile ergänzen; E am Türrahmen schließt auf/ab, synchron für alle; Team im Dienst öffnet alles; Tabelle `doors` (Migration 010) |
-| 5.5 | Elevator Creator: Aufzüge mit Etagen, Zugang, Teleport mit Blende | 🔧 | Creator → Aufzüge: Bezeichnung, Etagen nacheinander platzieren und benennen; E am Etagenpunkt → Etagenwahl → Blende; Zugang wie Türen; Etagen ergänzen/verschieben/entfernen; Tabelle `elevators` (Migration 011) |
-| 5.6 | Teleport-/Portal-Creator: Ein-/Ausgänge für Interiors (z. B. Polizeiwache, Wohnungen) | 🔧 | Creator → Portale: Eingang und Ausgang platzieren, beide Richtungen oder Einbahn, Zugang wie Türen; E „Betreten“ mit Blende; Tabelle `portals` (Migration 011) |
-| 5.7 | Ped-/NPC-Creator: Ansprechpartner mit Modell, Animation, Aufgabe (Shop, Job, Kaufhaus) | 🔧 | Creator → NPCs: 20 Modelle + freie Eingabe, Vorschau am Zeiger, 15 Szenarien, Aufgabe (Laden, Bank, Kaufhaus, DMV, Garage, Werkstatt, Tankstelle) – E „Ansprechen“ löst sie aus, wenn der NPC am Ort steht; lokal gespawnt (unverwundbar, eingefroren); Tabelle `peds` (Migration 012) |
-| 5.8 | Objekt-Placer: Requisiten setzen, drehen, speichern (Schranken, Container, Möbel-Grundlage) | 🔧 | Creator → Objekte: 18 Requisiten + freie Eingabe, Vorschau am Zeiger, Q/E drehen, auf Boden ausrichten; lokal gespawnt in 200 m; Tabelle `props` (Migration 013) |
-| 5.9 | Zonen-Creator: Bereiche (Polygon/Kreis) für Gebiete, Sicherheitszonen, Jobs | 🔧 | Creator → Zonen: Art (Sicherheitszone, Job, Gebiet, Fahrzeugverbot, Sonstiges), Kreis (Mittelpunkt+Radius) oder Polygon (Punkte ablaufen), Höhenbereich, Anzeige ein/aus; Client-Ereignisse `tacov:zone:enter/leave`, `TacoV.Zones.inside(kind)`; Server `TacoV.Zones.at/playerIn`; Tabelle `zones` |
-| 5.10 | Fahrzeug-Spawner und Fahrzeug-Editor für das Team (Modell, Kennzeichen, Tuning) | 🔧 | Team-Menü → Fahrzeuge: Team-Fahrzeug spawnen (Klasse/Modell oder Eingabe, Kennzeichen TEAM xxx, temporär), aktuelles/nahes Fahrzeug: Besitzer, Reparieren, Volltanken, Kennzeichen, Voll tunen, Farbe, Fensterfarbe, Löschen (Eigentum geht in die Garage zurück); leere Fahrzeuge im Umkreis löschen; Rechte `admin.vehicle(.spawn)` |
-| 5.11 | Item- und Geld-Werkzeuge mit Vier-Augen-Prinzip (Erstattung) | 🔧 | Akte → Erstattung (Geld oder Item, Grund Pflicht): bis 10.000 $ ab Moderator sofort, bis 50.000 $ ab Superadmin sofort, darüber sowie Waffen/Schutz/Munition nur mit Bestätigung einer zweiten Person ab Manager (Team-Menü → Offene Erstattungen); Auszahlung auch offline; Tabelle `refunds` (Migration 014) |
-| 5.12 | Welt-Steuerung: Wetter, Uhrzeit, Ansagen, Neustart-Ankündigung | 🔧 | Uhrzeit/Wetter kommen vom Server (Spieltag 120 min, Wetterwechsel alle 25 min, gewichtet); Team-Menü → Welt: Uhrzeit setzen/einfrieren, Wetter setzen/einfrieren (inkl. Schnee/Schneesturm), **Schnee ein/aus** (Schneedecke, Spuren, Effekte), Ansage (Banner oben für alle), Neustart ankündigen; Neustart-Warnungen ebenfalls als Banner |
-| 5.13 | Config im Spiel: Werte lesen und ändern (Management), Änderung geloggt | 🔧 | Team-Menü → Config: 15 Bereiche (Wirtschaft, Gehälter, Hunger/Durst, Level, Blitzer/Steuer, DMV, Werkstatt, Fahrzeugklassen, Inventar, Welt, Neustart, Team-Grenzen, Stimme, Einstieg, Status) durchblättern, Zahlen/Texte/Schalter ändern oder zurücksetzen; Überschreibungen in `config_overrides` (Migration 015), gelten sofort auf Server und Clients; Log `admin` |
-| 5.14 | Entwickler-Werkzeuge: Koordinaten anzeigen/kopieren, Entity-Info, Debug-Zonen, Hot-Reload der Config | 🔧 | Team-Menü → Entwickler (`dev.tools`): Koordinaten-Overlay (Position, Heading, Fahrzeug, Zone/Straße), Entity-Info am Zeiger (Typ, Modell, Netz-ID, Leben/Kennzeichen), Zonen- und Orte-Anzeige, Position kopieren (`/coords`, Zwischenablage), Entity-Besitzer, Daten/Überschreibungen neu laden (`tacov:core:reloadData`), Kern-Resource neu starten (speichert vorher) |
-| 5.15 | Spieler-Akte und Tickets (`/support`) mit Bearbeitung im Spiel und Discord | 🔧 | `/support <Text>` legt Ticket an (weitere Texte ergänzen es); Team-Menü → Tickets: übernehmen, antworten, hingehen, schließen; Bot legt je Ticket einen Kanal in Kategorie 1568940600257150976 an (Team + Spieler sehen ihn), spiegelt Spielnachrichten, Antworten aus Discord erreichen den Spieler im Spiel, `!schliessen` schließt; Tabellen `tickets`, `ticket_messages` (Migration 016); Akte siehe 5.2 |
-| 5.16 | Anti-Cheat-Grundlage: Abgleich Geld/Items/Geschwindigkeit/Entities, Meldungen ans Team | 🔧 | Server prüft Bewegung (zu Fuß > 28 m/s, Fahrzeug > 450 km/h; 3 Auffälligkeiten/60 s → Kick), Bargeld vs. Journal (+1.000 Hinweis, +50.000 Kick), Explosionen (≥ 3/10 s → Kick), Entity-Flut (≥ 25 Skript-Entities/10 s, Verkehr zählt nicht) und verbotene Objekte; dritter eindeutiger Fall binnen 24 h → 72 h Sicherheitssperre; `/entsperren <Discord-ID>`; Meldungen in `ac_reports` (Migration 017), Team im Dienst sofort, Bot → Kanal 1568941437255688212 mit Rolle 1568019443165036564; Team-Menü → Anti-Cheat; Test: `/actest` |
+| 5.1 | Admin-Grundgerüst: Rechte, Admin-Modus, Unsichtbar, Noclip, Teleport (Spieler/Koordinaten/Wegpunkt) | ✅ | F9 im Dienst = Team-Menü (Unsichtbar, Noclip, Teleport Wegpunkt/zu Spieler/herholen, Dienst beenden); `/tp`, `/tpm`, `/bring`, `/noclip`, `/unsichtbar`; Dienst-Uniform automatisch (Config `AdutyOutfit`); alles geloggt |
+| 5.2 | Team-Menü (F9): Spielerliste mit Akte, Items/Geld/Fahrzeug geben, Heilen, Kicken, Sperren, Warnen | ✅ | Team-Menü → Spieler → Akte (Rolle, Charakter, Konto, Verwarnungen/Sperren, Führerscheine) + Aktionen; Gründe/Dauern aus Config, freier Text per `/warn`, `/kick`, `/sperre`; Tabelle `warnings` (Migration 008); jede Aktion mit Log |
+| 5.3 | Orte-Creator: Orte, Blips, E-Punkte im Spiel setzen und verschieben (ersetzt `/ort setzen`) | ✅ | Team-Menü → Creator → Orte: neu (Art, Platzieren am Zeiger, Name, Beschriftung), in der Nähe/alle bearbeiten (verschieben, Beschriftung, Art, Blip aus, Ausfahrt/Vorschau, Tempolimit, löschen); Platzierer mit Leertaste Zeiger/fest, Pfeile/Bild↑↓, Q/E, Shift; Migration 009 |
+| 5.4 | Door Creator: Türen und Tore erfassen, Zugang je Fraktion/Rang/Schlüssel, Zustand (offen/zu) | ✅ | Creator → Türen: Tür anvisieren + Enter (zweiter Flügel optional), Zugang Fraktion+Mindestrang oder Schlüssel-Item oder frei, Auto-Schließen, Teile ergänzen; E am Türrahmen schließt auf/ab, synchron für alle; Team im Dienst öffnet alles; Tabelle `doors` (Migration 010) |
+| 5.5 | Elevator Creator: Aufzüge mit Etagen, Zugang, Teleport mit Blende | ✅ | Creator → Aufzüge: Bezeichnung, Etagen nacheinander platzieren und benennen; E am Etagenpunkt → Etagenwahl → Blende; Zugang wie Türen; Etagen ergänzen/verschieben/entfernen; Tabelle `elevators` (Migration 011) |
+| 5.6 | Teleport-/Portal-Creator: Ein-/Ausgänge für Interiors (z. B. Polizeiwache, Wohnungen) | ✅ | Creator → Portale: Eingang und Ausgang platzieren, beide Richtungen oder Einbahn, Zugang wie Türen; E „Betreten“ mit Blende; Tabelle `portals` (Migration 011) |
+| 5.7 | Ped-/NPC-Creator: Ansprechpartner mit Modell, Animation, Aufgabe (Shop, Job, Kaufhaus) | ✅ | Creator → NPCs: 20 Modelle + freie Eingabe, Vorschau am Zeiger, 15 Szenarien, Aufgabe (Laden, Bank, Kaufhaus, DMV, Garage, Werkstatt, Tankstelle) – E „Ansprechen“ löst sie aus, wenn der NPC am Ort steht; lokal gespawnt (unverwundbar, eingefroren); Tabelle `peds` (Migration 012) |
+| 5.8 | Objekt-Placer: Requisiten setzen, drehen, speichern (Schranken, Container, Möbel-Grundlage) | ✅ | Creator → Objekte: 18 Requisiten + freie Eingabe, Vorschau am Zeiger, Q/E drehen, auf Boden ausrichten; lokal gespawnt in 200 m; Tabelle `props` (Migration 013) |
+| 5.9 | Zonen-Creator: Bereiche (Polygon/Kreis) für Gebiete, Sicherheitszonen, Jobs | ✅ | Creator → Zonen: Art (Sicherheitszone, Job, Gebiet, Fahrzeugverbot, Sonstiges), Kreis (Mittelpunkt+Radius) oder Polygon (Punkte ablaufen), Höhenbereich, Anzeige ein/aus; Client-Ereignisse `tacov:zone:enter/leave`, `TacoV.Zones.inside(kind)`; Server `TacoV.Zones.at/playerIn`; Tabelle `zones` |
+| 5.10 | Fahrzeug-Spawner und Fahrzeug-Editor für das Team (Modell, Kennzeichen, Tuning) | ✅ | Team-Menü → Fahrzeuge: Team-Fahrzeug spawnen (Klasse/Modell oder Eingabe, Kennzeichen TEAM xxx, temporär), aktuelles/nahes Fahrzeug: Besitzer, Reparieren, Volltanken, Kennzeichen, Voll tunen, Farbe, Fensterfarbe, Löschen (Eigentum geht in die Garage zurück); leere Fahrzeuge im Umkreis löschen; Rechte `admin.vehicle(.spawn)` |
+| 5.11 | Item- und Geld-Werkzeuge mit Vier-Augen-Prinzip (Erstattung) | ✅ | Akte → Erstattung (Geld oder Item, Grund Pflicht): bis 10.000 $ ab Moderator sofort, bis 50.000 $ ab Superadmin sofort, darüber sowie Waffen/Schutz/Munition nur mit Bestätigung einer zweiten Person ab Manager (Team-Menü → Offene Erstattungen); Auszahlung auch offline; Tabelle `refunds` (Migration 014) |
+| 5.12 | Welt-Steuerung: Wetter, Uhrzeit, Ansagen, Neustart-Ankündigung | ✅ | Uhrzeit/Wetter kommen vom Server (Spieltag 120 min, Wetterwechsel alle 25 min, gewichtet); Team-Menü → Welt: Uhrzeit setzen/einfrieren, Wetter setzen/einfrieren (inkl. Schnee/Schneesturm), **Schnee ein/aus** (Schneedecke, Spuren, Effekte), Ansage (Banner oben für alle), Neustart ankündigen; Neustart-Warnungen ebenfalls als Banner |
+| 5.13 | Config im Spiel: Werte lesen und ändern (Management), Änderung geloggt | ✅ | Team-Menü → Config: 15 Bereiche (Wirtschaft, Gehälter, Hunger/Durst, Level, Blitzer/Steuer, DMV, Werkstatt, Fahrzeugklassen, Inventar, Welt, Neustart, Team-Grenzen, Stimme, Einstieg, Status) durchblättern, Zahlen/Texte/Schalter ändern oder zurücksetzen; Überschreibungen in `config_overrides` (Migration 015), gelten sofort auf Server und Clients; Log `admin` |
+| 5.14 | Entwickler-Werkzeuge: Koordinaten anzeigen/kopieren, Entity-Info, Debug-Zonen, Hot-Reload der Config | ✅ | Team-Menü → Entwickler (`dev.tools`): Koordinaten-Overlay (Position, Heading, Fahrzeug, Zone/Straße), Entity-Info am Zeiger (Typ, Modell, Netz-ID, Leben/Kennzeichen), Zonen- und Orte-Anzeige, Position kopieren (`/coords`, Zwischenablage), Entity-Besitzer, Daten/Überschreibungen neu laden (`tacov:core:reloadData`), Kern-Resource neu starten (speichert vorher) |
+| 5.15 | Spieler-Akte und Tickets (`/support`) mit Bearbeitung im Spiel und Discord | ✅ | `/support <Text>` legt Ticket an (weitere Texte ergänzen es); Team-Menü → Tickets: übernehmen, antworten, hingehen, schließen; Bot legt je Ticket einen Kanal in Kategorie 1568940600257150976 an (Team + Spieler sehen ihn), spiegelt Spielnachrichten, Antworten aus Discord erreichen den Spieler im Spiel, `!schliessen` schließt; Tabellen `tickets`, `ticket_messages` (Migration 016); Akte siehe 5.2 |
+| 5.16 | Anti-Cheat-Grundlage: Abgleich Geld/Items/Geschwindigkeit/Entities, Meldungen ans Team | ✅ | Server prüft Bewegung (zu Fuß > 28 m/s, Fahrzeug > 450 km/h; 3 Auffälligkeiten/60 s → Kick), Bargeld vs. Journal (+1.000 Hinweis, +50.000 Kick), Explosionen (≥ 3/10 s → Kick), Entity-Flut (≥ 25 Skript-Entities/10 s, Verkehr zählt nicht) und verbotene Objekte; dritter eindeutiger Fall binnen 24 h → 72 h Sicherheitssperre; `/entsperren <Discord-ID>`; Meldungen in `ac_reports` (Migration 017), Team im Dienst sofort, Bot → Kanal 1568941437255688212 mit Rolle 1568019443165036564; Team-Menü → Anti-Cheat; Test: `/actest` |
 
 ## Phase 6 · Charakter und Einstieg
 
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | ⬜ |
-| 6.2 | Kleiderläden und Outfits | ⬜ |
-| 6.3 | Friseur, Tattoo, Chirurg | ⬜ |
-| 6.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ |
-| 6.5 | Neulingspfad und Sozialwohnung (Grundlage) | ⬜ |
-| 6.6 | Animationsmenü (F3) | ⬜ |
-| 6.7 | Voice (SaltyChat): Sprechweiten 3/10/25 m, HUD-Anzeige, Megafon | ⬜ |
-| 6.8 | Verletzungen und Erste Hilfe | ⬜ |
-| 6.9 | Fitness und Promille | ⬜ |
+| Nr. | Punkt | Status | Inhalt / Abnahme |
+| --- | --- | --- | --- |
+| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | ⬜ | |
+| 6.2 | Kleiderläden und Outfits | ⬜ | |
+| 6.3 | Friseur, Tattoo, Chirurg | ⬜ | |
+| 6.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ | |
+| 6.5 | Neulingspfad und Sozialwohnung (Grundlage) | ⬜ | |
+| 6.6 | Animationsmenü (F3) | ⬜ | Betreiber 08.11.: Animationen müssen hinzugefügt werden (eigene Animationen, kein dpemotes) |
+| 6.7 | Voice (SaltyChat): Sprechweiten 3/10/25 m, HUD-Anzeige, Megafon | ⬜ | |
+| 6.8 | Verletzungen und Erste Hilfe | ⬜ | |
+| 6.9 | Fitness und Promille | ⬜ | |
 
 ## Phase 7 · Handy und Funk
 
