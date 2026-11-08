@@ -77,6 +77,54 @@ TacoV.Prompt.register({ id = 'door_lock', label = 'Tür abschließen', order = 1
 
 -- ---------------------------------------------------------------- Creator
 
+-- Erfasste Türen in der Nähe hervorheben (Umriss + Marker), solange ein Tür-Menü des Creators offen ist
+local highlight = false
+local highlighted = {}
+local function clearHighlights()
+  for ent in pairs(highlighted) do if DoesEntityExist(ent) then SetEntityDrawOutline(ent, false) end end
+  highlighted = {}
+end
+CreateThread(function()
+  while true do
+    if highlight then
+      Wait(0)
+      local pos = GetEntityCoords(PlayerPedId())
+      local seen = {}
+      for _, d in pairs(TacoV.Doors.list) do
+        for _, pt in ipairs(d.parts) do
+          if #(pos - vector3(pt.x, pt.y, pt.z)) < 25.0 then
+            local ent = GetClosestObjectOfType(pt.x, pt.y, pt.z, 1.5, pt.model, false, false, false)
+            if ent ~= 0 then
+              seen[ent] = true
+              if not highlighted[ent] then
+                SetEntityDrawOutlineShader(1)
+                SetEntityDrawOutlineColor(d.locked and 240 or 80, d.locked and 90 or 200, d.locked and 90 or 120, 255)
+                SetEntityDrawOutline(ent, true)
+                highlighted[ent] = true
+              end
+            end
+            local r, g, b = d.locked and 240 or 80, d.locked and 90 or 200, d.locked and 90 or 120
+            DrawMarker(0, pt.x, pt.y, pt.z + 1.4, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.25, 0.25, 0.25, r, g, b, 200, true, true, 2, nil, nil, false)
+          end
+        end
+      end
+      for ent in pairs(highlighted) do
+        if not seen[ent] then if DoesEntityExist(ent) then SetEntityDrawOutline(ent, false) end highlighted[ent] = nil end
+      end
+    else
+      if next(highlighted) then clearHighlights() end
+      Wait(300)
+    end
+  end
+end)
+local function withHighlight(def)
+  highlight = true
+  local prev = def.onClose
+  def.onClose = function() highlight = false if prev then prev() end end
+  return def
+end
+
+
 local pickEntity = function(label, cb) return TacoV.Creator.pickEntity(label, cb) end
 
 local function partOf(ent)
@@ -100,7 +148,7 @@ local function doorMenu(d)
     { id = 'clearparts', label = 'Teile neu erfassen', icon = 'search' },
     { id = 'delete', label = 'Tür löschen', icon = 'x', section = 'Gefahr' },
   }
-  TacoV.Menu.open({ id = 'door', title = d.label ~= '' and d.label or ('Tür #' .. tostring(d.id)), icon = 'door', info = 'Door Creator', items = items }, function(id)
+  TacoV.Menu.open(withHighlight({ id = 'door', title = d.label ~= '' and d.label or ('Tür #' .. tostring(d.id)), icon = 'door', info = 'Door Creator', items = items }), function(id)
     if id == 'toggle' then TriggerServerEvent('tacov:doors:toggle', d.id) TacoV.Menu.back()
     elseif id == 'label' then
       TacoV.UI.ask({ title = 'Bezeichnung', value = d.label, maxLength = 64, icon = 'door' }, function(v) if v and #v > 0 then d.label = v save(d) end end)
@@ -162,8 +210,8 @@ function TacoV.Doors.openCreator()
   end
   local n = 0
   for _ in pairs(TacoV.Doors.list) do n = n + 1 end
-  TacoV.Menu.open({ id = 'doors', title = 'Door Creator', icon = 'door', info = ('%d Türen'):format(n),
-    note = 'Zustand und Zugang gelten sofort für alle.', items = items }, function(id)
+  TacoV.Menu.open(withHighlight({ id = 'doors', title = 'Door Creator', icon = 'door', info = ('%d Türen'):format(n),
+    note = 'Rot = abgeschlossen, Grün = offen. Zustand und Zugang gelten sofort für alle.', items = items }), function(id)
     if id == 'new' then newDoor() else local d = TacoV.Doors.list[tonumber(id)] if d then doorMenu(d) end end
   end)
 end

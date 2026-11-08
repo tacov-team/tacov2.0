@@ -13,6 +13,12 @@ export function Announce() {
   );
 }
 
+export function Crosshair() {
+  const { state } = useStore();
+  if (!state.crosshair) return null;
+  return <div className="crosshair"><span /><span /><span /><span /><i /></div>;
+}
+
 export function DevOverlay() {
   const { state } = useStore();
   if (!state.dev) return null;

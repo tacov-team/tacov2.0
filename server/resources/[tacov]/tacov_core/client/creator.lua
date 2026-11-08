@@ -64,9 +64,11 @@ function TacoV.Creator.place(opts, cb)
     local function finish(ok)
       placing = false
       TacoV.UI.send('hint', nil)
+      TacoV.UI.send('crosshair', false)
       if preview and DoesEntityExist(preview) then DeleteEntity(preview) end
       if ok then cb(pos, heading) else cb(nil) end
     end
+    TacoV.UI.send('crosshair', true)
     TacoV.UI.send('hint', { key = 'Enter', text = (opts.label or 'Ort') ..
       ' platzieren · Leertaste: Zeiger/fest · Pfeile, Bild↑↓ verschieben · Q/E drehen · Shift fein · Backspace abbrechen' })
     while placing do
@@ -112,7 +114,26 @@ function TacoV.Creator.pickEntity(label, cb)
   if placing then return false end
   placing = true
   CreateThread(function()
+    TacoV.UI.send('crosshair', true)
     TacoV.UI.send('hint', { key = 'Enter', text = label .. ' anschauen und Enter drücken · Backspace abbrechen' })
+    local outlined = 0
+    local function outline(ent)
+      if ent == outlined then return end
+      if outlined ~= 0 and DoesEntityExist(outlined) then SetEntityDrawOutline(outlined, false) end
+      outlined = ent
+      if ent ~= 0 then
+        SetEntityDrawOutlineShader(1)
+        SetEntityDrawOutlineColor(167, 139, 250, 255)
+        SetEntityDrawOutline(ent, true)
+      end
+    end
+    local function done(ent, coords)
+      placing = false
+      outline(0)
+      TacoV.UI.send('hint', nil)
+      TacoV.UI.send('crosshair', false)
+      cb(ent, coords)
+    end
     while placing do
       Wait(0)
       for _, c in ipairs({ 191, 201, 177, 202 }) do DisableControlAction(0, c, true) end
@@ -124,16 +145,14 @@ function TacoV.Creator.pickEntity(label, cb)
       local handle = StartShapeTestLosProbe(from.x, from.y, from.z, to.x, to.y, to.z, 16, PlayerPedId(), 4)
       local _, hit, coords, _, ent = GetShapeTestResult(handle)
       if hit == 1 and ent ~= 0 and DoesEntityExist(ent) then
+        outline(ent)
         local p = GetEntityCoords(ent)
         DrawMarker(28, p.x, p.y, p.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 167, 139, 250, 160, false, true, 2, nil, nil, false)
-        DrawLine(coords.x, coords.y, coords.z, p.x, p.y, p.z, 255, 255, 255, 180)
-        if IsDisabledControlJustPressed(0, 191) or IsDisabledControlJustPressed(0, 201) then
-          placing = false TacoV.UI.send('hint', nil) cb(ent, coords) return
-        end
+        if IsDisabledControlJustPressed(0, 191) or IsDisabledControlJustPressed(0, 201) then done(ent, coords) return end
+      else
+        outline(0)
       end
-      if IsDisabledControlJustPressed(0, 177) or IsDisabledControlJustPressed(0, 202) then
-        placing = false TacoV.UI.send('hint', nil) cb(nil) return
-      end
+      if IsDisabledControlJustPressed(0, 177) or IsDisabledControlJustPressed(0, 202) then done(nil) return end
     end
   end)
   return true

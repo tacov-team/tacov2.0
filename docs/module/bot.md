@@ -35,3 +35,4 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 ## Testserver-Spiegel (08.11.2026)
 - Ist `DB_TEST_NAME` in `.env` gesetzt (per `tools/vps/bot-test-db.sh`), liest der Bot zusätzlich die Testserver-Datenbank: Logs, Ansagen, Tickets (Kanäle `test-ticket-<id>-…`), Anti-Cheat-Meldungen und Serverstatus (eigenes Feld im Status-Embed) – jede Nachricht mit „🧪 Testserver“ gekennzeichnet.
 - Team-Rollen und Whitelist schreibt der Bot in beide Datenbanken, damit auf dem Testserver dieselben Rechte gelten.
+- Neustart-Ansagen: je Umgebung eine Nachricht im Status-Kanal, die bei jeder weiteren Warnung bearbeitet wird (`bot_state.restart_message_id_<env>`); sonstige Ansagen werden weiterhin einzeln gepostet.

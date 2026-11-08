@@ -92,7 +92,23 @@ export async function startStatus(client) {
         const pending = await query('SELECT id, kind, text FROM announcements WHERE posted_at IS NULL ORDER BY id LIMIT 10', [], env.key).catch(() => []);
         for (const a of pending) {
           const prefix = a.kind === 'restart' ? '🔄' : 'ℹ️';
-          await channel.send(`${prefix} ${env.tag}${a.text}`).catch(() => {});
+          const content = `${prefix} ${env.tag}${a.text}`;
+          if (a.kind === 'restart') {
+            // Neustart-Hinweise: eine Nachricht je Umgebung, die bearbeitet wird (kein Dauerlauf im Kanal)
+            const key = `restart_message_id_${env.key}`;
+            const oldId = await stateGet(key);
+            let edited = false;
+            if (oldId) {
+              const old = await channel.messages.fetch(oldId).catch(() => null);
+              if (old) { edited = await old.edit(content).then(() => true).catch(() => false); }
+            }
+            if (!edited) {
+              const m = await channel.send(content).catch(() => null);
+              if (m) await stateSet(key, m.id);
+            }
+          } else {
+            await channel.send(content).catch(() => {});
+          }
           await query('UPDATE announcements SET posted_at = NOW() WHERE id = ?', [a.id], env.key);
         }
       }

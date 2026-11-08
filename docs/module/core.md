@@ -58,7 +58,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/devtools.lua`, `client/devtools.lua` | Entwickler-Werkzeuge (5.14): Freigabe über `dev.tools`, Overlay (NUI `dev`), Zwischenablage (NUI `copy`), Ereignis `tacov:core:reloadData` (Orte, Türen, Aufzüge/Portale, NPCs, Objekte/Zonen, Config-Überschreibungen laden neu), Resource-Neustart nach Speichern |
 | `server/tickets.lua` | Tickets (5.15): `TacoV.Tickets.create`, Liste/Detail/Aktionen (`support.view`), Discord-Antworten alle 10 s an Online-Spieler; Tabellen `tickets`, `ticket_messages` (Spiegelung über `posted_discord`/`seen_game`) |
 | `config/anticheat.lua`, `server/anticheat.lua` | Anti-Cheat (5.16): `TacoV.AC.report(src, kind, details, action)`, `TacoV.AC.allowTeleport(src)` (Server-Teleports melden, sonst zählt der Sprung), Prüfungen Bewegung/Tempo/Bargeld/Explosionen/Entities, Team im Dienst ausgenommen; Tabelle `ac_reports`; `/actest` |
-| `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
+| `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |

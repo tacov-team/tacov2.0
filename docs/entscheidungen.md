@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Creator-Bedienung, Bot-Ansagen | Fadenkreuz beim Platzieren/Anvisieren; anvisiertes Objekt bekommt einen violetten Umriss; im Door Creator werden erfasste Türen im Umkreis (25 m) umrandet und markiert (rot = zu, grün = offen); Neustart-Ansagen des Bots werden als eine Nachricht je Umgebung bearbeitet statt neu gepostet | Betreiber-Wunsch |
 | 2026-11-08 | Bot + Testserver | Der Discord-Bot hängt zusätzlich an der Testserver-Datenbank: Logs, Tickets, Anti-Cheat, Ansagen und Status werden mit „🧪 Testserver“ gekennzeichnet gespiegelt; Team-Rollen und Whitelist gelten automatisch auf beiden Servern | Betreiber-Wunsch; Test der Discord-Funktionen ohne Live-Merge |
 | 2026-11-08 | Anti-Cheat Korrektur | Entity-Zählung nur für Skript-Entities (Populationstyp Mission/dauerhaft) – die vom Client erzeugte Verkehrs-/Passanten-Population hatte sofort ausgelöst; Sicherheitssperre erst beim dritten eindeutigen Fall binnen 24 h; `/entsperren` für Team und Konsole | Fehlalarm beim ersten Test |
 | 2026-11-08 | Werkstatt, Schnee | Werkstatt mit Live-Vorschau (markierter Eintrag wird am Fahrzeug gezeigt, ohne Kauf zurückgesetzt) und vollem Teileumfang (Karosserie, alle Felgenarten, Felgenfarbe, Zweitfarbe/Perlglanz, Xenon, Kennzeichenstil, Folierung); Ausstattung speichert jetzt alle Mod-Typen; Schnee als Welt-Schalter (XMAS-Wetter eingefroren, Schneedecke, Spuren) | Betreiber-Wunsch |

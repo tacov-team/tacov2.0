@@ -50,7 +50,7 @@ type View = null
   | { name: 'ask'; data: AskData };
 
 export type Hint = { key: string; text: string };
-type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null };
+type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null; crosshair: boolean };
 
 type Action =
   | { type: 'open'; view: View }
@@ -61,7 +61,8 @@ type Action =
   | { type: 'role'; role: string }
   | { type: 'hint'; hint: Hint | null }
   | { type: 'announce'; announce: Announce }
-  | { type: 'dev'; text: string | null };
+  | { type: 'dev'; text: string | null }
+  | { type: 'crosshair'; on: boolean };
 
 const initialHud: HudData = {
   health: 100, armor: 0, hunger: 100, thirst: 100, fitness: 0,
@@ -80,6 +81,7 @@ function reducer(state: State, a: Action): State {
     case 'hint': return { ...state, hint: a.hint };
     case 'announce': return { ...state, announce: a.announce };
     case 'dev': return { ...state, dev: a.text };
+    case 'crosshair': return { ...state, crosshair: a.on };
   }
 }
 
@@ -88,7 +90,7 @@ const Ctx = createContext<{ state: State; dispatch: (a: Action) => void } | null
 let toastId = 0;
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null, announce: null, dev: null });
+  const [state, dispatch] = useReducer(reducer, { view: null, hud: initialHud, toasts: [], role: 'player', hint: null, announce: null, dev: null, crosshair: false });
 
   useNuiEvent<{ view: string; data: unknown }>('open', useCallback((d) => {
     dispatch({ type: 'open', view: { name: d.view, data: d.data } as View });
@@ -113,6 +115,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
     } catch { /* ignorieren */ }
   }, []));
+  useNuiEvent<boolean>('crosshair', useCallback((on) => dispatch({ type: 'crosshair', on: !!on }), []));
   useNuiEvent<string | null>('dev', useCallback((text) => dispatch({ type: 'dev', text: text || null }), []));
   useNuiEvent<{ title?: string; text: string; kind?: 'info' | 'warn'; seconds?: number }>('announce', useCallback((d) => {
     dispatch({ type: 'announce', announce: { title: d.title ?? 'Ansage', text: d.text, kind: d.kind ?? 'info' } });
