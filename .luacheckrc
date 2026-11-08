@@ -71,4 +71,5 @@ files["**/tattoos.lua"] = { max_line_length = 200 }
 files["**/keys.lua"] = { max_line_length = 200 }
 files["**/phone.lua"] = { max_line_length = 200 }
 files["**/jobs.lua"] = { max_line_length = 200 }
+files["**/factions.lua"] = { max_line_length = 200 }
 files["**/payday.lua"] = { max_line_length = 200 }

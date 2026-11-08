@@ -157,19 +157,21 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 
 ## Phase 9 · Fraktionen
 
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 9.1 | Fraktionsmodul (Mitglieder, Ränge, Rechte, Kasse, Lager, Protokoll) | ⬜ |
-| 9.2 | Dienst, Dienstkleidung, Fraktionsfahrzeuge | ⬜ |
-| 9.3 | Fraktionsmenü (F6) vollständig | ⬜ |
-| 9.4 | LSPD: MDT | ⬜ |
-| 9.5 | LSPD: Dispatch und Notrufe | ⬜ |
-| 9.6 | LSPD: Kontrolle, Beschlagnahme, Verhaftung | ⬜ |
-| 9.7 | LSMD: Verletzungssystem, Krankenhaus, Rechnungen | ⬜ |
-| 9.8 | DMV im Fraktionsbetrieb | ⬜ |
-| 9.9 | Regierung: Rathaus, Bürgerbüro, Lizenzamt | ⬜ |
-| 9.10 | DOJ: Gericht, Kaution, Verfahren | ⬜ |
-| 9.11 | Streetgang: Ganghaus, Gebiete, Gangwar | ⬜ |
+Vorgehen (Betreiber 08.11.): erst die gemeinsame Fraktionsbasis (9.1–9.3), danach jede Fraktion einzeln mit eigener Erklärung und Entscheidungen.
+
+| Nr. | Punkt | Status | Details |
+| --- | --- | --- | --- |
+| 9.1 | Fraktionsmodul (Mitglieder, Ränge, Rechte, Kasse, Lager, Protokoll) | 🔧 | Staatsfraktionen fest (LSPD 20, LSMD offen, DMV 10, Regierung nur Team, DOJ 15; Funk 1–5, Notrufkanal 10 für LSPD+LSMD), kriminelle Fraktionen legt das Team an (Funk ab 6); Ränge 1–12 mit Standardrechten aus Konzept 2.1 (Flags: Funk hören/sprechen, Lager sehen/entnehmen/einlagern, Fahrzeuge Klasse 1/alle, Einladen, Kasse sehen/auszahlen, Ränge 1–8, Entlassen, Einstellungen, Leader), Rangnamen frei; Kasse = Konto `faction` im Journal, Tageslimits (Entnahme 10–80 kg, Auszahlung 5.000 $ für Rang 9–10); Lager 500 kg mit Rechten je Richtung; Beitritt prüft Cap, Gang-Level (4 Hangaround, 9 Mitglied, max. 2 Hangarounds), Sperre 5 Tage (kriminell → Staat 3); Protokoll `faction_log`; Team-Menü → Fraktionen (anlegen, Leader, Mitglied, entfernen, auflösen → Kasse an den Staat); Tabellen Migration 022 |
+| 9.2 | Dienst, Dienstkleidung, Fraktionsfahrzeuge | 🔧 | Stempeluhr (Ort `faction_duty_<id>`, E oder F6) → Statebag `duty`, Gehalt (Payday) läuft nur im Dienst; Umkleide (`faction_wardrobe_<id>`): Dienstkleidung je Fraktion (Leitung speichert die aktuelle Kleidung mit Mindestrang), Zivilkleidung wird gemerkt und zurückgeholt; Garage (`faction_garage_<id>` mit Ausfahrt): Fahrzeugliste je Fraktion (Leitung trägt Modell/Bezeichnung/Mindestrang ein), Kennzeichen `LSPD 123`, Schlüssel für alle Mitglieder (Staat: nur im Dienst), Klasse 1 ab Rang 3, alle ab Rang 6; Orte setzt das Team mit dem Orte-Creator |
+| 9.3 | Fraktionsmenü (F6) vollständig | 🔧 | Dienst, Mitglieder (befördern/degradieren/Rang eingeben, entlassen, Leitung übergeben), Kasse (einzahlen, auszahlen, Journal), Lager, Fahrzeuge, Umkleide, Ränge und Rechte (Rangname, Rechte je Rang an/aus), Protokoll, Austreten; Einladen über das X-Rad („In Fraktion einladen“, Antwortmenü, Beitritt als Rang 1); HUD zeigt Fraktion, Rangname und „im Dienst“ |
+| 9.4 | LSPD: MDT | ⬜ | |
+| 9.5 | LSPD: Dispatch und Notrufe | ⬜ | |
+| 9.6 | LSPD: Kontrolle, Beschlagnahme, Verhaftung | ⬜ | |
+| 9.7 | LSMD: Verletzungssystem, Krankenhaus, Rechnungen | ⬜ | |
+| 9.8 | DMV im Fraktionsbetrieb | ⬜ | |
+| 9.9 | Regierung: Rathaus, Bürgerbüro, Lizenzamt | ⬜ | |
+| 9.10 | DOJ: Gericht, Kaution, Verfahren | ⬜ | |
+| 9.11 | Streetgang: Ganghaus, Gebiete, Gangwar | ⬜ | |
 
 ## Phase 10 · Immobilien und Firmen
 

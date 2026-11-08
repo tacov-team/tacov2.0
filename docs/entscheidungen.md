@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Phase 9 Vorgehen | Erst die gemeinsame Fraktionsbasis (Modul, Dienst/Kleidung/Fahrzeuge, F6), danach jede Fraktion einzeln mit eigener Erklärung; Rangnamen frei (Leader setzt sie, Standard „Rang n“); Orte je Fraktion über den Creator | Betreiber |
 | 2026-11-08 | Phase 8 Start | Löhne/Obergrenzen wie Konzept 3.2; Müllabfuhr braucht Führerschein C (Lieferfahrer/Taxi B, Busfahrer C; Holzfäller/Bergbau ohne); Lohn aufs Konto je Auftrag; zerstörtes Firmenfahrzeug kostet nur den Lohn des Auftrags; Axt/Spitzhacke im Baumarkt kaufen (150 $); Obergrenze erreicht → Schicht endet automatisch mit Hinweis; Reihenfolge 8.1 → 8.9 | Antworten des Betreibers |
 | 2026-11-08 | Kaufzeiten-Kalibrierung | Simulation prüft Auto D (11,4 h, Ziel 10) und Sportwagen A (208 h, Ziel 200) hart; Wohnung (61 h, Ziel 40) und Haus (195 h, Ziel 80) sind mit Job-Obergrenzen ≤ 500 $/h und Konzeptpreisen nicht erreichbar – Entscheidung mit Phase 10 (Preise senken, Ziele anheben oder Fraktions-/Firmeneinkommen einrechnen) | Rechnung aus Config-Werten, offen für den Betreiber |
 | 2026-11-08 | Abnahme Phase 6 und 7 | Charakter/Einstieg (6.1–6.9) und Handy/Funk (7.1–7.7) abgenommen und live; Nachträge: Editor in eigener Welt, Handy in iPhone-Optik mit Alt-Zeiger, Sprechweite serverseitig über SaltyChat-Export | Betreiber: „ja passt alles“ |

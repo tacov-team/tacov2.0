@@ -124,7 +124,7 @@ Tafeln: Jobs (V3 vorhanden, V4 neu). Tabellen: `jobs_sessions`, `payday_log`. En
 
 Abnahme: Ein Spieler verdient in einer Stunde mit zwei Jobs; Steuern landen im Staatshaushalt; Simulation läuft grün.
 
-## Phase 9 – Fraktionen ⬜
+## Phase 9 – Fraktionen 🔧 (Basis)
 
 - Fraktionsmodul: Mitglieder, Ränge, Rechte je Rang, Kasse, Lager, Fahrzeuge (Fraktionsfahrzeuge), Protokoll; Fraktionsmenü F6 vollständig – Konzept 2.1
 - Dienst an/aus mit Dienstkleidung aus dem Fraktions-Katalog, Caps (LSPD 20, DMV 10, DOJ 15, Gang 15), Austrittssperre 5 Tage

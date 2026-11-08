@@ -32,7 +32,16 @@ function TacoV.Vehicles.plateOf(veh)
 end
 
 function TacoV.Vehicles.hasKey(veh)
-  return veh ~= 0 and TacoV.Vehicles.keys[TacoV.Vehicles.plateOf(veh)] == true
+  if veh == 0 then return false end
+  if TacoV.Vehicles.keys[TacoV.Vehicles.plateOf(veh)] == true then return true end
+  -- Fraktionsfahrzeuge: alle Mitglieder der Fraktion (Staat: nur im Dienst)
+  local fac = Entity(veh).state.faction
+  local c = TacoV.Client.character
+  if fac and c and c.faction == fac then
+    local def = TacoV.Config.Factions.list[fac]
+    return (not def) or c.duty == true
+  end
+  return false
 end
 
 --- Tankinhalt in Litern (Statebag am Fahrzeug; fremde Fahrzeuge bekommen beim ersten Einsteigen einen Zufallswert).

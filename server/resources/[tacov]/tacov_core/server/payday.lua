@@ -1,6 +1,6 @@
 -- Payday und Staatshaushalt (Punkt 8.8, Konzept 3.7): Fraktionsgehälter je volle Dienststunde aus dem Staatshaushalt,
 -- Einkommensteuer darauf, Kürzung wenn die Reserve unter zwei Wochen Gehälter fällt; Übersicht für das Team (Welt → Staatshaushalt).
--- Dienst/Ränge kommen vollständig mit Phase 9 – bis dahin zählt die Spielzeit eines Fraktionsmitglieds als Dienstzeit.
+-- Gezählt wird nur Dienstzeit (Stempeluhr, Punkt 9.2).
 TacoV = TacoV or {}
 TacoV.Payday = {}
 
@@ -61,7 +61,7 @@ CreateThread(function()
     for _, pid in ipairs(GetPlayers()) do
       local src = tonumber(pid)
       local c = TacoV.Characters.get(src)
-      if c and c.faction and TacoV.Config.Salaries[c.faction] then
+      if c and c.faction and TacoV.Config.Salaries[c.faction] and TacoV.Factions.isOnDuty(src) then
         seconds[src] = (seconds[src] or 0) + 60
         if seconds[src] >= 3600 then
           seconds[src] = seconds[src] - 3600

@@ -579,6 +579,7 @@ function TacoV.Admin.openMenu()
       { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
       { id = 'tickets',   label = 'Tickets', icon = 'doc', sub = 'Offene Anliegen (/support)' },
       { id = 'immigration', label = 'Einreise', icon = 'id', sub = 'Warteschlange am Flughafen' },
+      { id = 'factions',  label = 'Fraktionen', icon = 'shield', sub = 'Anlegen, Leader, Mitglieder, Auflösen' },
       { id = 'creator',   label = 'Creator', icon = 'tool', sub = 'Orte, Türen, Aufzüge, NPCs …' },
       { id = 'vehicles',  label = 'Fahrzeuge', icon = 'car', sub = 'Spawnen, reparieren, Kennzeichen, löschen' },
       { id = 'refunds',   label = 'Offene Erstattungen', icon = 'cash', sub = 'Vier-Augen-Bestätigung (ab Manager)' },
@@ -609,6 +610,8 @@ function TacoV.Admin.openMenu()
       TriggerServerEvent('tacov:tickets:list')
     elseif id == 'immigration' then
       TriggerServerEvent('tacov:immigration:list')
+    elseif id == 'factions' then
+      TacoV.Factions.openAdmin()
     elseif id == 'creator' then
       TacoV.Creator.openMenu()
     elseif id == 'vehicles' then

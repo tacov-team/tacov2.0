@@ -12,7 +12,8 @@ end
 
 local function factionLabel(c)
   if not c.faction then return 'Zivilist', '' end
-  return c.faction:upper(), ('Rang %d'):format(c.factionRank or 0)
+  local rank = c.factionRankName or ('Rang %d'):format(c.factionRank or 0)
+  return c.factionLabel or c.faction:upper(), rank .. (c.duty and ' · im Dienst' or '')
 end
 
 --- Tankgröße in Litern (aus der Fahrzeugklasse, sonst 65).

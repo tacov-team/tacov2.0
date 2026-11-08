@@ -58,22 +58,11 @@ end
 function TacoV.Client.openFactionMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   local c = TacoV.Client.character
-  local faction = c and c.faction
-  if not faction then
+  if not c or not c.faction then
     TacoV.UI.send('notify', { kind = 'info', text = 'Du bist in keiner Fraktion. Alltagsaktionen findest du auf ' .. K.actions .. '.' })
     return
   end
-  TacoV.Menu.open({
-    id = 'faction', title = 'Fraktionsmenü', icon = 'shield',
-    info = faction:upper() .. ' · Rang ' .. tostring(c.factionRank or 0),
-    note = 'Fraktionsfunktionen kommen mit dem Fraktionsmodul.',
-    items = {
-      { id = 'duty', label = 'Dienst', icon = 'shield', dim = true, badge = 'bald', section = faction:upper() },
-      { id = 'members', label = 'Mitglieder', icon = 'group', dim = true, badge = 'bald' },
-      { id = 'stash', label = 'Lager und Kasse', icon = 'box', dim = true, badge = 'bald' },
-      { id = 'actions', label = 'Fraktionsaktionen', icon = 'hands', dim = true, badge = 'bald', sub = 'z. B. Festnehmen, Durchsuchen' },
-    },
-  }, function() end)
+  TacoV.Factions.openMenu()
 end
 
 -- F9: außerhalb des Dienstes Admin-Dienst beginnen; im Dienst öffnet sich das Team-Menü (Punkt 5.1, Dienstende dort)

@@ -316,7 +316,8 @@ end
 --- Öffnet das eigene Inventar zusammen mit einem Behälter (z. B. Kofferraum). opts = { title, subtitle, check }
 function TacoV.Inventory.openContainer(source, container, opts)
   opts = opts or {}
-  open[source] = { container = container, title = opts.title or 'Behälter', subtitle = opts.subtitle, check = opts.check }
+  -- opts.allow(source, direction 'take'|'put', item, amount) -> ok, text: Behälter mit Rechten/Limits (Fraktionslager)
+  open[source] = { container = container, title = opts.title or 'Behälter', subtitle = opts.subtitle, check = opts.check, allow = opts.allow }
   TacoV.Inventory.send(source)
 end
 
@@ -518,6 +519,11 @@ RegisterNetEvent('tacov:inventory:action', function(data)
   elseif data.action == 'take' and slot and amount then
     local oinv, _, d = otherOf(src)
     if not oinv then return fail('missing') end
+    local o = open[src]
+    if o and o.allow and oinv.items[slot] then
+      local okA, text = o.allow(src, 'take', oinv.items[slot].item, math.floor(amount))
+      if not okA then return fail(text or 'notAllowed') end
+    end
     local pack = TacoV.Inventory.takeSlot(oinv, slot, amount)
     if not pack then return fail('amount') end
     local ok, err = TacoV.Inventory.add(inv, pack.item, pack.amount, pack.meta)
@@ -536,6 +542,11 @@ RegisterNetEvent('tacov:inventory:action', function(data)
     if not fromInv or not toInv then return fail('missing') end
     local moving = fromInv.items[slot]
     local movingItem, movingAmount = moving and moving.item, moving and math.floor(tonumber(amount) or moving.amount)
+    local o = open[src]
+    if o and o.allow and fromInv ~= toInv and movingItem then
+      local okA, text = o.allow(src, toInv == oinv and 'put' or 'take', movingItem, movingAmount)
+      if not okA then return fail(text or 'notAllowed') end
+    end
     local ok, err = TacoV.Inventory.move(fromInv, slot, toInv, tonumber(data.to), amount)
     if not ok then return fail(err) end
     if fromInv ~= toInv and movingItem and Items[movingItem].money then

@@ -432,7 +432,10 @@ RegisterNetEvent('tacov:phone:radio:join', function(d)
   if ch < 1 or ch > 999 then return end
   if ch <= P.factionChannels then
     local c = TacoV.Characters.get(src)
-    if not c or not c.faction then notify(src, 'error', 'Frequenzen 1–10 sind Fraktionen vorbehalten.') return end
+    local f = c and c.faction and TacoV.Factions.get(c.faction)
+    local FC = TacoV.Config.Factions
+    local allowed = f and ((f.channel == ch) or (ch == FC.emergencyChannel and FC.emergencyFactions[f.id]))
+    if not allowed then notify(src, 'error', 'Frequenzen 1–10 sind Fraktionen vorbehalten (eigene Frequenz bzw. Notrufkanal 10).') return end
   end
   local old = radio[src]
   radio[src] = ch
