@@ -50,7 +50,8 @@ function TacoV.Immigration.pass(target, bySrc)
   local by = bySrc and TacoV.Characters.get(bySrc)
   TacoV.Log.write('character', ('Einreise bestanden: %s (#%d) durch %s'):format(nameOf(c), c.id, by and nameOf(by) or 'System'), { characterId = c.id })
   TriggerClientEvent('tacov:immigration:state', target, true)
-  TriggerClientEvent('tacov:core:announce', target, { title = 'Willkommen in Los Santos', text = ('Einreise bestanden – %s auf dem Konto, Ausweis, Handy, Wohnungsschlüssel und Busticket in der Tasche.'):format(tostring(O.startCash) .. ' $'), kind = 'info', seconds = 12 })
+  local text = ('Einreise bestanden – %d $ auf dem Konto, Ausweis, Handy, Wohnungsschlüssel und Busticket in der Tasche.'):format(O.startCash)
+  TriggerClientEvent('tacov:core:announce', target, { title = 'Willkommen in Los Santos', text = text, kind = 'info', seconds = 12 })
   return true
 end
 
@@ -108,7 +109,7 @@ RegisterNetEvent('tacov:immigration:decide', function(target, passed, reason)
 end)
 
 -- Charakter darf nach Ablehnung erst nach retryHours wieder geladen werden
-AddEventHandler('tacov:core:beforeSelect', function(src, row, deny)
+AddEventHandler('tacov:core:beforeSelect', function(_, row, deny)
   if row.immigration_retry_at and not row.immigrated_at then
     local left = TacoV.DB.scalar('SELECT TIMESTAMPDIFF(MINUTE, NOW(), immigration_retry_at) FROM characters WHERE id = ?', { row.id }) or 0
     if left > 0 then deny(('Einreise abgelehnt – neuer Versuch in %d h %d min.'):format(math.floor(left / 60), left % 60)) end
