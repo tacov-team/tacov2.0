@@ -23,6 +23,7 @@ shared_scripts {
   'config/traffic.lua',
   'config/peds.lua',
   'config/world.lua',
+  'shared/configedit.lua',
 }
 
 server_scripts {
@@ -52,6 +53,7 @@ server_scripts {
   'server/world.lua',
   'server/refunds.lua',
   'server/weather.lua',
+  'server/configedit.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -81,6 +83,7 @@ client_scripts {
   'client/peds.lua',
   'client/world.lua',
   'client/weather.lua',
+  'client/configedit.lua',
   'client/keys.lua',
 }
 

@@ -21,6 +21,7 @@ local function listMigrations()
     { version = 12, file = 'sql/012_peds.sql' },
     { version = 13, file = 'sql/013_props_zones.sql' },
     { version = 14, file = 'sql/014_refunds.sql' },
+    { version = 15, file = 'sql/015_config.sql' },
   }
 end
 

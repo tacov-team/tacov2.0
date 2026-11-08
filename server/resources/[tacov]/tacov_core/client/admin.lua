@@ -527,6 +527,7 @@ function TacoV.Admin.openMenu()
       { id = 'vehicles',  label = 'Fahrzeuge', icon = 'car', sub = 'Spawnen, reparieren, Kennzeichen, löschen' },
       { id = 'refunds',   label = 'Offene Erstattungen', icon = 'cash', sub = 'Vier-Augen-Bestätigung (ab Manager)' },
       { id = 'world',     label = 'Welt', icon = 'clock', sub = 'Uhrzeit, Wetter, Ansage, Neustart' },
+      { id = 'config',    label = 'Config', icon = 'settings', sub = 'Werte lesen und ändern (Manager)' },
       { id = 'invisible', label = 'Unsichtbar', icon = 'search', badge = TacoV.Admin.invisible and 'An' or 'Aus', section = 'Ich' },
       { id = 'noclip',    label = 'Noclip',     icon = 'play',   badge = TacoV.Admin.noclip and 'An' or 'Aus', sub = 'WASD, Q/E, Shift' },
       { id = 'waypoint',  label = 'Zum Wegpunkt teleportieren', icon = 'pin', section = 'Teleport' },
@@ -554,6 +555,8 @@ function TacoV.Admin.openMenu()
       TriggerServerEvent('tacov:refunds:list')
     elseif id == 'world' then
       TacoV.World.openMenu()
+    elseif id == 'config' then
+      TacoV.ConfigEdit.openMenu()
     elseif id == 'players' then
       TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
         items = playerItems(true) }, function(pid)

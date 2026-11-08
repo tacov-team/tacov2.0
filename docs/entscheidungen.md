@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Punkt 5.13 | Config-Änderungen im Spiel nur für Einzelwerte in freigegebenen Bereichen (keine Listen wie Items/Orte/Fahrzeugliste – dafür gibt es Code bzw. Creator); Überschreibungen liegen in der Datenbank über den Code-Vorgaben und sind rücksetzbar | Code bleibt Quelle der Wahrheit, Betrieb kann Werte feinjustieren |
 | 2026-11-08 | Punkt 5.12 | Uhrzeit und Wetter laufen serverseitig (Spieltag 2 Stunden, Start 9 Uhr, Wetter gewichtet überwiegend klar/sonnig, Wechsel alle 25 Minuten mit weichem Übergang); Ansagen als Banner oben in der Mitte zusätzlich zum Hinweis | Alle sehen dasselbe; Vorschlagswerte |
 | 2026-11-08 | Punkt 5.11 | Erstattungsstufen: ≤ 10.000 $ Moderator allein, ≤ 50.000 $ Superadmin allein, darüber und Waffen/Schutz/Munition nur mit zweiter Person ab Manager; Grund ist Pflicht; jede Erstattung im Geld-Log | Punkt 0.11 Rechte; Missbrauch erschweren |
 | 2026-11-08 | Punkt 5.10 | Team-Fahrzeuge sind temporär (Kennzeichen TEAM xxx, kein Eigentum, Schlüssel nur für den Spawner); Löschen eines Eigentums stellt es in die Garage statt es zu vernichten; Kennzeichen-Änderung aktualisiert Eigentum und Schlüssel | Kein Verlust von Spielereigentum durch Team-Aktionen |

@@ -53,3 +53,4 @@ files["**/peds.lua"] = { max_line_length = 200 }
 files["**/world.lua"] = { max_line_length = 200 }
 files["**/refunds.lua"] = { max_line_length = 200 }
 files["**/weather.lua"] = { max_line_length = 200 }
+files["**/configedit.lua"] = { max_line_length = 200 }
