@@ -57,14 +57,13 @@ function TacoV.Health.revive(full)
 end
 
 local function coma()
-  local ped = PlayerPedId()
   TacoV.UI.send('hud', { downed = false })
   DoScreenFadeOut(800)
   Wait(900)
   TriggerServerEvent('tacov:health:coma')
   local b = H.respawnBed
   NetworkResurrectLocalPlayer(b.x, b.y, b.z, b.w, true, false)
-  ped = PlayerPedId()
+  local ped = PlayerPedId()
   SetEntityHealth(ped, GetEntityMaxHealth(ped))
   ClearPedBloodDamage(ped)
   SetEntityInvincible(ped, false)

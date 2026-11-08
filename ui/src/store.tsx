@@ -25,7 +25,7 @@ export type HudData = {
   minimap?: { x: number; y: number; w: number; h: number }; // Bruchteile des Bildschirms, von Lua
   radio?: { id: number; name: string; talking?: boolean }[]; // wer gerade im Funk ist
   radioFrequency?: string; radioOn?: boolean;
-  voice?: 'whisper' | 'normal' | 'shout'; voiceMeters?: number; megaphone?: boolean; downed?: number | false; injury?: 'light' | 'medium' | false; // Sprechweite, Megafon, Verletzung (6.8)
+  voice?: 'whisper' | 'normal' | 'shout'; voiceMeters?: number; megaphone?: boolean; downed?: number | false; alcohol?: number; injury?: 'light' | 'medium' | false; // Sprechweite, Megafon, Verletzung (6.8)
   vehicle?: { speed: number; fuel: number; tank: number; engine: boolean; locked: boolean } | null; // nur im Fahrzeug
   station?: { name: string; sub?: string; price?: number } | null; // Tankstellenkarte über dem Tacho
 };

@@ -126,7 +126,7 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 | 6.6 | Animationsmenü (F3) | 🔧 | 47 eigene Einträge in 6 Kategorien (Begrüßung/Gesten, Haltung, Sitzen/Liegen, Tanzen, Arbeit, Alltag) aus Grundspiel-Animationen und Szenarien; Favoriten oben (lokal gespeichert); Gesten laufen beim Gehen weiter, Ganzkörper endet bei Bewegung; F3 oder `/stopanim` beendet |
 | 6.7 | Voice (SaltyChat): Sprechweiten 3/10/25 m, HUD-Anzeige, Megafon | 🔧 | Sprechweite per Z über SaltyChat-Statebag `SaltyChat_VoiceRange` (plus Export für ältere Versionen); Megafon: Alt halten in Einsatzfahrzeugen (Klasse 18, vorne) über `SaltyChat_IsUsingMegaphone`, HUD zeigt MEGA; Telefon/Funk folgen in Phase 7 |
 | 6.8 | Verletzungen und Erste Hilfe | 🔧 | Bodyshot (keine kritischen Treffer); leicht < 150 HP (Hinweis), mittel < 90 HP (Humpeln, HUD), bewusstlos statt Tod: liegt 15 min mit Timer im HUD, Eingaben gesperrt, Statebag `downed`; Verband +25, Erste-Hilfe-Kit +60 bzw. am Bewusstlosen +10 min (E „Erste Hilfe leisten“); Koma → Pillbox-Bett, Bargeld weg, 500 $ Krankenhaus (auch ins Minus), 5 min Ruhe; Team-Heilen belebt wieder; LSMD-Wiederbelebung in Phase 8 |
-| 6.9 | Fitness und Promille | ⬜ | |
+| 6.9 | Fitness und Promille | 🔧 | Muscle Sands: 4 Stationen (E, 30 s Einheit, +1 %, 2 min Pause je Station), Energydrink +2 %, −1 % je Tag ohne Training; bis 8 % schneller und mehr Ausdauer; Promille: Bier +0,2, Schnaps +0,5, −0,1 je 10 min; ab 0,5 ‰ Torkeln, Kameraeffekt, Fahrzeug zieht, HUD-Hinweis; Atemtest kommt mit LSPD (Phase 8) |
 
 ## Phase 7 · Handy und Funk
 

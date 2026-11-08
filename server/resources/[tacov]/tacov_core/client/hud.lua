@@ -88,7 +88,7 @@ end)
 
 RegisterNetEvent('tacov:core:needs', function(n)
   TacoV.Hud.needs = n
-  TacoV.UI.send('hud', { hunger = n.hunger, thirst = n.thirst, fitness = n.fitness })
+  TacoV.UI.send('hud', { hunger = n.hunger, thirst = n.thirst, fitness = n.fitness, alcohol = n.alcohol })
 end)
 
 -- Leben, Weste, Straße: 4x je Sekunde Leben/Weste, 1x je Sekunde Straße
