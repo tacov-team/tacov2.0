@@ -34,7 +34,6 @@ function TacoV.Voice.cycle()
   if now - lastCycle < 300 then return end
   lastCycle = now
   if salty() then
-    print('[voice] Z gedrückt → Server')
     TriggerServerEvent('tacov:voice:cycle')
     return
   end
