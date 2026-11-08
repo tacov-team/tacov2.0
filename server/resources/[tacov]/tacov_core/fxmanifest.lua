@@ -30,6 +30,7 @@ shared_scripts {
   'config/animations.lua',
   'config/health.lua',
   'config/fitness.lua',
+  'config/phone.lua',
   'shared/configedit.lua',
   'shared/clothingprice.lua',
 }
@@ -71,6 +72,7 @@ server_scripts {
   'server/newbie.lua',
   'server/health.lua',
   'server/fitness.lua',
+  'server/phone.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -109,6 +111,7 @@ client_scripts {
   'client/animations.lua',
   'client/health.lua',
   'client/fitness.lua',
+  'client/phone.lua',
   'client/keys.lua',
 }
 

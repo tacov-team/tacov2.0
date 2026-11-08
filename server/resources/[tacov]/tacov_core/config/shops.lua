@@ -22,6 +22,8 @@ TacoV.Config.Shops = {
     label = 'Baumarkt',
     blip = { sprite = 402, color = 5, scale = 0.7 },
     items = {
+      { item = 'phone',    price = 300 },
+      { item = 'radio',    price = 250 },
       { item = 'toolbox',  price = 400 },
       { item = 'lockpick', price = 250 },
       { item = 'crowbar',  price = 180 },

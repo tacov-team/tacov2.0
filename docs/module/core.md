@@ -66,6 +66,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/animations.lua`, `client/animations.lua` | Animationsmenü (6.6): `TacoV.Anims.play(id)/stop()/openMenu()`, Liste mit `kind` anim/scenario, Favoriten in KVP `tacov_anim_favs`; F3 im Lauf = beenden |
 | `client/voice.lua` | Voice (6.7): Sprechweite und Megafon über SaltyChat-Statebags, `TacoV.Voice.cycle/setMegaphone` |
 | `config/health.lua`, `client/health.lua`, `server/health.lua` | Verletzungen (6.8): Stufen, Bewusstlos (Timer, `dead_a`-Animation, Eingabesperre), Koma (Server bucht Bargeld/Gebühr, Log `medic`), Items `bandage`/`first_aid` (`tacov:health:heal`), `TacoV.Health.revive(target)` (Server) für LSMD/Team |
+| `config/phone.lua`, `client/phone.lua`, `server/phone.lua` | Handy und Funk (Phase 7): Nummern (`characters.phone_number`), Kontakte, Anrufe über SaltyChat `EstablishCall/EndCall`, Nachrichten, Bank-/Fahrzeuge-App, Einstellungen, Funkfrequenzen (`tacov:radio:set/state`, Statebag `radioTalking`); UI-Aktionen `tacov:ui:phone:<app>:<aktion>` → `tacov:phone:<app>:<aktion>`; Hook `tacov:health:comaItems` nimmt das Handy |
 | `config/fitness.lua`, `client/fitness.lua`, `server/fitness.lua` | Fitness/Promille (6.9): Stationen als Orte `gym` (Szenario je Station), `tacov:fitness:trained`, Abbau 1 %/Tag ohne Training (`needs.lastTraining`), Tempo-Multiplikator und Ausdauer nach Fitness; Trunkenheit ab `Needs.alcohol.duiThreshold` (Clipset, Effekt, Lenk-Bias) |
 | `server/characters.lua` (hardDelete) | `TacoV.Characters.hardDelete(characterId, actorSrc)`: löscht Charakter, Inventare, Konto, Fahrzeuge, Schlüssel, Führerscheine, Outfits, Wohnung, Neulingspfad, Erstattungen; `/charreset bestaetigen` (Config `allowSelfDelete`), Akte → „Charakter komplett löschen“ (`admin.db`) |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
@@ -124,6 +125,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Animationsmenü (6.6)
 - [x] Voice-Ergänzungen (6.7) und Verletzungen/Erste Hilfe (6.8)
 - [x] Fitness und Promille (6.9)
+- [x] Handy und Funk (7.1–7.7) (Migration 020)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

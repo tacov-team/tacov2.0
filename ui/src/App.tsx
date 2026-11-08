@@ -13,11 +13,15 @@ import { Garage } from './views/Garage';
 import { Dealer } from './views/Dealer';
 import { Ask } from './views/Ask';
 import { Editor } from './views/Editor';
+import { Phone, applyPhoneSettings, loadPhoneSettings } from './views/Phone';
 import { inGame, nui } from './nui';
 
 function Views() {
   const { state, dispatch } = useStore();
   const v = state.view;
+
+  // Handy-Einstellungen (HUD-Größe, Bedürfnis-Zahlen) beim Start anwenden
+  useEffect(() => { applyPhoneSettings(loadPhoneSettings()); }, []);
 
   // Vollbild-Ansichten dunkeln den Hintergrund ab (außerhalb des Spiels: Szene als Vorschau)
   useEffect(() => {
@@ -59,6 +63,7 @@ function Views() {
       {v?.name === 'dealer' && <Dealer data={v.data} />}
       {v?.name === 'ask' && <Ask data={v.data} />}
       {v?.name === 'editor' && <Editor key={v.data.title ?? 'editor'} data={v.data} />}
+      {v?.name === 'phone' && <Phone data={v.data} />}
       {!v && state.hint && <div className="hint"><span className="key">{state.hint.key}</span><span>{state.hint.text}</span></div>}
     </>
   );

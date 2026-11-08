@@ -130,16 +130,16 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 
 ## Phase 7 · Handy und Funk
 
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 7.1 | Handy-Item, Nummer, Grundgerüst der Oberfläche | ⬜ |
-| 7.2 | Kontakte und Anrufe | ⬜ |
-| 7.3 | Nachrichten (SMS, Standort, Gruppen) | ⬜ |
-| 7.4 | Bank-App | ⬜ |
-| 7.5 | Fahrzeuge-App | ⬜ |
-| 7.6 | Einstellungen | ⬜ |
-| 7.7 | Funkgerät und Funk-App, Funkliste im HUD | ⬜ |
-| 7.8 | Notruf, Fraktion, Firma, Kamera, Feed | ⬜ (mit den jeweiligen Phasen) |
+| Nr. | Punkt | Status | Details |
+| --- | --- | --- | --- |
+| 7.1 | Handy-Item, Nummer, Grundgerüst der Oberfläche | 🔧 | Handy (300 $, Elektronikladen) als Item; F1 öffnet nur, wenn es im eigenen Inventar liegt (Beschlagnahme = Sperre); vierstellige Nummer je Charakter (zufällig bei Erstauswahl, Wunschnummer nur per Ticket: `/nummer <ID> <4-stellig>`); Gerät unten rechts im V6-Stil, Spieler kann weitergehen; bei Koma geht das Handy verloren; Flugmodus macht unerreichbar |
+| 7.2 | Kontakte und Anrufe | 🔧 | Kontakte anlegen/umbenennen/Favorit/löschen, Nummern tauschen über das X-Rad („Nummer tauschen“, ≤ 3 m); Wähltastatur; Anrufe klingeln 20 s (Ton, Handy öffnet sich), annehmen/auflegen, Gespräch über SaltyChat `EstablishCall`; Anrufliste in `phone_calls` |
+| 7.3 | Nachrichten (SMS, Standort) | 🔧 | Unterhaltungen je Nummer, ungelesen als Badge auf der App, SMS-Ton und Hinweis; Standort senden → Empfänger setzt Wegpunkt; Gruppen (bis 8) folgen mit dem Fraktionsteil |
+| 7.4 | Bank-App | 🔧 | Kontostand und letzte Buchungen, Überweisung an Nummer (Journal `ueberweisung`), Rechnung stellen/bezahlen (`invoices`) |
+| 7.5 | Fahrzeuge-App | 🔧 | Eigene Fahrzeuge mit Zustand, Garage, Tank, Kilometer; „Orten“ setzt Wegpunkt auf das ausgeparkte Fahrzeug; Schlüssel mit Nummer teilen |
+| 7.6 | Einstellungen | 🔧 | Klingelton (3), Flugmodus, Bedürfnisse als Zahl an/aus, HUD-Größe 90/100/110 % – lokal gespeichert, wirkt sofort |
+| 7.7 | Funkgerät und Funk-App, Funkliste im HUD | 🔧 | Funkgerät (250 $) schaltet die Funk-App frei; Frequenzen 1–999, 1–10 nur Fraktionen; Sprechen über SaltyChats eigene Funk-Taste; Teilnehmerliste im Handy und im HUD, Sprecher leuchten (`SaltyChat_RadioTrafficStateChanged` → Statebag `radioTalking`) |
+| 7.8 | Notruf, Fraktion, Firma, Kamera, Feed | ⬜ | mit den jeweiligen Phasen |
 
 ## Phase 8 · Jobs, Lohn, Steuern
 

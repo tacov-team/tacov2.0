@@ -1,0 +1,44 @@
+-- TacoV Kern · Migration 020 · Handy und Funk (Phase 7)
+ALTER TABLE characters ADD COLUMN IF NOT EXISTS phone_number VARCHAR(8) NULL;
+ALTER TABLE characters ADD UNIQUE INDEX IF NOT EXISTS uq_characters_phone (phone_number);
+
+CREATE TABLE IF NOT EXISTS phone_contacts (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  character_id INT UNSIGNED NOT NULL,
+  name VARCHAR(32) NOT NULL,
+  number VARCHAR(8) NOT NULL,
+  favorite TINYINT(1) NOT NULL DEFAULT 0,
+  INDEX idx_pc_char (character_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS phone_messages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  from_number VARCHAR(8) NOT NULL,
+  to_number VARCHAR(8) NOT NULL,
+  text VARCHAR(300) NOT NULL,
+  location TEXT NULL,
+  read_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_pm_to (to_number, read_at),
+  INDEX idx_pm_pair (from_number, to_number)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS phone_calls (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  from_number VARCHAR(8) NOT NULL,
+  to_number VARCHAR(8) NOT NULL,
+  started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  answered TINYINT(1) NOT NULL DEFAULT 0,
+  seconds INT UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS invoices (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  from_character_id INT UNSIGNED NOT NULL,
+  to_character_id INT UNSIGNED NOT NULL,
+  amount INT UNSIGNED NOT NULL,
+  reason VARCHAR(64) NOT NULL,
+  paid_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_inv_to (to_character_id, paid_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

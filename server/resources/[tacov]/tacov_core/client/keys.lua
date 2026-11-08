@@ -7,6 +7,7 @@ local function bind(command, label, key, handler, release)
     if not TacoV.Client.character then return end
     -- Bei offenem Listenmenü (Spieler kann laufen) nur die Menü-Tasten selbst durchlassen
     if TacoV.UI.current() == 'menu' and command ~= 'tacov_faction' and command ~= 'tacov_admin' and command ~= 'tacov_actions' then return end
+    if TacoV.UI.current() == 'phone' and command ~= 'tacov_phone' then return end
     handler()
   end, false)
   RegisterCommand('-' .. command, function()
@@ -15,16 +16,12 @@ local function bind(command, label, key, handler, release)
   RegisterKeyMapping('+' .. command, label, 'keyboard', key)
 end
 
-local function soon(name)
-  TacoV.UI.send('notify', { kind = 'info', text = name .. ' kommt in einer späteren Phase.' })
-end
-
 local K = TacoV.Config.Keys
 bind('tacov_console',   'TacoV: Befehlszeile',    K.console,    function() TacoV.UI.openConsole() end)
 bind('tacov_inventory', 'TacoV: Inventar',        K.inventory,  function()
   if TacoV.UI.current() == 'inventory' then TacoV.Inventory.close() else TacoV.Inventory.open() end
 end)
-bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() soon('Das Handy') end)
+bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() TacoV.Phone.toggle() end)
 bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() TacoV.Anims.openMenu() end)
 bind('tacov_actions',   'TacoV: Aktionen',        K.actions,    function() TacoV.Client.openActionsMenu() end)
 bind('tacov_faction',   'TacoV: Fraktionsmenü',   K.faction,    function() TacoV.Client.openFactionMenu() end)

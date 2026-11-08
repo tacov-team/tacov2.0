@@ -24,7 +24,7 @@ function useViewport() {
 function Stat({ icon, value }: { icon: string; value: number }) {
   const v = Math.max(0, Math.min(100, Math.round(value)));
   return (
-    <div className="stat shadow">
+    <div className="stat need shadow">
       <span className="c"><i style={{ height: `${100 - v}%` }} /><Icon name={icon} size={18} /></span>
       <span className="num">{v} %</span>
     </div>
@@ -106,7 +106,7 @@ export function Hud() {
         {h.notice && <div className="aduty notice"><span className="b"><Icon name="id" size={16} /></span><span>Hinweis<small>{h.notice}</small></span></div>}
       </div>
 
-      {h.vehicle && <Vehicle h={h} />}
+      {h.vehicle && state.view?.name !== 'phone' && <Vehicle h={h} />}
     </div>
   );
 }

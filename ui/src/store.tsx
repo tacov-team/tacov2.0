@@ -10,6 +10,7 @@ import type { GarageData } from './views/Garage';
 import type { DealerData } from './views/Dealer';
 import type { AskData } from './views/Ask';
 import type { EditorData } from './views/Editor';
+import type { PhoneData } from './views/Phone';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 export type Announce = { title: string; text: string; kind: 'info' | 'warn' } | null;
@@ -49,7 +50,8 @@ type View = null
   | { name: 'garage'; data: GarageData }
   | { name: 'dealer'; data: DealerData }
   | { name: 'ask'; data: AskData }
-  | { name: 'editor'; data: EditorData };
+  | { name: 'editor'; data: EditorData }
+  | { name: 'phone'; data: PhoneData };
 
 export type Hint = { key: string; text: string };
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null; crosshair: boolean };

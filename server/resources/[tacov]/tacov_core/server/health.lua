@@ -27,6 +27,7 @@ RegisterNetEvent('tacov:health:coma', function()
     TacoV.Journal.move('cash', { type = 'character', id = c.id }, nil, cash, 'koma_verlust', { actor = c.id })
   end
   TacoV.Journal.move('bank', { type = 'character', id = c.id }, STATE, H.hospitalFee, 'krankenhaus', { allowNegative = true })
+  TriggerEvent('tacov:health:comaItems', src)
   TacoV.Accounts.push(src)
   TacoV.Inventory.send(src)
   TacoV.AC.allowTeleport(src)
