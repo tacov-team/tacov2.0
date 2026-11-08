@@ -96,6 +96,7 @@ end)
 RegisterNetEvent('tacov:phone:sms', function(from, name, preview)
   PlaySoundFrontend(-1, 'Text_Arrive_Tone', 'Phone_SoundSet_Default', true)
   notify('info', ('SMS von %s: %s'):format(name or from, preview))
+  if TacoV.UI.current() == 'phone' then TacoV.UI.send('phone', { app = 'sms', data = { from = from } }) end
 end)
 
 -- Funk: Frequenz an SaltyChat, Funkliste im HUD

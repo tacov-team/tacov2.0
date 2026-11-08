@@ -60,12 +60,18 @@ local function appsFor(src)
   local list = {}
   local c = TacoV.Characters.get(src)
   local unread = c and (TacoV.DB.scalar('SELECT COUNT(*) FROM phone_messages WHERE to_number = ? AND read_at IS NULL', { c.phone_number }) or 0) or 0
+  list[#list + 1] = { id = 'messages', label = 'Nachrichten', icon = 'doc', enabled = true, badge = unread > 0 and unread or nil }
   for _, a in ipairs(P.apps) do
     local e = { id = a.id, label = a.label, icon = a.icon, enabled = a.enabled }
     if a.id == 'radio' then e.enabled = true end
     list[#list + 1] = e
   end
   return list, unread
+end
+-- App-Liste (mit Ungelesen-Zähler) live an ein offenes Handy schicken
+local function pushApps(src)
+  local list = appsFor(src)
+  TriggerClientEvent('tacov:phone:app', src, 'apps', list)
 end
 
 -- Öffnen
@@ -244,6 +250,7 @@ local function sendThread(src, other)
   if not c then return end
   local me = c.phone_number
   TacoV.DB.update('UPDATE phone_messages SET read_at = NOW() WHERE from_number = ? AND to_number = ? AND read_at IS NULL', { other, me })
+  pushApps(src)
   local rows = TacoV.DB.query('SELECT * FROM phone_messages WHERE (from_number = ? AND to_number = ?) OR (from_number = ? AND to_number = ?) ORDER BY id DESC LIMIT 60',
     { me, other, other, me }) or {}
   local out = {}
@@ -266,6 +273,7 @@ local function deliver(src, toNumber, text, location)
   local target = srcOfNumber(toNumber)
   if target and reachable(target) then
     TriggerClientEvent('tacov:phone:sms', target, me, nameFor(target, me), location and 'Standort geteilt' or TacoV.Util.cleanText(text or '', 60))
+    pushApps(target)
     sendThread(target, me)
   end
 end

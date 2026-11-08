@@ -113,6 +113,10 @@ function Messages({ initial }: { initial?: { number: string; name?: string } }) 
   useNuiEvent<{ app: string; data: unknown; thread?: string }>('phone', (d) => {
     if (d.app === 'messages') setThreads(d.data as Thread[]);
     if (d.app === 'thread' && open && d.thread === open.number) setMsgs(d.data as Msg[]);
+    if (d.app === 'sms') { // neue Nachricht: Liste bzw. offene Unterhaltung nachladen
+      const from = (d.data as { from: string }).from;
+      if (open && open.number === from) act('messages:thread', { number: from }); else act('messages:list');
+    }
   });
   useEffect(() => { act('messages:list'); }, []);
   useEffect(() => { if (open) act('messages:thread', { number: open.number }); }, [open?.number]);
