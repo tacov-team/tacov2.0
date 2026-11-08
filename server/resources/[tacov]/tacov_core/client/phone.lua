@@ -3,7 +3,6 @@
 TacoV = TacoV or {}
 TacoV.Phone = { open = false, ringing = false }
 
-local P = TacoV.Config.Phone
 local function notify(kind, text) TacoV.UI.send('notify', { kind = kind, text = text }) end
 
 function TacoV.Phone.toggle()

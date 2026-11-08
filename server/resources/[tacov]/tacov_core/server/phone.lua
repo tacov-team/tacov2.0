@@ -4,7 +4,6 @@ TacoV = TacoV or {}
 TacoV.Phone = {}
 
 local P = TacoV.Config.Phone
-local STATE = { type = 'state', id = 0 }
 local calls = {}        -- [src] = { with = src2, state = 'incoming'|'outgoing'|'active', started = os.time(), id = dbId }
 local airplane = {}     -- [src] = true
 local radio = {}        -- [src] = channel
