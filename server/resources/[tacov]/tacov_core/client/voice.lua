@@ -35,7 +35,6 @@ function TacoV.Voice.cycle()
   if now - lastCycle < 300 then return end
   lastCycle = now
   if salty() then
-    print('[voice] Z: +voiceRange') -- Diagnose (F8)
     ExecuteCommand('+voiceRange')
     return
   end
@@ -46,15 +45,18 @@ function TacoV.Voice.cycle()
   TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], V[TacoV.Voice.range]) })
 end
 
--- SaltyChat meldet jede Änderung (Meter, Index, Anzahl)
-local lastShown, lastShownAt = nil, 0
-AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters, index, count)
-  print(('[voice] SaltyChat: %s m (Stufe %s von %s)'):format(tostring(meters), tostring(index), tostring(count))) -- Diagnose (F8)
+-- SaltyChat meldet jede Änderung (Meter, Index, Anzahl). Beim Umschalten springt der Wert kurz hin und her
+-- (neu → alt → neu, Statebag-Echo), darum erst anzeigen, wenn er 350 ms stabil ist.
+local settleId = 0
+AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters)
   meters = tonumber(meters) or V.normal
-  if lastShown == meters and GetGameTimer() - lastShownAt < 300 then return end
-  lastShown, lastShownAt = meters, GetGameTimer()
-  show(meters)
-  TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], math.floor(meters + 0.5)) })
+  settleId = settleId + 1
+  local my = settleId
+  SetTimeout(350, function()
+    if my ~= settleId then return end
+    show(meters)
+    TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], math.floor(meters + 0.5)) })
+  end)
 end)
 
 --- Megafon: nur in Einsatzfahrzeugen (Klasse 18) als Fahrer oder Beifahrer, solange die Taste gehalten wird
