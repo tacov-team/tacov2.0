@@ -51,3 +51,4 @@ files["**/teleports.lua"] = { max_line_length = 200 }
 files["**/access.lua"] = { max_line_length = 200 }
 files["**/peds.lua"] = { max_line_length = 200 }
 files["**/world.lua"] = { max_line_length = 200 }
+files["**/refunds.lua"] = { max_line_length = 200 }

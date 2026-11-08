@@ -50,6 +50,7 @@ server_scripts {
   'server/teleports.lua',
   'server/peds.lua',
   'server/world.lua',
+  'server/refunds.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',

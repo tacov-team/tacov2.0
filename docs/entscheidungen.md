@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Punkt 5.11 | Erstattungsstufen: ≤ 10.000 $ Moderator allein, ≤ 50.000 $ Superadmin allein, darüber und Waffen/Schutz/Munition nur mit zweiter Person ab Manager; Grund ist Pflicht; jede Erstattung im Geld-Log | Punkt 0.11 Rechte; Missbrauch erschweren |
 | 2026-11-08 | Punkt 5.10 | Team-Fahrzeuge sind temporär (Kennzeichen TEAM xxx, kein Eigentum, Schlüssel nur für den Spawner); Löschen eines Eigentums stellt es in die Garage statt es zu vernichten; Kennzeichen-Änderung aktualisiert Eigentum und Schlüssel | Kein Verlust von Spielereigentum durch Team-Aktionen |
 | 2026-11-08 | Punkte 5.8/5.9 | Objekte lokal je Client (eingefroren, kein Netzwerk-Sync; für Schranken kommt später ein eigener Zustand); Zonen als Kreis oder Polygon mit optionalem Höhenbereich, Arten Sicherheitszone/Job/Gebiet/Fahrzeugverbot/Sonstiges – die Regeln selbst (z. B. kein Schaden in Safezones) kommen mit den jeweiligen Systemen | Grundlage für spätere Systeme ohne Doppelarbeit |
 | 2026-11-08 | Punkt 5.7 | NPCs sind lokale, eingefrorene Peds (kein Netzwerk-Sync nötig); die Aufgabe eines NPCs ist die Aufforderung des zugehörigen Orts (Laden, Bank …) – der NPC muss dafür am Ort stehen; Modelle/Szenarien als Vorauswahl mit freier Eingabe | Kein doppelter Code je System, NPCs ersetzen E-Punkte sichtbar |

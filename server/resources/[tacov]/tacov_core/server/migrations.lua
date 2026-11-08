@@ -20,6 +20,7 @@ local function listMigrations()
     { version = 11, file = 'sql/011_teleports.sql' },
     { version = 12, file = 'sql/012_peds.sql' },
     { version = 13, file = 'sql/013_props_zones.sql' },
+    { version = 14, file = 'sql/014_refunds.sql' },
   }
 end
 

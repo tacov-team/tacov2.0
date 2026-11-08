@@ -281,6 +281,7 @@ RegisterNetEvent('tacov:admin:file', function(f)
     { id = 'bring', label = 'Spieler herholen', icon = 'back' },
     { id = 'heal', label = 'Heilen', icon = 'heart', sub = 'Leben, Rüstung, Hunger, Durst' },
     { id = 'give', label = 'Geben', icon = 'gift', sub = 'Geld, Items, Fahrzeug' },
+    { id = 'refund', label = 'Erstattung', icon = 'cash', sub = 'Geld oder Item mit Grund, ab 50.000 $ Vier-Augen' },
     { id = 'warn', label = 'Verwarnen', icon = 'warn', section = 'Maßnahmen' },
     { id = 'kick', label = 'Kicken', icon = 'x' },
     { id = 'ban', label = 'Sperren', icon = 'lock' },
@@ -306,6 +307,32 @@ RegisterNetEvent('tacov:admin:file', function(f)
       TriggerServerEvent('tacov:admin:heal', f.id)
     elseif id == 'give' then
       giveMenu(f.id, name)
+    elseif id == 'refund' then
+      TacoV.Menu.open({ id = 'refund_kind', title = 'Erstattung', icon = 'cash', info = name, items = {
+        { id = 'money', label = 'Geld', icon = 'cash', sub = 'Betrag eingeben' },
+        { id = 'item', label = 'Item', icon = 'bag', sub = 'Item und Anzahl' },
+      } }, function(kind)
+        local function withReason(amount, item)
+          TacoV.UI.ask({ title = 'Grund der Erstattung', placeholder = 'z. B. Bug beim Einparken, Ticket #12', maxLength = 255, icon = 'doc' }, function(reason)
+            if reason and #reason >= 3 then TacoV.Menu.close() TriggerServerEvent('tacov:refunds:request', f.id, kind, amount, item, reason) end
+          end)
+        end
+        if kind == 'money' then
+          TacoV.UI.ask({ title = 'Betrag in $', maxLength = 9, numeric = true, icon = 'cash' }, function(v)
+            local n = tonumber(v or '')
+            if n and n >= 1 then withReason(math.floor(n), nil) end
+          end)
+        else
+          local list = {}
+          for _, e in ipairs(sortedItems()) do list[#list + 1] = { id = e.name, label = e.def.label, icon = 'box', sub = e.name } end
+          TacoV.Menu.open({ id = 'refund_item', title = 'Item', icon = 'bag', items = list }, function(item)
+            TacoV.UI.ask({ title = 'Anzahl', value = '1', maxLength = 4, numeric = true, icon = 'bag' }, function(v)
+              local n = tonumber(v or '')
+              if n and n >= 1 then withReason(math.floor(n), item) end
+            end)
+          end)
+        end
+      end)
     elseif id == 'warn' then
       reasonMenu('Verwarnen · ' .. name, function(r) TacoV.Menu.back() TriggerServerEvent('tacov:admin:punish', 'warn', f.id, r) end)
     elseif id == 'kick' then
@@ -472,6 +499,24 @@ function TacoV.Admin.openVehicles()
   end)
 end
 
+RegisterNetEvent('tacov:refunds:list', function(list)
+  local items = {}
+  for _, r in ipairs(list) do
+    items[#items + 1] = { id = tostring(r.id), label = ('#%d · %s für %s'):format(r.id, r.text, r.name), icon = 'cash', sub = r.reason .. ' · von ' .. r.requestedBy }
+  end
+  if #items == 0 then items[1] = { id = 'none', label = 'Keine offenen Anträge', icon = 'info', dim = true } end
+  TacoV.Menu.open({ id = 'refunds', title = 'Offene Erstattungen', icon = 'cash', info = ('%d offen'):format(#list), items = items }, function(id)
+    if id == 'none' then return end
+    TacoV.Menu.open({ id = 'refund_decide', title = 'Antrag #' .. id, icon = 'cash', info = 'Vier-Augen-Prinzip', items = {
+      { id = 'yes', label = 'Bestätigen und auszahlen', icon = 'check' },
+      { id = 'no', label = 'Ablehnen', icon = 'x' },
+    } }, function(a)
+      TacoV.Menu.close()
+      TriggerServerEvent('tacov:refunds:decide', tonumber(id), a == 'yes')
+    end)
+  end)
+end)
+
 function TacoV.Admin.openMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   TriggerServerEvent('tacov:admin:players')
@@ -480,6 +525,7 @@ function TacoV.Admin.openMenu()
       { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
       { id = 'creator',   label = 'Creator', icon = 'tool', sub = 'Orte, Türen, Aufzüge, NPCs …' },
       { id = 'vehicles',  label = 'Fahrzeuge', icon = 'car', sub = 'Spawnen, reparieren, Kennzeichen, löschen' },
+      { id = 'refunds',   label = 'Offene Erstattungen', icon = 'cash', sub = 'Vier-Augen-Bestätigung (ab Manager)' },
       { id = 'invisible', label = 'Unsichtbar', icon = 'search', badge = TacoV.Admin.invisible and 'An' or 'Aus', section = 'Ich' },
       { id = 'noclip',    label = 'Noclip',     icon = 'play',   badge = TacoV.Admin.noclip and 'An' or 'Aus', sub = 'WASD, Q/E, Shift' },
       { id = 'waypoint',  label = 'Zum Wegpunkt teleportieren', icon = 'pin', section = 'Teleport' },
@@ -503,6 +549,8 @@ function TacoV.Admin.openMenu()
       TacoV.Creator.openMenu()
     elseif id == 'vehicles' then
       TacoV.Admin.openVehicles()
+    elseif id == 'refunds' then
+      TriggerServerEvent('tacov:refunds:list')
     elseif id == 'players' then
       TacoV.Menu.open({ id = 'admin_players', title = 'Spieler', icon = 'group', info = ('%d online'):format(#players),
         items = playerItems(true) }, function(pid)
