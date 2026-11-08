@@ -73,6 +73,7 @@ server_scripts {
   'server/health.lua',
   'server/fitness.lua',
   'server/phone.lua',
+  'server/voice.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',

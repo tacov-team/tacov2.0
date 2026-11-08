@@ -26,16 +26,15 @@ local function apply()
   end
 end
 
---- Z: Sprechweite weiterschalten. Mit SaltyChat über dessen eigenen Umschalter (+voiceRange); der Statebag
---- SaltyChat_VoiceRange wird nie direkt aus Lua gesetzt (falscher Zahlentyp bricht die Sprach-Synchronisation).
---- Entprellt: ein Druck = ein Schritt, auch wenn die Taste doppelt gemeldet wird.
+--- Z: Sprechweite weiterschalten. Mit SaltyChat setzt der Server die Stufe (Export SetPlayerVoiceRange) – der Statebag
+--- SaltyChat_VoiceRange wird nie vom Client geschrieben (Zahlentyp/Echo-Probleme). Entprellt: ein Druck = ein Schritt.
 local lastCycle = 0
 function TacoV.Voice.cycle()
   local now = GetGameTimer()
   if now - lastCycle < 300 then return end
   lastCycle = now
   if salty() then
-    ExecuteCommand('+voiceRange')
+    TriggerServerEvent('tacov:voice:cycle')
     return
   end
   local idx = 1
@@ -45,14 +44,13 @@ function TacoV.Voice.cycle()
   TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], V[TacoV.Voice.range]) })
 end
 
--- SaltyChat meldet jede Änderung (Meter, Index, Anzahl). Beim Umschalten springt der Wert kurz hin und her
--- (neu → alt → neu, Statebag-Echo), darum erst anzeigen, wenn er 350 ms stabil ist.
+-- SaltyChat meldet jede Änderung (Meter, Index, Anzahl); kurz stabil abwarten, dann anzeigen.
 local settleId = 0
 AddEventHandler('SaltyChat_VoiceRangeChanged', function(meters)
   meters = tonumber(meters) or V.normal
   settleId = settleId + 1
   local my = settleId
-  SetTimeout(350, function()
+  SetTimeout(150, function()
     if my ~= settleId then return end
     show(meters)
     TacoV.UI.send('notify', { kind = 'info', text = ('Sprechweite: %s (%d m)'):format(labels[TacoV.Voice.range], math.floor(meters + 0.5)) })
