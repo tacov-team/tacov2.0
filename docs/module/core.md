@@ -56,6 +56,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/weather.lua`, `client/weather.lua`, `config/world.lua` (World) | Welt (5.12): Server führt Uhrzeit (`dayMinutes`) und Wetter (gewichtete Liste, `weatherMinutes`), Sync alle 10 s und bei Änderung; `tacov:world:set` (time, timeFreeze, weather, weatherFreeze, announce, restart) mit `admin.world`/`admin.config`; Ansage-Banner `tacov:core:announce` → NUI `announce` |
 | `shared/configedit.lua`, `server/configedit.lua`, `client/configedit.lua` | Config im Spiel (5.13): bearbeitbare Wurzeln (`TacoV.ConfigEdit.roots`), Pfadzugriff `get/set` (nur Blattwerte, Typ muss passen), Überschreibungen aus `config_overrides` beim Start und bei Änderung an alle Clients (`tacov:config:overrides`), Ereignis `tacov:config:changed`; Hinweis: Module, die Werte beim Laden in Locals kopieren (z. B. Spieltag-Länge), übernehmen erst nach Neustart |
 | `server/devtools.lua`, `client/devtools.lua` | Entwickler-Werkzeuge (5.14): Freigabe über `dev.tools`, Overlay (NUI `dev`), Zwischenablage (NUI `copy`), Ereignis `tacov:core:reloadData` (Orte, Türen, Aufzüge/Portale, NPCs, Objekte/Zonen, Config-Überschreibungen laden neu), Resource-Neustart nach Speichern |
+| `server/tickets.lua` | Tickets (5.15): `TacoV.Tickets.create`, Liste/Detail/Aktionen (`support.view`), Discord-Antworten alle 10 s an Online-Spieler; Tabellen `tickets`, `ticket_messages` (Spiegelung über `posted_discord`/`seen_game`) |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -103,6 +104,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Welt-Steuerung (5.12): Uhrzeit, Wetter, Ansagen
 - [x] Config im Spiel (5.13) (Migration 015)
 - [x] Entwickler-Werkzeuge (5.14)
+- [x] Tickets im Spiel und Discord (5.15) (Migration 016)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

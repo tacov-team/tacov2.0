@@ -4,6 +4,7 @@ Jede Entscheidung mit Datum, Entscheider und Begründung. Neueste zuerst. Was hi
 
 | Datum | Thema | Entscheidung | Begründung |
 | --- | --- | --- | --- |
+| 2026-11-08 | Punkt 5.15 | Tickets laufen über die Datenbank (Spielserver schreibt, Bot spiegelt alle 10 s); je Ticket ein Discord-Kanal in der Ticket-Kategorie, Spieler sieht seinen Kanal, wenn er auf dem Discord ist; ein offenes Ticket je Spieler, weitere /support-Texte ergänzen es | Keine direkte Verbindung Bot↔Spielserver nötig; Betreiber-Vorgabe (Kategorie 1568940600257150976) |
 | 2026-11-08 | Punkt 5.14 | „Hot-Reload“ = Daten und Überschreibungen aus der Datenbank neu laden (ohne Neustart); Code-Änderungen brauchen weiterhin einen Resource-Neustart, der aus dem Menü mit vorherigem Speichern aller Charaktere ausgelöst werden kann | Kein Zustandsverlust durch Neuladen |
 | 2026-11-08 | Punkt 5.13 | Config-Änderungen im Spiel nur für Einzelwerte in freigegebenen Bereichen (keine Listen wie Items/Orte/Fahrzeugliste – dafür gibt es Code bzw. Creator); Überschreibungen liegen in der Datenbank über den Code-Vorgaben und sind rücksetzbar | Code bleibt Quelle der Wahrheit, Betrieb kann Werte feinjustieren |
 | 2026-11-08 | Punkt 5.12 | Uhrzeit und Wetter laufen serverseitig (Spieltag 2 Stunden, Start 9 Uhr, Wetter gewichtet überwiegend klar/sonnig, Wechsel alle 25 Minuten mit weichem Übergang); Ansagen als Banner oben in der Mitte zusätzlich zum Hinweis | Alle sehen dasselbe; Vorschlagswerte |

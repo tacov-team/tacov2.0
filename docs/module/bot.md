@@ -23,3 +23,11 @@ Geheimnisse (Token, Datenbank) in `bot/.env` (Vorlage `.env.example`, nie eingec
 
 ## TeamSpeak-Embed (Punkt 1.10)
 `src/teamspeak.js` fragt alle 30 s den ServerQuery (127.0.0.1:10011, `TS_QUERY_PASS` aus `.env`, von `setup-teamspeak.sh` eingetragen) ab und bearbeitet ein zweites Embed im Status-Kanal: online/offline, Adresse (`TS_ADDRESS`), Verbundene/Max, Laufzeit, Namen der Verbundenen. Nachrichten-ID in `bot_state` (`ts_status_message_id`).
+
+## Tickets (Punkt 5.15, `src/tickets.js`)
+- Alle 10 s: neue Tickets → Textkanal `ticket-<id>-<name>` in der Kategorie `ticketsCategoryId` (Team-Rollen und der Spieler sehen ihn), Embed mit Anliegen; Spiel-/Systemnachrichten → Kanal; geschlossene Tickets → Kanal `geschlossen-<id>`, Schreiben gesperrt.
+- Nachrichten im Kanal → `ticket_messages` (source `discord`), der Spielserver zeigt sie dem Spieler; `!schliessen` schließt das Ticket.
+- Braucht die Intents `GuildMessages` und `MessageContent` (Message Content Intent im Discord-Entwicklerportal aktivieren!).
+
+## Anti-Cheat-Meldungen (Punkt 5.16)
+- `anticheat.roleId` wird bei Meldungen erwähnt, `anticheat.channelId` erhält die Meldung mit allen Infos.

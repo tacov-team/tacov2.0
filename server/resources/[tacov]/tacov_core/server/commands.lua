@@ -11,17 +11,12 @@ local function needRight(src, right)
   return false
 end
 
--- /support <Text>  – Ticket an das Team (Konzept 1: Support)
+-- /support <Text>  – Ticket an das Team (Punkt 5.15); weitere Texte ergänzen das offene Ticket
 RegisterCommand('support', function(src, args)
   if src == 0 then return end
   local text = TacoV.Util.cleanText(table.concat(args, ' '), 255)
-  if #text < 5 then notify(src, 'error', 'Bitte beschreibe dein Anliegen.') return end
-  local p = TacoV.Players.get(src)
-  TacoV.Log.write('support', text, { discordId = p and p.discordId, characterId = p and p.characterId, data = { source = src } })
-  notify(src, 'info', 'Dein Anliegen ist beim Team eingegangen.')
-  for _, staff in ipairs(TacoV.Players.staff(1)) do
-    notify(staff, 'info', ('Support #%d: %s'):format(src, text))
-  end
+  if #text < 5 then notify(src, 'error', 'Bitte beschreibe dein Anliegen: /support <Text>') return end
+  TacoV.Tickets.create(src, text)
 end, false)
 
 -- /ort setzen <name> <art> [Beschriftung]  – Ort an die eigene Position legen (Konzept 5)

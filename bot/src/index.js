@@ -5,6 +5,7 @@ import { startLogMirror } from './logs.js';
 import { syncMember, syncAllTeamRoles } from './teamroles.js';
 import { startStatus } from './status.js';
 import { startTeamspeakStatus } from './teamspeak.js';
+import { startTickets, handleTicketMessage } from './tickets.js';
 import { pool } from './db.js';
 
 const client = new Client({
@@ -13,6 +14,8 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
   ],
   partials: [Partials.Message, Partials.Reaction, Partials.Channel],
 });
@@ -37,8 +40,10 @@ client.once('clientReady', async () => {
   await startLogMirror(client);
   await startStatus(client).catch((e) => console.error('[bot] Status', e.message));
   await startTeamspeakStatus(client).catch((e) => console.error('[bot] TeamSpeak-Status', e.message));
+  await startTickets(client).catch((e) => console.error('[bot] Tickets', e.message));
 });
 
+client.on('messageCreate', (m) => handleTicketMessage(m).catch((e) => console.error('[bot] Ticket-Nachricht', e)));
 client.on('messageReactionAdd', (reaction, user) => handleReaction(reaction, user, client).catch((e) => console.error('[bot] Reaktion', e)));
 client.on('messageReactionRemove', (reaction, user) => handleReactionRemoved(reaction, user).catch(() => {}));
 client.on('guildMemberUpdate', (o, n) => { handleMemberUpdate(o, n).catch((e) => console.error('[bot] Rollen', e)); syncMember(n).catch((e) => console.error('[bot] Team-Rollen', e)); });

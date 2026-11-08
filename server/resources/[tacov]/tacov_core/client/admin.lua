@@ -517,12 +517,49 @@ RegisterNetEvent('tacov:refunds:list', function(list)
   end)
 end)
 
+-- Tickets (5.15)
+RegisterNetEvent('tacov:tickets:list', function(rows)
+  local items = {}
+  for _, t in ipairs(rows) do
+    items[#items + 1] = { id = tostring(t.id), label = ('#%d · %s'):format(t.id, t.player_name), icon = 'doc', sub = t.subject,
+      badge = t.status == 'claimed' and 'übernommen' or (t.online and 'online' or 'offline') }
+  end
+  if #items == 0 then items[1] = { id = 'none', label = 'Keine offenen Tickets', icon = 'info', dim = true } end
+  TacoV.Menu.open({ id = 'tickets', title = 'Tickets', icon = 'doc', info = ('%d offen'):format(#rows), items = items }, function(id)
+    if id ~= 'none' then TriggerServerEvent('tacov:tickets:detail', tonumber(id)) end
+  end)
+end)
+
+RegisterNetEvent('tacov:tickets:detail', function(t, msgs)
+  local items = {
+    { id = 'claim', label = t.status == 'claimed' and ('Übernommen von ' .. tostring(t.claimed_by)) or 'Übernehmen', icon = 'check', dim = t.status == 'claimed', section = 'Aktionen' },
+    { id = 'reply', label = 'Antworten', icon = 'mic', sub = 'Nachricht an den Spieler (Spiel und Discord)' },
+    { id = 'goto', label = 'Zum Spieler teleportieren', icon = 'next', dim = not t.online },
+    { id = 'close', label = 'Ticket schließen', icon = 'x' },
+  }
+  for i, m in ipairs(msgs) do
+    items[#items + 1] = { id = 'm' .. i, label = m.author .. (m.source == 'discord' and ' (Discord)' or ''), icon = m.source == 'system' and 'info' or 'doc',
+      sub = m.text, dim = true, section = i == 1 and 'Verlauf (neueste zuerst)' or nil }
+  end
+  TacoV.Menu.open({ id = 'ticket', title = ('Ticket #%d · %s'):format(t.id, t.player_name), icon = 'doc', info = t.subject, items = items }, function(id)
+    if id == 'reply' then
+      TacoV.UI.ask({ title = 'Antwort an ' .. t.player_name, maxLength = 500, icon = 'mic' }, function(v)
+        if v and #v > 0 then TriggerServerEvent('tacov:tickets:action', t.id, 'reply', v) end
+      end)
+    elseif id == 'claim' or id == 'goto' or id == 'close' then
+      TacoV.Menu.close()
+      TriggerServerEvent('tacov:tickets:action', t.id, id)
+    end
+  end)
+end)
+
 function TacoV.Admin.openMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   TriggerServerEvent('tacov:admin:players')
   local function items()
     return {
       { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
+      { id = 'tickets',   label = 'Tickets', icon = 'doc', sub = 'Offene Anliegen (/support)' },
       { id = 'creator',   label = 'Creator', icon = 'tool', sub = 'Orte, Türen, Aufzüge, NPCs …' },
       { id = 'vehicles',  label = 'Fahrzeuge', icon = 'car', sub = 'Spawnen, reparieren, Kennzeichen, löschen' },
       { id = 'refunds',   label = 'Offene Erstattungen', icon = 'cash', sub = 'Vier-Augen-Bestätigung (ab Manager)' },
@@ -548,6 +585,8 @@ function TacoV.Admin.openMenu()
     elseif id == 'waypoint' then
       TacoV.Menu.close()
       TriggerServerEvent('tacov:admin:teleport', 'waypoint')
+    elseif id == 'tickets' then
+      TriggerServerEvent('tacov:tickets:list')
     elseif id == 'creator' then
       TacoV.Creator.openMenu()
     elseif id == 'vehicles' then

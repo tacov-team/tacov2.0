@@ -55,6 +55,7 @@ server_scripts {
   'server/weather.lua',
   'server/configedit.lua',
   'server/devtools.lua',
+  'server/tickets.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',

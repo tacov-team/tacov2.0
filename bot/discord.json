@@ -41,5 +41,12 @@
   "teamspeak": {
     "address": ""
   },
-  "_teamspeak": "Öffentliche TeamSpeak-Adresse fürs Embed (leer = aus .env TS_ADDRESS)"
+  "_teamspeak": "Öffentliche TeamSpeak-Adresse fürs Embed (leer = aus .env TS_ADDRESS)",
+  "ticketsCategoryId": "1568940600257150976",
+  "_ticketsCategoryId": "Kategorie, in der der Bot je Ticket einen Textkanal anlegt (Punkt 5.15)",
+  "anticheat": {
+    "roleId": "1568019443165036564",
+    "channelId": "1568941437255688212"
+  },
+  "_anticheat": "AC-Team-Rolle (wird bei Meldungen erwähnt) und Kanal für Anti-Cheat-Meldungen (Punkt 5.16)"
 }

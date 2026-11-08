@@ -43,6 +43,8 @@ export const config = {
   // Discord-Rollen-IDs des Teams (discord.json → teamRoles); fehlende Einträge werden nicht gespiegelt
   teamRoles: ids.teamRoles || {},
   statusChannelId: ids.statusChannelId || null,
+  ticketsCategoryId: ids.ticketsCategoryId || null,
+  anticheat: { roleId: ids.anticheat?.roleId || null, channelId: ids.anticheat?.channelId || null },
   // TeamSpeak-ServerQuery für das zweite Status-Embed (Punkt 1.10); Passwort nur in .env
   teamspeak: {
     host: process.env.TS_QUERY_HOST || '127.0.0.1',
