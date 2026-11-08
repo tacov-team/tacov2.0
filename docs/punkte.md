@@ -119,8 +119,8 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
 | 6.1 | Charaktereditor (Gesicht, Haare, Farben) | 🔧 | Nach Name/Geburtsdatum öffnet der Editor (Figur in der Ankunftshalle, Kamera Gesicht/Körper, ←/→ drehen): Geschlecht, Eltern (46 Vorlagen), Ähnlichkeit/Hautton, Augenfarbe, 20 Gesichtszüge, Frisur/Farbe/Strähnen, Bart/Brauen/Brustbehaarung, Alterung/Teint/Sonne/Sommersprossen/Hautunreinheiten, Make-up/Rouge/Lippenstift, Zufall; gespeichert in `appearance`, beim Laden angewendet |
-| 6.2 | Kleiderläden und Outfits | ⬜ | |
-| 6.3 | Friseur, Tattoo, Chirurg | ⬜ | |
+| 6.2 | Kleiderläden und Outfits | 🔧 | 15 Läden (Konzept-Orte): Editor-Reiter Kleidung (Oberteil, Unterhemd, Arme, Hose, Schuhe, Weste, Tasche, Maske, Aufdruck) und Zubehör (Accessoire, Hut, Brille, Ohrringe, Uhr, Armband) mit Varianten und Live-Preis – nur Geändertes wird berechnet (Preise je Kategorie, Config `Clothing.prices`), Karte/Bar; 10 Outfits je Charakter (Laden oder F6 → Zivilistenaktionen); Maske → Ausweis nicht zuzuordnen; Tabelle `outfits` (Migration 018) |
+| 6.3 | Friseur, Tattoo, Chirurg | 🔧 | Friseur (7 Orte): Reiter Haare/Details, Preis je geänderter Kategorie (Frisur 40, Bart 20, Brauen 15, Make-up 25 …); Chirurg Pillbox: Herkunft/Gesicht für 5.000 $ einmal je 30 Tage; Tattoo-Studios (6 Orte) als Orte angelegt – Tattoos folgen (Overlay-Decorations) |
 | 6.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ | |
 | 6.5 | Neulingspfad und Sozialwohnung (Grundlage) | ⬜ | |
 | 6.6 | Animationsmenü (F3) | ⬜ | Betreiber 08.11.: Animationen müssen hinzugefügt werden (eigene Animationen, kein dpemotes) |

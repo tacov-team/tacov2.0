@@ -58,10 +58,12 @@ function TacoV.Client.openFactionMenu()
         items = {
           { id = 'handsup', label = 'Hände hoch', icon = 'hands', sub = 'Taste ' .. K.handsUp },
           { id = 'show_id', label = 'Ausweis vorzeigen', icon = 'id', sub = 'Zeigt deinen Ausweis den Spielern in der Nähe' },
+          { id = 'outfits', label = 'Outfits', icon = 'bag', sub = 'Gespeicherte Kleidung anziehen' },
         },
       }, function(sub)
         if sub == 'handsup' then TacoV.Menu.close() TacoV.Client.toggleHandsUp() end
         if sub == 'show_id' then TacoV.Menu.close() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end
+        if sub == 'outfits' then TacoV.Menu.close() TacoV.Clothing.openOutfits() end
       end)
     end
   end)

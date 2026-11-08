@@ -80,6 +80,7 @@ function TacoV.Appearance.apply(a)
   if type(a) ~= 'table' or not a.model then return end
   local ped = TacoV.Appearance.setModel(a.model)
   TacoV.Appearance.applyTo(ped, a)
+  updateMasked(ped)
 end
 
 --- Aktuelle Kleidung des Peds auslesen (für Kleiderladen/Outfits)
@@ -93,9 +94,23 @@ end
 function TacoV.Appearance.limits(ped)
   local overlays = {}
   for id, idx in pairs(OVERLAY_IDS) do overlays[id] = GetPedHeadOverlayNum(idx) end
-  local comps = {}
-  for c = 0, 11 do comps[tostring(c)] = GetNumberOfPedDrawableVariations(ped, c) end
-  return { hair = GetNumberOfPedDrawableVariations(ped, 2), hairColors = GetNumHairColors(), makeupColors = GetNumMakeupColors(), overlays = overlays, components = comps }
+  local comps, props, textures = {}, {}, {}
+  for c = 0, 11 do
+    comps[tostring(c)] = GetNumberOfPedDrawableVariations(ped, c)
+    textures['c' .. c] = GetNumberOfPedTextureVariations(ped, c, GetPedDrawableVariation(ped, c))
+  end
+  for _, pr in ipairs({ 0, 1, 2, 6, 7 }) do
+    props[tostring(pr)] = GetNumberOfPedPropDrawableVariations(ped, pr)
+    local cur = GetPedPropIndex(ped, pr)
+    textures['p' .. pr] = cur >= 0 and GetNumberOfPedPropTextureVariations(ped, pr, cur) or 1
+  end
+  return { hair = GetNumberOfPedDrawableVariations(ped, 2), hairColors = GetNumHairColors(), makeupColors = GetNumMakeupColors(),
+    overlays = overlays, components = comps, props = props, textures = textures }
+end
+
+local function updateMasked(ped)
+  local masked = GetPedDrawableVariation(ped, 1) > 0
+  LocalPlayer.state:set('masked', masked, true)
 end
 
 -- ---------------------------------------------------------------- Editor
@@ -131,7 +146,7 @@ end
 function TacoV.Appearance.openEditor(opts, cb)
   if editing then return false end
   local a = opts.appearance or TacoV.Appearance.default('mp_m_freemode_01')
-  editing = { cb = cb, base = a, mode = 'face', tabs = opts.tabs, title = opts.title }
+  editing = { cb = cb, base = a, mode = 'face', tabs = opts.tabs, title = opts.title, onUpdate = opts.onUpdate }
   TacoV.Appearance.apply(a)
   local ped = PlayerPedId()
   if opts.spot then
@@ -143,7 +158,7 @@ function TacoV.Appearance.openEditor(opts, cb)
   SetEntityInvincible(ped, true)
   TaskStandStill(ped, -1)
   TacoV.UI.open('editor', { appearance = a, limits = TacoV.Appearance.limits(ped), tabs = opts.tabs, title = opts.title, price = opts.price, doneLabel = opts.doneLabel }, true)
-  setCam('face')
+  setCam(opts.camera or 'face')
   DisplayRadar(false)
   return true
 end
@@ -159,6 +174,7 @@ local function closeEditor()
   ClearPedTasks(ped)
   FreezeEntityPosition(ped, false)
   SetEntityInvincible(ped, false)
+  updateMasked(ped)
   TacoV.UI.close()
   editing = nil
 end
@@ -178,8 +194,10 @@ AddEventHandler('tacov:ui:editor:update', function(d)
     setCam(editing.mode)
   else
     TacoV.Appearance.applyTo(ped, a)
+    TacoV.UI.send('editorLimits', TacoV.Appearance.limits(ped))
   end
   editing.current = a
+  if editing.onUpdate then editing.onUpdate(a) end
 end)
 
 AddEventHandler('tacov:ui:editor:camera', function(d) if editing then setCam(d.mode == 'body' and 'body' or 'face') end end)

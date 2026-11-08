@@ -24,7 +24,9 @@ shared_scripts {
   'config/peds.lua',
   'config/world.lua',
   'config/anticheat.lua',
+  'config/clothing.lua',
   'shared/configedit.lua',
+  'shared/clothingprice.lua',
 }
 
 server_scripts {
@@ -58,6 +60,7 @@ server_scripts {
   'server/devtools.lua',
   'server/tickets.lua',
   'server/anticheat.lua',
+  'server/clothing.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -90,6 +93,7 @@ client_scripts {
   'client/weather.lua',
   'client/configedit.lua',
   'client/devtools.lua',
+  'client/clothing.lua',
   'client/keys.lua',
 }
 

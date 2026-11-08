@@ -1,7 +1,7 @@
 // Charaktereditor (Punkt 6.1): Panel links mit Reitern, Figur rechts in der Welt. Jede Änderung geht sofort an Lua (Vorschau).
 // Wird auch von Friseur, Chirurg und Kleiderladen genutzt (eingeschränkte Reiter über data.tabs).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { nui } from '../nui';
+import { nui, useNuiEvent } from '../nui';
 import { Icon } from '../components/Icon';
 import { Panel, Kbd } from '../components/Panel';
 
@@ -15,7 +15,7 @@ export type Appearance = {
   components: Record<string, [number, number]>;
   props: Record<string, [number, number]>;
 };
-export type EditorLimits = { hair: number; hairColors: number; makeupColors: number; overlays: Record<string, number>; components: Record<string, number>; textures?: Record<string, number> };
+export type EditorLimits = { hair: number; hairColors: number; makeupColors: number; overlays: Record<string, number>; components: Record<string, number>; props?: Record<string, number>; textures?: Record<string, number> };
 export type EditorData = { appearance: Appearance; limits: EditorLimits; tabs?: string[]; title?: string; price?: string; doneLabel?: string };
 
 const PARENTS = ['Benjamin', 'Daniel', 'Joshua', 'Noah', 'Andrew', 'Juan', 'Alex', 'Isaac', 'Evan', 'Ethan', 'Vincent', 'Angel', 'Diego', 'Adrian', 'Gabriel', 'Michael', 'Santiago', 'Kevin', 'Louis', 'Samuel', 'Anthony',
@@ -40,6 +40,17 @@ const TABS = [
   { id: 'face', label: 'Gesicht', icon: 'user' },
   { id: 'hair', label: 'Haare', icon: 'star' },
   { id: 'details', label: 'Details', icon: 'search' },
+  { id: 'clothes', label: 'Kleidung', icon: 'bag' },
+  { id: 'accessories', label: 'Zubehör', icon: 'ring' },
+];
+// Kleidung: Komponenten (Drawable + Textur) und Props
+const CLOTHES: { id: string; label: string; prop?: boolean }[] = [
+  { id: '11', label: 'Oberteil / Jacke' }, { id: '8', label: 'Unterhemd' }, { id: '3', label: 'Arme / Hände' }, { id: '4', label: 'Hose' },
+  { id: '6', label: 'Schuhe' }, { id: '9', label: 'Weste' }, { id: '5', label: 'Tasche / Rucksack' }, { id: '1', label: 'Maske' }, { id: '10', label: 'Aufdruck' },
+];
+const ACCESSORIES: { id: string; label: string; prop?: boolean }[] = [
+  { id: '7', label: 'Accessoire (Kette, Krawatte)' }, { id: 'p0', label: 'Hut / Helm', prop: true }, { id: 'p1', label: 'Brille', prop: true },
+  { id: 'p2', label: 'Ohrringe', prop: true }, { id: 'p6', label: 'Uhr', prop: true }, { id: 'p7', label: 'Armband', prop: true },
 ];
 
 function Slider({ label, value, min, max, step, onChange, fmt }: { label: string; value: number; min: number; max: number; step: number; onChange: (v: number) => void; fmt?: (v: number) => string }) {
@@ -71,7 +82,11 @@ export function Editor({ data }: { data: EditorData }) {
   const tabs = useMemo(() => TABS.filter((t) => !data.tabs || data.tabs.includes(t.id)), [data.tabs]);
   const [tab, setTab] = useState(tabs[0]?.id ?? 'parents');
   const [app, setApp] = useState<Appearance>(data.appearance);
-  const [cam, setCam] = useState<'face' | 'body'>('face');
+  const [cam, setCam] = useState<'face' | 'body'>(data.tabs && !data.tabs.includes('face') && !data.tabs.includes('hair') ? 'body' : 'face');
+  const [limits, setLimits] = useState<EditorLimits>(data.limits);
+  const [price, setPrice] = useState<string | undefined>(data.price);
+  useNuiEvent<EditorLimits>('editorLimits', (l) => setLimits(l));
+  useNuiEvent<string>('editorPrice', (p) => setPrice(p));
   const female = app.model === 'mp_f_freemode_01';
   const timer = useRef<number | null>(null);
 
@@ -102,7 +117,7 @@ export function Editor({ data }: { data: EditorData }) {
     const face = Array.from({ length: 20 }, () => Math.round((Math.random() * 1.2 - 0.6) * 100) / 100);
     const father = female ? r(21) : r(21), mother = 21 + r(21);
     push({ ...app, parents: { father, mother, shapeMix: Math.round(Math.random() * 100) / 100, skinMix: Math.round(Math.random() * 100) / 100 }, face,
-      hair: { style: r(Math.max(1, data.limits.hair)), color: r(data.limits.hairColors), highlight: r(data.limits.hairColors) }, eyeColor: r(32) });
+      hair: { style: r(Math.max(1, limits.hair)), color: r(limits.hairColors), highlight: r(limits.hairColors) }, eyeColor: r(32) });
   };
   const done = () => nui('action', { view: 'editor', action: 'done', data: { appearance: app } });
 
@@ -113,7 +128,7 @@ export function Editor({ data }: { data: EditorData }) {
         foot={<>
           <button className="btn" onClick={() => nui('action', { view: 'editor', action: 'cancel', data: {} })}>Abbrechen</button>
           {!data.tabs && <button className="btn" onClick={randomize}>Zufall</button>}
-          <button className="btn primary grow" onClick={done}>{data.doneLabel ?? 'Übernehmen'}{data.price ? ` · ${data.price}` : ''}</button>
+          <button className="btn primary grow" onClick={done}>{data.doneLabel ?? 'Übernehmen'}{price ? ` · ${price}` : ''}</button>
         </>}>
         <div className="ed-tabs">
           {tabs.map((t) => <button key={t.id} className={'ed-tab' + (tab === t.id ? ' on' : '')} onClick={() => setTab(t.id)}><Icon name={t.icon} size={14} />{t.label}</button>)}
@@ -141,25 +156,40 @@ export function Editor({ data }: { data: EditorData }) {
             <Slider key={label} label={label} value={app.face[i] ?? 0} min={-1} max={1} step={0.02} onChange={(v) => setFace(i, v)} fmt={(v) => v.toFixed(2)} />
           ))}
           {tab === 'hair' && (<>
-            <Stepper label="Frisur" value={app.hair.style} max={data.limits.hair} onChange={(v) => setHair('style', v)} />
-            <Stepper label="Haarfarbe" value={app.hair.color} max={data.limits.hairColors} onChange={(v) => setHair('color', v)} />
-            <Stepper label="Strähnen" value={app.hair.highlight} max={data.limits.hairColors} onChange={(v) => setHair('highlight', v)} />
+            <Stepper label="Frisur" value={app.hair.style} max={limits.hair} onChange={(v) => setHair('style', v)} />
+            <Stepper label="Haarfarbe" value={app.hair.color} max={limits.hairColors} onChange={(v) => setHair('color', v)} />
+            <Stepper label="Strähnen" value={app.hair.highlight} max={limits.hairColors} onChange={(v) => setHair('highlight', v)} />
             {OVERLAYS.filter((o) => o.colored === 'hair' && (!o.male || !female)).map((o) => (
               <div key={o.id} className="ed-group">
-                <Stepper label={o.label} value={ov(o.id).style + 1} max={(data.limits.overlays[o.id] ?? 0) + 1} onChange={(v) => setOv(o.id, { style: v - 1 })} name={(v) => (v === 0 ? 'Keine' : `${v} / ${data.limits.overlays[o.id] ?? 0}`)} />
+                <Stepper label={o.label} value={ov(o.id).style + 1} max={(limits.overlays[o.id] ?? 0) + 1} onChange={(v) => setOv(o.id, { style: v - 1 })} name={(v) => (v === 0 ? 'Keine' : `${v} / ${limits.overlays[o.id] ?? 0}`)} />
                 {ov(o.id).style >= 0 && <>
                   <Slider label="Deckkraft" value={ov(o.id).opacity} min={0} max={1} step={0.05} onChange={(v) => setOv(o.id, { opacity: v })} fmt={(v) => `${Math.round(v * 100)} %`} />
-                  <Stepper label="Farbe" value={ov(o.id).color} max={data.limits.hairColors} onChange={(v) => setOv(o.id, { color: v })} />
+                  <Stepper label="Farbe" value={ov(o.id).color} max={limits.hairColors} onChange={(v) => setOv(o.id, { color: v })} />
                 </>}
               </div>
             ))}
           </>)}
+          {(tab === 'clothes' || tab === 'accessories') && (tab === 'clothes' ? CLOTHES : ACCESSORIES).map((c) => {
+            const key = c.prop ? c.id.slice(1) : c.id;
+            const cur = c.prop ? (app.props[key] ?? [-1, 0]) : (app.components[key] ?? [0, 0]);
+            const max = c.prop ? (limits.props?.[key] ?? 0) : (limits.components[key] ?? 0);
+            const tex = limits.textures?.[(c.prop ? 'p' : 'c') + key] ?? 1;
+            const set = (d: number, t: number) => push(c.prop ? { ...app, props: { ...app.props, [key]: [d, t] } } : { ...app, components: { ...app.components, [key]: [d, t] } });
+            return (
+              <div key={c.id} className="ed-group">
+                {c.prop
+                  ? <Stepper label={c.label} value={cur[0] + 1} max={max + 1} onChange={(v) => set(v - 1, 0)} name={(v) => (v === 0 ? 'Keine' : `${v} / ${max}`)} />
+                  : <Stepper label={c.label} value={cur[0]} max={max} onChange={(v) => set(v, 0)} />}
+                {tex > 1 && cur[0] >= 0 && <Stepper label="Variante" value={cur[1]} max={tex} onChange={(v) => set(cur[0], v)} />}
+              </div>
+            );
+          })}
           {tab === 'details' && OVERLAYS.filter((o) => o.colored !== 'hair' && (!o.female || female)).map((o) => (
             <div key={o.id} className="ed-group">
-              <Stepper label={o.label} value={ov(o.id).style + 1} max={(data.limits.overlays[o.id] ?? 0) + 1} onChange={(v) => setOv(o.id, { style: v - 1 })} name={(v) => (v === 0 ? 'Keine' : `${v} / ${data.limits.overlays[o.id] ?? 0}`)} />
+              <Stepper label={o.label} value={ov(o.id).style + 1} max={(limits.overlays[o.id] ?? 0) + 1} onChange={(v) => setOv(o.id, { style: v - 1 })} name={(v) => (v === 0 ? 'Keine' : `${v} / ${limits.overlays[o.id] ?? 0}`)} />
               {ov(o.id).style >= 0 && <>
                 <Slider label="Deckkraft" value={ov(o.id).opacity} min={0} max={1} step={0.05} onChange={(v) => setOv(o.id, { opacity: v })} fmt={(v) => `${Math.round(v * 100)} %`} />
-                {o.colored === 'makeup' && <Stepper label="Farbe" value={ov(o.id).color} max={data.limits.makeupColors} onChange={(v) => setOv(o.id, { color: v })} />}
+                {o.colored === 'makeup' && <Stepper label="Farbe" value={ov(o.id).color} max={limits.makeupColors} onChange={(v) => setOv(o.id, { color: v })} />}
               </>}
             </div>
           ))}
