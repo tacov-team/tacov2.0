@@ -1,5 +1,5 @@
 -- Kleiderladen und Outfits (6.2), Friseur und Chirurg (6.3), Client: E am Laden, Editor mit passenden Reitern und Preisanzeige,
--- Bezahlung Karte/Bar, Outfits speichern/anziehen/umbenennen/löschen (auch über das Aktionsmenü F4).
+-- Bezahlung Karte/Bar, Outfits speichern/anziehen/umbenennen/löschen – nur im Kleiderladen und am Kleiderschrank der Wohnung.
 TacoV = TacoV or {}
 TacoV.Clothing = TacoV.Clothing or {}
 

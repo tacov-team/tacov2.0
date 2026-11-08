@@ -32,7 +32,7 @@ bind('tacov_interact',  'TacoV: Interaktion',     K.interact,   function() TacoV
 bind('tacov_use',       'TacoV: Benutzen (E)',    K.use,        function() TacoV.Prompt.use() end)
 bind('tacov_handsup',   'TacoV: Hände hoch',      K.handsUp,    function() TacoV.Client.toggleHandsUp() end)
 
---- Aktionsmenü (F4): Ausweis, Hände hoch, Outfits, Neulingspfad, Fahrzeug – für alle Spieler.
+--- Aktionsmenü (F4): Ausweis, Hände hoch, Neulingspfad, Fahrzeug – für alle Spieler. Outfits nur im Laden und am Kleiderschrank.
 function TacoV.Client.openActionsMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   TacoV.Menu.open({
@@ -41,7 +41,6 @@ function TacoV.Client.openActionsMenu()
     items = {
       { id = 'handsup', label = 'Hände hoch', icon = 'hands', sub = 'Taste ' .. K.handsUp, section = 'Ich' },
       { id = 'show_id', label = 'Ausweis vorzeigen', icon = 'id', sub = 'Zeigt deinen Ausweis den Spielern in der Nähe' },
-      { id = 'outfits', label = 'Outfits', icon = 'bag', sub = 'Gespeicherte Kleidung anziehen' },
       { id = 'newbie', label = 'Neulingspfad', icon = 'star', sub = 'Zehn Schritte mit Bonus' },
       { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Schloss, Kofferraum', section = 'Fahrzeug' },
     },
@@ -49,7 +48,6 @@ function TacoV.Client.openActionsMenu()
     if id == 'vehicle' then TacoV.Menu.close() TacoV.Vehicles.openMenu() return end
     if id == 'handsup' then TacoV.Menu.close() TacoV.Client.toggleHandsUp() end
     if id == 'show_id' then TacoV.Menu.close() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end
-    if id == 'outfits' then TacoV.Menu.close() TacoV.Clothing.openOutfits() end
     if id == 'newbie' then TacoV.Menu.close() TacoV.Housing.openNewbie() end
   end)
 end
