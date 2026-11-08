@@ -32,3 +32,20 @@ function TacoV.Clothing.barberPrice(old, new)
   return sum
 end
 
+
+--- Preis neuer Tattoos (nur hinzugekommene zählen; Entfernen ist kostenlos)
+function TacoV.Clothing.tattooPrice(old, new)
+  local had = {}
+  for _, t in ipairs(old.tattoos or {}) do had[t.collection .. '|' .. t.overlay] = true end
+  local sum = 0
+  for _, t in ipairs(new.tattoos or {}) do
+    if not had[t.collection .. '|' .. t.overlay] then
+      local price = 200
+      for _, def in ipairs(TacoV.Config.Tattoos) do
+        if def.collection == t.collection and (def.overlay == t.overlay or def.overlayF == t.overlay) then price = def.price end
+      end
+      sum = sum + price
+    end
+  end
+  return sum
+end

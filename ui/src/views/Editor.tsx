@@ -7,6 +7,7 @@ import { Panel, Kbd } from '../components/Panel';
 
 export type Appearance = {
   model: string;
+  tattoos?: { collection: string; overlay: string }[];
   parents: { father: number; mother: number; shapeMix: number; skinMix: number };
   face: number[];                      // 20 Werte −1..1
   hair: { style: number; color: number; highlight: number };
@@ -16,7 +17,8 @@ export type Appearance = {
   props: Record<string, [number, number]>;
 };
 export type EditorLimits = { hair: number; hairColors: number; makeupColors: number; overlays: Record<string, number>; components: Record<string, number>; props?: Record<string, number>; textures?: Record<string, number> };
-export type EditorData = { appearance: Appearance; limits: EditorLimits; tabs?: string[]; title?: string; price?: string; doneLabel?: string };
+export type TattooDef = { id: string; label: string; zone: string; collection: string; overlay: string; overlayF?: string; price: number };
+export type EditorData = { appearance: Appearance; limits: EditorLimits; tabs?: string[]; title?: string; price?: string; doneLabel?: string; tattoos?: TattooDef[] };
 
 const PARENTS = ['Benjamin', 'Daniel', 'Joshua', 'Noah', 'Andrew', 'Juan', 'Alex', 'Isaac', 'Evan', 'Ethan', 'Vincent', 'Angel', 'Diego', 'Adrian', 'Gabriel', 'Michael', 'Santiago', 'Kevin', 'Louis', 'Samuel', 'Anthony',
   'Hannah', 'Audrey', 'Jasmine', 'Giselle', 'Amelia', 'Isabella', 'Zoe', 'Ava', 'Camila', 'Violet', 'Sophia', 'Eveline', 'Nicole', 'Ashley', 'Grace', 'Brianna', 'Natalie', 'Olivia', 'Elizabeth', 'Charlotte', 'Emma', 'Claude', 'Niko', 'John', 'Misty'];
@@ -42,6 +44,7 @@ const TABS = [
   { id: 'details', label: 'Details', icon: 'search' },
   { id: 'clothes', label: 'Kleidung', icon: 'bag' },
   { id: 'accessories', label: 'Zubehör', icon: 'ring' },
+  { id: 'tattoos', label: 'Tattoos', icon: 'star' },
 ];
 // Kleidung: Komponenten (Drawable + Textur) und Props
 const CLOTHES: { id: string; label: string; prop?: boolean }[] = [
@@ -101,6 +104,8 @@ export function Editor({ data }: { data: EditorData }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') nui('action', { view: 'editor', action: 'rotate', data: { delta: -10 } });
       if (e.key === 'ArrowRight') nui('action', { view: 'editor', action: 'rotate', data: { delta: 10 } });
+      if (e.key === 'ArrowUp') { e.preventDefault(); nui('action', { view: 'editor', action: 'camera', data: { dz: 0.1 } }); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); nui('action', { view: 'editor', action: 'camera', data: { dz: -0.1 } }); }
       if (e.key === 'Escape') nui('action', { view: 'editor', action: 'cancel', data: {} });
     };
     window.addEventListener('keydown', onKey);
@@ -124,7 +129,7 @@ export function Editor({ data }: { data: EditorData }) {
   return (
     <div className="editor">
       <Panel icon="user" title={data.title ?? 'Aussehen'} sub={female ? 'Weiblich' : 'Männlich'}
-        headRight={<span className="keys"><Kbd>←</Kbd><Kbd>→</Kbd> drehen</span>}
+        headRight={<span className="keys"><Kbd>←</Kbd><Kbd>→</Kbd> drehen <Kbd>↑</Kbd><Kbd>↓</Kbd> Kamera</span>}
         foot={<>
           <button className="btn" onClick={() => nui('action', { view: 'editor', action: 'cancel', data: {} })}>Abbrechen</button>
           {!data.tabs && <button className="btn" onClick={randomize}>Zufall</button>}
@@ -182,6 +187,22 @@ export function Editor({ data }: { data: EditorData }) {
                   : <Stepper label={c.label} value={cur[0]} max={max} onChange={(v) => set(v, 0)} />}
                 {tex > 1 && cur[0] >= 0 && <Stepper label="Variante" value={cur[1]} max={tex} onChange={(v) => set(cur[0], v)} />}
               </div>
+            );
+          })}
+          {tab === 'tattoos' && (data.tattoos ?? []).map((t) => {
+            const overlay = female && t.overlayF ? t.overlayF : t.overlay;
+            const has = (app.tattoos ?? []).some((x) => x.collection === t.collection && x.overlay === overlay);
+            const toggle = () => {
+              const list = (app.tattoos ?? []).filter((x) => !(x.collection === t.collection && x.overlay === overlay));
+              if (!has) list.push({ collection: t.collection, overlay });
+              push({ ...app, tattoos: list });
+            };
+            return (
+              <button key={t.id} className={'ed-row ed-toggle' + (has ? ' on' : '')} onClick={toggle}>
+                <span className="ed-label">{t.label}</span>
+                <span className="muted" style={{ fontSize: '0.75rem' }}>{t.zone}</span>
+                <span className="ed-val num">{has ? '✓' : `${t.price} $`}</span>
+              </button>
             );
           })}
           {tab === 'details' && OVERLAYS.filter((o) => o.colored !== 'hair' && (!o.female || female)).map((o) => (

@@ -14,7 +14,7 @@ Gewichtsbasiert, 30 kg Grundlast, Rucksack als Item (kein Modell) erhöht auf 45
 | Wegwerfen | 15 min in der Welt sichtbar, dann weg; max. 10 je Charakter |
 | Stapeln | Bis 50 (Munition 500); Qualitätsitems nur gleiche Qualität |
 | Schnellzugriff | entfällt |
-| Hotkeys | Handy F1, Inventar F2, Animationen F3, Fraktion F6, Team F9, Interaktion X, Hände hoch H, Befehlszeile T |
+| Hotkeys | Handy F1, Inventar F2, Animationen F3, Aktionen F4, Fraktion F6, Team F9, Interaktion X, Hände hoch H, Befehlszeile T |
 
 ## 2. Bedürfnisse
 

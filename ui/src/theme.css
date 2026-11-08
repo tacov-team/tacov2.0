@@ -331,3 +331,6 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 .ed-row input[type=range] { width: 100%; accent-color: var(--accent-2); height: 1.2rem; }
 
 .hud-info .aduty.notice .b { background: rgba(245, 158, 11, 0.25); color: var(--warn); }
+
+.ed-toggle { cursor: pointer; text-align: left; color: var(--text); font: inherit; }
+.ed-toggle.on { border-color: var(--accent-2); background: rgba(var(--accent-rgb), 0.18); }

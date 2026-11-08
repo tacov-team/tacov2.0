@@ -6,7 +6,8 @@ local O = TacoV.Config.Onboarding
 
 RegisterNetEvent('tacov:immigration:state', function(done)
   TacoV.Immigration.done = done
-  TacoV.UI.send('hud', { notice = done and false or 'Einreise ausstehend · bitte in der Ankunftshalle warten' })
+  if done then TacoV.UI.send('hud', { notice = false })
+  else TacoV.UI.send('hud', { notice = 'Einreise ausstehend · bitte in der Ankunftshalle warten' }) end
 end)
 
 AddEventHandler('tacov:client:characterLoaded', function(c)

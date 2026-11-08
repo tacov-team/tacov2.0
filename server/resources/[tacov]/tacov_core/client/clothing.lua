@@ -1,5 +1,5 @@
 -- Kleiderladen und Outfits (6.2), Friseur und Chirurg (6.3), Client: E am Laden, Editor mit passenden Reitern und Preisanzeige,
--- Bezahlung Karte/Bar, Outfits speichern/anziehen/umbenennen/löschen (auch über das Fraktionsmenü → Zivilistenaktionen).
+-- Bezahlung Karte/Bar, Outfits speichern/anziehen/umbenennen/löschen (auch über das Aktionsmenü F4).
 TacoV = TacoV or {}
 TacoV.Clothing = TacoV.Clothing or {}
 
@@ -43,13 +43,17 @@ local function openFor(kind)
   elseif kind == 'barber' then
     tabs, title = { 'hair', 'details' }, 'Friseur'
     priceFn = function(a) return TacoV.Clothing.barberPrice(base, a) end
+  elseif kind == 'tattoo' then
+    tabs, title = { 'tattoos' }, 'Tattoo-Studio'
+    priceFn = function(a) return TacoV.Clothing.tattooPrice(base, a) end
   else
     tabs, title = { 'parents', 'face' }, 'Schönheitschirurg'
     priceFn = function() return Cfg.surgeonPrice end
   end
   local copy = json.decode(json.encode(base))
   TacoV.Appearance.openEditor({
-    appearance = copy, tabs = tabs, title = title, doneLabel = 'Kaufen', price = fmt(priceFn(copy)), camera = kind == 'clothing' and 'body' or 'face',
+    appearance = copy, tabs = tabs, title = title, doneLabel = 'Kaufen', price = fmt(priceFn(copy)), camera = (kind == 'clothing' or kind == 'tattoo') and 'body' or 'face',
+    tattoos = kind == 'tattoo' and TacoV.Config.Tattoos or nil,
     onUpdate = function(a) TacoV.UI.send('editorPrice', fmt(priceFn(a))) end,
   }, function(result)
     if not result then TacoV.Appearance.apply(base) return end
@@ -114,6 +118,9 @@ TacoV.Prompt.register({ id = 'clothing', label = 'Kleiderladen', order = 10,
 TacoV.Prompt.register({ id = 'barber', label = 'Friseur', order = 10,
   when = function() return TacoV.Client.nearestLocation('barber', 3.0) ~= nil end,
   run = function() openFor('barber') end })
+TacoV.Prompt.register({ id = 'tattoo', label = 'Tattoo-Studio', order = 10,
+  when = function() return TacoV.Client.nearestLocation('tattoo', 3.0) ~= nil end,
+  run = function() openFor('tattoo') end })
 TacoV.Prompt.register({ id = 'surgeon', label = 'Schönheitschirurg', order = 10,
   when = function() return TacoV.Client.nearestLocation('surgeon', 3.0) ~= nil end,
   run = function()

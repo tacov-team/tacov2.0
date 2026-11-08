@@ -60,8 +60,15 @@ function TacoV.Characters.cleanAppearance(a, gender)
     end
     return out
   end
+  local tattoos = {}
+  for _, t in ipairs(type(a.tattoos) == 'table' and a.tattoos or {}) do
+    if type(t) == 'table' and type(t.collection) == 'string' and type(t.overlay) == 'string' and #tattoos < 60 then
+      tattoos[#tattoos + 1] = { collection = TacoV.Util.cleanText(t.collection, 48), overlay = TacoV.Util.cleanText(t.overlay, 48) }
+    end
+  end
   return {
     model = model,
+    tattoos = tattoos,
     parents = { father = math.floor(num(p.father, 0, 45, 0)), mother = math.floor(num(p.mother, 0, 45, 21)), shapeMix = num(p.shapeMix, 0.0, 1.0, 0.5), skinMix = num(p.skinMix, 0.0, 1.0, 0.5) },
     face = face,
     hair = { style = math.floor(num(h.style, 0, 200, 0)), color = math.floor(num(h.color, 0, 80, 0)), highlight = math.floor(num(h.highlight, 0, 80, 0)) },

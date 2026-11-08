@@ -25,6 +25,7 @@ shared_scripts {
   'config/world.lua',
   'config/anticheat.lua',
   'config/clothing.lua',
+  'config/tattoos.lua',
   'config/housing.lua',
   'config/animations.lua',
   'config/health.lua',

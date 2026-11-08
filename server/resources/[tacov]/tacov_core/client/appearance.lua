@@ -63,6 +63,10 @@ function TacoV.Appearance.applyTo(ped, a)
       SetPedHeadOverlay(ped, idx, 255, 0.0)
     end
   end
+  ClearPedDecorations(ped)
+  for _, t in ipairs(a.tattoos or {}) do
+    if t.collection and t.overlay then AddPedDecorationFromHashes(ped, GetHashKey(t.collection), GetHashKey(t.overlay)) end
+  end
   for k, v in pairs(a.components or {}) do
     local comp = tonumber(k)
     if comp and comp ~= 2 then SetPedComponentVariation(ped, comp, v[1] or 0, v[2] or 0, 0) end
@@ -124,10 +128,11 @@ local function camFor(mode)
   local pos = GetEntityCoords(ped)
   local h = math.rad(editing and editing.baseHeading or GetEntityHeading(ped))
   local fwd = vector3(-math.sin(h), math.cos(h), 0.0)
+  local dz = editing and editing.camZ or 0.0
   if mode == 'body' then
-    return pos + fwd * 2.6 + vector3(0.0, 0.0, 0.2), pos + vector3(0.0, 0.0, 0.1)
+    return pos + fwd * 2.6 + vector3(0.0, 0.0, 0.2 + dz), pos + vector3(0.0, 0.0, 0.1 + dz)
   end
-  return pos + fwd * 0.9 + vector3(0.0, 0.0, 0.62), pos + vector3(0.0, 0.0, 0.62)
+  return pos + fwd * 0.9 + vector3(0.0, 0.0, 0.62 + dz), pos + vector3(0.0, 0.0, 0.62 + dz)
 end
 
 local function setCam(mode)
@@ -160,7 +165,8 @@ function TacoV.Appearance.openEditor(opts, cb)
   FreezeEntityPosition(ped, true)
   SetEntityInvincible(ped, true)
   TaskStandStill(ped, -1)
-  TacoV.UI.open('editor', { appearance = a, limits = TacoV.Appearance.limits(ped), tabs = opts.tabs, title = opts.title, price = opts.price, doneLabel = opts.doneLabel }, true)
+  TacoV.UI.open('editor', { appearance = a, limits = TacoV.Appearance.limits(ped), tabs = opts.tabs, title = opts.title, price = opts.price,
+    doneLabel = opts.doneLabel, tattoos = opts.tattoos }, true)
   setCam(opts.camera or 'face')
   DisplayRadar(false)
   return true
@@ -203,7 +209,16 @@ AddEventHandler('tacov:ui:editor:update', function(d)
   if editing.onUpdate then editing.onUpdate(a) end
 end)
 
-AddEventHandler('tacov:ui:editor:camera', function(d) if editing then setCam(d.mode == 'body' and 'body' or 'face') end end)
+AddEventHandler('tacov:ui:editor:camera', function(d)
+  if not editing then return end
+  if d.dz then
+    editing.camZ = math.max(-1.0, math.min(0.6, (editing.camZ or 0.0) + tonumber(d.dz)))
+    setCam(editing.mode)
+  else
+    editing.camZ = 0.0
+    setCam(d.mode == 'body' and 'body' or 'face')
+  end
+end)
 AddEventHandler('tacov:ui:editor:rotate', function(d)
   if not editing then return end
   local ped = PlayerPedId()

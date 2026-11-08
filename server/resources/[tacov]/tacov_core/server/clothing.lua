@@ -49,6 +49,12 @@ RegisterNetEvent('tacov:clothing:apply', function(kind, appearance, method)
     for id in pairs(Cfg.barber) do if id ~= 'hair' then merged.overlays[id] = new.overlays[id] end end
     new = merged
     price, label = TacoV.Clothing.barberPrice(old, new), 'Friseur'
+  elseif kind == 'tattoo' then
+    local merged = {}
+    for k, v in pairs(old) do merged[k] = v end
+    merged.tattoos = new.tattoos
+    new = merged
+    price, label = TacoV.Clothing.tattooPrice(old, new), 'Tattoo-Studio'
   elseif kind == 'surgeon' then
     local last = c.surgery_at and tostring(c.surgery_at) or nil
     if last then

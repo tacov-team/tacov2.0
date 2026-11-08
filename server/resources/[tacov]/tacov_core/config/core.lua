@@ -68,7 +68,7 @@ TacoV.Config.Inventory = {
 }
 
 TacoV.Config.Keys = {
-  phone = 'F1', inventory = 'F2', animations = 'F3', faction = 'F6',
+  phone = 'F1', inventory = 'F2', animations = 'F3', actions = 'F4', faction = 'F6',
   admin = 'F9', interact = 'X',
   use = 'E', handsUp = 'H', console = 'T',
 }
