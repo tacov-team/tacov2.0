@@ -14,6 +14,7 @@ end
 --- keepInput='walk': Spieler kann weiterlaufen; nur die Menü-Tasten (Pfeile, Enter, Backspace, Esc) gehen nicht ans Spiel.
 --- keepInput='free': die Ansicht wird nur angezeigt, das Spiel läuft ganz normal (Handy); Cursor erst per TacoV.UI.setCursor(true).
 local WALK_BLOCK = { 27, 172, 173, 174, 175, 177, 191, 194, 199, 200, 201, 202, 243, 322, 37, 24, 25, 257, 140, 141, 142 }
+local LOOK_BLOCK = { 1, 2, 3, 4, 5, 6, 270, 271, 272, 273 } -- Maus-Umschauen (zu Fuß und im Fahrzeug)
 local cursorOn = false
 function TacoV.UI.open(view, data, cursor, keepInput)
   openView = view
@@ -58,6 +59,7 @@ function TacoV.UI.setCursor(on)
     CreateThread(function()
       while openView == view and cursorOn do
         for _, c in ipairs(WALK_BLOCK) do DisableControlAction(0, c, true) end
+        for _, c in ipairs(LOOK_BLOCK) do DisableControlAction(0, c, true) end
         Wait(0)
       end
     end)
