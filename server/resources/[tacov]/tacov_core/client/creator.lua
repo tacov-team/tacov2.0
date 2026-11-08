@@ -231,13 +231,14 @@ end
 function TacoV.Creator.openMenu()
   TacoV.Menu.open({ id = 'creator', title = 'Creator', icon = 'tool', info = 'Inhalte ohne Code setzen', items = {
     { id = 'locations', label = 'Orte', icon = 'pin', sub = 'Blips, E-Punkte, Ausfahrten' },
-    { id = 'doors', label = 'Türen', icon = 'door', dim = true, badge = 'bald' },
+    { id = 'doors', label = 'Türen', icon = 'door', sub = 'Erfassen, Zugang, zu/offen' },
     { id = 'elevators', label = 'Aufzüge', icon = 'home', dim = true, badge = 'bald' },
     { id = 'portals', label = 'Portale', icon = 'next', dim = true, badge = 'bald' },
     { id = 'peds', label = 'NPCs', icon = 'user', dim = true, badge = 'bald' },
     { id = 'props', label = 'Objekte', icon = 'box', dim = true, badge = 'bald' },
     { id = 'zones', label = 'Zonen', icon = 'pin', dim = true, badge = 'bald' },
   } }, function(id)
-    if id == 'locations' then TacoV.Creator.openLocations() end
+    if id == 'locations' then TacoV.Creator.openLocations()
+    elseif id == 'doors' then TacoV.Doors.openCreator() end
   end)
 end

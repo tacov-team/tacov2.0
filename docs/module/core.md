@@ -46,6 +46,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/traffic.lua`, `server/traffic.lua`, `client/traffic.lua` | Blitzer (Orte `speedcam` mit `limit`; Client meldet, Server misst nach: Toleranz 5 km/h, Bußgeld 100/250/500/1000/2000 $ nach Überschreitung bis 10/20/30/50/mehr km/h, ab 21 km/h 1–3 Punkte, 60 s Sperre je Fahrzeug und Blitzer, Log `justice`) und Kfz-Steuer (1 % Kaufpreis je Jahr, wöchentlich anteilig vom Bankkonto des Halters, stündliche Prüfung; nicht gedeckt → `tax_due`, fällig beim Ausparken) |
 | `server/admin.lua`, `client/admin.lua` | Admin-Grundgerüst: Unsichtbar (`support.invisible`), Noclip (`admin.noclip`; WASD, Q/E, Shift), Teleport zu Spieler/herholen/Wegpunkt/Koordinaten (`support.teleport`); Zustand als Statebag `admin_invisible`/`admin_noclip`, wird bei Dienstende zurückgesetzt; Team-Menü auf F9 im Dienst (Spieler laufen währenddessen weiter); Spieler-Akte und Aktionen (5.2): Heilen `support.heal`, Geld/Items `admin.give`, Fahrzeug `admin.vehicle.spawn` (`TacoV.Vehicles.grant`), Verwarnen `admin.warn` (Tabelle `warnings`), Kicken `admin.kick`, Sperren `admin.ban.temp` bis 7 Tage / `admin.ban`; Log `admin` |
 | `client/creator.lua`, `server/creator.lua` | Creator-Grundlage: `TacoV.Creator.place(opts, cb)` (Kamera-Strahl, Leertaste Zeiger/fest, Pfeile/Bild↑↓ verschieben, Q/E drehen, Shift fein, Enter/Backspace), `TacoV.UI.ask(opts, cb)` Texteingabe (Ansicht `ask`); Orte-Creator (5.3): speichert in `locations` (`extra` JSON: noblip, spawn, preview, limit; `disabled` blendet Config-Orte aus), Recht `admin.locations`, Push an alle Clients |
+| `client/doors.lua`, `server/doors.lua` | Door Creator (5.4): Tür-Teile (Modell+Position) im Door-System, Zustand zu/offen per Event synchron, Zugang `{faction,minRank}` oder `{item}` oder frei, Auto-Schließen in Sekunden; E-Aufforderung aufschließen/abschließen; Team mit `creator` bedient alle Türen; Tabelle `doors` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
 | `ui/` | Build der React-UI (Quelle in `/ui`) |
@@ -83,6 +84,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Admin-Grundgerüst (5.1): Unsichtbar, Noclip, Teleport, Team-Menü
 - [x] Team-Menü (5.2): Akte, Geben, Heilen, Verwarnen, Kicken, Sperren (Migration 008)
 - [x] Orte-Creator (5.3) mit Platzierer und Texteingabe (Migration 009)
+- [x] Door Creator (5.4) (Migration 010)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)
