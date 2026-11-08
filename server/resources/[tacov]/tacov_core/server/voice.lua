@@ -20,3 +20,15 @@ RegisterNetEvent('tacov:voice:cycle', function()
     TriggerClientEvent('tacov:core:notify', src, 'error', 'Sprechweite konnte nicht gesetzt werden.')
   end
 end)
+
+-- /voicetest (Client) fragt den Server: Export lesbar? Setzen möglich?
+RegisterNetEvent('tacov:voice:test', function()
+  local src = source
+  local okG, cur = pcall(function() return exports.saltychat:GetPlayerVoiceRange(src) end)
+  local okS, err = pcall(function() exports.saltychat:SetPlayerVoiceRange(src, (okG and tonumber(cur) or 10.0) + 0.0) end)
+  local bag = Player(src).state.SaltyChat_VoiceRange
+  local text = ('[voice] Server: Resource=%s Get=%s Set=%s Statebag=%s (%s)'):format(GetResourceState('saltychat'),
+    okG and tostring(cur) or ('Fehler ' .. tostring(cur)), okS and 'ok' or ('Fehler ' .. tostring(err)), tostring(bag), type(bag))
+  print(text)
+  TriggerClientEvent('tacov:voice:testResult', src, text)
+end)

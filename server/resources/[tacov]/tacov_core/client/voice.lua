@@ -93,3 +93,20 @@ CreateThread(function()
     if TacoV.Voice.megaphone and not canMegaphone() then TacoV.Voice.setMegaphone(false) end
   end
 end)
+
+-- /voicetest: Diagnose (F8 + Hinweis) – Zustand von SaltyChat auf Client und Server
+RegisterCommand('voicetest', function()
+  local state = GetResourceState('saltychat')
+  local okR, range = pcall(function() return exports.saltychat:GetVoiceRange() end)
+  local okP, plugin = pcall(function() return exports.saltychat:GetPluginState() end)
+  local bag = LocalPlayer.state.SaltyChat_VoiceRange
+  local line = ('[voice] Client: Resource=%s Range=%s Plugin=%s Statebag=%s (%s)'):format(state, okR and tostring(range) or 'Fehler',
+    okP and tostring(plugin) or 'Fehler', tostring(bag), type(bag))
+  print(line)
+  TacoV.UI.send('notify', { kind = 'info', text = line })
+  TriggerServerEvent('tacov:voice:test')
+end, false)
+RegisterNetEvent('tacov:voice:testResult', function(text)
+  print(text)
+  TacoV.UI.send('notify', { kind = 'info', text = text })
+end)

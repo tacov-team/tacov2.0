@@ -20,6 +20,7 @@ TacoV.Config.Commands = {
   { name = 'unsichtbar', usage = 'unsichtbar',                               help = 'Unsichtbar an/aus', right = 'support.invisible' },
   { name = 'coords',  usage = 'coords',                                      help = 'Position kopieren (Entwickler)', right = 'dev.tools' },
   { name = 'entsperren', usage = 'entsperren <Discord-ID>',                help = 'Sperre aufheben', right = 'admin.ban' },
+  { name = 'voicetest', usage = 'voicetest',                              help = 'Voice-Diagnose (SaltyChat-Zustand)' },
   { name = 'nummer',  usage = 'nummer <ID> <4-stellig>',                      help = 'Wunschnummer setzen (Ticket)', right = 'admin.give' },
   { name = 'actest',  usage = 'actest',                                      help = 'Anti-Cheat-Testmeldung (Manager)', right = 'admin.config' },
   { name = 'warn',    usage = 'warn <ID> <Grund>',                           help = 'Spieler verwarnen', right = 'admin.warn' },
