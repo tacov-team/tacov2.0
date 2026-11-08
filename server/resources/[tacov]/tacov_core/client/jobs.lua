@@ -57,7 +57,7 @@ end)
 
 -- ---------------------------------------------------------------- Menüs (Jobcenter / Hof)
 
-local function openJobMenu(where, list, st)
+local function openJobMenu(where, list, st, hofJob)
   local items = {}
   if st then
     items[#items + 1] = { id = 'status', label = ('Im Dienst: %s'):format(st.label), icon = 'briefcase',
@@ -67,12 +67,14 @@ local function openJobMenu(where, list, st)
     items[#items + 1] = { id = 'stop', label = 'Feierabend', icon = 'x', sub = 'Schicht beenden, Fahrzeug zurückgeben' }
   end
   for _, j in ipairs(list) do
+    if hofJob and j.id ~= hofJob then goto continue end
     local req = {}
     if j.license then req[#req + 1] = 'Führerschein ' .. j.license .. (j.hasLicense and ' ✓' or ' ✗') end
     if j.tool then req[#req + 1] = TacoV.Config.Items[j.tool].label .. ' nötig' end
     items[#items + 1] = { id = 'job:' .. j.id, label = j.label, icon = j.icon, section = where == 'center' and 'Jobs' or 'Hier arbeiten',
       sub = ('%s · max. %d $/h · %s%s'):format(j.pay, j.cap, j.desc, #req > 0 and (' · ' .. table.concat(req, ', ')) or ''),
-      badge = j.earned > 0 and (j.earned .. ' $/h') or nil, dim = st ~= nil or not j.hasLicense }
+      badge = j.earned > 0 and (j.earned .. ' $/h') or nil, dim = (st and true or false) or not j.hasLicense }
+    ::continue::
   end
   TacoV.Menu.open({ id = 'jobs', title = where == 'center' and 'Jobcenter' or 'Ansprechpartner', icon = 'briefcase',
     info = 'Lohn je Auftrag · Obergrenze je Stunde · 8 % Einkommensteuer', items = items }, function(id)
@@ -82,7 +84,7 @@ local function openJobMenu(where, list, st)
     elseif id:sub(1, 4) == 'job:' then TacoV.Menu.close() TriggerServerEvent('tacov:jobs:start', id:sub(5)) end
   end)
 end
-RegisterNetEvent('tacov:jobs:menu', function(where, list, st) openJobMenu(where, list, st) end)
+RegisterNetEvent('tacov:jobs:menu', function(where, list, st, hofJob) openJobMenu(where, list, st, hofJob) end)
 
 TacoV.Prompt.register({ id = 'jobcenter', label = 'Jobcenter', order = 12,
   when = function() return TacoV.Client.nearestLocation('jobcenter', 2.5) or false end,
@@ -96,7 +98,7 @@ TacoV.Prompt.register({ id = 'job', label = 'Ansprechpartner', order = 12,
     if st and st.current and st.current.x and #(GetEntityCoords(PlayerPedId()) - vector3(st.current.x, st.current.y, st.current.z)) < R.pointRadius then return false end
     return loc
   end,
-  run = function() TriggerServerEvent('tacov:jobs:info', 'hof') end })
+  run = function(loc) TriggerServerEvent('tacov:jobs:info', 'hof', loc.job) end })
 
 -- ---------------------------------------------------------------- Firmenfahrzeug
 

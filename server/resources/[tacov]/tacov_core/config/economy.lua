@@ -27,7 +27,7 @@ TacoV.Config.Economy = {
 
 -- Jobs zum Start (Konzept 3): Lohn je Auftrag und Obergrenze je Stunde
 TacoV.Config.Jobs = {
-  garbage  = { label = 'Müllabfuhr',   pay = 180,  hourlyCap = 400, license = nil },
+  garbage  = { label = 'Müllabfuhr',   pay = 180,  hourlyCap = 400, license = 'C' }, -- Betreiber 08.11.: Müllwagen braucht Klasse C
   delivery = { label = 'Lieferfahrer', pay = { 150, 260 }, hourlyCap = 450, license = 'B' },
   bus      = { label = 'Busfahrer',    pay = 300,  hourlyCap = 450, license = 'C' },
   taxi     = { label = 'Taxi',         pay = 'meter', hourlyCap = 500, license = 'B' },

@@ -179,7 +179,7 @@ end)
 RegisterNetEvent('tacov:jobs:stop', function() TacoV.Jobs.stop(source, 'manual') end)
 
 -- Übersicht für Jobcenter und Hof: Jobs mit Lohn, Obergrenze, Voraussetzung und eigenem Stand
-RegisterNetEvent('tacov:jobs:info', function(where)
+RegisterNetEvent('tacov:jobs:info', function(where, hofJob)
   local src = source
   local c = TacoV.Characters.get(src)
   if not c then return end
@@ -191,7 +191,7 @@ RegisterNetEvent('tacov:jobs:info', function(where)
       earned = earnedLastHour(c.id, id) }
   end
   table.sort(list, function(a, b) return a.label < b.label end)
-  TriggerClientEvent('tacov:jobs:menu', src, where, list, publicState(active[src]))
+  TriggerClientEvent('tacov:jobs:menu', src, where, list, publicState(active[src]), where == 'hof' and J[hofJob] and hofJob or nil)
 end)
 
 -- ---------------------------------------------------------------- Firmenfahrzeug
