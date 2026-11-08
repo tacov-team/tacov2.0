@@ -142,8 +142,24 @@ function TacoV.Creator.pickEntity(label, cb)
       local dir = vector3(-math.sin(yaw) * math.cos(pitch), math.cos(yaw) * math.cos(pitch), math.sin(pitch))
       local from = GetGameplayCamCoord()
       local to = from + dir * 15.0
-      local handle = StartShapeTestLosProbe(from.x, from.y, from.z, to.x, to.y, to.z, 16, PlayerPedId(), 4)
+      -- Strahl auf Welt, Objekte und Glas (Türen haben oft Glas-Kollision); eigener Ped wird ignoriert
+      local handle = StartShapeTestLosProbe(from.x, from.y, from.z, to.x, to.y, to.z, 1 | 16 | 256, PlayerPedId(), 4)
       local _, hit, coords, _, ent = GetShapeTestResult(handle)
+      if ent ~= 0 and GetEntityType(ent) ~= 3 then ent = 0 end
+      if ent == 0 then
+        -- Kein Objekt direkt getroffen (z. B. Glastür): nächstes Objekt an der Blicklinie suchen
+        local best, bestD = 0, 0.9
+        for _, obj in ipairs(GetGamePool('CObject')) do
+          local p = GetEntityCoords(obj)
+          local rel = p - from
+          local t = rel.x * dir.x + rel.y * dir.y + rel.z * dir.z
+          if t > 0.5 and t < 15.0 then
+            local d = #(rel - dir * t)
+            if d < bestD then best, bestD = obj, d end
+          end
+        end
+        if best ~= 0 then ent = best hit = 1 coords = GetEntityCoords(best) end
+      end
       if hit == 1 and ent ~= 0 and DoesEntityExist(ent) then
         outline(ent)
         local p = GetEntityCoords(ent)
