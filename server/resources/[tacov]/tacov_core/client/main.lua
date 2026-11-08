@@ -56,6 +56,7 @@ RegisterNetEvent('tacov:core:aduty', function(on, label)
 end)
 
 RegisterNetEvent('tacov:core:characters', function(data)
+  TacoV.Client.lastCharacters = data
   TacoV.UI.open('characters', data)
   DoScreenFadeIn(500)
 end)
@@ -66,6 +67,7 @@ RegisterNetEvent('tacov:core:characterLoaded', function(c)
   TacoV.UI.close()
   DoScreenFadeOut(300)
   Wait(300)
+  if c.appearance and c.appearance.model then TacoV.Appearance.apply(c.appearance) end
   spawnAt(c.position)
   TacoV.Hud.refresh()
   DoScreenFadeIn(800)

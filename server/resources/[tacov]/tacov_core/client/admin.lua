@@ -171,6 +171,7 @@ local players = {}
 RegisterNetEvent('tacov:admin:players', function(list) players = list end)
 
 RegisterNetEvent('tacov:admin:healed', function()
+  TriggerEvent('tacov:admin:healedLocal')
   local ped = PlayerPedId()
   SetEntityHealth(ped, GetEntityMaxHealth(ped))
   SetPedArmour(ped, 100)
@@ -285,6 +286,7 @@ RegisterNetEvent('tacov:admin:file', function(f)
     { id = 'warn', label = 'Verwarnen', icon = 'warn', section = 'Maßnahmen' },
     { id = 'kick', label = 'Kicken', icon = 'x' },
     { id = 'ban', label = 'Sperren', icon = 'lock' },
+    { id = 'chardelete', label = 'Charakter komplett löschen', icon = 'x', sub = 'Name wird frei (Manager)' },
   }
   if f.licenses then
     local l = {}
@@ -332,6 +334,12 @@ RegisterNetEvent('tacov:admin:file', function(f)
             end)
           end)
         end
+      end)
+    elseif id == 'chardelete' then
+      TacoV.Menu.open({ id = 'chardel', title = 'Charakter wirklich löschen?', icon = 'warn', info = name, items = {
+        { id = 'yes', label = 'Ja, vollständig löschen', icon = 'x' }, { id = 'no', label = 'Abbrechen', icon = 'back' } } }, function(a)
+        TacoV.Menu.close()
+        if a == 'yes' then TriggerServerEvent('tacov:admin:chardelete', f.id) end
       end)
     elseif id == 'warn' then
       reasonMenu('Verwarnen · ' .. name, function(r) TacoV.Menu.back() TriggerServerEvent('tacov:admin:punish', 'warn', f.id, r) end)
@@ -570,6 +578,7 @@ function TacoV.Admin.openMenu()
     return {
       { id = 'players',   label = 'Spieler', icon = 'group', sub = 'Akte, Geben, Heilen, Maßnahmen', section = 'Team' },
       { id = 'tickets',   label = 'Tickets', icon = 'doc', sub = 'Offene Anliegen (/support)' },
+      { id = 'immigration', label = 'Einreise', icon = 'id', sub = 'Warteschlange am Flughafen' },
       { id = 'creator',   label = 'Creator', icon = 'tool', sub = 'Orte, Türen, Aufzüge, NPCs …' },
       { id = 'vehicles',  label = 'Fahrzeuge', icon = 'car', sub = 'Spawnen, reparieren, Kennzeichen, löschen' },
       { id = 'refunds',   label = 'Offene Erstattungen', icon = 'cash', sub = 'Vier-Augen-Bestätigung (ab Manager)' },
@@ -598,6 +607,8 @@ function TacoV.Admin.openMenu()
       TriggerServerEvent('tacov:admin:teleport', 'waypoint')
     elseif id == 'tickets' then
       TriggerServerEvent('tacov:tickets:list')
+    elseif id == 'immigration' then
+      TriggerServerEvent('tacov:immigration:list')
     elseif id == 'creator' then
       TacoV.Creator.openMenu()
     elseif id == 'vehicles' then

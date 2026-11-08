@@ -99,7 +99,7 @@ Tafeln: Charaktereditor, Kleidungsladen, Ladebildschirm, Animationen (alle als V
 
 Abnahme: Neuer Spieler erstellt Charakter mit Aussehen, reist mit Teammitglied ein, kauft Kleidung, speichert ein Outfit, spricht in drei Reichweiten.
 
-## Phase 7 – Handy und Funk ⬜
+## Phase 7 – Handy und Funk ✅
 
 - Handy als Item (F1 nur mit Handy), Nummer je Charakter – Konzept 5.3
 - Apps in dieser Reihenfolge: Kontakte, Nachrichten (SMS, Standort, Gruppen bis 8), Bank, Fahrzeuge (Standort, Garage, Tank, Schlüssel teilen), Einstellungen; danach Notruf, Fraktion, Firma, Kamera, Feed mit den jeweiligen Phasen
@@ -107,7 +107,7 @@ Abnahme: Neuer Spieler erstellt Charakter mit Aussehen, reist mit Teammitglied e
 - Funkgerät (250 $) schaltet Funk-App frei, Frequenzen 1–999, 1–10 Fraktionen; Funkliste im HUD wird live
 - Tablet (MDT, Lagerverwaltung) erst in Phase 8
 
-Tafel: „V4 · Handy“ (vorhanden, nach Abnahme der Realismus-Korrektur). Tabellen: `phone_contacts`, `phone_messages`, `phone_calls`, `radio_channels`. Entscheidungen: Handypreis, Sperre bei Beschlagnahme.
+Tafel: „V4 · Handy“ (vorhanden, nach Abnahme der Realismus-Korrektur). Tabellen: `phone_contacts`, `phone_messages`, `phone_calls`, `invoices` (Funkfrequenzen nur im Speicher). Entschieden 08.11.: Handy 300 $, weg bei Koma; vierstellige Nummern, Wunschnummer per Ticket; Funk-Taste von SaltyChat; Sperre bei Beschlagnahme (nur aus eigenem Inventar nutzbar).
 
 Abnahme: Zwei Spieler tauschen Nummern, schreiben, telefonieren, funken auf einer Frequenz; Funkliste im HUD zeigt, wer spricht.
 

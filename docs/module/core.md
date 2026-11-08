@@ -58,6 +58,17 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `server/devtools.lua`, `client/devtools.lua` | Entwickler-Werkzeuge (5.14): Freigabe über `dev.tools`, Overlay (NUI `dev`), Zwischenablage (NUI `copy`), Ereignis `tacov:core:reloadData` (Orte, Türen, Aufzüge/Portale, NPCs, Objekte/Zonen, Config-Überschreibungen laden neu), Resource-Neustart nach Speichern |
 | `server/tickets.lua` | Tickets (5.15): `TacoV.Tickets.create`, Liste/Detail/Aktionen (`support.view`), Discord-Antworten alle 10 s an Online-Spieler; Tabellen `tickets`, `ticket_messages` (Spiegelung über `posted_discord`/`seen_game`) |
 | `config/anticheat.lua`, `server/anticheat.lua` | Anti-Cheat (5.16): `TacoV.AC.report(src, kind, details, action)`, `TacoV.AC.allowTeleport(src)` (Server-Teleports melden, sonst zählt der Sprung), Prüfungen Bewegung/Tempo/Bargeld/Explosionen/Entities, Team im Dienst ausgenommen; Tabelle `ac_reports`; `/actest` |
+| `client/appearance.lua` | Aussehen (6.1): `TacoV.Appearance.default/apply/applyTo/readClothes/limits`, Editor `openEditor(opts, cb)` (NUI `editor`, Live-Vorschau per `tacov:ui:editor:update`, Kamera Gesicht/Körper, Drehen); Server `TacoV.Characters.cleanAppearance/setAppearance` |
+| `config/clothing.lua`, `shared/clothingprice.lua`, `client/clothing.lua`, `server/clothing.lua` | Kleiderladen/Friseur/Chirurg (6.2/6.3): Editor mit Reiter-Filter, Live-Preis (`TacoV.Clothing.price/barberPrice`), `tacov:clothing:apply(kind, appearance, method)` prüft Ort/Preis/Zahlung und speichert; Outfits (`outfits`, max. 10); Statebag `masked` steuert den Ausweis |
+| `loadscreen/index.html` | Ladebildschirm (6.4): Logo, Fortschritt aus `loadProgress`, Tipps; `loadscreen_manual_shutdown`, beendet in `client/main.lua` |
+| `server/immigration.lua`, `client/immigration.lua` | Einreise (6.4): Warteschlange (`TacoV.Immigration.queue`), `pass` (Startgeld + `Onboarding.immigrationItems`), `fail` (`immigration_retry_at`, Kick), Hook `tacov:core:beforeSelect` verweigert das Laden bis zum neuen Versuch; Client hält den Charakter im `airportRadius` |
+| `config/housing.lua`, `server/housing.lua`, `client/housing.lua`, `server/newbie.lua` | Sozialwohnung (6.5): `TacoV.Housing.grantSocial(cid)`, Betreten/Verlassen mit Routing-Bucket `10000 + characterId`, Lager (`Inventory.load('house', homeId, 20)`), Miete stündlich geprüft; Neulingspfad: `TriggerEvent('tacov:newbie:step', src, id)` aus anderen Modulen, Bonus per Journal, Tabellen `homes`, `newbie_steps` |
+| `config/animations.lua`, `client/animations.lua` | Animationsmenü (6.6): `TacoV.Anims.play(id)/stop()/openMenu()`, Liste mit `kind` anim/scenario, Favoriten in KVP `tacov_anim_favs`; F3 im Lauf = beenden |
+| `client/voice.lua`, `server/voice.lua` | Voice (6.7): Sprechweite setzt der Server über SaltyChat-Export `SetPlayerVoiceRange` (`tacov:voice:cycle`), Anzeige über `SaltyChat_VoiceRangeChanged`; Megafon über Statebag (bool), `TacoV.Voice.cycle/setMegaphone` |
+| `config/health.lua`, `client/health.lua`, `server/health.lua` | Verletzungen (6.8): Stufen, Bewusstlos (Timer, `dead_a`-Animation, Eingabesperre), Koma (Server bucht Bargeld/Gebühr, Log `medic`), Items `bandage`/`first_aid` (`tacov:health:heal`), `TacoV.Health.revive(target)` (Server) für LSMD/Team |
+| `config/phone.lua`, `client/phone.lua`, `server/phone.lua` | Handy und Funk (Phase 7): Nummern (`characters.phone_number`), Kontakte, Anrufe über SaltyChat `EstablishCall/EndCall`, Nachrichten, Bank-/Fahrzeuge-App, Einstellungen, Funkfrequenzen (`tacov:radio:set/state`, Statebag `radioTalking`); UI-Aktionen `tacov:ui:phone:<app>:<aktion>` → `tacov:phone:<app>:<aktion>`; Hook `tacov:health:comaItems` nimmt das Handy |
+| `config/fitness.lua`, `client/fitness.lua`, `server/fitness.lua` | Fitness/Promille (6.9): Stationen als Orte `gym` (Szenario je Station), `tacov:fitness:trained`, Abbau 1 %/Tag ohne Training (`needs.lastTraining`), Tempo-Multiplikator und Ausdauer nach Fitness; Trunkenheit ab `Needs.alcohol.duiThreshold` (Clipset, Effekt, Lenk-Bias) |
+| `server/characters.lua` (hardDelete) | `TacoV.Characters.hardDelete(characterId, actorSrc)`: löscht Charakter, Inventare, Konto, Fahrzeuge, Schlüssel, Führerscheine, Outfits, Wohnung, Neulingspfad, Erstattungen; `/charreset bestaetigen` (Config `allowSelfDelete`), Akte → „Charakter komplett löschen“ (`admin.db`) |
 | `client/creator.lua` (Helfer) | `TacoV.Creator.pickEntity(label, cb)` (Objekt anvisieren, Fadenkreuz NUI `crosshair`, Umriss `SetEntityDrawOutline`), `accessMenu(obj, onSave)`, `accessText`, `fadeTeleport(x,y,z,h)` |
 | `client/interact.lua` | Interaktionsrad (X halten) nur für Spieler und Fahrzeuge: `TacoV.Interact.register` |
 | `client/prompt.lua` | E-Aufforderungen für Orte und Objekte (Bank, Automat, Ablage …): `TacoV.Prompt.register` |
@@ -107,6 +118,14 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Entwickler-Werkzeuge (5.14)
 - [x] Tickets im Spiel und Discord (5.15) (Migration 016)
 - [x] Anti-Cheat-Grundlage (5.16) (Migration 017)
+- [x] Charaktereditor (6.1)
+- [x] Kleiderläden, Outfits, Friseur, Chirurg (6.2/6.3) (Migration 018)
+- [x] Ladebildschirm und Einreise (6.4)
+- [x] Sozialwohnung und Neulingspfad (6.5) (Migration 019)
+- [x] Animationsmenü (6.6)
+- [x] Voice-Ergänzungen (6.7) und Verletzungen/Erste Hilfe (6.8)
+- [x] Fitness und Promille (6.9)
+- [x] Handy und Funk (7.1–7.7) (Migration 020)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

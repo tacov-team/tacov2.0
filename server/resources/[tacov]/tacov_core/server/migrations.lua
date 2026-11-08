@@ -24,6 +24,9 @@ local function listMigrations()
     { version = 15, file = 'sql/015_config.sql' },
     { version = 16, file = 'sql/016_tickets.sql' },
     { version = 17, file = 'sql/017_anticheat.sql' },
+    { version = 18, file = 'sql/018_outfits.sql' },
+    { version = 19, file = 'sql/019_housing_newbie.sql' },
+    { version = 20, file = 'sql/020_phone.sql' },
   }
 end
 

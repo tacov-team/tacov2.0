@@ -1,0 +1,20 @@
+-- TacoV Kern · Migration 019 · Sozialwohnung und Neulingspfad (Punkt 6.5)
+CREATE TABLE IF NOT EXISTS homes (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  character_id INT UNSIGNED NOT NULL,
+  type VARCHAR(16) NOT NULL DEFAULT 'social',
+  label VARCHAR(64) NOT NULL DEFAULT 'Sozialwohnung',
+  rent INT UNSIGNED NOT NULL DEFAULT 0,
+  free_until TIMESTAMP NULL DEFAULT NULL,
+  rent_paid_at TIMESTAMP NULL DEFAULT NULL,
+  rent_due INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_homes_char (character_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS newbie_steps (
+  character_id INT UNSIGNED NOT NULL,
+  step VARCHAR(24) NOT NULL,
+  done_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (character_id, step)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

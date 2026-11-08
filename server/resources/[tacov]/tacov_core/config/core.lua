@@ -31,7 +31,14 @@ TacoV.Config.Onboarding = {
   socialHousingDays = 14,          -- Konzept 1: Sozialwohnung 14 Tage kostenlos
   retryHours = 24,                 -- Konzept 1: erneuter Einreiseversuch nach 24 h
   requiresStaff = true,            -- Konzept 1: Einreise nur mit Teammitglied
+  allowSelfDelete = true,          -- Testphase: /charreset löscht den eigenen Charakter; vor dem Start auf false
+  airportRadius = 140.0,           -- Ohne Einreise bleibt der Charakter in diesem Umkreis um die Ankunftshalle
+  immigrationItems = {             -- Ausstattung bei bestandener Einreise
+    { item = 'id_card', amount = 1 }, { item = 'phone', amount = 1 }, { item = 'housing_key', amount = 1 },
+    { item = 'bus_ticket', amount = 1 }, { item = 'city_map', amount = 1 },
+  },
   spawn = vector4(-1037.6, -2737.7, 20.2, 330.0), -- Ankunftshalle LSIA
+  editorSpot = vector4(-1037.6, -2737.7, 20.2, 330.0), -- Charaktereditor (Punkt 6.1): Standort der Figur
 }
 
 TacoV.Config.Level = {
@@ -61,9 +68,10 @@ TacoV.Config.Inventory = {
 }
 
 TacoV.Config.Keys = {
-  phone = 'F1', inventory = 'F2', animations = 'F3', faction = 'F6',
+  phone = 'F1', inventory = 'F2', animations = 'F3', actions = 'F4', faction = 'F6',
   admin = 'F9', interact = 'X',
   use = 'E', handsUp = 'H', console = 'T',
 }
 
-TacoV.Config.Voice = { whisper = 3.0, normal = 10.0, shout = 25.0, order = { 'whisper', 'normal', 'shout' }, key = 'Z' } -- Umschalten per Taste (Punkt 3.2)
+TacoV.Config.Voice = { whisper = 3.0, normal = 10.0, shout = 25.0, order = { 'whisper', 'normal', 'shout' }, key = 'Z',
+  megaphoneKey = 'LMENU', megaphoneRange = 50 } -- Umschalten per Taste (Punkt 3.2); Megafon halten (Alt) in Einsatzfahrzeugen (6.7)

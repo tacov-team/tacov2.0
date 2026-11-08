@@ -14,7 +14,7 @@ Gewichtsbasiert, 30 kg Grundlast, Rucksack als Item (kein Modell) erhöht auf 45
 | Wegwerfen | 15 min in der Welt sichtbar, dann weg; max. 10 je Charakter |
 | Stapeln | Bis 50 (Munition 500); Qualitätsitems nur gleiche Qualität |
 | Schnellzugriff | entfällt |
-| Hotkeys | Handy F1, Inventar F2, Animationen F3, Fraktion F6, Team F9, Interaktion X, Hände hoch H, Befehlszeile T |
+| Hotkeys | Handy F1, Inventar F2, Animationen F3, Aktionen F4, Fraktion F6, Team F9, Interaktion X, Hände hoch H, Befehlszeile T |
 
 ## 2. Bedürfnisse
 
@@ -28,6 +28,8 @@ Gewichtsbasiert, 30 kg Grundlast, Rucksack als Item (kein Modell) erhöht auf 45
 Kein Stress, kein Schlaf. Offline keine Veränderung. Anzeige wird im Design festgelegt.
 
 ## 3. Handy
+
+Bedienung: F1 holt das Handy raus, das Spiel läuft weiter (laufen, Kamera). Alt blendet den Mauszeiger ein – Laufen geht weiter, nur Umschauen nicht; Alt erneut nimmt den Zeiger weg, F1 legt das Handy weg (auch während eines Gesprächs).
 
 Item mit Nummer; Kontakte und Nachrichten hängen am Charakter. Zehn Apps:
 

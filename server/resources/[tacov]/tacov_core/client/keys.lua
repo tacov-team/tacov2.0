@@ -6,7 +6,8 @@ local function bind(command, label, key, handler, release)
   RegisterCommand('+' .. command, function()
     if not TacoV.Client.character then return end
     -- Bei offenem Listenmenü (Spieler kann laufen) nur die Menü-Tasten selbst durchlassen
-    if TacoV.UI.current() == 'menu' and command ~= 'tacov_faction' and command ~= 'tacov_admin' then return end
+    if TacoV.UI.current() == 'menu' and command ~= 'tacov_faction' and command ~= 'tacov_admin' and command ~= 'tacov_actions' then return end
+    if TacoV.UI.current() == 'phone' and command ~= 'tacov_phone' then return end
     handler()
   end, false)
   RegisterCommand('-' .. command, function()
@@ -15,56 +16,60 @@ local function bind(command, label, key, handler, release)
   RegisterKeyMapping('+' .. command, label, 'keyboard', key)
 end
 
-local function soon(name)
-  TacoV.UI.send('notify', { kind = 'info', text = name .. ' kommt in einer späteren Phase.' })
-end
-
 local K = TacoV.Config.Keys
 bind('tacov_console',   'TacoV: Befehlszeile',    K.console,    function() TacoV.UI.openConsole() end)
 bind('tacov_inventory', 'TacoV: Inventar',        K.inventory,  function()
   if TacoV.UI.current() == 'inventory' then TacoV.Inventory.close() else TacoV.Inventory.open() end
 end)
-bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() soon('Das Handy') end)
-bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() soon('Das Animationsmenü') end)
+bind('tacov_phone',     'TacoV: Handy',           K.phone,      function() TacoV.Phone.toggle() end)
+bind('tacov_anims',     'TacoV: Animationen',     K.animations, function() TacoV.Anims.openMenu() end)
+bind('tacov_actions',   'TacoV: Aktionen',        K.actions,    function() TacoV.Client.openActionsMenu() end)
 bind('tacov_faction',   'TacoV: Fraktionsmenü',   K.faction,    function() TacoV.Client.openFactionMenu() end)
 bind('tacov_interact',  'TacoV: Interaktion',     K.interact,   function() TacoV.Interact.open() end, function() TacoV.Interact.release() end)
 bind('tacov_use',       'TacoV: Benutzen (E)',    K.use,        function() TacoV.Prompt.use() end)
 bind('tacov_handsup',   'TacoV: Hände hoch',      K.handsUp,    function() TacoV.Client.toggleHandsUp() end)
 
---- Fraktionsmenü (F6, Konzept 2): Fraktionspunkte kommen mit dem Fraktionsmodul; Zivilistenaktionen und Fahrzeug sind
---- für alle da (bei Fraktionen als Unterpunkt, wie im Referenzbild des LSPD-Menüs).
+--- Aktionsmenü (F4): Ausweis, Hände hoch, Neulingspfad, Fahrzeug – für alle Spieler. Outfits nur im Laden und am Kleiderschrank.
+function TacoV.Client.openActionsMenu()
+  if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
+  TacoV.Menu.open({
+    id = 'actions', title = 'Aktionen', icon = 'user', info = 'Alltag',
+    note = 'Mit ↑ ↓ wählen, Enter bestätigen, Esc schließen',
+    items = {
+      { id = 'handsup', label = 'Hände hoch', icon = 'hands', sub = 'Taste ' .. K.handsUp, section = 'Ich' },
+      { id = 'show_id', label = 'Ausweis vorzeigen', icon = 'id', sub = 'Zeigt deinen Ausweis den Spielern in der Nähe' },
+      { id = 'newbie', label = 'Neulingspfad', icon = 'star', sub = 'Zehn Schritte mit Bonus' },
+      { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Schloss, Kofferraum', section = 'Fahrzeug' },
+    },
+  }, function(id)
+    if id == 'vehicle' then TacoV.Menu.close() TacoV.Vehicles.openMenu() return end
+    if id == 'handsup' then TacoV.Menu.close() TacoV.Client.toggleHandsUp() end
+    if id == 'show_id' then TacoV.Menu.close() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end
+    if id == 'newbie' then TacoV.Menu.close() TacoV.Housing.openNewbie() end
+  end)
+end
+
+--- Fraktionsmenü (F6, Konzept 2): Dienst, Mitglieder, Lager/Kasse und Fraktionsaktionen (z. B. Festnehmen) kommen mit
+--- dem Fraktionsmodul (Phase 8). Zivilisten sehen nur den Hinweis.
 function TacoV.Client.openFactionMenu()
   if TacoV.Menu.isOpen() then TacoV.Menu.close() return end
   local c = TacoV.Client.character
   local faction = c and c.faction
-  local items = {}
-  if faction then
-    items[#items + 1] = { id = 'duty', label = 'Dienst', icon = 'shield', dim = true, badge = 'bald', section = faction:upper() }
-    items[#items + 1] = { id = 'members', label = 'Mitglieder', icon = 'group', dim = true, badge = 'bald' }
-    items[#items + 1] = { id = 'stash', label = 'Lager und Kasse', icon = 'box', dim = true, badge = 'bald' }
+  if not faction then
+    TacoV.UI.send('notify', { kind = 'info', text = 'Du bist in keiner Fraktion. Alltagsaktionen findest du auf ' .. K.actions .. '.' })
+    return
   end
-  items[#items + 1] = { id = 'civil', label = 'Zivilistenaktionen', icon = 'user', sub = 'Hände hoch, Ausweis', section = faction and 'Allgemein' or nil }
-  items[#items + 1] = { id = 'vehicle', label = 'Fahrzeug', icon = 'car', sub = 'Motor, Schloss, Kofferraum' }
   TacoV.Menu.open({
     id = 'faction', title = 'Fraktionsmenü', icon = 'shield',
-    info = faction and (faction:upper() .. ' · Rang ' .. tostring(c.factionRank or 0)) or 'Zivilist · keine Fraktion',
-    note = faction and 'Fraktionsfunktionen kommen mit dem Fraktionsmodul.' or 'Mit ↑ ↓ wählen, Enter bestätigen, Esc schließen',
-    items = items,
-  }, function(id)
-    if id == 'vehicle' then TacoV.Menu.close() TacoV.Vehicles.openMenu() return end
-    if id == 'civil' then
-      TacoV.Menu.open({
-        id = 'civil', title = 'Zivilistenaktionen', info = 'Fraktionsmenü · Allgemein', icon = 'user',
-        items = {
-          { id = 'handsup', label = 'Hände hoch', icon = 'hands', sub = 'Taste ' .. K.handsUp },
-          { id = 'show_id', label = 'Ausweis vorzeigen', icon = 'id', sub = 'Zeigt deinen Ausweis den Spielern in der Nähe' },
-        },
-      }, function(sub)
-        if sub == 'handsup' then TacoV.Menu.close() TacoV.Client.toggleHandsUp() end
-        if sub == 'show_id' then TacoV.Menu.close() TriggerServerEvent('tacov:inventory:useItem', 'id_card') end
-      end)
-    end
-  end)
+    info = faction:upper() .. ' · Rang ' .. tostring(c.factionRank or 0),
+    note = 'Fraktionsfunktionen kommen mit dem Fraktionsmodul.',
+    items = {
+      { id = 'duty', label = 'Dienst', icon = 'shield', dim = true, badge = 'bald', section = faction:upper() },
+      { id = 'members', label = 'Mitglieder', icon = 'group', dim = true, badge = 'bald' },
+      { id = 'stash', label = 'Lager und Kasse', icon = 'box', dim = true, badge = 'bald' },
+      { id = 'actions', label = 'Fraktionsaktionen', icon = 'hands', dim = true, badge = 'bald', sub = 'z. B. Festnehmen, Durchsuchen' },
+    },
+  }, function() end)
 end
 
 -- F9: außerhalb des Dienstes Admin-Dienst beginnen; im Dienst öffnet sich das Team-Menü (Punkt 5.1, Dienstende dort)

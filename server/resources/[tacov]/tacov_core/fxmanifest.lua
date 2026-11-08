@@ -24,7 +24,15 @@ shared_scripts {
   'config/peds.lua',
   'config/world.lua',
   'config/anticheat.lua',
+  'config/clothing.lua',
+  'config/tattoos.lua',
+  'config/housing.lua',
+  'config/animations.lua',
+  'config/health.lua',
+  'config/fitness.lua',
+  'config/phone.lua',
   'shared/configedit.lua',
+  'shared/clothingprice.lua',
 }
 
 server_scripts {
@@ -58,6 +66,14 @@ server_scripts {
   'server/devtools.lua',
   'server/tickets.lua',
   'server/anticheat.lua',
+  'server/clothing.lua',
+  'server/immigration.lua',
+  'server/housing.lua',
+  'server/newbie.lua',
+  'server/health.lua',
+  'server/fitness.lua',
+  'server/phone.lua',
+  'server/voice.lua',
   'server/connect.lua',
   'server/commands.lua',
   'server/status.lua',
@@ -65,6 +81,7 @@ server_scripts {
 }
 
 client_scripts {
+  'client/appearance.lua',
   'client/main.lua',
   'client/ui.lua',
   'client/menu.lua',
@@ -89,12 +106,24 @@ client_scripts {
   'client/weather.lua',
   'client/configedit.lua',
   'client/devtools.lua',
+  'client/clothing.lua',
+  'client/immigration.lua',
+  'client/housing.lua',
+  'client/animations.lua',
+  'client/health.lua',
+  'client/fitness.lua',
+  'client/phone.lua',
   'client/keys.lua',
 }
 
 ui_page 'ui/index.html'
 
+loadscreen 'loadscreen/index.html'
+loadscreen_manual_shutdown 'yes'
+loadscreen_cursor 'yes'
+
 files {
+  'loadscreen/index.html',
   'ui/index.html',
   'ui/app.js',
   'ui/app.css',

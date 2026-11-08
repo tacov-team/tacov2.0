@@ -12,9 +12,19 @@ end
 --- Öffnet eine Ansicht. cursor=false für reine Tastatur-Ansichten (Befehlszeile).
 --- keepInput=true: das Spiel behält die Tastatur (für Halten-Menüs wie das X-Rad); Bewegung/Kamera werden solange gesperrt.
 --- keepInput='walk': Spieler kann weiterlaufen; nur die Menü-Tasten (Pfeile, Enter, Backspace, Esc) gehen nicht ans Spiel.
+--- keepInput='free': die Ansicht wird nur angezeigt, das Spiel läuft ganz normal (Handy); Cursor erst per TacoV.UI.setCursor(true).
 local WALK_BLOCK = { 27, 172, 173, 174, 175, 177, 191, 194, 199, 200, 201, 202, 243, 322, 37, 24, 25, 257, 140, 141, 142 }
+local LOOK_BLOCK = { 1, 2, 3, 4, 5, 6, 270, 271, 272, 273 } -- Maus-Umschauen (zu Fuß und im Fahrzeug)
+local cursorOn = false
 function TacoV.UI.open(view, data, cursor, keepInput)
   openView = view
+  cursorOn = false
+  if keepInput == 'free' then
+    SetNuiFocusKeepInput(false)
+    SetNuiFocus(false, false)
+    TacoV.UI.send('open', { view = view, data = data })
+    return
+  end
   SetNuiFocus(true, cursor ~= false)
   SetNuiFocusKeepInput(keepInput == true or keepInput == 'walk')
   if keepInput == 'walk' then
@@ -37,8 +47,32 @@ function TacoV.UI.open(view, data, cursor, keepInput)
   TacoV.UI.send('open', { view = view, data = data })
 end
 
+--- Cursor für eine 'free'-Ansicht ein-/ausschalten: an = Mauszeiger (Maus geht an die Oberfläche, Umschauen geht nicht),
+--- Laufen bleibt möglich, Menü-/Angriffstasten gesperrt; aus = Spiel komplett frei.
+function TacoV.UI.setCursor(on)
+  if not openView then return end
+  cursorOn = on == true
+  if cursorOn then
+    SetNuiFocus(true, true)
+    SetNuiFocusKeepInput(true)
+    local view = openView
+    CreateThread(function()
+      while openView == view and cursorOn do
+        for _, c in ipairs(WALK_BLOCK) do DisableControlAction(0, c, true) end
+        for _, c in ipairs(LOOK_BLOCK) do DisableControlAction(0, c, true) end
+        Wait(0)
+      end
+    end)
+  else
+    SetNuiFocusKeepInput(false)
+    SetNuiFocus(false, false)
+  end
+end
+function TacoV.UI.hasCursor() return cursorOn end
+
 function TacoV.UI.close()
   openView = nil
+  cursorOn = false
   SetNuiFocusKeepInput(false)
   SetNuiFocus(false, false)
   TacoV.UI.send('close')
@@ -118,9 +152,29 @@ RegisterNUICallback('selectCharacter', function(data, cb)
 end)
 
 RegisterNUICallback('createCharacter', function(data, cb)
-  TriggerServerEvent('tacov:core:createCharacter', {
-    firstName = data.firstName, lastName = data.lastName, birthDate = data.birthDate,
-    origin = data.origin, gender = tonumber(data.gender) or 0, appearance = {},
-  })
   cb({})
+  -- Erst das Aussehen (Charaktereditor, Punkt 6.1), dann legt der Server den Charakter an
+  local form = { firstName = data.firstName, lastName = data.lastName, birthDate = data.birthDate, origin = data.origin, gender = tonumber(data.gender) or 0 }
+  local model = form.gender == 1 and 'mp_f_freemode_01' or 'mp_m_freemode_01'
+  openView = nil
+  SetNuiFocus(false, false)
+  TacoV.UI.send('close')
+  local spot = TacoV.Config.Onboarding.editorSpot or TacoV.Config.Onboarding.spawn
+  local opts = { appearance = TacoV.Appearance.default(model), spot = spot, title = 'Dein Aussehen', doneLabel = 'Charakter anlegen' }
+  TriggerServerEvent('tacov:core:editorWorld', true) -- eigene Welt während der Erstellung
+  CreateThread(function()
+    Wait(200) -- Welt-Wechsel greift, bevor die Figur sichtbar wird
+    TacoV.Appearance.openEditor(opts, function(appearance)
+      TriggerServerEvent('tacov:core:editorWorld', false)
+      if appearance then
+        form.appearance = appearance
+        TriggerServerEvent('tacov:core:createCharacter', form)
+      else
+        local ped = PlayerPedId()
+        SetEntityVisible(ped, false, false)
+        FreezeEntityPosition(ped, true)
+        if TacoV.Client.lastCharacters then TacoV.UI.open('characters', TacoV.Client.lastCharacters) end
+      end
+    end)
+  end)
 end)

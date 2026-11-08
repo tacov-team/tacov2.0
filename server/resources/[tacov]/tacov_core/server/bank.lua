@@ -104,6 +104,7 @@ end
 RegisterNetEvent('tacov:bank:open', function(kind, atmPos)
   local src = source
   if not TacoV.Characters.get(src) then return end
+  TriggerEvent('tacov:newbie:step', src, 'bank')
   if kind == 'atm' then
     if type(atmPos) ~= 'vector3' or #(GetEntityCoords(GetPlayerPed(src)) - atmPos) > 3.0 then return end
   else

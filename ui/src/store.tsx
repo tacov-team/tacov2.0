@@ -9,6 +9,8 @@ import type { MenuData } from './views/Menu';
 import type { GarageData } from './views/Garage';
 import type { DealerData } from './views/Dealer';
 import type { AskData } from './views/Ask';
+import type { EditorData } from './views/Editor';
+import type { PhoneData } from './views/Phone';
 
 export type Toast = { id: number; kind: 'success' | 'info' | 'warn' | 'error'; title: string; text?: string };
 export type Announce = { title: string; text: string; kind: 'info' | 'warn' } | null;
@@ -20,11 +22,11 @@ export type HudData = {
   name: string; level: number; levelProgress: number; status: string; faction: string;
   visible: boolean;
   factionRank?: string;
-  aduty?: string | false; // Admin-Dienst: Rollenname, sonst false
+  aduty?: string | false; notice?: string | false; // Admin-Dienst: Rollenname, sonst false
   minimap?: { x: number; y: number; w: number; h: number }; // Bruchteile des Bildschirms, von Lua
   radio?: { id: number; name: string; talking?: boolean }[]; // wer gerade im Funk ist
   radioFrequency?: string; radioOn?: boolean;
-  voice?: 'whisper' | 'normal' | 'shout'; voiceMeters?: number; // Sprechweite (Punkt 3.2)
+  voice?: 'whisper' | 'normal' | 'shout'; voiceMeters?: number; megaphone?: boolean; downed?: number | false; alcohol?: number; injury?: 'light' | 'medium' | false; // Sprechweite, Megafon, Verletzung (6.8)
   vehicle?: { speed: number; fuel: number; tank: number; engine: boolean; locked: boolean } | null; // nur im Fahrzeug
   station?: { name: string; sub?: string; price?: number } | null; // Tankstellenkarte über dem Tacho
 };
@@ -47,7 +49,9 @@ type View = null
   | { name: 'menu'; data: MenuData }
   | { name: 'garage'; data: GarageData }
   | { name: 'dealer'; data: DealerData }
-  | { name: 'ask'; data: AskData };
+  | { name: 'ask'; data: AskData }
+  | { name: 'editor'; data: EditorData }
+  | { name: 'phone'; data: PhoneData };
 
 export type Hint = { key: string; text: string };
 type State = { view: View; hud: HudData; toasts: Toast[]; role: string; hint: Hint | null; announce: Announce; dev: string | null; crosshair: boolean };

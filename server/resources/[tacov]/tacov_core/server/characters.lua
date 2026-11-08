@@ -39,6 +39,55 @@ local function validName(s)
   return true
 end
 
+--- Aussehen aus dem Editor bereinigen (nur bekannte Felder, Zahlenbereiche)
+function TacoV.Characters.cleanAppearance(a, gender)
+  a = type(a) == 'table' and a or {}
+  local function num(v, lo, hi, d) v = tonumber(v) if not v then return d end return math.max(lo, math.min(hi, v)) end
+  local model = (tonumber(gender) == 1) and 'mp_f_freemode_01' or 'mp_m_freemode_01'
+  if a.model == 'mp_f_freemode_01' or a.model == 'mp_m_freemode_01' then model = a.model end
+  local p = type(a.parents) == 'table' and a.parents or {}
+  local face = {}
+  for i = 1, 20 do face[i] = num(type(a.face) == 'table' and a.face[i], -1.0, 1.0, 0.0) end
+  local h = type(a.hair) == 'table' and a.hair or {}
+  local overlays = {}
+  for id, o in pairs(type(a.overlays) == 'table' and a.overlays or {}) do
+    if type(o) == 'table' then overlays[tostring(id)] = { style = math.floor(num(o.style, -1, 60, -1)), opacity = num(o.opacity, 0.0, 1.0, 1.0), color = math.floor(num(o.color, 0, 80, 0)) } end
+  end
+  local function pairsOf(t, maxIdx)
+    local out = {}
+    for k, v in pairs(type(t) == 'table' and t or {}) do
+      if tonumber(k) and type(v) == 'table' then out[tostring(math.floor(tonumber(k)))] = { math.floor(num(v[1], -1, maxIdx, 0)), math.floor(num(v[2], 0, 60, 0)) } end
+    end
+    return out
+  end
+  local tattoos = {}
+  for _, t in ipairs(type(a.tattoos) == 'table' and a.tattoos or {}) do
+    if type(t) == 'table' and type(t.collection) == 'string' and type(t.overlay) == 'string' and #tattoos < 60 then
+      tattoos[#tattoos + 1] = { collection = TacoV.Util.cleanText(t.collection, 48), overlay = TacoV.Util.cleanText(t.overlay, 48) }
+    end
+  end
+  return {
+    model = model,
+    tattoos = tattoos,
+    parents = { father = math.floor(num(p.father, 0, 45, 0)), mother = math.floor(num(p.mother, 0, 45, 21)), shapeMix = num(p.shapeMix, 0.0, 1.0, 0.5), skinMix = num(p.skinMix, 0.0, 1.0, 0.5) },
+    face = face,
+    hair = { style = math.floor(num(h.style, 0, 200, 0)), color = math.floor(num(h.color, 0, 80, 0)), highlight = math.floor(num(h.highlight, 0, 80, 0)) },
+    eyeColor = math.floor(num(a.eyeColor, 0, 31, 0)),
+    overlays = overlays,
+    components = pairsOf(a.components, 500),
+    props = pairsOf(a.props, 500),
+  }
+end
+
+--- Speichert ein neues Aussehen (Friseur, Chirurg, Kleiderladen)
+function TacoV.Characters.setAppearance(source, a)
+  local c = loaded[source]
+  if not c then return false end
+  c.appearance = TacoV.Characters.cleanAppearance(a, c.gender)
+  TacoV.DB.update('UPDATE characters SET appearance = ? WHERE id = ?', { json.encode(c.appearance), c.id })
+  return true
+end
+
 --- Legt einen Charakter an. data = { firstName, lastName, birthDate 'YYYY-MM-DD', origin, gender, appearance }
 function TacoV.Characters.create(source, data)
   local p = TacoV.Players.get(source)
@@ -64,15 +113,13 @@ function TacoV.Characters.create(source, data)
     'INSERT INTO characters (player_id, slot, first_name, last_name, birth_date, origin, gender, appearance, position) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     { p.id, slot, first, last, data.birthDate, TacoV.Util.cleanText(data.origin, 64),
       TacoV.Util.intInRange(data.gender, 0, 1) and data.gender or 0,
-      json.encode(data.appearance or {}), json.encode(TacoV.Config.Onboarding.spawn) }
+      json.encode(TacoV.Characters.cleanAppearance(data.appearance, data.gender)), json.encode(TacoV.Config.Onboarding.spawn) }
   )
-  -- Girokonto mit Startgeld, über das Journal (Konzept 1: Startgeld aufs Konto)
+  -- Konto anlegen; Startgeld und Ausstattung gibt es erst mit bestandener Einreise (Punkt 6.4). Bis dahin: nur Reisepass.
   TacoV.Journal.account('character', id)
-  TacoV.Journal.move('bank', nil, { type = 'character', id = id }, TacoV.Config.Onboarding.startCash, 'startgeld')
-  -- Startausrüstung (config/items.lua): Ausweis trägt Name und Geburtsdatum
   local inv = TacoV.Inventory.load('character', id)
   for _, s in ipairs(TacoV.Config.StartItems) do
-    local meta = s.item == 'id_card' and { name = first .. ' ' .. last, birth = data.birthDate } or nil
+    local meta = s.item == 'passport' and { name = first .. ' ' .. last, birth = data.birthDate } or nil
     TacoV.Inventory.add(inv, s.item, s.amount, meta)
   end
   TacoV.Log.write('character', ('Charakter angelegt: %s %s (#%d)'):format(first, last, id),
@@ -86,6 +133,9 @@ function TacoV.Characters.select(source, characterId)
   if not p then return false, 'player' end
   local c = TacoV.DB.single('SELECT * FROM characters WHERE id = ? AND player_id = ? AND deleted_at IS NULL', { characterId, p.id })
   if not c then return false, 'character' end
+  local denied = nil
+  TriggerEvent('tacov:core:beforeSelect', source, c, function(reason) denied = reason end)
+  if denied then return false, denied end
   c.appearance = c.appearance and json.decode(c.appearance) or {}
   c.position = c.position and json.decode(c.position) or TacoV.Config.Onboarding.spawn
   c.needs = c.needs and json.decode(c.needs) or { hunger = 100, thirst = 100 }
@@ -165,6 +215,64 @@ CreateThread(function()
   end
 end)
 
+--- Charakter vollständig löschen (Name wird frei): Charakterzeile, Inventare, Konto, Fahrzeuge, Schlüssel, Führerscheine,
+--- Outfits, Wohnung, Neulingspfad, Erstattungen. Journal und Logs bleiben als Nachweis. Online → zurück zur Charakterauswahl.
+function TacoV.Characters.hardDelete(characterId, actorSrc)
+  local row = TacoV.DB.single('SELECT id, first_name, last_name, player_id FROM characters WHERE id = ?', { characterId })
+  if not row then return false, 'Charakter nicht gefunden.' end
+  local onlineSrc
+  for src, c in pairs(loaded) do if c.id == characterId then onlineSrc = src end end
+  if onlineSrc then
+    TacoV.Characters.unload(onlineSrc)
+    TriggerClientEvent('tacov:core:notify', onlineSrc, 'warn', 'Dein Charakter wurde gelöscht.')
+  end
+  TacoV.DB.update('DELETE FROM inventory_items WHERE owner_type = \'character\' AND owner_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM accounts WHERE owner_type = \'character\' AND owner_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM vehicle_keys WHERE character_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM vehicles WHERE owner_type = \'character\' AND owner_id = ?', { characterId })
+  for _, t in ipairs({ 'licenses', 'outfits', 'newbie_steps', 'refunds' }) do
+    TacoV.DB.update(('DELETE FROM %s WHERE character_id = ?'):format(t), { characterId })
+  end
+  local homes = TacoV.DB.query('SELECT id FROM homes WHERE character_id = ?', { characterId }) or {}
+  for _, h in ipairs(homes) do TacoV.DB.update('DELETE FROM inventory_items WHERE owner_type = \'house\' AND owner_id = ?', { h.id }) end
+  TacoV.DB.update('DELETE FROM homes WHERE character_id = ?', { characterId })
+  TacoV.DB.update('DELETE FROM characters WHERE id = ?', { characterId })
+  local actor = actorSrc and TacoV.Players.get(actorSrc)
+  TacoV.Log.write('character', ('Charakter gelöscht (vollständig): %s %s (#%d)'):format(row.first_name, row.last_name, characterId), { discordId = actor and actor.discordId })
+  if onlineSrc then
+    SetTimeout(1000, function() TriggerEvent('tacov:core:requestCharacters:for', onlineSrc) end)
+  end
+  return true
+end
+
+AddEventHandler('tacov:core:requestCharacters:for', function(src)
+  local p = TacoV.Players.get(src)
+  if not p then return end
+  TriggerClientEvent('tacov:core:characters', src, {
+    characters = TacoV.Characters.list(p.id),
+    maxSlots = TacoV.Config.Server.charactersPerPlayer,
+    secondSlotLevel = TacoV.Config.Server.secondCharacterLevel,
+    maxLevel = TacoV.Characters.maxLevel(p.id),
+    staffOnline = #TacoV.Players.staff(1),
+  })
+end)
+
+-- /charreset bestaetigen – eigenen Charakter vollständig löschen (Testphase: Onboarding.allowSelfDelete)
+RegisterCommand('charreset', function(src, args)
+  if src == 0 then return end
+  local c = loaded[src]
+  if not c then return end
+  if not TacoV.Config.Onboarding.allowSelfDelete and not TacoV.Permissions.has(src, 'admin.db') then
+    TriggerClientEvent('tacov:core:notify', src, 'error', 'Das Löschen des eigenen Charakters ist nicht freigeschaltet.')
+    return
+  end
+  if args[1] ~= 'bestaetigen' then
+    TriggerClientEvent('tacov:core:notify', src, 'warn', ('Wirklich %s %s komplett löschen? Dann: /charreset bestaetigen'):format(c.first_name, c.last_name))
+    return
+  end
+  TacoV.Characters.hardDelete(c.id, src)
+end, false)
+
 RegisterNetEvent('tacov:core:requestCharacters', function()
   local src = source
   local p = TacoV.Players.get(src)
@@ -185,9 +293,19 @@ RegisterNetEvent('tacov:core:selectCharacter', function(characterId)
   if not ok then TriggerClientEvent('tacov:core:notify', src, 'error', 'Charakter konnte nicht geladen werden: ' .. tostring(err)) end
 end)
 
+-- Charaktereditor in eigener Welt: solange ein Spieler ohne geladenen Charakter sein Aussehen erstellt, steht er in einem
+-- eigenen Routing-Bucket (niemand sieht ihn, niemand kann einwirken). Danach zurück in die gemeinsame Welt.
+local EDITOR_BUCKET = 20000
+RegisterNetEvent('tacov:core:editorWorld', function(on)
+  local src = source
+  if TacoV.Characters.get(src) then return end -- nur bei der Erstellung, nicht in Läden
+  SetPlayerRoutingBucket(src, on == true and (EDITOR_BUCKET + src) or 0)
+end)
+
 RegisterNetEvent('tacov:core:createCharacter', function(data)
   local src = source
   if type(data) ~= 'table' then return end
+  SetPlayerRoutingBucket(src, 0)
   local ok, res = TacoV.Characters.create(src, data)
   if ok then
     TacoV.Characters.select(src, res)

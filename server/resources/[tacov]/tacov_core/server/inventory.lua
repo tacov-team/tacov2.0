@@ -428,6 +428,7 @@ local function useSlot(source, slot)
   if type(def.use) == 'table' then
     for k, v in pairs(def.use) do TacoV.Needs.add(source, k, v) end
     TacoV.Inventory.takeSlot(inv, slot, 1)
+    TriggerEvent('tacov:newbie:step', source, 'eat')
     TriggerClientEvent('tacov:inventory:used', source, e.item)
     TacoV.Log.write('items', ('Benutzt: %s'):format(def.label), { characterId = inv.ownerId })
     return true
@@ -566,7 +567,11 @@ AddEventHandler('tacov:item:id_card', function(source)
   local c = TacoV.Characters.get(source)
   local target = TacoV.Players.nearest(source, 3.0)
   if not target then return TriggerClientEvent('tacov:core:notify', source, 'error', 'Niemand in der Nähe.') end
-  TriggerClientEvent('tacov:core:notify', target, 'info', ('Ausweis: %s %s, geboren %s'):format(c.first_name, c.last_name, tostring(c.birth_date)))
+  if Player(source).state.masked then
+    TriggerClientEvent('tacov:core:notify', target, 'info', 'Ausweis: Die Person ist maskiert – Gesicht und Ausweis passen nicht zuzuordnen.')
+  else
+    TriggerClientEvent('tacov:core:notify', target, 'info', ('Ausweis: %s %s, geboren %s'):format(c.first_name, c.last_name, tostring(c.birth_date)))
+  end
   TriggerClientEvent('tacov:core:notify', source, 'success', 'Ausweis gezeigt.')
 end)
 

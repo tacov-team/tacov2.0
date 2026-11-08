@@ -24,7 +24,7 @@ function useViewport() {
 function Stat({ icon, value }: { icon: string; value: number }) {
   const v = Math.max(0, Math.min(100, Math.round(value)));
   return (
-    <div className="stat shadow">
+    <div className="stat need shadow">
       <span className="c"><i style={{ height: `${100 - v}%` }} /><Icon name={icon} size={18} /></span>
       <span className="num">{v} %</span>
     </div>
@@ -61,7 +61,7 @@ export function Hud() {
   const h = state.hud;
   const now = useClock();
   const vp = useViewport();
-  const fullView = state.view && ['inventory', 'characters', 'bank', 'shop', 'garage', 'dealer'].includes(state.view.name);
+  const fullView = state.view && ['inventory', 'characters', 'bank', 'shop', 'garage', 'dealer', 'editor'].includes(state.view.name);
   if (!h.visible || fullView) return null;
   const time = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   const date = now.toLocaleDateString('de-DE');
@@ -81,7 +81,7 @@ export function Hud() {
           {h.black > 0 && <><span className="num" style={{ color: 'var(--black-money)' }}>{money(h.black)}</span><span className="coin black">S</span></>}
         </div>
         <div className="hud-stats">
-          <div className={'stat voice ' + (h.voice ?? 'normal')} title="Sprechweite"><span className="c"><Icon name="mic" size={15} /></span><span className="num">{h.voiceMeters ?? 10} m</span></div>
+          <div className={'stat voice ' + (h.megaphone ? 'shout' : (h.voice ?? 'normal'))} title={h.megaphone ? 'Megafon' : 'Sprechweite'}><span className="c"><Icon name={h.megaphone ? 'radio' : 'mic'} size={15} /></span><span className="num">{h.megaphone ? 'MEGA' : `${h.voiceMeters ?? 10} m`}</span></div>
           <Stat icon="food" value={h.hunger} />
           <Stat icon="drop" value={h.thirst} />
           {h.radioOn && <div className="stat"><span className="c" title="Funk an"><Icon name="radio" size={16} /></span></div>}
@@ -100,9 +100,13 @@ export function Hud() {
         <div><span className="b"><Icon name="briefcase" size={16} /></span><span>{h.faction || 'Zivilist'}{h.factionRank && <small>{h.factionRank}</small>}</span></div>
         <div><span className="b"><Icon name="clock" size={16} /></span><span className="num">{date}<small>{time} Uhr</small></span></div>
         {h.aduty && <div className="aduty"><span className="b"><Icon name="shield" size={16} /></span><span>Admin-Dienst<small>{h.aduty}</small></span></div>}
+        {(h.alcohol ?? 0) >= 0.5 && <div className="aduty notice"><span className="b"><Icon name="drop" size={16} /></span><span>Promille<small>{(h.alcohol ?? 0).toFixed(1)} ‰ – nicht fahren</small></span></div>}
+        {h.injury && <div className="aduty notice"><span className="b"><Icon name="heart" size={16} /></span><span>Verletzt<small>{h.injury === 'medium' ? 'mittel – Erste Hilfe oder LSMD' : 'leicht'}</small></span></div>}
+        {typeof h.downed === 'number' && <div className="aduty"><span className="b"><Icon name="heart" size={16} /></span><span>Bewusstlos<small>Koma in {Math.floor(h.downed / 60)}:{String(h.downed % 60).padStart(2, '0')} · Hilfe rufen</small></span></div>}
+        {h.notice && <div className="aduty notice"><span className="b"><Icon name="id" size={16} /></span><span>Hinweis<small>{h.notice}</small></span></div>}
       </div>
 
-      {h.vehicle && <Vehicle h={h} />}
+      {h.vehicle && state.view?.name !== 'phone' && <Vehicle h={h} />}
     </div>
   );
 }

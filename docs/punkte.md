@@ -1,6 +1,6 @@
 # TacoV · Entwicklungspunkte
 
-Stand: 07.11.2026. Der Phasenplan (`docs/phasenplan.md`) in einzelne Punkte zerlegt. **Ein Punkt = ein System**, wir arbeiten sie der Reihe nach ab, von vorn. Jeder Punkt wird erst „✅ abgenommen“, wenn der Betreiber ihn bestätigt hat – auch die bereits gebauten. Das Protokoll der Bestätigungen steht in `docs/entscheidungen.md`.
+Stand: 08.11.2026. Der Phasenplan (`docs/phasenplan.md`) in einzelne Punkte zerlegt. **Ein Punkt = ein System**, wir arbeiten sie der Reihe nach ab, von vorn. Jeder Punkt wird erst „✅ abgenommen“, wenn der Betreiber ihn bestätigt hat – auch die bereits gebauten. Das Protokoll der Bestätigungen steht in `docs/entscheidungen.md`.
 
 Status: ⬜ offen · 🔧 gebaut, noch nicht abgenommen · ✅ abgenommen · ⏸ zurückgestellt
 
@@ -118,28 +118,28 @@ Alles, was Team und Entwicklung brauchen, um Inhalte ohne Code-Änderung zu setz
 
 | Nr. | Punkt | Status | Inhalt / Abnahme |
 | --- | --- | --- | --- |
-| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | ⬜ | |
-| 6.2 | Kleiderläden und Outfits | ⬜ | |
-| 6.3 | Friseur, Tattoo, Chirurg | ⬜ | |
-| 6.4 | Ladebildschirm und Einreise mit Teammitglied | ⬜ | |
-| 6.5 | Neulingspfad und Sozialwohnung (Grundlage) | ⬜ | |
-| 6.6 | Animationsmenü (F3) | ⬜ | Betreiber 08.11.: Animationen müssen hinzugefügt werden (eigene Animationen, kein dpemotes) |
-| 6.7 | Voice (SaltyChat): Sprechweiten 3/10/25 m, HUD-Anzeige, Megafon | ⬜ | |
-| 6.8 | Verletzungen und Erste Hilfe | ⬜ | |
-| 6.9 | Fitness und Promille | ⬜ | |
+| 6.1 | Charaktereditor (Gesicht, Haare, Farben) | ✅ | Nach Name/Geburtsdatum öffnet der Editor **in eigener Welt** (Routing-Bucket je Spieler – niemand sieht oder stört; erst „Charakter anlegen“ setzt ihn an den Flughafen, den er bis zur Einreise nicht verlässt) (Figur in der Ankunftshalle, Kamera Gesicht/Körper, ←/→ drehen): Geschlecht, Eltern (46 Vorlagen), Ähnlichkeit/Hautton, Augenfarbe, 20 Gesichtszüge, Frisur/Farbe/Strähnen, Bart/Brauen/Brustbehaarung, Alterung/Teint/Sonne/Sommersprossen/Hautunreinheiten, Make-up/Rouge/Lippenstift, Zufall; gespeichert in `appearance`, beim Laden angewendet |
+| 6.2 | Kleiderläden und Outfits | ✅ | 15 Läden (Konzept-Orte): Editor-Reiter Kleidung (Oberteil, Unterhemd, Arme, Hose, Schuhe, Weste, Tasche, Maske, Aufdruck) und Zubehör (Accessoire, Hut, Brille, Ohrringe, Uhr, Armband) mit Varianten und Live-Preis – nur Geändertes wird berechnet (Preise je Kategorie, Config `Clothing.prices`), Karte/Bar; 10 Outfits je Charakter (nur im Laden und am Kleiderschrank der Wohnung); Maske → Ausweis nicht zuzuordnen; Tabelle `outfits` (Migration 018) |
+| 6.3 | Friseur, Tattoo, Chirurg | ✅ | Friseur (7 Orte): Reiter Haare/Details, Preis je geänderter Kategorie (Frisur 40, Bart 20, Brauen 15, Make-up 25 …); Chirurg Pillbox: Herkunft/Gesicht für 5.000 $ einmal je 30 Tage; Tattoo-Studios (6 Orte): Reiter Tattoos mit 48 Motiven (Beach, Business, Lowrider, Biker, Hipster; M/F-Varianten), Vorschau beim Anklicken, nur neue Tattoos kosten (180–300 $), Entfernen kostenlos |
+| 6.4 | Ladebildschirm und Einreise mit Teammitglied | ✅ | Eigener Ladebildschirm (Logo, Fortschritt, wechselnde Tipps, Hintergrundmusik als unsichtbares YouTube-Video in Schleife – Video-ID und Lautstärke oben in `loadscreen/index.html` (`MUSIC`), M oder Klick schaltet stumm); neuer Charakter hat nur Reisepass und bleibt im Umkreis der Ankunftshalle (140 m, sanfte Rückführung, HUD-Hinweis); Team-Menü → Einreise: Warteschlange, hingehen/holen, bestanden (Ausweis, 5.000 $, Handy, Wohnungsschlüssel, Busticket, Stadtplan) oder nicht bestanden mit Grund (Rückflug = Kick, Charakter 24 h gesperrt); Recht `immigration` |
+| 6.5 | Neulingspfad und Sozialwohnung (Grundlage) | ✅ | Sozialwohnung mit der Einreise (Tabelle `homes`): Haustür Vespucci (Ort `social_housing`, verschiebbar), eigene Instanz je Mieter (Routing-Bucket), drinnen Ausgang, Lager 20 kg, Kleiderschrank (Outfits); 14 Tage frei, danach 300 $/Woche vom Konto, offen → beim Betreten fällig; Neulingspfad: 10 Schritte mit Bonus (F4 → Aktionen), Schritte Wohnung/Führerschein/Kaufhaus/Bank/Kleidung/Essen/Level 3 melden sich automatisch, Job/Notruf/Fraktion folgen mit ihren Phasen |
+| 6.6 | Animationsmenü (F3) | ✅ | 47 eigene Einträge in 6 Kategorien (Begrüßung/Gesten, Haltung, Sitzen/Liegen, Tanzen, Arbeit, Alltag) aus Grundspiel-Animationen und Szenarien; Favoriten oben (lokal gespeichert); Gesten laufen beim Gehen weiter, Ganzkörper endet bei Bewegung; F3 oder `/stopanim` beendet |
+| 6.7 | Voice (SaltyChat): Sprechweiten 3/10/25 m, HUD-Anzeige, Megafon | ✅ | Sprechweite per Z, der Server setzt die Stufe über SaltyChats Export `SetPlayerVoiceRange` (kein Client-Statebag, kein Echo), HUD folgt `SaltyChat_VoiceRangeChanged`; SaltyChat-Tasten über `tools/vps/salty-config.sh` (eigener Umschalter ohne Taste), `/voicetest` zur Diagnose; Megafon: Alt halten in Einsatzfahrzeugen (Klasse 18, vorne) über `SaltyChat_IsUsingMegaphone`, HUD zeigt MEGA; Telefon/Funk folgen in Phase 7 |
+| 6.8 | Verletzungen und Erste Hilfe | ✅ | Bodyshot (keine kritischen Treffer); leicht < 150 HP (Hinweis), mittel < 90 HP (Humpeln, HUD), bewusstlos statt Tod: liegt 15 min mit Timer im HUD, Eingaben gesperrt, Statebag `downed`; Verband +25, Erste-Hilfe-Kit +60 bzw. am Bewusstlosen +10 min (E „Erste Hilfe leisten“); Koma → Pillbox-Bett, Bargeld weg, 500 $ Krankenhaus (auch ins Minus), 5 min Ruhe; Team-Heilen belebt wieder; LSMD-Wiederbelebung in Phase 8 |
+| 6.9 | Fitness und Promille | ✅ | Muscle Sands: 4 Stationen (E, 30 s Einheit, +1 %, 2 min Pause je Station), Energydrink +2 %, −1 % je Tag ohne Training; bis 8 % schneller und mehr Ausdauer; Promille: Bier +0,2, Schnaps +0,5, −0,1 je 10 min; ab 0,5 ‰ Torkeln, Kameraeffekt, Fahrzeug zieht, HUD-Hinweis; Atemtest kommt mit LSPD (Phase 8) |
 
 ## Phase 7 · Handy und Funk
 
-| Nr. | Punkt | Status |
-| --- | --- | --- |
-| 7.1 | Handy-Item, Nummer, Grundgerüst der Oberfläche | ⬜ |
-| 7.2 | Kontakte und Anrufe | ⬜ |
-| 7.3 | Nachrichten (SMS, Standort, Gruppen) | ⬜ |
-| 7.4 | Bank-App | ⬜ |
-| 7.5 | Fahrzeuge-App | ⬜ |
-| 7.6 | Einstellungen | ⬜ |
-| 7.7 | Funkgerät und Funk-App, Funkliste im HUD | ⬜ |
-| 7.8 | Notruf, Fraktion, Firma, Kamera, Feed | ⬜ (mit den jeweiligen Phasen) |
+| Nr. | Punkt | Status | Details |
+| --- | --- | --- | --- |
+| 7.1 | Handy-Item, Nummer, Grundgerüst der Oberfläche | ✅ | Handy (300 $, Elektronikladen) als Item; F1 öffnet nur, wenn es im eigenen Inventar liegt (Beschlagnahme = Sperre); vierstellige Nummer je Charakter (zufällig bei Erstauswahl, Wunschnummer nur per Ticket: `/nummer <ID> <4-stellig>`); Gerät unten rechts in iPhone-Optik; ohne Mauszeiger läuft das Spiel normal weiter (laufen, F1 weglegen – auch im Gespräch), **Alt** schaltet den Zeiger ein/aus, mit Zeiger kann man weiterlaufen, nur Umschauen geht nicht; bei Koma geht das Handy verloren; Flugmodus macht unerreichbar |
+| 7.2 | Kontakte und Anrufe | ✅ | Kontakte anlegen/umbenennen/Favorit/löschen, Nummern tauschen über das X-Rad („Nummer tauschen“, ≤ 3 m); Wähltastatur; Anrufe klingeln 20 s (Ton, Handy öffnet sich), annehmen/auflegen, Gespräch über SaltyChat `EstablishCall`; Anrufliste in `phone_calls` |
+| 7.3 | Nachrichten (SMS, Standort) | ✅ | Unterhaltungen je Nummer, ungelesen als Badge auf der App, SMS-Ton und Hinweis; Standort senden → Empfänger setzt Wegpunkt; Gruppen (bis 8) folgen mit dem Fraktionsteil |
+| 7.4 | Bank-App | ✅ | Kontostand und letzte Buchungen, Überweisung an Nummer (Journal `ueberweisung`), Rechnung stellen/bezahlen (`invoices`) |
+| 7.5 | Fahrzeuge-App | ✅ | Eigene Fahrzeuge mit Zustand, Garage, Tank, Kilometer; „Orten“ setzt Wegpunkt auf das ausgeparkte Fahrzeug; Schlüssel mit Nummer teilen |
+| 7.6 | Einstellungen | ✅ | Klingelton (3), Flugmodus, Bedürfnisse als Zahl an/aus, HUD-Größe 90/100/110 % – lokal gespeichert, wirkt sofort |
+| 7.7 | Funkgerät und Funk-App, Funkliste im HUD | ✅ | Funkgerät (250 $) schaltet die Funk-App frei; Frequenzen 1–999, 1–10 nur Fraktionen; Sprechen über SaltyChats eigene Funk-Taste; Teilnehmerliste im Handy und im HUD, Sprecher leuchten (`SaltyChat_RadioTrafficStateChanged` → Statebag `radioTalking`) |
+| 7.8 | Notruf, Fraktion, Firma, Kamera, Feed | ⬜ | mit den jeweiligen Phasen |
 
 ## Phase 8 · Jobs, Lohn, Steuern
 

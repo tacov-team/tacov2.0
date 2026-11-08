@@ -133,6 +133,7 @@ RegisterNetEvent('tacov:admin:heal', function(target)
   target = tonumber(target)
   if not TacoV.Players.get(target) then return end
   TriggerClientEvent('tacov:admin:healed', target)
+  TriggerEvent('tacov:health:adminHeal', target)
   if TacoV.Characters.get(target) then
     TacoV.Needs.add(target, 'hunger', 100)
     TacoV.Needs.add(target, 'thirst', 100)
@@ -289,6 +290,15 @@ RegisterNetEvent('tacov:admin:vehicle', function(action, netId, a, b)
   log(src, ('Fahrzeug %s: %s%s'):format(plate, action, a and (' ' .. tostring(a)) or ''))
   if action == 'repair' then notify(src, 'success', ('%s repariert.'):format(plate)) end
   if action == 'fuel' then notify(src, 'success', ('%s vollgetankt.'):format(plate)) end
+end)
+
+RegisterNetEvent('tacov:admin:chardelete', function(target)
+  local src = source
+  if not need(src, 'admin.db') then return end
+  local c = TacoV.Characters.get(tonumber(target) or 0)
+  if not c then notify(src, 'error', 'Spieler hat keinen Charakter geladen.') return end
+  local okDel, err = TacoV.Characters.hardDelete(c.id, src)
+  notify(src, okDel and 'success' or 'error', okDel and 'Charakter vollständig gelöscht.' or tostring(err))
 end)
 
 -- Befehle
