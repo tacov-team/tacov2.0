@@ -12,7 +12,7 @@ TacoV.Config.DMV = {
     -- je Führerschein: Preis, Wiederholung, Prüfungsfahrzeug, Strecke (Nummer in routes)
     B = { label = 'Führerschein B (PKW)',      price = 500, retry = 100, vehicle = 'blista', route = 'city' },
     A = { label = 'Führerschein A (Motorrad)', price = 350, retry = 100, vehicle = 'pcj',    route = 'city' },
-    C = { label = 'Führerschein C (LKW)',      price = 800, retry = 100, vehicle = 'speedo', route = 'truck' },
+    C = { label = 'Führerschein C (LKW)',      price = 800, retry = 100, vehicle = 'mule',   route = 'truck' },
     theoryQuestions = 8,     -- Fragen je Prüfung (zufällig aus der Liste)
     theoryPass = 7,          -- richtige Antworten zum Bestehen
     speedLimit = 70,         -- km/h innerorts auf der Prüfstrecke

@@ -179,6 +179,11 @@ RegisterNetEvent('tacov:dmv:practice:start', function(d)
   Entity(veh).state:set('engine', true, true)
   TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
   SetVehicleEngineOn(veh, true, true, false)
+  -- Kontrollpunkte auf den nächsten befahrbaren Straßenpunkt legen (Config-Punkte können neben der Fahrbahn liegen)
+  for _, p in ipairs(d.points) do
+    local ok, node = GetClosestVehicleNode(p.x, p.y, p.z, 1, 3.0, 0)
+    if ok and #(node - vector3(p.x, p.y, p.z)) < 40.0 then p.x, p.y, p.z = node.x, node.y, node.z end
+  end
   exam = { veh = veh, points = d.points, idx = 1, speedLimit = d.speedLimit, tolerance = d.tolerance, maxDamage = d.maxDamage,
     deadline = GetGameTimer() + d.timeLimit * 1000, radius = d.radius, overspeedSince = nil }
   setBlip()
@@ -208,7 +213,7 @@ RegisterNetEvent('tacov:dmv:practice:start', function(d)
         TriggerServerEvent('tacov:dmv:practice:fail', 'Zeit überschritten'); clearExam(); break
       end
       if p and #(GetEntityCoords(veh) - vector3(p.x, p.y, p.z)) <= exam.radius then
-        TriggerServerEvent('tacov:dmv:practice:checkpoint', exam.idx)
+        TriggerServerEvent('tacov:dmv:practice:checkpoint', exam.idx, p.x, p.y, p.z)
         exam.idx = exam.idx + 1
         if exam.points[exam.idx] then
           setBlip()

@@ -135,33 +135,6 @@ end)
 
 -- ---------------------------------------------------------------- Stationen mit Aktionszeit
 
-local function doAction(label, seconds, scenario, cb)
-  if busy then return end
-  busy = true
-  local ped = PlayerPedId()
-  if scenario then TaskStartScenarioInPlace(ped, scenario, 0, true) end
-  local t0 = GetGameTimer()
-  CreateThread(function()
-    while GetGameTimer() - t0 < seconds * 1000 do
-      Wait(100)
-      local p = PlayerPedId()
-      local frac = (GetGameTimer() - t0) / (seconds * 1000)
-      TacoV.UI.send('hint', { key = '…', text = label, progress = frac })
-      if IsPedInAnyVehicle(p, false) or GetEntityHealth(p) <= 100 or (not scenario and (IsPedRunning(p) or IsPedSprinting(p))) then
-        ClearPedTasks(p)
-        busy = false
-        TacoV.UI.send('hint', nil)
-        notify('warn', 'Abgebrochen.')
-        return
-      end
-    end
-    ClearPedTasks(PlayerPedId())
-    busy = false
-    TacoV.UI.send('hint', nil)
-    cb()
-  end)
-end
-
 local function loadAnim(dict)
   RequestAnimDict(dict)
   local t = GetGameTimer()
@@ -175,12 +148,53 @@ local function spawnCarried(model)
   local pos = GetEntityCoords(PlayerPedId())
   return CreateObject(hash, pos.x, pos.y, pos.z, true, true, false)
 end
+local TOOL_PROP = { chop = 'prop_tool_fireaxe', mine = 'prop_tool_pickaxe' }
+local toolObj = nil
+local function startToolAnim(ped, kind)
+  loadAnim('melee@large_wpn@streamed_core')
+  toolObj = spawnCarried(TOOL_PROP[kind])
+  AttachEntityToEntity(toolObj, ped, GetPedBoneIndex(ped, 57005), 0.1, 0.0, 0.0, 0.0, -90.0, 0.0, true, true, false, true, 1, true)
+  TaskPlayAnim(ped, 'melee@large_wpn@streamed_core', 'ground_attack_on_spot', 8.0, -8.0, -1, 1, 0.0, false, false, false)
+end
+local function stopToolAnim()
+  if toolObj then if DoesEntityExist(toolObj) then DeleteEntity(toolObj) end toolObj = nil end
+end
+
+local function doAction(label, seconds, scenario, cb, toolKind)
+  if busy then return end
+  busy = true
+  local ped = PlayerPedId()
+  if toolKind then startToolAnim(ped, toolKind) elseif scenario then TaskStartScenarioInPlace(ped, scenario, 0, true) end
+  local t0 = GetGameTimer()
+  CreateThread(function()
+    while GetGameTimer() - t0 < seconds * 1000 do
+      Wait(100)
+      local p = PlayerPedId()
+      local frac = (GetGameTimer() - t0) / (seconds * 1000)
+      TacoV.UI.send('hint', { key = '…', text = label, progress = frac })
+      if IsPedInAnyVehicle(p, false) or GetEntityHealth(p) <= 100 or (not scenario and not toolKind and (IsPedRunning(p) or IsPedSprinting(p))) then
+        ClearPedTasks(p)
+        stopToolAnim()
+        busy = false
+        TacoV.UI.send('hint', nil)
+        notify('warn', 'Abgebrochen.')
+        return
+      end
+    end
+    ClearPedTasks(PlayerPedId())
+    stopToolAnim()
+    busy = false
+    TacoV.UI.send('hint', nil)
+    cb()
+  end)
+end
+
 -- Stamm (Holzfäller): mit beiden Händen vor dem Körper
 local function carryLog()
   local ped = PlayerPedId()
   loadAnim('anim@heists@box_carry@')
-  carrying = spawnCarried('prop_log_01')
-  AttachEntityToEntity(carrying, ped, GetPedBoneIndex(ped, 60309), 0.05, 0.1, -0.25, 0.0, 90.0, 0.0, true, true, false, true, 1, true)
+  carrying = spawnCarried('prop_log_05')
+  AttachEntityToEntity(carrying, ped, GetPedBoneIndex(ped, 60309), 0.0, 0.25, -0.1, 0.0, 90.0, 0.0, true, true, false, true, 1, true)
   TaskPlayAnim(ped, 'anim@heists@box_carry@', 'idle', 8.0, -8.0, -1, 50, 0.0, false, false, false)
 end
 -- Müllsack (Müllabfuhr): in der rechten Hand, Müllmann-Animation
@@ -192,21 +206,53 @@ local function carryBag()
   TaskPlayAnim(ped, 'missfbi4prepp1', '_idle_garbage_man', 8.0, -8.0, -1, 49, 0.0, false, false, false)
 end
 
--- Markierung am aktuellen Punkt (Container, Adresse, Baum, Erzader), solange man zu Fuß in der Nähe ist
+-- Punkt auf das nächste echte Objekt legen (Mülltonne, Haltestellenschild, Baum); Haltestellen notfalls auf die Straße.
+-- Objekte sind nur in der Nähe geladen, darum erst, wenn der Spieler nah genug ist.
+local function snapPoint(s)
+  if s.snapped or not s.x then return end
+  local models = R.snap[s.kind]
+  if not models then s.snapped = true return end
+  local origin = vector3(s.x, s.y, s.z)
+  local best, bestD = nil, nil
+  for _, m in ipairs(models) do
+    local obj = GetClosestObjectOfType(s.x, s.y, s.z, R.snapRadius, GetHashKey(m), false, false, false)
+    if obj ~= 0 then
+      local p = GetEntityCoords(obj)
+      local d = #(p - origin)
+      if not bestD or d < bestD then best, bestD = p, d end
+    end
+  end
+  if best then
+    s.x, s.y, s.z = best.x, best.y, best.z
+  elseif s.kind == 'stop' then
+    local ok, node = GetClosestVehicleNode(s.x, s.y, s.z, 1, 3.0, 0)
+    if ok then s.x, s.y, s.z = node.x, node.y, node.z end
+  end
+  s.snapped = true
+  setTarget(s)
+end
+
+-- Markierung am aktuellen Punkt, solange man in der Nähe ist
 CreateThread(function()
   while true do
     local st = TacoV.Jobs.state
     local s = st and st.current
-    if s and s.x and not IsPedInAnyVehicle(PlayerPedId(), false) and #(GetEntityCoords(PlayerPedId()) - vector3(s.x, s.y, s.z)) < 60.0 then
-      DrawMarker(1, s.x, s.y, s.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 139, 92, 246, 110, false, false, 2, false, nil, nil, false)
-      Wait(0)
+    if s and s.x then
+      local dist = #(GetEntityCoords(PlayerPedId()) - vector3(s.x, s.y, s.z))
+      if not s.snapped and dist < 150.0 then snapPoint(s) end
+      if dist < 60.0 then
+        DrawMarker(1, s.x, s.y, s.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 139, 92, 246, 110, false, false, 2, false, nil, nil, false)
+        Wait(0)
+      else
+        Wait(500)
+      end
     else
       Wait(500)
     end
   end
 end)
 
-local SCENARIO = { trash = 'PROP_HUMAN_BUM_BIN', deliver = nil, chop = 'WORLD_HUMAN_HAMMERING', mine = 'WORLD_HUMAN_HAMMERING' }
+local SCENARIO = { trash = 'PROP_HUMAN_BUM_BIN', deliver = nil }
 
 TacoV.Prompt.register({ id = 'jobstep', label = 'Station', order = 6,
   when = function()
@@ -238,7 +284,7 @@ TacoV.Prompt.register({ id = 'jobstep', label = 'Station', order = 6,
       if s.kind == 'chop' then carryLog() end
       if s.kind == 'trash' then carryBag() end
       TriggerServerEvent('tacov:jobs:step', { kind = s.kind })
-    end)
+    end, (s.kind == 'chop' or s.kind == 'mine') and s.kind or nil)
   end })
 -- Hinweis zur Station zeigt den Stationsnamen statt „Station“
 CreateThread(function()
@@ -275,7 +321,7 @@ CreateThread(function()
       local bus = GetVehiclePedIsIn(ped, false)
       local s = st.current
       if bus ~= 0 and GetPedInVehicleSeat(bus, -1) == ped and TacoV.Vehicles.plateOf(bus) == st.plate
-        and #(GetEntityCoords(bus) - vector3(s.x, s.y, s.z)) < 10.0 and GetEntitySpeed(bus) < 0.5 then
+        and #(GetEntityCoords(bus) - vector3(s.x, s.y, s.z)) < 14.0 and GetEntitySpeed(bus) < 0.5 then
         busy = true
         -- Fahrgäste aussteigen lassen (die, die schon länger drin sind), neue einsteigen lassen
         for i = #passengers, 1, -1 do
@@ -390,6 +436,6 @@ function TacoV.Jobs.findFare() TriggerServerEvent('tacov:jobs:taxi:npc') end
 
 AddEventHandler('onResourceStop', function(res)
   if res ~= GetCurrentResourceName() then return end
-  dropLog()
+  dropLog() stopToolAnim()
   for _, p in ipairs(passengers) do if DoesEntityExist(p.ped) then DeleteEntity(p.ped) end end
 end)

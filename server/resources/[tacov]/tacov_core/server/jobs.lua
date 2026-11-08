@@ -19,7 +19,9 @@ local function near(src, p, r) return #(pedPos(src) - vector3(p.x, p.y, p.z)) <=
 
 local function pointsOf(kind)
   local out = {}
-  for _, l in ipairs(TacoV.Locations.all()) do if l.kind == kind then out[#out + 1] = l end end
+  for _, l in ipairs(TacoV.Locations.all()) do
+    if l.kind == kind or (kind == 'shop' and l.kind == 'address') then out[#out + 1] = l end
+  end
   return out
 end
 local function jobLocation(job)
@@ -85,6 +87,9 @@ local function stepsFor(job)
     steps[#steps + 1] = { kind = 'return', label = 'Zurück zum Müllhof', x = hof.x, y = hof.y, z = hof.z, needVehicle = true, pay = J.garbage.pay, note = 'Müllroute' }
   elseif job == 'delivery' then
     local n = math.random(R.deliveryMin, R.deliveryMax)
+    local nearby = {}
+    for _, p in ipairs(pts) do if #(vector3(p.x, p.y, p.z) - vector3(hof.x, hof.y, hof.z)) <= 3000.0 then nearby[#nearby + 1] = p end end
+    if #nearby >= n then pts = nearby end
     for i, p in ipairs(shuffle(pts, n)) do steps[#steps + 1] = { kind = 'deliver', label = ('Paket %d/%d abgeben'):format(i, n), x = p.x, y = p.y, z = p.z, needVehicle = true } end
     local lo, hi = J.delivery.pay[1], J.delivery.pay[2]
     local payAmt = lo + (hi - lo) * (n - R.deliveryMin) / math.max(1, R.deliveryMax - R.deliveryMin)
@@ -244,7 +249,8 @@ RegisterNetEvent('tacov:jobs:step', function(d)
   if not a or not c or type(d) ~= 'table' then return end
   local s = a.steps[a.step]
   if not s or d.kind ~= s.kind then return end
-  if s.x and not near(src, s, R.pointRadius + 4.0) then notify(src, 'error', 'Du bist nicht am richtigen Punkt.') return end
+  local snapped = R.snap[s.kind] ~= nil -- Punkt darf im Spiel auf das nächste echte Objekt gesprungen sein
+  if s.x and not near(src, s, snapped and (R.snapRadius + 10.0) or (R.pointRadius + 4.0)) then notify(src, 'error', 'Du bist nicht am richtigen Punkt.') return end
   if s.needVehicle and not vehicleNear(src, a, (s.kind == 'return' or s.farVehicle) and 40.0 or R.vehicleRadius) then
     notify(src, 'error', 'Dein Firmenfahrzeug muss dabei sein.') return
   end
@@ -290,10 +296,13 @@ RegisterNetEvent('tacov:jobs:taxi:npc', function()
   if not a or a.job ~= 'taxi' then return end
   if a.fares.npc then notify(src, 'info', 'Du hast schon einen Fahrgast.') return end
   if not drivingJobVehicle(src, a) then notify(src, 'error', 'Setz dich erst ins Taxi.') return end
-  local pts = pointsOf('address')
+  local pts = pointsOf('shop')
   local me = pedPos(src)
   local far = {}
-  for _, p in ipairs(pts) do if #(me - vector3(p.x, p.y, p.z)) > 300.0 then far[#far + 1] = p end end
+  for _, p in ipairs(pts) do
+    local d = #(me - vector3(p.x, p.y, p.z))
+    if d > 300.0 and d < 4000.0 then far[#far + 1] = p end
+  end
   if #far < 2 then return end
   local pick = shuffle(far, 2)
   a.fares.npc = { pickup = pick[1], dest = pick[2], at = os.time() }

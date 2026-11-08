@@ -1,6 +1,7 @@
 -- Jobs (Phase 8, Konzept 3.2): Jobcenter, Ansprechpartner je Job, Firmenfahrzeuge, Routenpunkte.
 -- Löhne, Obergrenzen und Führerschein-Pflicht stehen in config/economy.lua (TacoV.Config.Jobs); hier der Ablauf.
 -- Alle Punkte sind Orte (Arten jobcenter, job, trash, busstop, address, tree, ore) und mit dem Orte-Creator verschiebbar.
+-- Container, Haltestellen und Bäume werden im Spiel auf das nächste echte Objekt (Mülltonne, Haltestellenschild, Baum) gelegt.
 TacoV = TacoV or {}
 TacoV.Config = TacoV.Config or {}
 
@@ -15,14 +16,23 @@ TacoV.Config.JobRules = {
   taxiMaxSpeed = 45.0,        -- m/s, Plausibilitätsgrenze für gemeldete Strecke
   busWaitSeconds = 4,         -- Halt an der Haltestelle
   tools = { lumber = 'axe', mining = 'pickaxe' },
+  snapRadius = 120.0,         -- so weit darf ein Punkt im Spiel auf das nächste echte Objekt springen
+  snap = {                    -- Objekt-Modelle je Punktart
+    trash = { 'prop_dumpster_01a', 'prop_dumpster_02a', 'prop_dumpster_02b', 'prop_dumpster_3a', 'prop_dumpster_4a', 'prop_dumpster_4b',
+      'prop_bin_01a', 'prop_bin_05a', 'prop_bin_07a', 'prop_bin_08a', 'prop_bin_10a', 'prop_bin_11a', 'prop_bin_14a', 'prop_cs_bin_01' },
+    stop = { 'prop_busstop_02', 'prop_busstop_04', 'prop_busstop_05', 'prop_bus_stop_sign' },
+    chop = { 'prop_tree_pine_01', 'prop_tree_pine_02', 'prop_tree_cedar_02', 'prop_tree_cedar_03', 'prop_tree_cedar_04', 'prop_tree_cedar_s_01',
+      'prop_tree_cedar_s_04', 'prop_tree_cedar_s_05', 'prop_tree_cedar_s_06', 'prop_s_pine_dead_01', 'prop_w_r_cedar_01', 'prop_w_r_cedar_dead',
+      'prop_tree_fallen_pine_01', 'test_tree_cedar_trunk_001', 'test_tree_forest_trunk_01', 'test_tree_forest_trunk_04' },
+  },
   orePerTrip = 5, logsPerTrip = 4, trashPerRoute = 8, busStops = 10, deliveryMin = 3, deliveryMax = 5,
 }
 
 TacoV.Config.JobDetails = {
   garbage  = { icon = 'box',  vehicle = 'trash',   points = 'trash',   desc = 'Route mit 8 Containern, Müllwagen vom Hof' },
-  delivery = { icon = 'box',  vehicle = 'speedo',  points = 'address', desc = 'Pakete vom Depot an 3–5 Adressen' },
+  delivery = { icon = 'box',  vehicle = 'speedo',  points = 'shop',    desc = 'Pakete vom Depot an 3–5 Läden' },
   bus      = { icon = 'car',  vehicle = 'bus',     points = 'busstop', desc = 'Linie mit 10 Haltestellen' },
-  taxi     = { icon = 'car',  vehicle = 'taxi',    points = 'address', desc = 'Fahrgäste nach Taxameter' },
+  taxi     = { icon = 'car',  vehicle = 'taxi',    points = 'shop',    desc = 'Fahrgäste nach Taxameter' },
   lumber   = { icon = 'leaf', vehicle = 'bison',   points = 'tree',    desc = 'Bäume fällen, Stämme zum Sägewerk', tool = 'axe' },
   mining   = { icon = 'tool', vehicle = nil,       points = 'ore',     desc = 'Erz abbauen, an den Händler verkaufen', tool = 'pickaxe' },
 }
@@ -52,10 +62,8 @@ local stops = { { -1037.1, -2731.0, 20.2 }, { -872.4, -2322.5, 13.9 }, { -1185.4
   { -523.4, -652.0, 33.3 }, { -210.3, -824.0, 31.0 }, { 65.4, -1010.5, 29.4 }, { 238.1, -1275.6, 29.3 }, { 408.4, -1067.5, 29.3 } }
 for i, p in ipairs(stops) do loc({ name = 'busstop_' .. i, kind = 'busstop', label = 'Haltestelle ' .. i, x = p[1], y = p[2], z = p[3] }) end
 
--- Lieferadressen (Pool; auch Taxi-Ziele für NPC-Fahrgäste)
-local addresses = { { -1151.5, -1523.6, 10.6 }, { -14.2, -1441.0, 31.1 }, { 1221.3, -690.1, 60.8 }, { 987.2, -480.3, 63.7 }, { -1120.4, -1562.0, 4.4 },
-  { 128.9, -1298.4, 29.2 }, { -814.0, 178.5, 72.2 }, { 345.2, -125.9, 64.9 }, { 1274.0, -1711.8, 54.7 }, { -1573.5, -411.6, 42.4 },
-  { 213.6, -1649.3, 29.8 }, { 1336.5, -1555.3, 54.9 } }
+-- Zusätzliche Adressen (Pool neben den Läden; auch Taxi-Ziele) – per Orte-Creator ergänzen, Art „address“
+local addresses = {}
 for i, p in ipairs(addresses) do loc({ name = 'address_' .. i, kind = 'address', label = 'Adresse ' .. i, x = p[1], y = p[2], z = p[3] }) end
 
 -- Bäume (Wald hinter dem Sägewerk Paleto)

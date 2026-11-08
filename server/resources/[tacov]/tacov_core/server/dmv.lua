@@ -222,12 +222,15 @@ RegisterNetEvent('tacov:dmv:theory:answer', function(answer)
 end)
 
 -- Client meldet erreichten Kontrollpunkt (Server prüft die Position)
-RegisterNetEvent('tacov:dmv:practice:checkpoint', function(n)
+RegisterNetEvent('tacov:dmv:practice:checkpoint', function(n, sx, sy, sz)
   local src = source
   local e = exams[src]
   if not e or e.stage ~= 'practice' or tonumber(n) ~= e.point then return end
   local p = e.route.points[e.point]
-  if #(GetEntityCoords(GetPlayerPed(src)) - vector3(p.x, p.y, p.z)) > Cfg.school.checkpointRadius + 6.0 then return end
+  -- der Client darf den Punkt auf die nächste Straße verschoben haben (höchstens 40 m vom Config-Punkt)
+  local target = vector3(p.x, p.y, p.z)
+  if tonumber(sx) and #(vector3(sx + 0.0, sy + 0.0, sz + 0.0) - target) <= 40.0 then target = vector3(sx + 0.0, sy + 0.0, sz + 0.0) end
+  if #(GetEntityCoords(GetPlayerPed(src)) - target) > Cfg.school.checkpointRadius + 6.0 then return end
   e.point = e.point + 1
   if e.point > #e.route.points then
     local c = TacoV.Characters.get(src)
