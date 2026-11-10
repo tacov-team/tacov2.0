@@ -68,6 +68,9 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 | `config/health.lua`, `client/health.lua`, `server/health.lua` | Verletzungen (6.8): Stufen, Bewusstlos (Timer, `dead_a`-Animation, Eingabesperre), Koma (Server bucht Bargeld/Gebühr, Log `medic`), Items `bandage`/`first_aid` (`tacov:health:heal`), `TacoV.Health.revive(target)` (Server) für LSMD/Team |
 | `config/phone.lua`, `client/phone.lua`, `server/phone.lua` | Handy und Funk (Phase 7): Nummern (`characters.phone_number`), Kontakte, Anrufe über SaltyChat `EstablishCall/EndCall`, Nachrichten, Bank-/Fahrzeuge-App, Einstellungen, Funkfrequenzen (`tacov:radio:set/state`, Statebag `radioTalking`); UI-Aktionen `tacov:ui:phone:<app>:<aktion>` → `tacov:phone:<app>:<aktion>`; Hook `tacov:health:comaItems` nimmt das Handy |
 | `config/factions.lua`, `client/factions.lua`, `server/factions.lua` | Fraktionen (9.1–9.3): `TacoV.Factions.get/of/has(src, right)/isOnDuty/join/leave/rankName`, Rechte je Rang (`faction_ranks`), Kasse (Konto `faction`), Lager über `Inventory.openContainer` mit `allow`-Hook, Dienst (Statebag `duty`, Event `tacov:factions:duty`), Fahrzeuge (Statebag `faction` am Fahrzeug → Schlüssel), Umkleide, Einladungen, Team-Verwaltung (`tacov:factions:admin`); Client-Event `tacov:core:characterUpdated` |
+| `config/lspd.lua`, `client/police.lua`, `server/police.lua` | LSPD (9.4–9.6): `TacoV.Police.officer(src, minRank)`, Statebags `cuffed`, `escort`, `jailed`; Maßnahmen `tacov:police:*`, Haft (`characters.jail_seconds`), Beschlagnahme (`TacoV.Vehicles.seize`, `vehicles.seized_fee`), MDT `tacov:mdt:*` → UI-Ansicht `mdt`; Fraktionsmenü-Zusätze über `TacoV.Factions.extras[id]` |
+| `client/dispatch.lua`, `server/dispatch.lua` | Dispatch (9.5): `TacoV.Dispatch.create(faction, kind, text, x, y, caller)`, Notruf-App (`tacov:phone:emergency:call`), Schuss- und Blitzermeldung, Einsatzliste, Statebag `unitStatus` |
+| `client/weapons.lua`, `server/weapons.lua` | Waffen-Grundlage: Item benutzen = ziehen/wegstecken (`TacoV.Weapons.clear/holding`), Munition aus Items (`def.ammo`), Weste |
 | `config/jobs.lua`, `client/jobs.lua`, `server/jobs.lua` | Jobs (Phase 8): Jobcenter/Höfe als Orte, Aufträge als Stationsfolge (`tacov:jobs:step`, Server prüft Nähe/Reihenfolge/Fahrzeug), Lohn `pay()` mit Einkommensteuer und Obergrenze (`job_pay`), Firmenfahrzeug (`tacov:jobs:vehicle`), Taxi (`tacov:jobs:taxi:*`), HUD `job`, Hinweis mit Fortschritt |
 | `server/payday.lua` | Payday (8.8): Fraktionsgehalt je volle Stunde aus dem Staatshaushalt mit Kürzung unter Reserve, `payday_log`; `tacov:treasury:show` für Welt → Staatshaushalt |
 | `config/fitness.lua`, `client/fitness.lua`, `server/fitness.lua` | Fitness/Promille (6.9): Stationen als Orte `gym` (Szenario je Station), `tacov:fitness:trained`, Abbau 1 %/Tag ohne Training (`needs.lastTraining`), Tempo-Multiplikator und Ausdauer nach Fitness; Trunkenheit ab `Needs.alcohol.duiThreshold` (Clipset, Effekt, Lenk-Bias) |
@@ -131,6 +134,7 @@ Phase 2. Grundlage für alle anderen Resources: Datenbank, Spieler, Charaktere, 
 - [x] Handy und Funk (7.1–7.7) (Migration 020)
 - [x] Jobs, Payday, Staatshaushalt, Kaufzeiten-Simulation (8.1–8.9) (Migration 021)
 - [x] Fraktionsbasis (9.1–9.3) (Migration 022)
+- [x] LSPD: MDT, Dispatch, Maßnahmen, Waffen-Grundlage (9.4–9.6) (Migration 023; Fraktionen bekommen `num` für Konto/Lager)
 - [ ] Fahrzeuge Teil 2c: Blitzer, Kfz-Steuer
 - [ ] Einreise-Ablauf mit Teammitglied (Phase 4, Modul Einstieg)
 - [ ] Testprotokoll vom Testserver (sobald VPS/Datenbank stehen)

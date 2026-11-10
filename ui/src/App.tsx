@@ -14,6 +14,7 @@ import { Dealer } from './views/Dealer';
 import { Ask } from './views/Ask';
 import { Editor } from './views/Editor';
 import { Phone, applyPhoneSettings, loadPhoneSettings } from './views/Phone';
+import { Mdt } from './views/Mdt';
 import { inGame, nui } from './nui';
 
 function Views() {
@@ -64,6 +65,7 @@ function Views() {
       {v?.name === 'ask' && <Ask data={v.data} />}
       {v?.name === 'editor' && <Editor key={v.data.title ?? 'editor'} data={v.data} />}
       {v?.name === 'phone' && <Phone data={v.data} />}
+      {v?.name === 'mdt' && <Mdt data={v.data} />}
       {!v && state.hint && (
         <div className={'hint' + (state.hint.progress !== undefined ? ' busy' : '')}>
           <span className="key">{state.hint.key}</span><span>{state.hint.text}</span>

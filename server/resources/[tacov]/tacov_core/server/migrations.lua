@@ -29,6 +29,7 @@ local function listMigrations()
     { version = 20, file = 'sql/020_phone.sql' },
     { version = 21, file = 'sql/021_jobs.sql' },
     { version = 22, file = 'sql/022_factions.sql' },
+    { version = 23, file = 'sql/023_lspd.sql' },
   }
 end
 

@@ -178,6 +178,7 @@ end
 
 local function impoundFee(row)
   if row.state ~= 'impound' then return 0 end
+  if (tonumber(row.seized_fee) or 0) > 0 then return tonumber(row.seized_fee) end -- von der Polizei beschlagnahmt
   -- Nach einem Neustart stehen unterwegs gewesene Fahrzeuge im Verwahrhof; war der Halter kürzlich dran, ist das gratis
   local seen = row.last_seen_at
   if type(seen) == 'number' and os.time() - math.floor(seen / 1000) < Cfg.impoundAfterHours * 3600 then return 0 end
@@ -275,7 +276,7 @@ RegisterNetEvent('tacov:vehicles:spawned', function(vehicleId, netId)
   local ent, plate = entityOf(netId)
   if not ent or plate ~= row.plate then return end
   live[row.plate] = { id = row.id, netId = tonumber(netId) }
-  TacoV.DB.update('UPDATE vehicles SET state = \'out\', garage = NULL, last_seen_at = NOW() WHERE id = ?', { row.id })
+  TacoV.DB.update('UPDATE vehicles SET state = \'out\', garage = NULL, seized_fee = 0, last_seen_at = NOW() WHERE id = ?', { row.id })
 end)
 
 -- Fahrzeug einparken: Client meldet Netz-ID und Zustand
@@ -581,3 +582,16 @@ end)
 AddEventHandler('tacov:core:characterUnloaded', function(_, characterId)
   keys[characterId] = nil
 end)
+
+--- Beschlagnahme durch die Polizei: Fahrzeug kommt in den Verwahrhof, Auslösung kostet fee. Gibt Halterzeile oder nil (kein Spielerfahrzeug).
+function TacoV.Vehicles.seize(netId, fee)
+  local ent, plate = entityOf(netId)
+  if not ent then return nil end
+  local row = vehicleByPlate(plate)
+  if row then
+    TacoV.DB.update('UPDATE vehicles SET state = \'impound\', garage = NULL, seized_fee = ? WHERE id = ?', { fee or 0, row.id })
+    live[plate] = nil
+  end
+  DeleteEntity(ent)
+  return row, plate
+end

@@ -237,6 +237,21 @@ function Radio() {
   </>);
 }
 
+function Emergency() {
+  const [text, setText] = useState('');
+  const call = (number: string) => { act('emergency:call', { number, text: text.trim() }); setText(''); };
+  return (<>
+    <Header title="Notruf" />
+    <div className="ph-body">
+      <div className="ph-card"><span className="muted" style={{ fontSize: '0.75rem' }}>Dein Standort wird automatisch mitgeschickt. Beschreibe kurz, was los ist.</span>
+        <textarea className="input" rows={4} maxLength={200} placeholder="Was ist passiert?" value={text} onChange={(e) => setText(e.target.value)} style={{ height: 'auto', padding: '0.6rem 0.8rem', resize: 'none', font: 'inherit' }} />
+      </div>
+      <button className="btn danger block" style={{ height: '3rem' }} onClick={() => call('110')}><Icon name="shield" size={18} /> 110 · Polizei</button>
+      <button className="btn primary block" style={{ height: '3rem' }} onClick={() => call('112')}><Icon name="heart" size={18} /> 112 · Rettungsdienst</button>
+    </div>
+  </>);
+}
+
 function SettingsApp({ number, s, onChange }: { number: string; s: Settings; onChange: (s: Settings) => void }) {
   return (<>
     <Header title="Einstellungen" />
@@ -331,8 +346,9 @@ export function Phone({ data }: { data: PhoneData }) {
         {!call && app === 'bank' && <BankApp />}
         {!call && app === 'vehicles' && <Vehicles />}
         {!call && app === 'radio' && <Radio />}
+        {!call && app === 'emergency' && <Emergency />}
         {!call && app === 'settings' && <SettingsApp number={data.number} s={settings} onChange={changeSettings} />}
-        {!call && app && !['contacts', 'dialer', 'messages', 'bank', 'vehicles', 'radio', 'settings'].includes(app) && (<>
+        {!call && app && !['contacts', 'dialer', 'messages', 'bank', 'vehicles', 'radio', 'settings', 'emergency'].includes(app) && (<>
           <Header title={apps.find((a) => a.id === app)?.label ?? app} onBack={() => setApp(null)} />
           <div className="ph-body"><div className="ph-empty"><Icon name="clock" size={28} /><span>Kommt mit einer späteren Phase.</span></div></div>
         </>)}

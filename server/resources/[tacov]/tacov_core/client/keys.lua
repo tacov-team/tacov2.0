@@ -8,6 +8,8 @@ local function bind(command, label, key, handler, release)
     -- Bei offenem Listenmenü (Spieler kann laufen) nur die Menü-Tasten selbst durchlassen
     if TacoV.UI.current() == 'menu' and command ~= 'tacov_faction' and command ~= 'tacov_admin' and command ~= 'tacov_actions' then return end
     if TacoV.UI.current() == 'phone' and command ~= 'tacov_phone' then return end
+    -- gefesselt oder in Haft: nur Befehlszeile
+    if (LocalPlayer.state.cuffed or LocalPlayer.state.jailed) and command ~= 'tacov_console' then return end
     handler()
   end, false)
   RegisterCommand('-' .. command, function()

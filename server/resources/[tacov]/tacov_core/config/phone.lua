@@ -15,7 +15,7 @@ TacoV.Config.Phone = {
   apps = {                      -- Reihenfolge auf der Startseite; enabled = Modul vorhanden
     { id = 'bank',      label = 'Bank',        icon = 'card',      enabled = true },
     { id = 'vehicles',  label = 'Fahrzeuge',   icon = 'car',       enabled = true },
-    { id = 'emergency', label = 'Notruf',      icon = 'warn',      enabled = false },
+    { id = 'emergency', label = 'Notruf',      icon = 'warn',      enabled = true },
     { id = 'faction',   label = 'Fraktion',    icon = 'shield',    enabled = false },
     { id = 'business',  label = 'Firma',       icon = 'briefcase', enabled = false },
     { id = 'camera',    label = 'Kamera',      icon = 'search',    enabled = false },

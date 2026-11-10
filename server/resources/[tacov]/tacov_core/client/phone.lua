@@ -58,7 +58,7 @@ end)
 -- Alle App-Aktionen zum Server: 'contacts:add' → tacov:phone:contacts:add
 for _, name in ipairs({ 'contacts:list', 'contacts:add', 'contacts:rename', 'contacts:favorite', 'contacts:delete', 'calls:start', 'calls:accept', 'calls:end',
   'messages:list', 'messages:thread', 'messages:send', 'messages:location', 'bank:load', 'bank:transfer', 'bank:invoice', 'bank:pay',
-  'vehicles:list', 'vehicles:locate', 'vehicles:share', 'radio:load', 'radio:join', 'radio:leave', 'settings:set' }) do
+  'vehicles:list', 'vehicles:locate', 'vehicles:share', 'radio:load', 'radio:join', 'radio:leave', 'settings:set', 'emergency:call' }) do
   AddEventHandler('tacov:ui:phone:' .. name, function(d) TriggerServerEvent('tacov:phone:' .. name, d) end)
 end
 AddEventHandler('tacov:ui:phone:messages:waypoint', function(d) SetNewWaypoint(d.x + 0.0, d.y + 0.0) notify('info', 'Wegpunkt gesetzt.') end)

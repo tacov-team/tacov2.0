@@ -468,3 +468,24 @@ label.field { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.7
 
 /* Handy-Einstellungen */
 body[data-needs-numbers="0"] .hud-stats .stat.need .num { display: none; }
+
+/* ---------- MDT (Polizei) ---------- */
+.mdt .panel { width: 58rem; max-width: 94vw; }
+.mdt .panel > .body { min-height: 30rem; }
+.mdt-search { display: flex; gap: 0.5rem; }
+.mdt-search .input { flex: 1; }
+.mdt-list { display: flex; flex-direction: column; gap: 0.35rem; max-height: 22rem; overflow-y: auto; }
+.mdt-list.tall { max-height: 24rem; flex: 1; }
+.mdt-row { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 0.6rem; background: var(--field); border: 1px solid var(--line); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.mdt-row.static { cursor: default; }
+.mdt-row:not(.static):hover { border-color: rgba(var(--accent-rgb), 0.6); }
+.mdt-row b { display: block; font-size: 0.875rem; }
+.mdt-row small { display: block; color: var(--muted); font-size: 0.75rem; }
+.mdt-text { display: block; margin-top: 0.4rem; font-size: 0.8125rem; white-space: pre-wrap; }
+.mdt-file { display: flex; gap: 1rem; }
+.mdt-file > .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.mdt-card { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem 0.85rem; border-radius: 0.7rem; background: var(--field); border: 1px solid var(--line); font-size: 0.8125rem; }
+.mdt-link { border: 0; background: transparent; color: var(--accent); font: inherit; font-weight: 700; cursor: pointer; padding: 0; text-decoration: underline; }
+.mdt textarea.input { height: auto; padding: 0.55rem 0.7rem; resize: none; font: inherit; }
+.mdt .tag.bad { white-space: normal; height: auto; padding: 0.2rem 0.5rem; background: rgba(239, 68, 68, 0.18); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); align-self: flex-start; }
+.mdt .bad { color: #fca5a5; }

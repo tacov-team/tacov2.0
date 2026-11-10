@@ -1,7 +1,7 @@
 -- Fraktionen (Punkte 9.1–9.3, Client): F6-Menü (Mitglieder, Kasse, Lager, Fahrzeuge, Umkleide, Rechte, Protokoll),
 -- Stempeluhr/Lager/Garage/Umkleide als E-Punkte, Einladen über das X-Rad, Fraktionsfahrzeuge, Team-Verwaltung.
 TacoV = TacoV or {}
-TacoV.Factions = {}
+TacoV.Factions = { extras = {} }
 
 local F = TacoV.Config.Factions
 local data = nil          -- letzte Übersicht vom Server
@@ -203,11 +203,20 @@ local function openMain()
     { id = 'vehicles', label = 'Fahrzeuge', icon = 'car', sub = ('%d eingetragen · Garage'):format(#data.vehicles) },
     { id = 'wardrobe', label = 'Umkleide', icon = 'bag', sub = ('%d Dienstkleidungen'):format(#data.outfits) },
   }
+  -- Zusatzeinträge der einzelnen Fraktion (MDT, Einsätze, …): TacoV.Factions.extras[id] = function(data) -> { items }, handler(id) -> bool
+  local extra = TacoV.Factions.extras[data.id]
+  local extraHandler
+  if extra then
+    local list
+    list, extraHandler = extra(data)
+    for _, it in ipairs(list or {}) do items[#items + 1] = it end
+  end
   if has('settings') then items[#items + 1] = { id = 'ranks', label = 'Ränge und Rechte', icon = 'settings', sub = 'Rangnamen, Rechte je Rang', section = 'Leitung' } end
   if has('treasury_view') then items[#items + 1] = { id = 'log', label = 'Protokoll', icon = 'doc', sub = 'Letzte 40 Einträge' } end
   items[#items + 1] = { id = 'leave', label = 'Austreten', icon = 'x', sub = '5 Tage Sperre für andere Fraktionen', section = 'Ich' }
   TacoV.Menu.open({ id = 'faction', title = data.label, icon = 'shield', info = ('%s · Funk %s'):format(data.rankName, tostring(data.channel or '–')), items = items },
     function(id)
+      if extraHandler and extraHandler(id) then return end
       if id == 'duty' then TacoV.Menu.close() TriggerServerEvent('tacov:factions:duty')
       elseif id == 'members' then openMembers()
       elseif id == 'treasury' then openTreasury()

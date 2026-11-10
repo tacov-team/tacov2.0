@@ -33,6 +33,7 @@ shared_scripts {
   'config/phone.lua',
   'config/jobs.lua',
   'config/factions.lua',
+  'config/lspd.lua',
   'shared/configedit.lua',
   'shared/clothingprice.lua',
 }
@@ -77,6 +78,9 @@ server_scripts {
   'server/phone.lua',
   'server/voice.lua',
   'server/factions.lua',
+  'server/weapons.lua',
+  'server/police.lua',
+  'server/dispatch.lua',
   'server/jobs.lua',
   'server/payday.lua',
   'server/connect.lua',
@@ -119,6 +123,9 @@ client_scripts {
   'client/fitness.lua',
   'client/phone.lua',
   'client/factions.lua',
+  'client/weapons.lua',
+  'client/police.lua',
+  'client/dispatch.lua',
   'client/jobs.lua',
   'client/keys.lua',
 }

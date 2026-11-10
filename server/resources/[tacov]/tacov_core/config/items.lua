@@ -11,7 +11,11 @@ TacoV.Config.ItemCategories = {
 }
 
 local I = {}
-local function item(name, def) def.name = name; I[name] = def end
+local function item(name, def)
+  def.name = name
+  if def.weapon and not def.use then def.use = 'event' end -- Waffe in die Hand nehmen / wegstecken
+  I[name] = def
+end
 
 -- Geld
 item('cash',        { label = 'Bargeld',       category = 'money', weight = 0.0,    stack = 0, money = true })
@@ -90,14 +94,22 @@ item('lsd',         { label = 'LSD-Blotter',   category = 'drug', weight = 0.05,
 item('frog_secret', { label = 'Froschsekret',  category = 'drug', weight = 0.05, stack = 50, use = 'event' })
 
 -- Waffen (Munition als eigene Items)
-item('weapon_pistol',   { label = 'Pistole',     category = 'weapon', weight = 1.0, stack = 1, unique = true, weapon = 'WEAPON_PISTOL', license = true })
-item('weapon_revolver', { label = 'Revolver',    category = 'weapon', weight = 1.2, stack = 1, unique = true, weapon = 'WEAPON_REVOLVER', license = true })
-item('weapon_rifle',    { label = 'Jagdgewehr',  category = 'weapon', weight = 3.5, stack = 1, unique = true, weapon = 'WEAPON_SNIPERRIFLE', license = true })
-item('weapon_smg',      { label = 'SMG',         category = 'weapon', weight = 2.5, stack = 1, unique = true, weapon = 'WEAPON_SMG', illegal = true })
-item('weapon_assault',  { label = 'Sturmgewehr', category = 'weapon', weight = 3.5, stack = 1, unique = true, weapon = 'WEAPON_ASSAULTRIFLE', illegal = true })
+item('weapon_pistol',   { label = 'Pistole',     category = 'weapon', weight = 1.0, stack = 1, unique = true, weapon = 'WEAPON_PISTOL', ammo = 'ammo_pistol', license = true })
+item('weapon_revolver', { label = 'Revolver',    category = 'weapon', weight = 1.2, stack = 1, unique = true, weapon = 'WEAPON_REVOLVER', ammo = 'ammo_pistol', license = true })
+item('weapon_rifle',    { label = 'Jagdgewehr',  category = 'weapon', weight = 3.5, stack = 1, unique = true, weapon = 'WEAPON_SNIPERRIFLE', ammo = 'ammo_rifle', license = true })
+item('weapon_smg',      { label = 'SMG',         category = 'weapon', weight = 2.5, stack = 1, unique = true, weapon = 'WEAPON_SMG', ammo = 'ammo_pistol', illegal = true })
+item('weapon_assault',  { label = 'Sturmgewehr', category = 'weapon', weight = 3.5, stack = 1, unique = true, weapon = 'WEAPON_ASSAULTRIFLE', ammo = 'ammo_rifle', illegal = true })
 item('weapon_pistol_il',{ label = 'Pistole (unlizenziert)', category = 'weapon', weight = 1.0, stack = 1, unique = true,
-  weapon = 'WEAPON_PISTOL', illegal = true })
+  weapon = 'WEAPON_PISTOL', ammo = 'ammo_pistol', illegal = true })
 item('weapon_knife',    { label = 'Messer',      category = 'weapon', weight = 0.5, stack = 1, unique = true, weapon = 'WEAPON_KNIFE' })
+-- Dienstausrüstung (Kaufpunkt der Fraktion, police = nicht im freien Handel)
+item('weapon_flashlight',   { label = 'Taschenlampe',  category = 'weapon', weight = 0.4, stack = 1, unique = true, weapon = 'WEAPON_FLASHLIGHT' })
+item('weapon_nightstick',   { label = 'Schlagstock',   category = 'weapon', weight = 0.6, stack = 1, unique = true, weapon = 'WEAPON_NIGHTSTICK', police = true })
+item('weapon_stungun',      { label = 'Taser',         category = 'weapon', weight = 0.5, stack = 1, unique = true, weapon = 'WEAPON_STUNGUN', police = true })
+item('weapon_combatpistol', { label = 'Dienstpistole', category = 'weapon', weight = 1.0, stack = 1, unique = true, weapon = 'WEAPON_COMBATPISTOL',
+  ammo = 'ammo_pistol', police = true })
+item('weapon_carbine',      { label = 'Karabiner',     category = 'weapon', weight = 3.2, stack = 1, unique = true, weapon = 'WEAPON_CARBINERIFLE',
+  ammo = 'ammo_rifle', police = true })
 item('ammo_pistol',     { label = 'Pistolenmunition', category = 'ammo', weight = 0.01, stack = 500 })
 item('ammo_rifle',      { label = 'Gewehrmunition',   category = 'ammo', weight = 0.017, stack = 500 })
 item('armor',           { label = 'Weste',       category = 'armor', weight = 2.0, stack = 1, use = 'event' })

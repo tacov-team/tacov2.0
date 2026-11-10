@@ -1,4 +1,6 @@
--- Fraktionen (Punkte 9.1–9.3, Server): Stammdaten, Mitglieder (characters.faction/faction_rank), Ränge und Rechte je Rang,
+-- Fraktionen (Punkte 9.1–9.3, Server): f.id ist die Text-Kennung (characters.faction), f.num die Zahl für Konto und Lager
+-- (accounts/inventory_items.owner_id sind Zahlen).
+-- Inhalt: Stammdaten, Mitglieder (characters.faction/faction_rank), Ränge und Rechte je Rang,
 -- Kasse (Konto 'faction'), Lager mit Rechten und Tageslimits, Dienst (Statebag duty), Dienstkleidung, Fraktionsfahrzeuge,
 -- Protokoll, Einladungen, Team-Verwaltung. Die Inhalte je Fraktion (MDT, Notrufe, …) kommen mit 9.4–9.11.
 TacoV = TacoV or {}
@@ -25,7 +27,7 @@ function TacoV.Factions.load()
   factions = {}
   for _, row in ipairs(TacoV.DB.query('SELECT * FROM factions WHERE dissolved_at IS NULL') or {}) do
     local def = F.list[row.id] or {}
-    local f = { id = row.id, label = row.label, type = row.type, cap = row.cap, channel = row.channel, teamOnly = def.teamOnly, color = def.color, ranks = {} }
+    local f = { id = row.id, num = row.num, label = row.label, type = row.type, cap = row.cap, channel = row.channel, teamOnly = def.teamOnly, color = def.color, ranks = {} }
     for r = 1, F.maxRank do f.ranks[r] = { name = ('Rang %d'):format(r), rights = defaultRights(r) } end
     factions[row.id] = f
   end
@@ -77,6 +79,12 @@ function TacoV.Factions.has(src, right)
   return rank and (rank.rights[right] == true or rank.rights.leader == true) or false
 end
 function TacoV.Factions.isOnDuty(src) return onDuty[src] ~= nil end
+--- Alle Diensthabenden einer Fraktion (Liste von Server-IDs)
+function TacoV.Factions.dutyList(factionId)
+  local out = {}
+  for src, id in pairs(onDuty) do if id == factionId then out[#out + 1] = src end end
+  return out
+end
 function TacoV.Factions.rankName(id, rank)
   local f = factions[id]
   return f and f.ranks[rank] and f.ranks[rank].name or ('Rang %d'):format(rank or 0)
@@ -219,7 +227,7 @@ local function overview(src)
   return {
     id = f.id, label = f.label, type = f.type, cap = f.cap, channel = f.channel, rank = c.faction_rank, rankName = TacoV.Factions.rankName(f.id, c.faction_rank),
     rights = rights, members = list, ranks = ranks, duty = onDuty[src] ~= nil,
-    treasury = TacoV.Factions.has(src, 'treasury_view') and TacoV.Journal.balance('faction', f.id) or nil,
+    treasury = TacoV.Factions.has(src, 'treasury_view') and TacoV.Journal.balance('faction', f.num) or nil,
     dailyKgLeft = F.dailyStorageKg[c.faction_rank] and math.max(0, F.dailyStorageKg[c.faction_rank] - usedKg / 1000) or nil,
     dailyMoneyLeft = F.dailyTreasury[c.faction_rank] and math.max(0, F.dailyTreasury[c.faction_rank] - usedMoney) or nil,
     vehicles = vehicles, outfits = outfits, rankManageMax = F.rankManageMax, maxRank = F.maxRank, rightLabels = F.rightLabels,
@@ -307,7 +315,7 @@ RegisterNetEvent('tacov:factions:storage', function()
   if not f then return end
   if not TacoV.Factions.has(src, 'storage_view') then notify(src, 'error', 'Kein Zugriff auf das Lager.') return end
   if not nearFactionPoint(src, 'faction_storage', f.id, 4.0) then notify(src, 'error', 'Das Lager ist im Fraktionsgebäude.') return end
-  local inv = TacoV.Inventory.load('faction', f.id, F.storageKg)
+  local inv = TacoV.Inventory.load('faction', f.num, F.storageKg)
   local limitKg = F.dailyStorageKg[c.faction_rank]
   TacoV.Inventory.openContainer(src, inv, {
     title = f.label .. ' · Lager', subtitle = ('%d kg%s'):format(F.storageKg, limitKg and (' · Entnahme heute max. ' .. limitKg .. ' kg') or ''),
@@ -342,7 +350,7 @@ RegisterNetEvent('tacov:factions:treasury', function(action, amount)
   amount = TacoV.Util.money(tonumber(amount) or 0)
   if amount <= 0 then return end
   if action == 'deposit' then
-    local ok = TacoV.Journal.move('bank', { type = 'character', id = c.id }, { type = 'faction', id = f.id }, amount, 'fraktionskasse', { actor = c.id, note = 'Einzahlung' })
+    local ok = TacoV.Journal.move('bank', { type = 'character', id = c.id }, { type = 'faction', id = f.num }, amount, 'fraktionskasse', { actor = c.id, note = 'Einzahlung' })
     if not ok then notify(src, 'error', 'Nicht genug auf dem Konto.') return end
     log(f, c, 'deposit', ('%s zahlt %s $ in die Kasse'):format(fullName(c), fmt(amount)))
     notify(src, 'success', ('%s $ eingezahlt.'):format(fmt(amount)))
@@ -353,7 +361,7 @@ RegisterNetEvent('tacov:factions:treasury', function(action, amount)
       local _, used = daily(c.id)
       if used + amount > limit then notify(src, 'error', ('Tageslimit: noch %s $.'):format(fmt(limit - used))) return end
     end
-    local ok = TacoV.Journal.move('bank', { type = 'faction', id = f.id }, { type = 'character', id = c.id }, amount, 'fraktionskasse', { actor = c.id, note = 'Auszahlung' })
+    local ok = TacoV.Journal.move('bank', { type = 'faction', id = f.num }, { type = 'character', id = c.id }, amount, 'fraktionskasse', { actor = c.id, note = 'Auszahlung' })
     if not ok then notify(src, 'error', 'So viel ist nicht in der Kasse.') return end
     if limit then addDaily(c.id, 0, amount) end
     log(f, c, 'withdraw', ('%s zahlt %s $ aus der Kasse aus'):format(fullName(c), fmt(amount)))
@@ -371,7 +379,7 @@ RegisterNetEvent('tacov:factions:journal', function()
   if not f or not TacoV.Factions.has(src, 'treasury_view') then return end
   local rows = TacoV.DB.query(
     "SELECT j.amount, j.reason, j.note, j.at, j.from_type, j.to_type, c.first_name, c.last_name FROM journal j LEFT JOIN characters c ON c.id = j.actor_character_id " ..
-    "WHERE (j.from_type = 'faction' AND j.from_id = ?) OR (j.to_type = 'faction' AND j.to_id = ?) ORDER BY j.id DESC LIMIT 30", { f.id, f.id }) or {}
+    "WHERE (j.from_type = 'faction' AND j.from_id = ?) OR (j.to_type = 'faction' AND j.to_id = ?) ORDER BY j.id DESC LIMIT 30", { f.num, f.num }) or {}
   TriggerClientEvent('tacov:factions:journal', src, rows)
 end)
 
@@ -585,8 +593,8 @@ RegisterNetEvent('tacov:factions:admin', function(action, d)
     local f = factions[d.faction]
     if not f or f.type == 'state' then notify(src, 'error', 'Staatsfraktionen werden nicht aufgelöst.') return end
     -- Kasse und Lager an den Staat, Mitglieder mit Sperre raus
-    local balance = TacoV.Journal.balance('faction', f.id)
-    if balance > 0 then TacoV.Journal.move('bank', { type = 'faction', id = f.id }, { type = 'state', id = 0 }, balance, 'aufloesung', { note = f.label }) end
+    local balance = TacoV.Journal.balance('faction', f.num)
+    if balance > 0 then TacoV.Journal.move('bank', { type = 'faction', id = f.num }, { type = 'state', id = 0 }, balance, 'aufloesung', { note = f.label }) end
     for _, m in ipairs(members(f)) do
       local ms = srcOfCharacter(m.id)
       if ms then TacoV.Factions.leave(ms, 'dissolve', 'Auflösung') else leaveOffline(f, m.id, 'dissolve', 'Auflösung') end

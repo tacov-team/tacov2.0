@@ -45,6 +45,7 @@ RegisterNetEvent('tacov:traffic:flash', function(camName, netId)
   TacoV.Log.write('justice', ('Geblitzt %s: %d km/h bei %d, Bußgeld %s%s, %d Punkte'):format(cam.label, speed, limit, fmt(fine),
     paid and '' or ' (offen)', points), { characterId = c.id })
   TriggerClientEvent('tacov:traffic:flashed', src)
+  TriggerEvent('tacov:dispatch:speedcam', cam.label, plate, speed, limit, cam.x, cam.y)
   TriggerClientEvent('tacov:core:notify', src, 'warn',
     ('Geblitzt: %d km/h bei erlaubten %d. Bußgeld %s%s%s.'):format(speed, limit, fmt(fine), paid and '' or ' (Konto gedeckt? offen)',
       points > 0 and (' · %d Punkte'):format(points) or ''))
