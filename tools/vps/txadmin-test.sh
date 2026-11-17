@@ -37,8 +37,10 @@ User=$SVC_USER
 WorkingDirectory=$BASE/server
 ExecStart=/usr/bin/screen -DmS tacov2-test $START
 $STOP
-Restart=on-failure
-RestartSec=10
+TimeoutStopSec=20
+KillMode=control-group
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
