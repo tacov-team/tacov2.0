@@ -1,5 +1,9 @@
 # Entwicklung
 
+## txAdmin (nur Testserver)
+
+`bash /opt/tacov2-test/tools/vps/txadmin-test.sh an` startet den Testserver über txAdmin (im FXServer-Artefakt enthalten, Weboberfläche Port 40121, Daten in `/opt/tacov2-test/txData`); `… aus` stellt den direkten Start wieder her. Der Live-Server läuft ohne txAdmin. Geplante Neustarts nur an einer Stelle pflegen: entweder unsere (`server/status.lua`) oder die von txAdmin.
+
 ## Kaufzeiten-Simulation
 
 `lua5.4 tools/ci/sim_economy.lua` (läuft in der CI) rechnet aus den Config-Werten die Spielstunden bis Auto, Wohnung, Haus und Sportwagen; Annahmen stehen oben im Skript. Auto und Sportwagen müssen innerhalb ±15 % liegen, sonst wird die CI rot.
